@@ -9,7 +9,7 @@
     <meta property="og:description" content="Repeat founder. Currently building Lucis.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
             --text: #1a1a1a;
@@ -52,7 +52,7 @@
         }
 
         .header h1 {
-            font-family: 'Instrument Serif', serif;
+            font-family: 'Cormorant Garamond', serif;
             font-size: 2.8rem;
             font-weight: 400;
             line-height: 1.15;
@@ -278,6 +278,121 @@
             color: var(--text-tertiary);
         }
 
+        /* Newsletter */
+        .newsletter-block {
+            padding: 20px 24px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .newsletter-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .newsletter-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--text);
+        }
+
+        .newsletter-tag {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 1px 8px;
+        }
+
+        .newsletter-desc {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+
+        .newsletter-topics {
+            list-style: none;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .newsletter-topics li {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .newsletter-topics li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--text-tertiary);
+        }
+
+        .newsletter-cta {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            border: 1px solid var(--text);
+            border-radius: 100px;
+            padding: 6px 18px;
+            transition: all 0.2s;
+        }
+
+        .newsletter-cta:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        /* Ask AI */
+        .ai-prompt-label {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        .ai-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .ai-link {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 5px 14px 5px 8px;
+            transition: all 0.2s;
+        }
+
+        .ai-link:hover {
+            border-color: var(--text-secondary);
+            color: var(--text);
+        }
+
+        .ai-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+        }
+
         /* Contact */
         .contact-links {
             display: flex;
@@ -300,9 +415,9 @@
 
         /* Photo */
         .photo {
-            width: 88px;
-            height: 88px;
-            border-radius: 50%;
+            width: 120px;
+            height: 180px;
+            border-radius: 8px;
             object-fit: cover;
             margin-bottom: 32px;
             filter: grayscale(20%);
@@ -357,11 +472,25 @@
             <div class="name">Max (Maxime) Guerois</div>
             <h1>I build what <em>I wish existed.</em></h1>
             <p class="intro">
-                Repeat founder based in Paris. Currently building 
-                <strong>Lucis</strong> — preventive health for Europe, backed by 
-                General Catalyst &amp; Y Combinator. 
+                Repeat founder based in Paris. Currently building
+                <strong>Lucis</strong> — preventive health for Europe, backed by
+                General Catalyst &amp; Y Combinator.
                 I care about things that compound.
             </p>
+            <div class="newsletter-block" style="margin-top: 28px;">
+                <div class="newsletter-header">
+                    <span class="newsletter-name">Grind & Thrive</span>
+                    <span class="newsletter-tag">Newsletter</span>
+                </div>
+                <p class="newsletter-desc">Health optimization meets startup grind — what I'm learning as a founder. Launching soon.</p>
+                <ul class="newsletter-topics">
+                    <li>Health optimization</li>
+                    <li>Networking</li>
+                    <li>Startups</li>
+                    <li>Y Combinator</li>
+                </ul>
+                <a href="https://substack.com/@maxgm" class="newsletter-cta" target="_blank">Subscribe ↗</a>
+            </div>
         </div>
 
         <hr class="divider fade-in">
@@ -382,7 +511,7 @@
                         <a href="https://www.ycombinator.com/companies/lucis" class="work-link" target="_blank">Y Combinator ↗</a>
                     </div>
                 </div>
-                <span class="work-date">2023 – now</span>
+                <span class="work-date">2025 – now</span>
             </div>
 
             <div class="work-item">
@@ -393,7 +522,7 @@
                     </div>
                     <div class="work-desc">Europe's longevity community — became Lucis</div>
                 </div>
-                <span class="work-date">2022 – 2023</span>
+                <span class="work-date">2024 – 2025</span>
             </div>
 
             <div class="work-item">
@@ -404,7 +533,7 @@
                     </div>
                     <div class="work-desc">Connected 1,200+ Web3 founders through events and partnerships</div>
                 </div>
-                <span class="work-date">2021 – 2022</span>
+                <span class="work-date">2022 – 2024</span>
             </div>
 
             <div class="work-item">
@@ -415,7 +544,7 @@
                     </div>
                     <div class="work-desc">Mobile app connecting 25k+ gym and fitness enthusiasts in France</div>
                 </div>
-                <span class="work-date">2018 – 2021</span>
+                <span class="work-date">2021 – 2022</span>
             </div>
         </div>
 
@@ -435,7 +564,7 @@
                         <a href="https://www.fineris.co/" class="work-link" target="_blank">fineris.co ↗</a>
                     </div>
                 </div>
-                <span class="work-date">2024 – now</span>
+                <span class="work-date">2025 – now</span>
             </div>
         </div>
 
@@ -446,42 +575,38 @@
             <div class="section-label">Press</div>
             <a href="https://www.generalcatalyst.com/stories/seeding-the-future-with-lucis" class="writing-item" target="_blank">
                 <div class="writing-title">Seeding the Future with Lucis</div>
-                <div class="writing-meta">General Catalyst — Interview</div>
+                <div class="writing-meta">General Catalyst · Dec 2025</div>
             </a>
             <a href="https://www.linkedin.com/posts/y-combinator_most-healthcare-systems-wait-until-youre-activity-7407087196601540608-PiFG" class="writing-item" target="_blank">
                 <div class="writing-title">Most healthcare systems wait until you're sick to act. That's changing.</div>
-                <div class="writing-meta">Y Combinator · LinkedIn · 2025</div>
+                <div class="writing-meta">Y Combinator · Dec 2025</div>
             </a>
             <a href="https://orsomedia.io/tech-45-172-miser-sur-la-prevention-avec-une-prise-de-sang-des-datas-et-un-plan-daction-maxime-berthelot-lucis/" class="writing-item" target="_blank">
                 <div class="writing-title">Tech 45' — Miser sur la prévention avec Lucis</div>
-                <div class="writing-meta">Orso Media · Podcast · Dec 2025 · 🇫🇷</div>
+                <div class="writing-meta">Orso Media · Dec 2025 · 🇫🇷</div>
             </a>
         </div>
 
         <hr class="divider fade-in">
 
-        <!-- Thinking about -->
+        <!-- Ask AI -->
         <div class="section fade-in">
-            <div class="section-label">Thinking about</div>
-            <div class="thinking-list">
-                <span class="thinking-item">Preventive health</span>
-                <span class="thinking-item">AI × knowledge work</span>
-                <span class="thinking-item">Longevity</span>
-                <span class="thinking-item">Biohacking</span>
-                <span class="thinking-item">First-principles building</span>
-                <span class="thinking-item">Things that compound</span>
+            <div class="section-label">Ask AI about me</div>
+            <p class="ai-prompt-label">Curious? Ask your AI assistant who I am.</p>
+            <div class="ai-links">
+                <a href="https://chatgpt.com/?q=Who+is+Max+Guerois%3F+Summarize+his+background+based+on+his+website%3A+https%3A%2F%2Fmaxguerois.com" class="ai-link" target="_blank">
+                    <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
+                    ChatGPT
+                </a>
+                <a href="https://claude.ai/new?q=Who+is+Max+Guerois%3F+Summarize+his+background+based+on+his+website%3A+https%3A%2F%2Fmaxguerois.com" class="ai-link" target="_blank">
+                    <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
+                    Claude
+                </a>
+                <a href="https://www.perplexity.ai/search?q=Who+is+Max+Guerois%3F+Summarize+his+background+based+on+his+website%3A+https%3A%2F%2Fmaxguerois.com" class="ai-link" target="_blank">
+                    <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
+                    Perplexity
+                </a>
             </div>
-        </div>
-
-        <hr class="divider fade-in">
-
-        <!-- Writing (placeholder) -->
-        <div class="section fade-in">
-            <div class="section-label">Writing</div>
-            <a href="https://substack.com/@maxgm" class="writing-item" target="_blank">
-                <div class="writing-title">Substack — startups, YC, health optimization</div>
-                <div class="writing-meta">Launching soon · Subscribe to get the first one</div>
-            </a>
         </div>
 
         <hr class="divider fade-in">
