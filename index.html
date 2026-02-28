@@ -1,22 +1,427 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hey, I'm Max</title>
-    <meta name="description" content="This is my journey" />
-    <link rel="icon" type="image/svg+xml" href="/src/assets/favicon.svg" />
-    <meta property="og:title" content="Max - Internet builder" />
-    <meta property="og:description" content="This is my journey" />
-    <meta property="og:image" content="https://public-omega-eight.vercel.app/og.jpg" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Max - Internet builder" />
-    <meta name="twitter:description" content="This is my journey" />
-    <meta name="twitter:image" content="https://public-omega-eight.vercel.app/og.jpg" />
-    <meta property="og:url" content="www.gm-max.xyz">
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Guerois — Builder, Thinker</title>
+    <meta name="description" content="Repeat founder. Currently building Fineris.">
+    <meta property="og:title" content="Max — Builder, Thinker">
+    <meta property="og:description" content="Repeat founder. Currently building Fineris.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --text-tertiary: #999;
+            --bg: #faf9f7;
+            --border: #e8e6e1;
+            --accent: #1a1a1a;
+            --link: #1a1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.65;
+        }
+
+        .container {
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 80px 24px 120px;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 64px;
+        }
+
+        .header h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+        }
+
+        .name {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+        }
+
+        .header h1 em {
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .header .intro {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 520px;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 56px;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-bottom: 20px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 56px 0;
+        }
+
+        /* Project items */
+        .project {
+            margin-bottom: 28px;
+        }
+
+        .project:last-child {
+            margin-bottom: 0;
+        }
+
+        .project-header {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .project-name {
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .project-tag {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            font-style: italic;
+        }
+
+        .project-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .project-link {
+            display: inline-block;
+            margin-top: 4px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+            transition: border-color 0.2s;
+        }
+
+    .project-link + .project-link {
+            margin-left: 16px;
+        }
+
+        .project-link:hover {
+            border-color: var(--text);
+            color: var(--text);
+        }
+
+        /* Interests / Thinking */
+        .thinking-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+        }
+
+        .thinking-item {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            transition: all 0.2s;
+        }
+
+        .thinking-item:hover {
+            border-color: var(--text-secondary);
+            color: var(--text);
+        }
+
+        /* Writing section */
+        .writing-item {
+            display: block;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text);
+            transition: padding-left 0.2s;
+        }
+
+        .writing-item:first-child {
+            border-top: 1px solid var(--border);
+        }
+
+        .writing-item:hover {
+            padding-left: 8px;
+        }
+
+        .writing-title {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 2px;
+        }
+
+        .writing-meta {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Contact */
+        .contact-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .contact-link {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2px;
+            transition: all 0.2s;
+        }
+
+        .contact-link:hover {
+            color: var(--text);
+            border-color: var(--text);
+        }
+
+        /* Photo */
+        .photo {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 32px;
+            filter: grayscale(20%);
+        }
+
+        /* Subtle entrance animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeUp 0.6s ease forwards;
+        }
+
+        .fade-in:nth-child(2) { animation-delay: 0.08s; }
+        .fade-in:nth-child(3) { animation-delay: 0.16s; }
+        .fade-in:nth-child(4) { animation-delay: 0.24s; }
+        .fade-in:nth-child(5) { animation-delay: 0.32s; }
+        .fade-in:nth-child(6) { animation-delay: 0.40s; }
+        .fade-in:nth-child(7) { animation-delay: 0.48s; }
+        .fade-in:nth-child(8) { animation-delay: 0.56s; }
+        .fade-in:nth-child(9) { animation-delay: 0.64s; }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 48px 20px 80px;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .contact-links {
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header fade-in">
+            <!-- Replace src with your actual photo -->
+            <img src="profile.jpg" alt="Max Guerois" class="photo">
+            <div class="name">Max (Maxime) Guerois</div>
+            <h1>I build what <em>I wish existed.</em></h1>
+            <p class="intro">
+                Repeat founder based in Paris. Currently building 
+                <strong>Lucis</strong> — preventive health for Europe, backed by 
+                General Catalyst &amp; Y Combinator. 
+                I care about things that compound.
+            </p>
+        </div>
+
+        <hr class="divider fade-in">
+
+        <!-- Currently -->
+        <div class="section fade-in">
+            <div class="section-label">Building now</div>
+
+            <div class="project">
+                <div class="project-header">
+                    <span class="project-name">Lucis</span>
+                    <span class="project-tag">YC X25 · $8.5M seed</span>
+                </div>
+                <p class="project-desc">
+                    Turning blood tests into actionable health insights. 3,000+ members, 
+                    500k+ clinical tests, 400+ partner labs across Europe. Making 
+                    prevention the default, not the exception.
+                </p>
+                <a href="https://lucis.life" class="project-link" target="_blank">lucis.life →</a>
+                <a href="https://www.ycombinator.com/companies/lucis" class="project-link" target="_blank">Y Combinator →</a>
+            </div>
+        </div>
+
+        <hr class="divider fade-in">
+
+        <!-- Advising -->
+        <div class="section fade-in">
+            <div class="section-label">Advising</div>
+
+            <div class="project">
+                <div class="project-header">
+                    <span class="project-name">Fineris</span>
+                </div>
+                <p class="project-desc">
+                    AI-powered export intelligence that helps manufacturers find and close international buyers.
+                </p>
+                <a href="https://www.fineris.co/" class="project-link" target="_blank">fineris.co →</a>
+            </div>
+        </div>
+
+        <hr class="divider fade-in">
+
+        <!-- Track record -->
+        <div class="section fade-in">
+            <div class="section-label">Built before</div>
+
+            <div class="project">
+                <div class="project-header">
+                    <span class="project-name">Grin</span>
+                </div>
+                <p class="project-desc">
+                    AR mobile app for 40k+ NFT holders.
+                </p>
+            </div>
+
+            <div class="project">
+                <div class="project-header">
+                    <span class="project-name">The Arch</span>
+                </div>
+                <p class="project-desc">
+                    Connected 1,200+ Web3 founders through events and partnerships.
+                </p>
+            </div>
+
+            <div class="project">
+                <div class="project-header">
+                    <span class="project-name">Practup</span>
+                </div>
+                <p class="project-desc">
+                    Mobile app connecting 25k+ gym and fitness enthusiasts in France.
+                </p>
+            </div>
+        </div>
+
+        <hr class="divider fade-in">
+
+        <!-- Press -->
+        <div class="section fade-in">
+            <div class="section-label">Press</div>
+            <a href="https://www.generalcatalyst.com/stories/seeding-the-future-with-lucis" class="writing-item" target="_blank">
+                <div class="writing-title">Seeding the Future with Lucis</div>
+                <div class="writing-meta">General Catalyst — Interview</div>
+            </a>
+            <a href="https://pathfounders.com/p/general-catalyst-backs-lucis-raise-8-5-million" class="writing-item" target="_blank">
+                <div class="writing-title">General Catalyst backs Paris startup using AI to scale preventative health</div>
+                <div class="writing-meta">Pathfounders · Dec 2025</div>
+            </a>
+            <a href="https://frenchhealthcare.com/e-sante-en/french-digital-health-global-innovation/" class="writing-item" target="_blank">
+                <div class="writing-title">Digital Health: How France Innovates and Shines Worldwide</div>
+                <div class="writing-meta">French Healthcare · Nov 2025</div>
+            </a>
+            <a href="https://orsomedia.io/tech-45-172-miser-sur-la-prevention-avec-une-prise-de-sang-des-datas-et-un-plan-daction-maxime-berthelot-lucis/" class="writing-item" target="_blank">
+                <div class="writing-title">Tech 45' — Miser sur la prévention avec Lucis</div>
+                <div class="writing-meta">Orso Media · Podcast · Dec 2025 · 🇫🇷</div>
+            </a>
+        </div>
+
+        <hr class="divider fade-in">
+
+        <!-- Thinking about -->
+        <div class="section fade-in">
+            <div class="section-label">Thinking about</div>
+            <div class="thinking-list">
+                <span class="thinking-item">Preventive health</span>
+                <span class="thinking-item">AI × knowledge work</span>
+                <span class="thinking-item">Longevity</span>
+                <span class="thinking-item">Biohacking</span>
+                <span class="thinking-item">First-principles building</span>
+                <span class="thinking-item">Things that compound</span>
+            </div>
+        </div>
+
+        <hr class="divider fade-in">
+
+        <!-- Writing (placeholder) -->
+        <div class="section fade-in">
+            <div class="section-label">Writing</div>
+            <a href="https://substack.com/@maxgm" class="writing-item" target="_blank">
+                <div class="writing-title">Substack — startups, YC, health optimization</div>
+                <div class="writing-meta">Launching soon · Subscribe to get the first one</div>
+            </a>
+        </div>
+
+        <hr class="divider fade-in">
+
+        <!-- Contact -->
+        <div class="section fade-in">
+            <div class="section-label">Say hi</div>
+            <div class="contact-links">
+                <a href="mailto:hello@gm-max.com?subject=Hey%20Max&body=Hi%20Max%2C%0A%0AI%20found%20your%20website%20and%20wanted%20to%20reach%20out%20about%20" class="contact-link">Email</a>
+                <a href="https://twitter.com/maxguerois" class="contact-link" target="_blank">Twitter / X</a>
+                <a href="https://instagram.com/maxguerois" class="contact-link" target="_blank">Instagram</a>
+                <a href="https://www.linkedin.com/" class="contact-link" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
