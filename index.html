@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Max Guerois — Builder, Thinker</title>
-    <meta name="description" content="Repeat founder. Currently building Fineris.">
+    <meta name="description" content="Repeat founder. Currently building Lucis.">
     <meta property="og:title" content="Max — Builder, Thinker">
-    <meta property="og:description" content="Repeat founder. Currently building Fineris.">
+    <meta property="og:description" content="Repeat founder. Currently building Lucis.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -153,6 +153,86 @@
             color: var(--text);
         }
 
+        /* Work section */
+        .work-item {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 10px 0;
+        }
+
+        .work-left {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .work-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .work-name {
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            color: var(--text);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .work-name:hover {
+            border-color: var(--text);
+        }
+
+        .work-badge {
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 1px 8px;
+        }
+
+        .work-desc {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .work-date {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .work-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .work-link {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 2px 10px;
+            transition: all 0.15s;
+        }
+
+        .work-link:hover {
+            border-color: var(--text-secondary);
+            color: var(--text);
+        }
+
         /* Interests / Thinking */
         .thinking-list {
             display: flex;
@@ -177,19 +257,14 @@
         /* Writing section */
         .writing-item {
             display: block;
-            padding: 16px 0;
-            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
             text-decoration: none;
             color: var(--text);
             transition: padding-left 0.2s;
         }
 
-        .writing-item:first-child {
-            border-top: 1px solid var(--border);
-        }
-
         .writing-item:hover {
-            padding-left: 8px;
+            padding-left: 6px;
         }
 
         .writing-title {
@@ -291,22 +366,56 @@
 
         <hr class="divider fade-in">
 
-        <!-- Currently -->
+        <!-- Work -->
         <div class="section fade-in">
-            <div class="section-label">Building now</div>
+            <div class="section-label">Work</div>
 
-            <div class="project">
-                <div class="project-header">
-                    <span class="project-name">Lucis</span>
-                    <span class="project-tag">YC X25 · $8.5M seed</span>
+            <div class="work-item">
+                <div class="work-left">
+                    <div class="work-top">
+                        <span class="work-name">Lucis</span>
+                        <span class="work-badge">Founder</span>
+                    </div>
+                    <div class="work-desc">Preventive health for Europe · YC X25 · $8.5M seed</div>
+                    <div class="work-links">
+                        <a href="https://lucis.life" class="work-link" target="_blank">lucis.life ↗</a>
+                        <a href="https://www.ycombinator.com/companies/lucis" class="work-link" target="_blank">Y Combinator ↗</a>
+                    </div>
                 </div>
-                <p class="project-desc">
-                    Turning blood tests into actionable health insights. 3,000+ members, 
-                    500k+ clinical tests, 400+ partner labs across Europe. Making 
-                    prevention the default, not the exception.
-                </p>
-                <a href="https://lucis.life" class="project-link" target="_blank">lucis.life →</a>
-                <a href="https://www.ycombinator.com/companies/lucis" class="project-link" target="_blank">Y Combinator →</a>
+                <span class="work-date">2023 – now</span>
+            </div>
+
+            <div class="work-item">
+                <div class="work-left">
+                    <div class="work-top">
+                        <span class="work-name">Zero Club</span>
+                        <span class="work-badge">Founder</span>
+                    </div>
+                    <div class="work-desc">Europe's longevity community — became Lucis</div>
+                </div>
+                <span class="work-date">2022 – 2023</span>
+            </div>
+
+            <div class="work-item">
+                <div class="work-left">
+                    <div class="work-top">
+                        <span class="work-name">The Arch</span>
+                        <span class="work-badge">Founder</span>
+                    </div>
+                    <div class="work-desc">Connected 1,200+ Web3 founders through events and partnerships</div>
+                </div>
+                <span class="work-date">2021 – 2022</span>
+            </div>
+
+            <div class="work-item">
+                <div class="work-left">
+                    <div class="work-top">
+                        <span class="work-name">Practup</span>
+                        <span class="work-badge">Founder</span>
+                    </div>
+                    <div class="work-desc">Mobile app connecting 25k+ gym and fitness enthusiasts in France</div>
+                </div>
+                <span class="work-date">2018 – 2021</span>
             </div>
         </div>
 
@@ -316,48 +425,17 @@
         <div class="section fade-in">
             <div class="section-label">Advising</div>
 
-            <div class="project">
-                <div class="project-header">
-                    <span class="project-name">Fineris</span>
+            <div class="work-item">
+                <div class="work-left">
+                    <div class="work-top">
+                        <span class="work-name">Fineris</span>
+                    </div>
+                    <div class="work-desc">AI-powered export intelligence for manufacturers</div>
+                    <div class="work-links">
+                        <a href="https://www.fineris.co/" class="work-link" target="_blank">fineris.co ↗</a>
+                    </div>
                 </div>
-                <p class="project-desc">
-                    AI-powered export intelligence that helps manufacturers find and close international buyers.
-                </p>
-                <a href="https://www.fineris.co/" class="project-link" target="_blank">fineris.co →</a>
-            </div>
-        </div>
-
-        <hr class="divider fade-in">
-
-        <!-- Track record -->
-        <div class="section fade-in">
-            <div class="section-label">Built before</div>
-
-            <div class="project">
-                <div class="project-header">
-                    <span class="project-name">Grin</span>
-                </div>
-                <p class="project-desc">
-                    AR mobile app for 40k+ NFT holders.
-                </p>
-            </div>
-
-            <div class="project">
-                <div class="project-header">
-                    <span class="project-name">The Arch</span>
-                </div>
-                <p class="project-desc">
-                    Connected 1,200+ Web3 founders through events and partnerships.
-                </p>
-            </div>
-
-            <div class="project">
-                <div class="project-header">
-                    <span class="project-name">Practup</span>
-                </div>
-                <p class="project-desc">
-                    Mobile app connecting 25k+ gym and fitness enthusiasts in France.
-                </p>
+                <span class="work-date">2024 – now</span>
             </div>
         </div>
 
@@ -370,13 +448,9 @@
                 <div class="writing-title">Seeding the Future with Lucis</div>
                 <div class="writing-meta">General Catalyst — Interview</div>
             </a>
-            <a href="https://pathfounders.com/p/general-catalyst-backs-lucis-raise-8-5-million" class="writing-item" target="_blank">
-                <div class="writing-title">General Catalyst backs Paris startup using AI to scale preventative health</div>
-                <div class="writing-meta">Pathfounders · Dec 2025</div>
-            </a>
-            <a href="https://frenchhealthcare.com/e-sante-en/french-digital-health-global-innovation/" class="writing-item" target="_blank">
-                <div class="writing-title">Digital Health: How France Innovates and Shines Worldwide</div>
-                <div class="writing-meta">French Healthcare · Nov 2025</div>
+            <a href="https://www.linkedin.com/posts/y-combinator_most-healthcare-systems-wait-until-youre-activity-7407087196601540608-PiFG" class="writing-item" target="_blank">
+                <div class="writing-title">Most healthcare systems wait until you're sick to act. That's changing.</div>
+                <div class="writing-meta">Y Combinator · LinkedIn · 2025</div>
             </a>
             <a href="https://orsomedia.io/tech-45-172-miser-sur-la-prevention-avec-une-prise-de-sang-des-datas-et-un-plan-daction-maxime-berthelot-lucis/" class="writing-item" target="_blank">
                 <div class="writing-title">Tech 45' — Miser sur la prévention avec Lucis</div>
