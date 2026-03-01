@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Max Guerois — Builder, Thinker</title>
-    <meta name="description" content="Repeat founder. Currently building Lucis.">
-    <meta property="og:title" content="Max — Builder, Thinker">
-    <meta property="og:description" content="Repeat founder. Currently building Lucis.">
+    <meta name="description" content="Repeat founder based in Paris. Currently building Lucis — preventive health for Europe, backed by General Catalyst & Y Combinator.">
+
+    <!-- OpenGraph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://maxguerois.com">
+    <meta property="og:site_name" content="Max Guerois">
+    <meta property="og:title" content="Max Guerois — Builder, Thinker">
+    <meta property="og:description" content="Repeat founder based in Paris. Currently building Lucis — preventive health for Europe, backed by General Catalyst & Y Combinator.">
+    <meta property="og:image" content="https://maxguerois.com/profile.jpg">
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@maxguerois">
+    <meta name="twitter:title" content="Max Guerois — Builder, Thinker">
+    <meta name="twitter:description" content="Repeat founder based in Paris. Currently building Lucis — preventive health for Europe, backed by General Catalyst & Y Combinator.">
+    <meta name="twitter:image" content="https://maxguerois.com/profile.jpg">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -450,11 +463,39 @@
         /* Responsive */
         @media (max-width: 600px) {
             .container {
-                padding: 48px 20px 80px;
+                padding: 40px 20px 80px;
             }
 
             .header h1 {
-                font-size: 2.2rem;
+                font-size: 2rem;
+            }
+
+            .photo {
+                width: 96px;
+                height: 144px;
+            }
+
+            .newsletter-block {
+                padding: 16px 18px;
+            }
+
+            .newsletter-name {
+                font-size: 1.35rem;
+            }
+
+            .work-item {
+                flex-direction: column;
+                gap: 4px;
+                align-items: flex-start;
+            }
+
+            .work-date {
+                order: -1;
+                font-size: 0.78rem;
+            }
+
+            .ai-links {
+                gap: 8px;
             }
 
             .contact-links {
