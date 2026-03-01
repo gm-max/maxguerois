@@ -382,6 +382,31 @@
             width: 100% !important;
         }
 
+        .tweet-link {
+            display: block;
+            padding: 10px 0;
+            text-decoration: none;
+            color: var(--text);
+            transition: padding-left 0.2s;
+            border-top: 1px solid var(--border);
+        }
+
+        .tweet-link:hover {
+            padding-left: 6px;
+        }
+
+        .tweet-link-text {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 3px;
+            color: var(--text);
+        }
+
+        .tweet-link-meta {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
         /* Ask AI */
         .ai-prompt-label {
             font-size: 0.88rem;
@@ -671,13 +696,15 @@
                 <blockquote class="twitter-tweet" data-theme="light" data-dnt="true">
                     <a href="https://twitter.com/maxguerois/status/1914717625143451985"></a>
                 </blockquote>
-                <blockquote class="twitter-tweet" data-theme="light" data-dnt="true">
-                    <a href="https://twitter.com/maxguerois/status/1901981501123604980"></a>
-                </blockquote>
-                <blockquote class="twitter-tweet" data-theme="light" data-dnt="true">
-                    <a href="https://twitter.com/maxguerois/status/1937880538829697495"></a>
-                </blockquote>
             </div>
+            <a href="https://x.com/maxguerois/status/1901981501123604980" class="tweet-link" target="_blank">
+                <div class="tweet-link-text">"almost 2 years on @bryan_johnson's Blueprint:"</div>
+                <div class="tweet-link-meta">@maxguerois · Mar 2025</div>
+            </a>
+            <a href="https://x.com/maxguerois/status/1937880538829697495" class="tweet-link" target="_blank">
+                <div class="tweet-link-text">"We spent $20k+/month to move 10x faster during YC. Here's how we spent it and why we'd do it again:"</div>
+                <div class="tweet-link-meta">@maxguerois · Jun 2025</div>
+            </a>
         </div>
 
         <hr class="divider fade-in">
