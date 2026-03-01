@@ -21,6 +21,7 @@
     <meta name="twitter:description" content="Repeat founder based in Paris. Currently building Lucis — preventive health for Europe, backed by General Catalyst & Y Combinator.">
     <meta name="twitter:image" content="https://maxguerois.com/profile.jpg">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="nav.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -519,7 +520,7 @@
         /* Responsive */
         @media (max-width: 600px) {
             .container {
-                padding: 48px 22px 100px;
+                padding: 80px 22px 100px;
             }
 
             .header {
@@ -534,7 +535,7 @@
             .photo {
                 width: 100%;
                 height: 280px;
-                object-position: center center;
+                object-position: center 25%;
                 margin-bottom: 28px;
             }
 
@@ -591,6 +592,20 @@
     </style>
 </head>
 <body>
+    <nav class="navbar">
+        <a href="/" class="navbar-name">Max Guerois</a>
+        <div class="navbar-social">
+            <a href="https://linkedin.com/in/maxguerois" class="navbar-social-link" target="_blank" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="https://x.com/maxguerois" class="navbar-social-link" target="_blank" aria-label="X">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://instagram.com/maxguerois" class="navbar-social-link" target="_blank" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+        </div>
+    </nav>
     <div class="container">
         <!-- Header -->
         <div class="header fade-in">
@@ -604,19 +619,23 @@
                 General Catalyst &amp; Y Combinator.
                 I live what I build — my health optimization protocol is the proof of concept.
             </p>
-            <div class="newsletter-block" style="margin-top: 28px;">
-                <div class="newsletter-header">
-                    <span class="newsletter-name">Grind & Thrive</span>
-                    <span class="newsletter-tag">Newsletter</span>
+            <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid #e8e6e1;">
+                <div class="section-label" style="margin-bottom: 10px;">Ask AI about Max Guerois</div>
+                <p class="ai-prompt-label">Dig into my health protocol, founder story, or longevity obsession.</p>
+                <div class="ai-links">
+                    <a href="https://chatgpt.com/?q=Who+is+Max+Guerois%3F+Summarize+his+background+based+on+his+website%3A+https%3A%2F%2Fmaxguerois.com" class="ai-link" target="_blank">
+                        <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
+                        ChatGPT
+                    </a>
+                    <a href="https://claude.ai/new?q=Who+is+Max+Guerois%3F+Summarize+his+background+based+on+his+website%3A+https%3A%2F%2Fmaxguerois.com" class="ai-link" target="_blank">
+                        <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
+                        Claude
+                    </a>
+                    <a href="https://www.perplexity.ai/search?q=Who+is+Max+Guerois%3F+Summarize+his+background+based+on+his+website%3A+https%3A%2F%2Fmaxguerois.com" class="ai-link" target="_blank">
+                        <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
+                        Perplexity
+                    </a>
                 </div>
-                <p class="newsletter-desc">Health optimization meets startup grind — what I'm learning as a founder. Launching soon.</p>
-                <ul class="newsletter-topics">
-                    <li>Health optimization</li>
-                    <li>Networking</li>
-                    <li>Startups</li>
-                    <li>Y Combinator</li>
-                </ul>
-                <a href="https://substack.com/@maxgm" class="newsletter-cta" target="_blank">Subscribe <span class="arr">↗</span></a>
             </div>
         </div>
 
@@ -754,23 +773,22 @@
 
         <hr class="divider fade-in">
 
-        <!-- Ask AI -->
+        <!-- Newsletter -->
         <div class="section fade-in">
-            <div class="section-label">Ask AI about Max Guerois</div>
-            <p class="ai-prompt-label">Dig into my health protocol, founder story, or longevity obsession.</p>
-            <div class="ai-links">
-                <a href="https://chatgpt.com/?q=Who+is+Max+Guerois%3F+Summarize+his+background+based+on+his+website%3A+https%3A%2F%2Fmaxguerois.com" class="ai-link" target="_blank">
-                    <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
-                    ChatGPT
-                </a>
-                <a href="https://claude.ai/new?q=Who+is+Max+Guerois%3F+Summarize+his+background+based+on+his+website%3A+https%3A%2F%2Fmaxguerois.com" class="ai-link" target="_blank">
-                    <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
-                    Claude
-                </a>
-                <a href="https://www.perplexity.ai/search?q=Who+is+Max+Guerois%3F+Summarize+his+background+based+on+his+website%3A+https%3A%2F%2Fmaxguerois.com" class="ai-link" target="_blank">
-                    <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
-                    Perplexity
-                </a>
+            <div class="section-label">Newsletter</div>
+            <div class="newsletter-block">
+                <div class="newsletter-header">
+                    <span class="newsletter-name">Grind & Thrive</span>
+                    <span class="newsletter-tag">Newsletter</span>
+                </div>
+                <p class="newsletter-desc">Health optimization meets startup grind — what I'm learning as a founder. Launching soon.</p>
+                <ul class="newsletter-topics">
+                    <li>Health optimization</li>
+                    <li>Networking</li>
+                    <li>Startups</li>
+                    <li>Y Combinator</li>
+                </ul>
+                <a href="https://substack.com/@maxgm" class="newsletter-cta" target="_blank">Subscribe <span class="arr">↗</span></a>
             </div>
         </div>
 

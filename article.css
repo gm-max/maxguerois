@@ -29,7 +29,7 @@ body {
 .container {
     max-width: 620px;
     margin: 0 auto;
-    padding: 64px 24px 120px;
+    padding: 88px 24px 120px;
 }
 
 /* ── Navigation ── */
@@ -239,12 +239,194 @@ hr {
 
 .author-line a:hover { border-color: var(--text); }
 
+/* ── Article image ── */
+.article-img {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+    margin-bottom: 48px;
+    object-fit: cover;
+    max-height: 360px;
+}
+
+/* ── TL;DR box ── */
+.tldr {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+}
+
+.tldr-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+}
+
+.tldr ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.tldr ul li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+.tldr ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-tertiary);
+}
+
+/* ── Section headings ── */
+.section-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-top: 56px;
+    margin-bottom: 32px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+}
+
+/* ── Baseline metrics box ── */
+.baseline {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 24px 0 32px;
+}
+
+.baseline-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+}
+
+.baseline ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.baseline ul li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+.baseline ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-tertiary);
+}
+
+/* ── Pros / Cons ── */
+.pros-cons-group {
+    margin-bottom: 32px;
+}
+
+.pros-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.pros-cons-group ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.pros-cons-group ul li {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 8px;
+    line-height: 1.65;
+}
+
+.pros-cons-group ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-tertiary);
+}
+
+/* ── Closing ── */
+.closing {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.closing strong {
+    color: var(--text);
+    font-weight: 500;
+}
+
+/* ── Inline article photo ── */
+.article-photo {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+    margin: 24px 0 32px;
+    object-fit: cover;
+    max-height: 420px;
+}
+
+/* ── Phone screenshots (side by side) ── */
+.phone-screenshots {
+    display: flex;
+    gap: 16px;
+    margin: 24px 0 32px;
+    align-items: flex-start;
+}
+
+.phone-screenshot-wrap {
+    flex: 1;
+    text-align: center;
+}
+
+.phone-screenshot-wrap img {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+}
+
+.phone-screenshot-caption {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+}
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
-    .container { padding: 40px 22px 100px; }
+    .container { padding: 72px 22px 100px; }
     .article-title { font-size: 2rem; }
     .stats { gap: 10px; }
     .stat { min-width: 90px; padding: 14px 16px; }
     .stat-value { font-size: 1.6rem; }
     .back { margin-bottom: 40px; }
+    .article-img { max-height: 240px; border-radius: 8px; }
+    .section-heading { font-size: 1.5rem; margin-top: 40px; padding-top: 32px; }
 }
