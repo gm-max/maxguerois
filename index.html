@@ -370,6 +370,18 @@
             color: var(--bg);
         }
 
+        /* Tweet embeds */
+        .tweet-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .tweet-grid .twitter-tweet {
+            margin: 0 auto !important;
+            width: 100% !important;
+        }
+
         /* Ask AI */
         .ai-prompt-label {
             font-size: 0.88rem;
@@ -649,6 +661,27 @@
 
         <hr class="divider fade-in">
 
+        <!-- Highlights -->
+        <div class="section fade-in">
+            <div class="section-label">Highlights</div>
+            <div class="tweet-grid">
+                <blockquote class="twitter-tweet" data-theme="light" data-dnt="true">
+                    <a href="https://twitter.com/maxguerois/status/1847206551569789089"></a>
+                </blockquote>
+                <blockquote class="twitter-tweet" data-theme="light" data-dnt="true">
+                    <a href="https://twitter.com/maxguerois/status/1914717625143451985"></a>
+                </blockquote>
+                <blockquote class="twitter-tweet" data-theme="light" data-dnt="true">
+                    <a href="https://twitter.com/maxguerois/status/1901981501123604980"></a>
+                </blockquote>
+                <blockquote class="twitter-tweet" data-theme="light" data-dnt="true">
+                    <a href="https://twitter.com/maxguerois/status/1937880538829697495"></a>
+                </blockquote>
+            </div>
+        </div>
+
+        <hr class="divider fade-in">
+
         <!-- Ask AI -->
         <div class="section fade-in">
             <div class="section-label">Ask AI about Max Guerois</div>
@@ -682,5 +715,6 @@
             </div>
         </div>
     </div>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
