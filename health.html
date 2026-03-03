@@ -94,6 +94,10 @@
             margin-left: 4px;
         }
         .bio-ref:hover { text-decoration: underline; }
+        @media (max-width: 600px) {
+            .stats { flex-direction: column; }
+            .stat { min-width: unset; flex: none; }
+        }
     </style>
 </head>
 <body>
@@ -128,10 +132,6 @@
             <div class="stat">
                 <div class="stat-value">0.74</div>
                 <div class="stat-label">Pace of aging (DunedinPACE)</div>
-            </div>
-            <div class="stat">
-                <div class="stat-value">−5.5 yrs</div>
-                <div class="stat-label">Cardiovascular age</div>
             </div>
             <div class="stat">
                 <div class="stat-value">40 bpm</div>
@@ -320,72 +320,6 @@
                 </div>
             </div>
 
-            <!-- ORGAN AGES -->
-            <div class="bio-section">
-                <div class="bio-section-label">Organ Ages</div>
-                <div class="bio-table">
-                    <div class="bio-row bio-row-header">
-                        <div>Marker</div>
-                        <div>Value</div>
-                        <div style="text-align:right">Test</div>
-                    </div>
-                    <div class="bio-row">
-                        <div class="bio-col-marker">Hormone Age</div>
-                        <div class="bio-col-value missing">—</div>
-                        <div class="bio-col-test">Composite</div>
-                    </div>
-                    <div class="bio-row">
-                        <div class="bio-col-marker">Metabolic Age</div>
-                        <div class="bio-col-value missing">—</div>
-                        <div class="bio-col-test">Composite</div>
-                    </div>
-                    <div class="bio-row">
-                        <div class="bio-col-marker">Heart Age</div>
-                        <div class="bio-col-value missing">—</div>
-                        <div class="bio-col-test">Composite</div>
-                    </div>
-                    <div class="bio-row">
-                        <div class="bio-col-marker">Liver Age</div>
-                        <div class="bio-col-value missing">—</div>
-                        <div class="bio-col-test">Composite</div>
-                    </div>
-                    <div class="bio-row">
-                        <div class="bio-col-marker">Lung Age</div>
-                        <div class="bio-col-value missing">—</div>
-                        <div class="bio-col-test">Composite</div>
-                    </div>
-                    <div class="bio-row">
-                        <div class="bio-col-marker">Kidney Age</div>
-                        <div class="bio-col-value missing">—</div>
-                        <div class="bio-col-test">Composite</div>
-                    </div>
-                    <div class="bio-row">
-                        <div class="bio-col-marker">Immune Age</div>
-                        <div class="bio-col-value missing">—</div>
-                        <div class="bio-col-test">Composite</div>
-                    </div>
-                    <div class="bio-row">
-                        <div class="bio-col-marker">Inflammation Age</div>
-                        <div class="bio-col-value missing">—</div>
-                        <div class="bio-col-test">Composite</div>
-                    </div>
-                    <div class="bio-row">
-                        <div class="bio-col-marker">Musculoskeletal Age</div>
-                        <div class="bio-col-value missing">—</div>
-                        <div class="bio-col-test">Composite</div>
-                    </div>
-                    <div class="bio-row">
-                        <div class="bio-col-marker">Blood Age</div>
-                        <div class="bio-col-value missing">—</div>
-                        <div class="bio-col-test">Composite</div>
-                    </div>
-                    <div class="bio-row">
-                        <div class="bio-col-marker">Brain Age</div>
-                        <div class="bio-col-value missing">—</div>
-                        <div class="bio-col-test">Composite</div>
-                    </div>
-                </div>
-            </div>
 
         </div>
 
