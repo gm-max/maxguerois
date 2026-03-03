@@ -109,9 +109,13 @@
         /* Section */
         .section {
             margin-bottom: 56px;
+            margin-top: 56px;
         }
 
         .section-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 0.7rem;
             font-weight: 500;
             letter-spacing: 0.12em;
@@ -120,11 +124,16 @@
             margin-bottom: 20px;
         }
 
-        .divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 56px 0;
+        .section-label::before {
+            content: '';
+            display: block;
+            width: 20px;
+            height: 1px;
+            background: currentColor;
+            flex-shrink: 0;
         }
+
+        .divider { display: none; }
 
         /* Project items */
         .project {
@@ -184,7 +193,11 @@
             align-items: baseline;
             justify-content: space-between;
             gap: 24px;
-            padding: 10px 0;
+            padding: 16px 0;
+        }
+
+        .work-item + .work-item {
+            border-top: 1px solid var(--border);
         }
 
         .work-left {
@@ -282,10 +295,14 @@
         /* Writing section */
         .writing-item {
             display: block;
-            padding: 10px 0;
+            padding: 16px 0;
             text-decoration: none;
             color: var(--text);
             transition: padding-left 0.2s;
+        }
+
+        .writing-item + .writing-item {
+            border-top: 1px solid var(--border);
         }
 
         .writing-item:hover {
@@ -551,10 +568,7 @@
 
             .section {
                 margin-bottom: 48px;
-            }
-
-            .divider {
-                margin: 48px 0;
+                margin-top: 48px;
             }
 
             .newsletter-block {
@@ -655,7 +669,7 @@
 
         <!-- Work -->
         <div class="section fade-in">
-            <div class="section-label">Work</div>
+            <div class="section-label">01 / Work</div>
 
             <div class="work-item">
                 <div class="work-left">
@@ -710,7 +724,11 @@
 
         <!-- Writing -->
         <div class="section fade-in">
-            <div class="section-label">Writing</div>
+            <div class="section-label">02 / Writing</div>
+            <a href="/testosterone" class="writing-item">
+                <div class="writing-title">If you want to fix low testosterone, here are 31 science-backed tips</div>
+                <div class="writing-meta">Health Protocol · 2026</div>
+            </a>
             <a href="/sleep" class="writing-item">
                 <div class="writing-title">3 months of tracking — 7 tips that lead me to high-quality sleep</div>
                 <div class="writing-meta">Health Protocol · 2025</div>
@@ -721,7 +739,7 @@
 
         <!-- Press -->
         <div class="section fade-in">
-            <div class="section-label">Press</div>
+            <div class="section-label">03 / Press</div>
             <a href="https://www.generalcatalyst.com/stories/seeding-the-future-with-lucis" class="writing-item" target="_blank">
                 <div class="writing-title">Seeding the Future with Lucis</div>
                 <div class="writing-meta">General Catalyst · Dec 2025</div>
@@ -740,7 +758,7 @@
 
         <!-- Highlights -->
         <div class="section fade-in">
-            <div class="section-label">Highlights</div>
+            <div class="section-label">04 / Highlights</div>
             <div class="tweet-grid">
                 <blockquote class="twitter-tweet" data-theme="light" data-dnt="true">
                     <a href="https://twitter.com/maxguerois/status/1901981501123604980"></a>
@@ -767,7 +785,7 @@
 
         <!-- Newsletter -->
         <div class="section fade-in">
-            <div class="section-label">Newsletter</div>
+            <div class="section-label">05 / Newsletter</div>
             <div class="newsletter-block">
                 <div class="newsletter-header">
                     <span class="newsletter-name">Grind & Thrive</span>
@@ -788,7 +806,7 @@
 
         <!-- Contact -->
         <div class="section fade-in">
-            <div class="section-label">Say hi</div>
+            <div class="section-label">06 / Say hi</div>
             <div class="contact-links">
                 <a href="mailto:hello@gm-max.com?subject=Hey%20Max&body=Hi%20Max%2C%0A%0AI%20found%20your%20website%20and%20wanted%20to%20reach%20out%20about%20" class="contact-link">Email</a>
                 <a href="https://twitter.com/maxguerois" class="contact-link" target="_blank">Twitter / X</a>
