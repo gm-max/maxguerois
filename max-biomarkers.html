@@ -50,7 +50,7 @@
         }
         .bio-row {
             display: grid;
-            grid-template-columns: 2fr 1.4fr 0.8fr;
+            grid-template-columns: 2fr 1.2fr 0.7fr 1fr;
             gap: 8px;
             padding: 10px 14px;
             border-bottom: 1px solid var(--border);
@@ -86,17 +86,31 @@
             color: var(--text-tertiary);
             text-align: right;
         }
+        .bio-col-pct {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .bio-col-pct.missing {
+            color: var(--text-tertiary);
+            font-weight: 400;
+        }
         .bio-ref {
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             color: #0066cc;
             text-decoration: none;
             font-weight: 400;
-            margin-left: 4px;
+            display: inline-block;
+            margin-top: 2px;
         }
         .bio-ref:hover { text-decoration: underline; }
         @media (max-width: 600px) {
             .stats { flex-direction: column; }
             .stat { min-width: unset; flex: none; }
+            .bio-row {
+                grid-template-columns: 2fr 1.2fr 1fr;
+            }
+            .bio-col-test { display: none; }
         }
     </style>
 </head>
@@ -161,47 +175,56 @@
                     <div class="bio-row bio-row-header">
                         <div>Marker</div>
                         <div>Value</div>
-                        <div style="text-align:right">Test</div>
+                        <div>Test</div>
+                        <div>Percentile (29M)</div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Insulin</div>
                         <div class="bio-col-value">2.2–5.3 µIU/mL</div>
                         <div class="bio-col-test">Blood</div>
+                        <div class="bio-col-pct">Top ~18%<br><a href="https://pubmed.ncbi.nlm.nih.gov/8985651/" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">HbA1c</div>
                         <div class="bio-col-value">4.8–4.9%</div>
                         <div class="bio-col-test">Blood</div>
+                        <div class="bio-col-pct">Top ~25%<br><a href="https://www.cdc.gov/nchs/products/databriefs/db515.htm" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Fasting Glucose</div>
                         <div class="bio-col-value">84–85 mg/dL</div>
                         <div class="bio-col-test">Blood</div>
+                        <div class="bio-col-pct">Top ~30%<br><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7871645/" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Triglycerides</div>
                         <div class="bio-col-value">35–42 mg/dL</div>
                         <div class="bio-col-test">Blood</div>
+                        <div class="bio-col-pct">Top ~3%<br><a href="https://www.ahajournals.org/doi/10.1161/cir.0b013e3182160726" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Omega-3 Index</div>
                         <div class="bio-col-value missing">—</div>
                         <div class="bio-col-test">Blood</div>
+                        <div class="bio-col-pct missing">—</div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">CoQ10</div>
                         <div class="bio-col-value">633 µg/L</div>
                         <div class="bio-col-test">Blood</div>
+                        <div class="bio-col-pct">~40th pct</div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">hs-CRP</div>
                         <div class="bio-col-value">0.4–0.52 mg/L</div>
                         <div class="bio-col-test">Blood</div>
+                        <div class="bio-col-pct">Top ~20%<br><a href="https://www.cdc.gov/nchs/nhanes/index.htm" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Oxidized LDL</div>
                         <div class="bio-col-value">1400 U/L</div>
                         <div class="bio-col-test">Blood</div>
+                        <div class="bio-col-pct missing">—</div>
                     </div>
                 </div>
             </div>
@@ -213,22 +236,26 @@
                     <div class="bio-row bio-row-header">
                         <div>Marker</div>
                         <div>Value</div>
-                        <div style="text-align:right">Test</div>
+                        <div>Test</div>
+                        <div>Percentile (29M)</div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Free Testosterone</div>
                         <div class="bio-col-value">169 pg/mL</div>
                         <div class="bio-col-test">Blood</div>
+                        <div class="bio-col-pct">~38th pct<br><a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/andr.13310" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">TSH</div>
                         <div class="bio-col-value">0.65–1.02 mIU/L</div>
                         <div class="bio-col-test">Blood</div>
+                        <div class="bio-col-pct">~20th pct</div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">DHEA</div>
                         <div class="bio-col-value">433 µg/dL</div>
                         <div class="bio-col-test">Blood</div>
+                        <div class="bio-col-pct">~75th pct<br><a href="https://www.ucsfhealth.org/medical-tests/dhea-sulfate-blood-test" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                 </div>
             </div>
@@ -240,42 +267,50 @@
                     <div class="bio-row bio-row-header">
                         <div>Marker</div>
                         <div>Value</div>
-                        <div style="text-align:right">Test</div>
+                        <div>Test</div>
+                        <div>Percentile (29M)</div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Weight</div>
                         <div class="bio-col-value">71.4 kg</div>
                         <div class="bio-col-test">Withings</div>
+                        <div class="bio-col-pct missing">—</div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">BMI</div>
                         <div class="bio-col-value">24.6</div>
                         <div class="bio-col-test">Withings</div>
+                        <div class="bio-col-pct">~35th pct<br><a href="https://www.cdc.gov/nchs/nhanes/index.htm" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Body Fat</div>
                         <div class="bio-col-value">18.9%</div>
                         <div class="bio-col-test">Withings</div>
+                        <div class="bio-col-pct">Top ~25%<br><a href="https://www.cdc.gov/nchs/nhanes/index.htm" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Resting Heart Rate</div>
                         <div class="bio-col-value">40 bpm</div>
                         <div class="bio-col-test">Whoop</div>
+                        <div class="bio-col-pct">Top ~1%<br><a href="https://www.ahajournals.org/doi/10.1161/CIR.0000000000000461" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Cardiovascular Age</div>
                         <div class="bio-col-value">−5.5 years</div>
                         <div class="bio-col-test">Whoop</div>
+                        <div class="bio-col-pct">Top ~10%</div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">VO2 Max (treadmill)</div>
                         <div class="bio-col-value">47.9 ml/kg/min</div>
                         <div class="bio-col-test">Le Lab</div>
+                        <div class="bio-col-pct">~49th pct<br><a href="https://www.mayoclinicproceedings.org/article/S0025-6196(15)00642-4/pdf" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">VO2 Max (Garmin)</div>
                         <div class="bio-col-value">57 ml/kg/min</div>
                         <div class="bio-col-test">Garmin</div>
+                        <div class="bio-col-pct">~80th pct (est.)<br><a href="https://www.mayoclinicproceedings.org/article/S0025-6196(15)00642-4/pdf" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                 </div>
             </div>
@@ -287,22 +322,26 @@
                     <div class="bio-row bio-row-header">
                         <div>Marker</div>
                         <div>Value</div>
-                        <div style="text-align:right">Test</div>
+                        <div>Test</div>
+                        <div>Percentile (29M)</div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Biological Age<br><a href="https://pubmed.ncbi.nlm.nih.gov/29676998/" class="bio-ref" target="_blank" rel="noopener">PhenoAge ↗</a></div>
                         <div class="bio-col-value">−9.7 years</div>
                         <div class="bio-col-test">Epigenetic</div>
+                        <div class="bio-col-pct">Top ~5%<br><a href="https://pubmed.ncbi.nlm.nih.gov/29676998/" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Pace of Aging<br><a href="https://pubmed.ncbi.nlm.nih.gov/35029144/" class="bio-ref" target="_blank" rel="noopener">DunedinPACE ↗</a></div>
                         <div class="bio-col-value">0.74</div>
                         <div class="bio-col-test">TruDiagnostic</div>
+                        <div class="bio-col-pct">Top ~18%<br><a href="https://pubmed.ncbi.nlm.nih.gov/35029144/" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Telomere Length</div>
                         <div class="bio-col-value">6.98 Kb</div>
                         <div class="bio-col-test">Blood</div>
+                        <div class="bio-col-pct">~45th pct</div>
                     </div>
                 </div>
             </div>
@@ -314,27 +353,32 @@
                     <div class="bio-row bio-row-header">
                         <div>Marker</div>
                         <div>Value</div>
-                        <div style="text-align:right">Test</div>
+                        <div>Test</div>
+                        <div>Percentile (29M)</div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Deadlift</div>
                         <div class="bio-col-value">150 kg</div>
                         <div class="bio-col-test">1RM</div>
+                        <div class="bio-col-pct">~60th pct<br><a href="https://strengthlevel.com/strength-standards/deadlift" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Bench Press</div>
                         <div class="bio-col-value">105 kg</div>
                         <div class="bio-col-test">1RM</div>
+                        <div class="bio-col-pct">~65th pct<br><a href="https://strengthlevel.com/strength-standards/bench-press" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Back Squat</div>
                         <div class="bio-col-value">110 kg</div>
                         <div class="bio-col-test">1RM</div>
+                        <div class="bio-col-pct">~48th pct<br><a href="https://strengthlevel.com/strength-standards/squat" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
                     </div>
                     <div class="bio-row">
                         <div class="bio-col-marker">Grip Strength</div>
                         <div class="bio-col-value missing">—</div>
                         <div class="bio-col-test">Dynamometer</div>
+                        <div class="bio-col-pct missing">—</div>
                     </div>
                 </div>
             </div>
