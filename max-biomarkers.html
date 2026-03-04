@@ -117,13 +117,22 @@
             margin: 28px 0 0;
             border-radius: 8px;
             overflow: hidden;
+            align-items: stretch;
         }
         .tracking-photo {
             width: 100%;
-            height: 220px;
             object-fit: cover;
             display: block;
             transition: opacity 0.25s;
+        }
+        /* Bloodwork: stretch to match Whoop height */
+        .tracking-photo:first-child {
+            height: 100%;
+        }
+        /* Whoop: full 9:16 portrait so all metrics show */
+        .tracking-photo:last-child {
+            aspect-ratio: 9 / 16;
+            height: auto;
         }
         .tracking-photo:hover { opacity: 0.88; }
 
@@ -135,7 +144,6 @@
             }
             .bio-col-test { display: none; }
             .tracking-photos { gap: 4px; }
-            .tracking-photo { height: 170px; }
         }
     </style>
 </head>
