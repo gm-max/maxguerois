@@ -109,6 +109,24 @@
             margin-top: 2px;
         }
         .bio-ref:hover { text-decoration: underline; }
+        /* Tracking photos */
+        .tracking-photos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin: 28px 0 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .tracking-photo {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.25s;
+        }
+        .tracking-photo:hover { opacity: 0.88; }
+
         @media (max-width: 600px) {
             .stats { flex-direction: column; }
             .stat { min-width: unset; flex: none; }
@@ -116,6 +134,8 @@
                 grid-template-columns: 2fr 1.2fr 1fr;
             }
             .bio-col-test { display: none; }
+            .tracking-photos { gap: 4px; }
+            .tracking-photo { height: 170px; }
         }
     </style>
 </head>
@@ -156,6 +176,11 @@
                 <div class="stat-value">40 bpm</div>
                 <div class="stat-label">Resting heart rate</div>
             </div>
+        </div>
+
+        <div class="tracking-photos">
+            <img src="/health-journey/bloodwork.jpeg" alt="Blood draw" class="tracking-photo">
+            <img src="/health-journey/whoop.jpg" alt="Whoop 97% recovery" class="tracking-photo" style="object-position: center top;">
         </div>
 
         <div class="article-body">
