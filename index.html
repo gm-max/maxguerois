@@ -554,6 +554,28 @@
             border-radius: 50%;
         }
 
+        /* Health journey photos */
+        .health-photos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            margin-bottom: 24px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .health-photo {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.25s;
+        }
+
+        .health-photo:hover {
+            opacity: 0.88;
+        }
+
         /* Contact */
         .contact-links {
             display: flex;
@@ -673,6 +695,31 @@
                 gap: 20px;
             }
 
+            .health-photos {
+                display: flex;
+                gap: 8px;
+                overflow-x: auto;
+                border-radius: 0;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                margin-left: -22px;
+                margin-right: -22px;
+                padding-left: 22px;
+                padding-right: 22px;
+                margin-bottom: 20px;
+            }
+
+            .health-photos::-webkit-scrollbar { display: none; }
+
+            .health-photo {
+                flex-shrink: 0;
+                width: 72%;
+                height: 220px;
+                border-radius: 8px;
+                scroll-snap-align: start;
+            }
+
             .arr {
                 display: none;
             }
@@ -789,6 +836,11 @@
         <!-- Health -->
         <div class="section fade-in">
             <div class="section-label">02 / Health</div>
+            <div class="health-photos">
+                <img src="/health-journey/gym.jpeg" alt="Training" class="health-photo">
+                <img src="/health-journey/nutrition.jpeg" alt="Nutrition" class="health-photo">
+                <img src="/health-journey/supplements.jpeg" alt="Protocol" class="health-photo">
+            </div>
             <a href="/max-biomarkers" class="writing-item">
                 <div class="writing-title">Max Guerois's Biomarkers</div>
                 <div class="writing-meta">Health Baseline · February 2026</div>
