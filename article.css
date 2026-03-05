@@ -37,14 +37,23 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.82rem;
-    color: var(--text-tertiary);
+    font-size: 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    color: var(--text-secondary);
     text-decoration: none;
     margin-bottom: 56px;
-    transition: color 0.2s;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
-.back:hover { color: var(--text); }
+.back:hover {
+    color: var(--text);
+    border-color: var(--text-secondary);
+    background: rgba(26, 26, 26, 0.04);
+}
 
 /* ── Article header ── */
 .article-meta {
