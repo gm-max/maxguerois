@@ -137,7 +137,7 @@
 
         /* Header */
         .header {
-            margin-bottom: 64px;
+            margin-bottom: 80px;
         }
 
         .header h1 {
@@ -146,7 +146,7 @@
             font-weight: 400;
             line-height: 1.15;
             letter-spacing: -0.02em;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .name {
@@ -155,7 +155,7 @@
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: var(--text-tertiary);
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .header h1 em {
@@ -172,8 +172,8 @@
 
         /* Section */
         .section {
-            margin-bottom: 56px;
-            margin-top: 56px;
+            margin-bottom: 80px;
+            margin-top: 80px;
         }
 
         .section-label {
@@ -197,7 +197,7 @@
             flex-shrink: 0;
         }
 
-        .divider { display: none; }
+        .divider { display: none; border: none; border-top: 1px solid var(--border); border-radius: 0; margin: 0; }
 
         /* Project items */
         .project {
@@ -358,11 +358,14 @@
 
         /* Writing section */
         .writing-item {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
             padding: 16px 0;
             text-decoration: none;
             color: var(--text);
-            transition: padding-left 0.2s;
+            transition: background 0.18s;
         }
 
         .writing-item + .writing-item {
@@ -370,18 +373,43 @@
         }
 
         .writing-item:hover {
-            padding-left: 6px;
+            background: rgba(26, 26, 26, 0.04);
+        }
+
+        .writing-item:hover .writing-title {
+            text-decoration: underline;
+            text-decoration-color: rgba(26, 26, 26, 0.35);
+            text-underline-offset: 3px;
+        }
+
+        .writing-item-content {
+            flex: 1;
         }
 
         .writing-title {
             font-size: 1rem;
             font-weight: 400;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
         }
 
         .writing-meta {
             font-size: 0.8rem;
             color: var(--text-tertiary);
+        }
+
+        .writing-arrow {
+            color: var(--text-tertiary);
+            flex-shrink: 0;
+            transition: transform 0.18s, color 0.18s;
+        }
+
+        .writing-item:hover .writing-arrow {
+            transform: translateX(3px);
+            color: var(--text);
+        }
+
+        .writing-item[target="_blank"]:hover .writing-arrow {
+            transform: translate(2px, -2px);
         }
 
         /* Newsletter */
@@ -475,22 +503,33 @@
         }
 
         .tweet-link {
-            display: block;
-            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 16px 0;
             text-decoration: none;
             color: var(--text);
-            transition: padding-left 0.2s;
             border-top: 1px solid var(--border);
+            transition: background 0.18s;
         }
 
         .tweet-grid + .tweet-link {
-            border-top: 1px solid var(--border);
             margin-top: 24px;
-            padding-top: 14px;
         }
 
         .tweet-link:hover {
-            padding-left: 6px;
+            background: rgba(26, 26, 26, 0.04);
+        }
+
+        .tweet-link:hover .tweet-link-text {
+            text-decoration: underline;
+            text-decoration-color: rgba(26, 26, 26, 0.35);
+            text-underline-offset: 3px;
+        }
+
+        .tweet-link-content {
+            flex: 1;
         }
 
         .tweet-link-text {
@@ -503,6 +542,17 @@
         .tweet-link-meta {
             font-size: 0.8rem;
             color: var(--text-tertiary);
+        }
+
+        .tweet-link-arrow {
+            color: var(--text-tertiary);
+            flex-shrink: 0;
+            transition: transform 0.18s, color 0.18s;
+        }
+
+        .tweet-link:hover .tweet-link-arrow {
+            transform: translate(2px, -2px);
+            color: var(--text);
         }
 
         /* Ask AI */
@@ -557,8 +607,8 @@
         /* Health journey photos */
         .health-photos {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 4px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
             margin-bottom: 24px;
             border-radius: 8px;
             overflow: hidden;
@@ -566,7 +616,7 @@
 
         .health-photo {
             width: 100%;
-            height: 180px;
+            height: 200px;
             object-fit: cover;
             display: block;
             transition: opacity 0.25s;
@@ -603,7 +653,7 @@
             border-radius: 8px;
             object-fit: cover;
             object-position: top center;
-            margin-bottom: 32px;
+            margin-bottom: 44px;
             filter: grayscale(20%);
         }
 
@@ -637,7 +687,7 @@
             }
 
             .header {
-                margin-bottom: 48px;
+                margin-bottom: 64px;
             }
 
             .header h1 {
@@ -653,8 +703,8 @@
             }
 
             .section {
-                margin-bottom: 48px;
-                margin-top: 48px;
+                margin-bottom: 64px;
+                margin-top: 64px;
             }
 
             .newsletter-block {
@@ -696,24 +746,12 @@
             }
 
             .health-photos {
-                display: flex;
-                gap: 8px;
-                overflow-x: auto;
-                border-radius: 0;
-                scroll-snap-type: x mandatory;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
+                gap: 4px;
                 margin-bottom: 20px;
             }
 
-            .health-photos::-webkit-scrollbar { display: none; }
-
             .health-photo {
-                flex-shrink: 0;
-                width: 78vw;
-                height: 220px;
-                border-radius: 8px;
-                scroll-snap-align: start;
+                height: 160px;
             }
 
             .health-photo:first-child {
@@ -814,7 +852,7 @@
                         <span class="work-name">The Arch</span>
                         <span class="work-badge">Founder</span>
                     </div>
-                    <div class="work-desc">Connected 1,200+ Web3 founders through events and partnerships</div>
+                    <div class="work-desc">Where Web3 founders, operators &amp; talent found each other — across 20+ countries</div>
                 </div>
                 <span class="work-date">2022 – 2024</span>
             </div>
@@ -825,7 +863,7 @@
                         <span class="work-name">Practup</span>
                         <span class="work-badge">Founder</span>
                     </div>
-                    <div class="work-desc">Mobile app connecting 25k+ gym and fitness enthusiasts in France</div>
+                    <div class="work-desc">Fitness app to sync your health data and find workout buddies — 50k+ users in France</div>
                 </div>
                 <span class="work-date">2021 – 2022</span>
             </div>
@@ -843,16 +881,25 @@
                 <img src="/health-journey/zeromeetup-182.jpg" alt="Ice bath" class="health-photo">
             </div>
             <a href="/max-biomarkers" class="writing-item">
-                <div class="writing-title">Max Guerois's Biomarkers</div>
-                <div class="writing-meta">Health Baseline · February 2026</div>
+                <div class="writing-item-content">
+                    <div class="writing-title">Max Guerois's Biomarkers</div>
+                    <div class="writing-meta">Health Baseline · February 2026</div>
+                </div>
+                <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <a href="/testosterone" class="writing-item">
-                <div class="writing-title">If you want to fix low testosterone, here are 31 science-backed tips</div>
-                <div class="writing-meta">Male Protocol · March 2026</div>
+                <div class="writing-item-content">
+                    <div class="writing-title">If you want to fix low testosterone, here are 31 science-backed tips</div>
+                    <div class="writing-meta">Male Protocol · March 2026</div>
+                </div>
+                <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <a href="/sleep" class="writing-item">
-                <div class="writing-title">3 months of tracking — 7 tips that lead me to high-quality sleep</div>
-                <div class="writing-meta">Sleep Protocol · March 2025</div>
+                <div class="writing-item-content">
+                    <div class="writing-title">3 months of tracking — 7 tips that lead me to high-quality sleep</div>
+                    <div class="writing-meta">Sleep Protocol · March 2025</div>
+                </div>
+                <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
         </div>
 
@@ -862,16 +909,25 @@
         <div class="section fade-in">
             <div class="section-label">03 / Press</div>
             <a href="https://www.generalcatalyst.com/stories/seeding-the-future-with-lucis" class="writing-item" target="_blank">
-                <div class="writing-title">Seeding the Future with Lucis</div>
-                <div class="writing-meta">General Catalyst · Dec 2025</div>
+                <div class="writing-item-content">
+                    <div class="writing-title">Seeding the Future with Lucis</div>
+                    <div class="writing-meta">General Catalyst · Dec 2025</div>
+                </div>
+                <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <a href="https://www.linkedin.com/posts/y-combinator_most-healthcare-systems-wait-until-youre-activity-7407087196601540608-PiFG" class="writing-item" target="_blank">
-                <div class="writing-title">Most healthcare systems wait until you're sick to act. That's changing.</div>
-                <div class="writing-meta">Y Combinator · Dec 2025</div>
+                <div class="writing-item-content">
+                    <div class="writing-title">Most healthcare systems wait until you're sick to act. That's changing.</div>
+                    <div class="writing-meta">Y Combinator · Dec 2025</div>
+                </div>
+                <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <a href="https://www.dailymail.co.uk/health/article-14515401/lived-biohacker-bryan-johnson-shocking-effects-body.html" class="writing-item" target="_blank">
-                <div class="writing-title">I lived like biohacker Bryan Johnson for two years — the shocking effects on my body</div>
-                <div class="writing-meta">Daily Mail · Mar 2025</div>
+                <div class="writing-item-content">
+                    <div class="writing-title">I lived like biohacker Bryan Johnson for two years — the shocking effects on my body</div>
+                    <div class="writing-meta">Daily Mail · Mar 2025</div>
+                </div>
+                <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
         </div>
 
@@ -886,16 +942,25 @@
                 </blockquote>
             </div>
             <a href="https://x.com/maxguerois/status/1914717625143451985" class="tweet-link" target="_blank">
-                <div class="tweet-link-text">"Today, we're proud to share: Lucis is now a YC-backed company."</div>
-                <div class="tweet-link-meta">@maxguerois · Apr 2025</div>
+                <div class="tweet-link-content">
+                    <div class="tweet-link-text">"Today, we're proud to share: Lucis is now a YC-backed company."</div>
+                    <div class="tweet-link-meta">@maxguerois · Apr 2025</div>
+                </div>
+                <svg class="tweet-link-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <a href="https://x.com/maxguerois/status/1937880538829697495" class="tweet-link" target="_blank">
-                <div class="tweet-link-text">"We spent $20k+/month to move 10x faster during YC. Here's how we spent it and why we'd do it again:"</div>
-                <div class="tweet-link-meta">@maxguerois · Jun 2025</div>
+                <div class="tweet-link-content">
+                    <div class="tweet-link-text">"We spent $20k+/month to move 10x faster during YC. Here's how we spent it and why we'd do it again:"</div>
+                    <div class="tweet-link-meta">@maxguerois · Jun 2025</div>
+                </div>
+                <svg class="tweet-link-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <a href="https://x.com/maxguerois/status/1847206551569789089" class="tweet-link" target="_blank">
-                <div class="tweet-link-text">"Getting bloodwork in Europe is a REAL STRUGGLE"</div>
-                <div class="tweet-link-meta">@maxguerois · Oct 2024</div>
+                <div class="tweet-link-content">
+                    <div class="tweet-link-text">"Getting bloodwork in Europe is a REAL STRUGGLE"</div>
+                    <div class="tweet-link-meta">@maxguerois · Oct 2024</div>
+                </div>
+                <svg class="tweet-link-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <div style="margin-top: 20px;">
                 <a href="https://x.com/maxguerois/highlights" class="newsletter-cta" target="_blank">See all highlights <span class="arr">↗</span></a>
