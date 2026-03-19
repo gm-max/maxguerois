@@ -1,5 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const experiments = await getCollection('experiments');
+experiments.sort((a, b) => b.data.date.localeCompare(a.data.date));
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -154,27 +158,15 @@ const structuredData = {
             <img src="/health-journey/supplements.webp" alt="Protocol" class="health-photo" loading="lazy">
         </div>
         <div class="writing-list">
-            <a href="/max-biomarkers" class="writing-item">
-                <div class="writing-item-content">
-                    <div class="writing-title">Max Guerois's Biomarkers</div>
-                    <div class="writing-meta">Health Baseline · February 2026</div>
-                </div>
-                <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <a href="/testosterone" class="writing-item">
-                <div class="writing-item-content">
-                    <div class="writing-title">If you want to fix low testosterone, here are 31 science-backed tips</div>
-                    <div class="writing-meta">Male Protocol · March 2026</div>
-                </div>
-                <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <a href="/sleep" class="writing-item">
-                <div class="writing-item-content">
-                    <div class="writing-title">3 months of tracking — 7 tips that lead me to high-quality sleep</div>
-                    <div class="writing-meta">Sleep Protocol · March 2025</div>
-                </div>
-                <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
+            {experiments.map((exp) => (
+                <a href={`/${exp.data.slug}`} class="writing-item">
+                    <div class="writing-item-content">
+                        <div class="writing-title">{exp.data.title}</div>
+                        <div class="writing-meta">{exp.data.category} · {exp.data.date}</div>
+                    </div>
+                    <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            ))}
         </div>
         <div style="margin-top: 20px;">
             <a href="/experiments" class="newsletter-cta">All experiments <span class="arr">→</span></a>
