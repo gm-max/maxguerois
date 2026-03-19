@@ -34,6 +34,9 @@
     letter-spacing: 0.04em;
     color: var(--text);
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
     transition: opacity var(--duration-short) ease;
 }
 
@@ -50,8 +53,11 @@
     text-decoration: none;
     display: flex;
     align-items: center;
-    padding: 8px;
-    margin: -8px;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 14px;
+    margin: -14px;
     transition: color var(--duration-short) ease;
     line-height: 1;
 }
