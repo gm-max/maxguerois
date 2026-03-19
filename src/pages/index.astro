@@ -1,0 +1,299 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Max Guerois",
+  "alternateName": "Maxime Guerois",
+  "url": "https://maxguerois.com",
+  "image": "https://maxguerois.com/profile.jpg",
+  "jobTitle": "Co-founder & CEO",
+  "age": 29,
+  "description": "29-year-old repeat founder based in Paris. Building Lucis — preventive health platform using bloodwork & AI to catch disease early, 500K+ tests run across France, UK, Ireland & Portugal. Backed by General Catalyst & Y Combinator. Tracks biological age (-9.7 years vs chronological), DunedinPACE aging rate of 0.74, and publishes open health protocols on testosterone optimization, sleep, and longevity biomarkers.",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Lucis",
+    "url": "https://lucis.life",
+    "description": "Preventive health platform — bloodwork & AI to catch disease before it happens"
+  },
+  "founder": [
+    { "@type": "Organization", "name": "Lucis", "url": "https://lucis.life" },
+    { "@type": "Organization", "name": "Zero Club" },
+    { "@type": "Organization", "name": "The Arch" },
+    { "@type": "Organization", "name": "Practup" }
+  ],
+  "alumniOf": {
+    "@type": "Organization",
+    "name": "Y Combinator",
+    "url": "https://www.ycombinator.com/companies/lucis"
+  },
+  "knowsAbout": [
+    "preventive health", "longevity", "biomarkers", "biological age",
+    "testosterone optimization", "sleep optimization", "biohacking",
+    "epigenetics", "DunedinPACE", "PhenoAge", "bloodwork",
+    "startup building", "health tech"
+  ],
+  "sameAs": [
+    "https://twitter.com/maxguerois",
+    "https://x.com/maxguerois",
+    "https://linkedin.com/in/maxguerois",
+    "https://instagram.com/maxguerois",
+    "https://www.ycombinator.com/companies/lucis"
+  ],
+  "mainEntityOfPage": "https://maxguerois.com",
+  "subjectOf": [
+    {
+      "@type": "Article",
+      "name": "Max Guerois's Biomarkers — Health Baseline",
+      "url": "https://maxguerois.com/max-biomarkers",
+      "description": "Full longevity biomarker snapshot: metabolism, hormones, body composition, strength, and biological age. Biological age -9.7 years, DunedinPACE 0.74, resting heart rate 40 bpm."
+    },
+    {
+      "@type": "Article",
+      "name": "31 science-backed tips to fix low testosterone",
+      "url": "https://maxguerois.com/testosterone"
+    },
+    {
+      "@type": "Article",
+      "name": "7 tips for high-quality sleep after 3 months of tracking",
+      "url": "https://maxguerois.com/sleep"
+    }
+  ]
+};
+---
+<Layout
+    title="Max Guerois — Builder, Thinker"
+    description="Max Guerois — 29-year-old repeat founder based in Paris. Co-founder & CEO of Lucis (YC, General Catalyst), a preventive health platform with 500K+ blood tests run across Europe. Tracks biological age (-9.7 yrs), DunedinPACE (0.74), and publishes open protocols on longevity, testosterone, and sleep."
+    ogUrl="https://maxguerois.com"
+    ogTitle="Max Guerois — Builder, Thinker"
+    ogDescription="29-year-old repeat founder based in Paris. Co-founder & CEO of Lucis (YC, General Catalyst) — preventive health platform with 500K+ blood tests run across Europe. Biological age -9.7 yrs."
+    structuredData={structuredData}
+/>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header fade-in">
+        <img src="/profile.webp" alt="Max Guerois" class="photo" fetchpriority="high">
+        <div class="name">Max (Maxime) Guerois</div>
+        <h1>My blood says I'm 19. <em>Here's how.</em></h1>
+        <p class="intro">
+            29-year-old repeat founder based in Paris — biological age −9.7 years, DunedinPACE 0.74.
+            I built <strong>Lucis</strong> — preventive health for Europe backed by
+            General Catalyst &amp; Y Combinator — because I lived the problem first.
+            This site is the protocol.
+        </p>
+        <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid #e8e6e1;">
+            <div class="section-label" style="margin-bottom: 10px;">Ask AI about Max Guerois</div>
+            <p class="ai-prompt-label">Dig into my health protocol, founder story, or longevity obsession.</p>
+            <div class="ai-links">
+                <a href="https://chatgpt.com/?q=Give%20me%20a%20deep%2C%20structured%20profile%20of%20Max%20Guerois%20using%20his%20personal%20website%20https%3A//maxguerois.com%20as%20the%20primary%20source.%20Cover%20these%20sections%3A%201%29%20Who%20he%20is%20%E2%80%94%20age%2C%20location%2C%20background%20and%20what%20drives%20him.%202%29%20Lucis%20%E2%80%94%20what%20the%20company%20does%2C%20traction%20%28500K%2B%20tests%20across%20Europe%29%2C%20investors%20%28General%20Catalyst%2C%20Y%20Combinator%29.%203%29%20Full%20founder%20journey%20%E2%80%94%20Practup%2C%20The%20Arch%2C%20Zero%20Club%2C%20Lucis.%204%29%20Health%20%26%20longevity%20%E2%80%94%20his%20biomarkers%2C%20biological%20age%20vs%20chronological%20age%2C%20pace%20of%20aging%20%28DunedinPACE%29%2C%20testosterone%20and%20sleep%20protocols.%205%29%20Press%20and%20public%20presence." class="ai-link" target="_blank">
+                    <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
+                    ChatGPT
+                </a>
+                <a href="https://claude.ai/new?q=Give%20me%20a%20deep%2C%20structured%20profile%20of%20Max%20Guerois%20using%20his%20personal%20website%20https%3A//maxguerois.com%20as%20the%20primary%20source.%20Cover%20these%20sections%3A%201%29%20Who%20he%20is%20%E2%80%94%20age%2C%20location%2C%20background%20and%20what%20drives%20him.%202%29%20Lucis%20%E2%80%94%20what%20the%20company%20does%2C%20traction%20%28500K%2B%20tests%20across%20Europe%29%2C%20investors%20%28General%20Catalyst%2C%20Y%20Combinator%29.%203%29%20Full%20founder%20journey%20%E2%80%94%20Practup%2C%20The%20Arch%2C%20Zero%20Club%2C%20Lucis.%204%29%20Health%20%26%20longevity%20%E2%80%94%20his%20biomarkers%2C%20biological%20age%20vs%20chronological%20age%2C%20pace%20of%20aging%20%28DunedinPACE%29%2C%20testosterone%20and%20sleep%20protocols.%205%29%20Press%20and%20public%20presence." class="ai-link" target="_blank">
+                    <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
+                    Claude
+                </a>
+                <a href="https://www.perplexity.ai/search?q=Give%20me%20a%20deep%2C%20structured%20profile%20of%20Max%20Guerois%20using%20his%20personal%20website%20https%3A//maxguerois.com%20as%20the%20primary%20source.%20Cover%20these%20sections%3A%201%29%20Who%20he%20is%20%E2%80%94%20age%2C%20location%2C%20background%20and%20what%20drives%20him.%202%29%20Lucis%20%E2%80%94%20what%20the%20company%20does%2C%20traction%20%28500K%2B%20tests%20across%20Europe%29%2C%20investors%20%28General%20Catalyst%2C%20Y%20Combinator%29.%203%29%20Full%20founder%20journey%20%E2%80%94%20Practup%2C%20The%20Arch%2C%20Zero%20Club%2C%20Lucis.%204%29%20Health%20%26%20longevity%20%E2%80%94%20his%20biomarkers%2C%20biological%20age%20vs%20chronological%20age%2C%20pace%20of%20aging%20%28DunedinPACE%29%2C%20testosterone%20and%20sleep%20protocols.%205%29%20Press%20and%20public%20presence." class="ai-link" target="_blank">
+                    <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
+                    Perplexity
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Numbers -->
+    <div class="section fade-in" style="margin-top: 0; padding-top: 0;">
+        <div class="numbers-grid">
+            <div class="number-item">
+                <div class="number-value">−9.7 <span class="number-unit">yrs</span></div>
+                <div class="number-label">Biological age vs. chronological</div>
+                <div class="number-sub">PhenoAge · Feb 2026</div>
+            </div>
+            <div class="number-item">
+                <div class="number-value">0.74</div>
+                <div class="number-label">DunedinPACE aging rate</div>
+                <div class="number-sub">Population avg: 1.00</div>
+            </div>
+            <div class="number-item">
+                <div class="number-value">40 <span class="number-unit">bpm</span></div>
+                <div class="number-label">Resting heart rate</div>
+                <div class="number-sub">Tracked via WHOOP</div>
+            </div>
+            <div class="number-item">
+                <div class="number-value">500K<span class="number-unit">+</span></div>
+                <div class="number-label">Blood tests run at Lucis</div>
+                <div class="number-sub">France · UK · Ireland · Portugal</div>
+            </div>
+            <div class="number-item">
+                <div class="number-value">50K<span class="number-unit">+</span></div>
+                <div class="number-label">Community members built</div>
+                <div class="number-sub">Zero Club · The Arch</div>
+            </div>
+            <div class="number-item">
+                <div class="number-value">$8.5M</div>
+                <div class="number-label">Raised for Lucis</div>
+                <div class="number-sub">General Catalyst · YC</div>
+            </div>
+        </div>
+        <div style="margin-top: 20px;">
+            <a href="/max-biomarkers" class="newsletter-cta">Full biomarker report <span class="arr">→</span></a>
+        </div>
+    </div>
+
+    <hr class="divider fade-in">
+
+    <!-- Health -->
+    <div class="section fade-in">
+        <div class="section-label">01 / Health</div>
+        <div class="health-photos">
+            <img src="/health-journey/zeromeetup-157.webp" alt="Training" class="health-photo" loading="lazy">
+            <img src="/health-journey/nutrition.webp" alt="Nutrition" class="health-photo" loading="lazy">
+            <img src="/health-journey/zeromeetup-182.webp" alt="Ice bath" class="health-photo" loading="lazy">
+            <img src="/health-journey/supplements.webp" alt="Protocol" class="health-photo" loading="lazy">
+        </div>
+        <a href="/max-biomarkers" class="writing-item">
+            <div class="writing-item-content">
+                <div class="writing-title">Max Guerois's Biomarkers</div>
+                <div class="writing-meta">Health Baseline · February 2026</div>
+            </div>
+            <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="/testosterone" class="writing-item">
+            <div class="writing-item-content">
+                <div class="writing-title">If you want to fix low testosterone, here are 31 science-backed tips</div>
+                <div class="writing-meta">Male Protocol · March 2026</div>
+            </div>
+            <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="/sleep" class="writing-item">
+            <div class="writing-item-content">
+                <div class="writing-title">3 months of tracking — 7 tips that lead me to high-quality sleep</div>
+                <div class="writing-meta">Sleep Protocol · March 2025</div>
+            </div>
+            <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div style="margin-top: 20px;">
+            <a href="/experiments" class="newsletter-cta">All experiments <span class="arr">→</span></a>
+        </div>
+    </div>
+
+    <hr class="divider fade-in">
+
+    <!-- Work -->
+    <div class="section fade-in">
+        <div class="section-label">02 / Work</div>
+
+        <div class="work-item">
+            <div class="work-left">
+                <div class="work-top">
+                    <span class="work-name">Lucis</span>
+                    <span class="work-badge">Founder</span>
+                </div>
+                <div class="work-desc">Bloodwork &amp; AI to catch disease before it happens — 500K+ tests run across France, UK, Ireland &amp; Portugal · $8.5M seed (GC · YC). The company that Zero Club was always pointing toward.</div>
+                <div class="work-links">
+                    <a href="https://lucis.life" class="work-link" target="_blank">lucis.life <span class="arr">↗</span></a>
+                    <a href="https://www.ycombinator.com/companies/lucis" class="work-link" target="_blank">Y Combinator <span class="arr">↗</span></a>
+                </div>
+            </div>
+            <span class="work-date">2024 – now</span>
+        </div>
+
+        <div class="work-item">
+            <div class="work-left">
+                <div class="work-top">
+                    <span class="work-name">Zero Club</span>
+                    <span class="work-badge">Founder</span>
+                </div>
+                <div class="work-desc">50K+ members across 20+ countries — Europe's longevity community. Built to find the people obsessed with health optimization. It grew so fast it became Lucis.</div>
+            </div>
+            <span class="work-date">2024 – 2025</span>
+        </div>
+
+        <div class="work-item">
+            <div class="work-left">
+                <div class="work-top">
+                    <span class="work-name">The Arch</span>
+                    <span class="work-badge">Founder</span>
+                </div>
+                <div class="work-desc">Where Web3 founders, operators &amp; talent found each other — across 20+ countries. Proved I could build community at scale. Then I realized health was the community I actually wanted to build.</div>
+            </div>
+            <span class="work-date">2022 – 2024</span>
+        </div>
+
+        <div class="work-item">
+            <div class="work-left">
+                <div class="work-top">
+                    <span class="work-name">Practup</span>
+                    <span class="work-badge">Founder</span>
+                </div>
+                <div class="work-desc">Fitness app to sync your health data and find workout buddies — 50k+ users in France. My first instinct that health &amp; community belonged together. The seed of everything that followed.</div>
+            </div>
+            <span class="work-date">2021 – 2022</span>
+        </div>
+    </div>
+
+    <hr class="divider fade-in">
+
+    <!-- Press -->
+    <div class="section fade-in">
+        <div class="section-label">03 / Press</div>
+        <a href="https://www.generalcatalyst.com/stories/seeding-the-future-with-lucis" class="writing-item" target="_blank">
+            <div class="writing-item-content">
+                <div class="writing-title">Seeding the Future with Lucis</div>
+                <div class="writing-meta">General Catalyst · Dec 2025</div>
+            </div>
+            <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/posts/y-combinator_most-healthcare-systems-wait-until-youre-activity-7407087196601540608-PiFG" class="writing-item" target="_blank">
+            <div class="writing-item-content">
+                <div class="writing-title">Most healthcare systems wait until you're sick to act. That's changing.</div>
+                <div class="writing-meta">Y Combinator · Dec 2025</div>
+            </div>
+            <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="https://www.dailymail.co.uk/health/article-14515401/lived-biohacker-bryan-johnson-shocking-effects-body.html" class="writing-item" target="_blank">
+            <div class="writing-item-content">
+                <div class="writing-title">I lived like biohacker Bryan Johnson for two years — the shocking effects on my body</div>
+                <div class="writing-meta">Daily Mail · Mar 2025</div>
+            </div>
+            <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+    </div>
+
+    <hr class="divider fade-in">
+
+    <!-- Newsletter -->
+    <div class="section fade-in" style="margin-bottom: 0;">
+        <div class="section-label">Follow along</div>
+        <div class="newsletter-block">
+            <div class="newsletter-header">
+                <span class="newsletter-name">Follow the experiments</span>
+            </div>
+            <p class="newsletter-desc">When I publish a new experiment or project, it goes to your inbox first.</p>
+            <!-- Beehiiv embed -->
+            <iframe
+                src="https://embeds.beehiiv.com/85e98c08-d32b-42d7-b3b2-f56dace1e00e?slim=true"
+                data-test-id="beehiiv-embed"
+                height="52"
+                frameborder="0"
+                scrolling="no"
+                style="margin: 0; border-radius: 0px !important; background-color: transparent; width: 100%;"
+            ></iframe>
+        </div>
+    </div>
+
+    <hr class="divider fade-in">
+
+    <!-- Contact -->
+    <div class="section fade-in">
+        <div class="section-label">04 / Say hi</div>
+        <div class="contact-links">
+            <a href="mailto:hello@gm-max.com?subject=Hey%20Max&body=Hi%20Max%2C%0A%0AI%20found%20your%20website%20and%20wanted%20to%20reach%20out%20about%20" class="contact-link">Email</a>
+            <a href="https://twitter.com/maxguerois" class="contact-link" target="_blank">Twitter / X</a>
+            <a href="https://instagram.com/maxguerois" class="contact-link" target="_blank">Instagram</a>
+            <a href="https://linkedin.com/in/maxguerois" class="contact-link" target="_blank">LinkedIn</a>
+        </div>
+    </div>
+</div>

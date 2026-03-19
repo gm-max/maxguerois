@@ -1,6 +1,6 @@
 {
-  "buildCommand": null,
-  "outputDirectory": ".",
+  "buildCommand": "astro build",
+  "outputDirectory": "dist",
   "framework": null,
   "cleanUrls": true
 }

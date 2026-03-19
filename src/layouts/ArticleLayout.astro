@@ -1,0 +1,27 @@
+---
+// ArticleLayout.astro — layout for all article/experiment pages
+// Extends Layout.astro — no head duplication
+// maxguerois.com
+import Layout from './Layout.astro';
+
+interface Props {
+    title: string;
+    description?: string;
+    ogUrl?: string;
+    ogImage?: string;
+}
+
+const { title, description, ogUrl, ogImage } = Astro.props;
+---
+<Layout
+    title={title}
+    description={description}
+    ogType="article"
+    ogUrl={ogUrl}
+    ogTitle={title}
+    ogDescription={description}
+    ogImage={ogImage}
+    extraStyles={["/styles/article.css"]}
+>
+    <slot />
+</Layout>

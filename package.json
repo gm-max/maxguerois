@@ -1,5 +1,14 @@
 {
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.14",
+    "astro": "^5.18.1"
   }
 }
