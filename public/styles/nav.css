@@ -10,10 +10,11 @@
     right: 0;
     z-index: 100;
     height: 52px;
-    background: rgba(250, 249, 247, 0.92);
+    background: var(--navbar-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid #e8e6e1;
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .navbar-inner {
@@ -31,7 +32,7 @@
     font-size: 0.82rem;
     font-weight: 500;
     letter-spacing: 0.04em;
-    color: #1a1a1a;
+    color: var(--text);
     text-decoration: none;
     transition: opacity 0.2s;
 }
@@ -45,7 +46,7 @@
 }
 
 .navbar-social-link {
-    color: #999;
+    color: var(--text-tertiary);
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -53,7 +54,7 @@
     line-height: 1;
 }
 
-.navbar-social-link:hover { color: #1a1a1a; }
+.navbar-social-link:hover { color: var(--text); }
 
 .navbar-social-link svg {
     width: 15px;

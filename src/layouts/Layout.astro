@@ -11,6 +11,7 @@ interface Props {
     ogImage?: string;
     twitterCard?: string;
     structuredData?: object;
+    extraStyles?: string[];
 }
 
 const {
@@ -23,6 +24,7 @@ const {
     ogImage = 'https://maxguerois.com/profile.jpg',
     twitterCard = 'summary_large_image',
     structuredData,
+    extraStyles = [],
 } = Astro.props;
 ---
 <!DOCTYPE html>
@@ -32,6 +34,20 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
     {description && <meta name="description" content={description}>}
+
+    <!-- Dark mode — runs before first paint to avoid flash -->
+    <script is:inline>
+        (function() {
+            try {
+                var stored = localStorage.getItem('theme');
+                var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var theme = stored || (prefersDark ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch(e) {
+                // localStorage unavailable (private browsing) — default to light
+            }
+        })();
+    </script>
 
     <!-- OpenGraph -->
     <meta property="og:type" content={ogType}>
@@ -54,7 +70,7 @@ const {
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DR1W1B2VV5"></script>
-    <script>
+    <script is:inline>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
@@ -71,11 +87,12 @@ const {
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link rel="stylesheet" href="/styles/nav.css">
     <link rel="stylesheet" href="/styles/global.css">
+    {extraStyles.map(href => <link rel="stylesheet" href={href} />)}
 </head>
 <body>
     <slot name="nav">
@@ -98,5 +115,32 @@ const {
         </nav>
     </slot>
     <slot />
+    <!-- Theme toggle — footer position -->
+    <div style="text-align: center; padding: 0 24px 40px;">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+            <span id="toggle-icon">☾</span>
+            <span id="toggle-label">Dark mode</span>
+        </button>
+    </div>
+    <script is:inline>
+        (function() {
+            var toggle = document.getElementById('theme-toggle');
+            var icon = document.getElementById('toggle-icon');
+            var label = document.getElementById('toggle-label');
+            function updateToggle() {
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                icon.textContent = isDark ? '☀' : '☾';
+                label.textContent = isDark ? 'Light mode' : 'Dark mode';
+            }
+            updateToggle();
+            toggle.addEventListener('click', function() {
+                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                var newTheme = isDark ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                try { localStorage.setItem('theme', newTheme); } catch(e) {}
+                updateToggle();
+            });
+        })();
+    </script>
 </body>
 </html>

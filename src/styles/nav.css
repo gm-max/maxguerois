@@ -10,30 +10,31 @@
     right: 0;
     z-index: 100;
     height: 52px;
-    background: rgba(250, 249, 247, 0.92);
+    background: var(--navbar-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid #e8e6e1;
+    border-bottom: 1px solid var(--border);
+    transition: background-color var(--duration-base) ease, border-color var(--duration-base) ease;
 }
 
 .navbar-inner {
-    max-width: 620px;
+    max-width: var(--content-width);
     margin: 0 auto;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 24px;
+    padding: 0 var(--sp-6);
 }
 
 .navbar-name {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
+    font-family: var(--font-body);
+    font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.04em;
-    color: #1a1a1a;
+    color: var(--text);
     text-decoration: none;
-    transition: opacity 0.2s;
+    transition: opacity var(--duration-short) ease;
 }
 
 .navbar-name:hover { opacity: 0.5; }
@@ -45,15 +46,17 @@
 }
 
 .navbar-social-link {
-    color: #999;
+    color: var(--text-tertiary);
     text-decoration: none;
     display: flex;
     align-items: center;
-    transition: color 0.2s;
+    padding: 8px;
+    margin: -8px;
+    transition: color var(--duration-short) ease;
     line-height: 1;
 }
 
-.navbar-social-link:hover { color: #1a1a1a; }
+.navbar-social-link:hover { color: var(--text); }
 
 .navbar-social-link svg {
     width: 15px;

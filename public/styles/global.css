@@ -5,7 +5,7 @@
    ============================================= */
 
 :root {
-    /* Colors */
+    /* Colors — light mode */
     --text: #1a1a1a;
     --text-secondary: #6b6b6b;
     --text-tertiary: #999;
@@ -26,6 +26,29 @@
     --radius-md: 10px;
     --radius-lg: 12px;
     --radius-full: 100px;
+
+    /* Navbar */
+    --navbar-bg: rgba(250, 249, 247, 0.92);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Colors — warm dark. See DESIGN.md: "coffee-brown dark keeps amber popping" */
+        --text: #e8e4dc;
+        --text-secondary: #9a9488;
+        --text-tertiary: #6b6560;
+        --bg: #0f0e0c;
+        --bg-subtle: #1a1815;
+        --border: #2a2720;
+
+        /* Accent — slightly lighter for dark bg contrast */
+        --accent: #d4a55e;
+        --accent-light: rgba(212, 165, 94, 0.12);
+        --accent-mid: rgba(212, 165, 94, 0.22);
+
+        --link: #e8e4dc;
+        --navbar-bg: rgba(15, 14, 12, 0.92);
+    }
 }
 
 * {
@@ -45,6 +68,7 @@ body {
     color: var(--text);
     background: var(--bg);
     line-height: 1.65;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {

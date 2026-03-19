@@ -6,31 +6,32 @@ import Layout from '../layouts/Layout.astro';
     description="Health experiments, protocols, and biomarker tracking by Max Guerois. Sleep, testosterone, longevity."
     ogUrl="https://maxguerois.com/experiments"
     ogImage="https://maxguerois.com/health-journey/og/bloodwork.jpg"
+    extraStyles={["/styles/article.css"]}
 />
 
 <style>
     .experiments-header {
-        padding: 48px 0 32px;
+        padding: var(--sp-12) 0 var(--sp-8);
     }
     .experiments-meta {
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.72rem;
+        font-family: var(--font-body);
+        font-size: 12px;
         font-weight: 500;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
         color: var(--text-tertiary);
         margin-bottom: 10px;
     }
     .experiments-title {
-        font-family: 'Cormorant Garamond', Georgia, serif;
-        font-size: clamp(1.7rem, 4vw, 2.4rem);
+        font-family: var(--font-display);
+        font-size: clamp(28px, 4vw, 38px);
         font-weight: 400;
         line-height: 1.2;
         color: var(--text);
-        margin: 0 0 16px;
+        margin: 0 0 var(--sp-4);
     }
     .experiments-intro {
-        font-size: 1rem;
+        font-size: 16px;
         color: var(--text-secondary);
         line-height: 1.7;
         max-width: 520px;
@@ -46,30 +47,30 @@ import Layout from '../layouts/Layout.astro';
         border-bottom: 1px solid var(--border);
         text-decoration: none;
         color: inherit;
-        transition: opacity 0.15s;
+        transition: opacity var(--duration-short) ease;
     }
     .experiment-item:hover {
         opacity: 0.7;
     }
     .experiment-tag {
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.68rem;
+        font-family: var(--font-body);
+        font-size: 11px;
         font-weight: 500;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
         color: var(--text-tertiary);
         margin-bottom: 6px;
     }
     .experiment-title {
-        font-family: 'Cormorant Garamond', Georgia, serif;
-        font-size: 1.25rem;
+        font-family: var(--font-display);
+        font-size: 20px;
         font-weight: 500;
         color: var(--text);
         line-height: 1.3;
         margin-bottom: 6px;
     }
     .experiment-desc {
-        font-size: 0.88rem;
+        font-size: 14px;
         color: var(--text-secondary);
         line-height: 1.6;
     }
@@ -77,38 +78,38 @@ import Layout from '../layouts/Layout.astro';
         display: inline-block;
         margin-left: 4px;
         color: var(--text-tertiary);
-        transition: color 0.15s, transform 0.15s;
+        transition: color var(--duration-short) ease, transform var(--duration-short) ease;
     }
     .experiment-item:hover .experiment-arrow {
         color: var(--accent);
         transform: translateX(3px);
     }
     .newsletter-section {
-        margin: 60px 0 48px;
-        padding: 32px;
-        background: var(--surface);
+        margin: 60px 0 var(--sp-12);
+        padding: var(--sp-8);
+        background: var(--bg-subtle);
         border: 1px solid var(--border);
         border-radius: var(--radius-md);
     }
     .newsletter-label {
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.68rem;
+        font-family: var(--font-body);
+        font-size: 11px;
         font-weight: 500;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
         color: var(--text-tertiary);
-        margin-bottom: 8px;
+        margin-bottom: var(--sp-2);
     }
     .newsletter-title {
-        font-family: 'Cormorant Garamond', Georgia, serif;
-        font-size: 1.4rem;
+        font-family: var(--font-display);
+        font-size: 22px;
         font-weight: 400;
         color: var(--text);
         margin-bottom: 6px;
         line-height: 1.3;
     }
     .newsletter-subtitle {
-        font-size: 0.88rem;
+        font-size: 14px;
         color: var(--text-secondary);
         margin-bottom: 20px;
         line-height: 1.6;
@@ -119,7 +120,7 @@ import Layout from '../layouts/Layout.astro';
 </style>
 
 <div class="container">
-    <a href="/" class="back">← Back home</a>
+    <a href="/" class="back">&larr; Back home</a>
 
     <div class="experiments-header">
         <div class="experiments-meta">Health Experiments</div>
@@ -131,19 +132,19 @@ import Layout from '../layouts/Layout.astro';
 
         <a href="/max-biomarkers" class="experiment-item">
             <div class="experiment-tag">Health Baseline · Feb 2026</div>
-            <div class="experiment-title">My Biomarkers — Full Snapshot <span class="experiment-arrow">→</span></div>
+            <div class="experiment-title">My Biomarkers — Full Snapshot <span class="experiment-arrow">&rarr;</span></div>
             <div class="experiment-desc">Metabolism, hormones, body composition, strength, and biological age. −9.7 years biological age vs. chronological. Pace of aging: 0.74.</div>
         </a>
 
         <a href="/testosterone" class="experiment-item">
             <div class="experiment-tag">Male Protocol · Mar 2026</div>
-            <div class="experiment-title">31 Tips to Fix Low Testosterone <span class="experiment-arrow">→</span></div>
+            <div class="experiment-title">31 Tips to Fix Low Testosterone <span class="experiment-arrow">&rarr;</span></div>
             <div class="experiment-desc">Nothing besides TRT will drastically increase levels. The key is lifestyle. 31 science-backed actions, organized into morning ritual, evening ritual, diet, training, and stress management.</div>
         </a>
 
         <a href="/sleep" class="experiment-item">
             <div class="experiment-tag">Sleep Protocol · Mar 2025</div>
-            <div class="experiment-title">7 Tips for High-Quality Sleep <span class="experiment-arrow">→</span></div>
+            <div class="experiment-title">7 Tips for High-Quality Sleep <span class="experiment-arrow">&rarr;</span></div>
             <div class="experiment-desc">3 months of tracking with the Ultrahuman Ring Air. Took my sleep score from 82 to 100 in 15 days. 7 changes that actually moved the needle.</div>
         </a>
 
