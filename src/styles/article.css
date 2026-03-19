@@ -1,0 +1,441 @@
+/* =============================================
+   article.css — shared styles for all articles
+   maxguerois.com
+   ============================================= */
+
+:root {
+    --text: #1a1a1a;
+    --text-secondary: #6b6b6b;
+    --text-tertiary: #999;
+    --bg: #faf9f7;
+    --border: #e8e6e1;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.65;
+}
+
+.container {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 88px 24px 120px;
+}
+
+/* ── Navigation ── */
+.back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    margin-bottom: 56px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.back:hover {
+    color: var(--text);
+    border-color: var(--text-secondary);
+    background: rgba(26, 26, 26, 0.04);
+}
+
+/* ── Article header ── */
+.article-meta {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 16px;
+}
+
+.article-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+}
+
+.article-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ── Stat cards ── */
+.stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+}
+
+.stat {
+    flex: 1;
+    min-width: 110px;
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.stat-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 0.78rem;
+    color: var(--text-tertiary);
+}
+
+/* ── Body content ── */
+.article-body p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 20px;
+}
+
+/* ── Numbered tips / sections ── */
+.tip {
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+}
+
+.tip:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.tip-number {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+}
+
+.tip h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 12px;
+}
+
+.tip p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 8px;
+}
+
+.tip ul {
+    padding-left: 0;
+    list-style: none;
+    margin-top: 8px;
+}
+
+.tip ul li {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+.tip ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-tertiary);
+}
+
+.tip-highlight {
+    font-size: 0.88rem;
+    color: var(--text-tertiary);
+    font-style: italic;
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+/* ── Callout / tool block ── */
+.callout {
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-top: 48px;
+}
+
+.callout-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+}
+
+.callout-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+
+.callout p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ── Divider ── */
+hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+}
+
+/* ── Footer ── */
+.article-footer {
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.author-line {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+.author-line a {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: border-color 0.2s;
+}
+
+.author-line a:hover { border-color: var(--text); }
+
+/* ── Article image ── */
+.article-img {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+    margin-bottom: 48px;
+    object-fit: cover;
+    max-height: 360px;
+}
+
+/* ── TL;DR box ── */
+.tldr {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+}
+
+.tldr-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+}
+
+.tldr ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.tldr ul li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+.tldr ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-tertiary);
+}
+
+/* ── Section headings ── */
+.section-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-top: 56px;
+    margin-bottom: 32px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+}
+
+/* ── Baseline metrics box ── */
+.baseline {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 24px 0 32px;
+}
+
+.baseline-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+}
+
+.baseline ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.baseline ul li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+.baseline ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-tertiary);
+}
+
+/* ── Pros / Cons ── */
+.pros-cons-group {
+    margin-bottom: 32px;
+}
+
+.pros-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.pros-cons-group ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.pros-cons-group ul li {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 8px;
+    line-height: 1.65;
+}
+
+.pros-cons-group ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-tertiary);
+}
+
+/* ── Closing ── */
+.closing {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.closing strong {
+    color: var(--text);
+    font-weight: 500;
+}
+
+/* ── Inline article photo ── */
+.article-photo {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+    margin: 24px 0 32px;
+    object-fit: cover;
+    max-height: 420px;
+}
+
+/* ── Phone screenshots (side by side) ── */
+.phone-screenshots {
+    display: flex;
+    gap: 16px;
+    margin: 24px 0 32px;
+    align-items: flex-start;
+}
+
+.phone-screenshot-wrap {
+    flex: 1;
+    text-align: center;
+}
+
+.phone-screenshot-wrap img {
+    width: 100%;
+    border-radius: 16px;
+    display: block;
+}
+
+.phone-screenshot-caption {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .container { padding: 72px 22px 100px; }
+    .article-title { font-size: 2rem; }
+    .stats { gap: 10px; }
+    .stat { min-width: 90px; padding: 14px 16px; }
+    .stat-value { font-size: 1.6rem; }
+    .back { margin-bottom: 40px; }
+    .article-img { max-height: 240px; border-radius: 8px; }
+    .section-heading { font-size: 1.5rem; margin-top: 40px; padding-top: 32px; }
+}

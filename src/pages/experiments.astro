@@ -1,0 +1,166 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout
+    title="Experiments — Max Guerois"
+    description="Health experiments, protocols, and biomarker tracking by Max Guerois. Sleep, testosterone, longevity."
+    ogUrl="https://maxguerois.com/experiments"
+    ogImage="https://maxguerois.com/health-journey/og/bloodwork.jpg"
+/>
+
+<style>
+    .experiments-header {
+        padding: 48px 0 32px;
+    }
+    .experiments-meta {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin-bottom: 10px;
+    }
+    .experiments-title {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: clamp(1.7rem, 4vw, 2.4rem);
+        font-weight: 400;
+        line-height: 1.2;
+        color: var(--text);
+        margin: 0 0 16px;
+    }
+    .experiments-intro {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        max-width: 520px;
+        margin: 0;
+    }
+    .experiments-list {
+        margin: 40px 0 0;
+        border-top: 1px solid var(--border);
+    }
+    .experiment-item {
+        display: block;
+        padding: 22px 0;
+        border-bottom: 1px solid var(--border);
+        text-decoration: none;
+        color: inherit;
+        transition: opacity 0.15s;
+    }
+    .experiment-item:hover {
+        opacity: 0.7;
+    }
+    .experiment-tag {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin-bottom: 6px;
+    }
+    .experiment-title {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--text);
+        line-height: 1.3;
+        margin-bottom: 6px;
+    }
+    .experiment-desc {
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+    .experiment-arrow {
+        display: inline-block;
+        margin-left: 4px;
+        color: var(--text-tertiary);
+        transition: color 0.15s, transform 0.15s;
+    }
+    .experiment-item:hover .experiment-arrow {
+        color: var(--accent);
+        transform: translateX(3px);
+    }
+    .newsletter-section {
+        margin: 60px 0 48px;
+        padding: 32px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+    }
+    .newsletter-label {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin-bottom: 8px;
+    }
+    .newsletter-title {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: 1.4rem;
+        font-weight: 400;
+        color: var(--text);
+        margin-bottom: 6px;
+        line-height: 1.3;
+    }
+    .newsletter-subtitle {
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+    .newsletter-block {
+        min-height: 80px;
+    }
+</style>
+
+<div class="container">
+    <a href="/" class="back">← Back home</a>
+
+    <div class="experiments-header">
+        <div class="experiments-meta">Health Experiments</div>
+        <h1 class="experiments-title">What I'm tracking and learning</h1>
+        <p class="experiments-intro">I run experiments on myself — sleep, hormones, biomarkers — and publish the data. Everything here is honest, sourced, and updated as I learn more.</p>
+    </div>
+
+    <div class="experiments-list">
+
+        <a href="/max-biomarkers" class="experiment-item">
+            <div class="experiment-tag">Health Baseline · Feb 2026</div>
+            <div class="experiment-title">My Biomarkers — Full Snapshot <span class="experiment-arrow">→</span></div>
+            <div class="experiment-desc">Metabolism, hormones, body composition, strength, and biological age. −9.7 years biological age vs. chronological. Pace of aging: 0.74.</div>
+        </a>
+
+        <a href="/testosterone" class="experiment-item">
+            <div class="experiment-tag">Male Protocol · Mar 2026</div>
+            <div class="experiment-title">31 Tips to Fix Low Testosterone <span class="experiment-arrow">→</span></div>
+            <div class="experiment-desc">Nothing besides TRT will drastically increase levels. The key is lifestyle. 31 science-backed actions, organized into morning ritual, evening ritual, diet, training, and stress management.</div>
+        </a>
+
+        <a href="/sleep" class="experiment-item">
+            <div class="experiment-tag">Sleep Protocol · Mar 2025</div>
+            <div class="experiment-title">7 Tips for High-Quality Sleep <span class="experiment-arrow">→</span></div>
+            <div class="experiment-desc">3 months of tracking with the Ultrahuman Ring Air. Took my sleep score from 82 to 100 in 15 days. 7 changes that actually moved the needle.</div>
+        </a>
+
+    </div>
+
+    <div class="newsletter-section">
+        <div class="newsletter-label">Newsletter</div>
+        <div class="newsletter-title">Get new experiments in your inbox</div>
+        <div class="newsletter-subtitle">I publish occasionally. No noise.</div>
+        <div class="newsletter-block">
+            <iframe
+                src="https://embeds.beehiiv.com/85e98c08-d32b-42d7-b3b2-f56dace1e00e?slim=true"
+                height="52"
+                frameborder="0"
+                scrolling="no"
+                style="width: 100%; background-color: transparent;"
+            ></iframe>
+        </div>
+    </div>
+</div>

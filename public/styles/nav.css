@@ -1,0 +1,62 @@
+/* =============================================
+   nav.css — fixed top navbar
+   maxguerois.com
+   ============================================= */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: 52px;
+    background: rgba(250, 249, 247, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e8e6e1;
+}
+
+.navbar-inner {
+    max-width: 620px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+}
+
+.navbar-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: #1a1a1a;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.navbar-name:hover { opacity: 0.5; }
+
+.navbar-social {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.navbar-social-link {
+    color: #999;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.navbar-social-link:hover { color: #1a1a1a; }
+
+.navbar-social-link svg {
+    width: 15px;
+    height: 15px;
+    display: block;
+}
