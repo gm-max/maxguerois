@@ -13,16 +13,13 @@
 - [x] nav.css : remplacer couleurs hardcodées par var(--*)
 - [x] experiments.astro <style> : migrer hardcoded values vers tokens
 
-## P1b — Design System Visual (PR 2: follow-up branch)
-**What:** Composants visuels formalisés et article footer CTA.
-**Why:** Le design system preview définit des composants (cards, buttons, tags) qui ne sont pas encore implémentés dans le CSS.
-**Scope (checklist) :**
-- [ ] Writing items → bordered cards avec hover bg-subtle
-- [ ] Newsletter Beehiiv CTA en fin de chaque article
-- [ ] Buttons formalisés : primary, outline, accent
-- [ ] Tags formalisés : default + accent
-**Effort:** 2 days human (~16h) → CC (~30min)
-**Depends on:** P1a (tokens + dark mode doivent être en place).
+## ~~P1b — Design System Visual (PR 2: `design-system-visual` branch)~~
+**Status:** DONE (2026-03-19). Shipped via PR.
+**Scope (completed) :**
+- [x] Writing items → bordered cards avec hover bg-subtle (`.writing-list` wrapper)
+- [x] Newsletter Beehiiv CTA en fin de chaque article (sleep, testosterone, max-biomarkers)
+- [x] Buttons formalisés : `.btn-primary`, `.btn-outline`, `.btn-accent`
+- [x] Tags formalisés : `.tag`, `.tag-accent`
 
 ## P2 — Astro Content Collections
 **What:** Migrer les articles MDX vers Astro Content Collections (src/content/) avec validation frontmatter et getCollection() API.
