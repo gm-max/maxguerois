@@ -628,6 +628,79 @@
             opacity: 0.88;
         }
 
+        /* Numbers grid */
+        .numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .number-item {
+            padding: 20px 18px;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .number-item:nth-child(3n) {
+            border-right: none;
+        }
+
+        .number-item:nth-last-child(-n+3) {
+            border-bottom: none;
+        }
+
+        .number-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .number-unit {
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .number-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text);
+            line-height: 1.4;
+            margin-bottom: 3px;
+        }
+
+        .number-sub {
+            font-size: 0.72rem;
+            color: var(--text-tertiary);
+        }
+
+        @media (max-width: 600px) {
+            .numbers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .number-item:nth-child(3n) {
+                border-right: 1px solid var(--border);
+            }
+            .number-item:nth-child(2n) {
+                border-right: none;
+            }
+            .number-item:nth-last-child(-n+3) {
+                border-bottom: 1px solid var(--border);
+            }
+            .number-item:nth-last-child(-n+2) {
+                border-bottom: none;
+            }
+            .number-value {
+                font-size: 1.65rem;
+            }
+        }
+
         /* Contact */
         .contact-links {
             display: flex;
@@ -782,12 +855,12 @@
             <!-- Replace src with your actual photo -->
             <img src="profile.webp" alt="Max Guerois" class="photo" fetchpriority="high">
             <div class="name">Max (Maxime) Guerois</div>
-            <h1>I build what <em>I wish existed.</em></h1>
+            <h1>My blood says I'm 19. <em>Here's how.</em></h1>
             <p class="intro">
-                29-year-old repeat founder based in Paris. Currently building
-                <strong>Lucis</strong> — preventive health for Europe, backed by
-                General Catalyst &amp; Y Combinator.
-                I live what I build — my health optimization protocol is the proof of concept.
+                29-year-old repeat founder based in Paris — biological age −9.7 years, DunedinPACE 0.74.
+                I built <strong>Lucis</strong> — preventive health for Europe backed by
+                General Catalyst &amp; Y Combinator — because I lived the problem first.
+                This site is the protocol.
             </p>
             <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid #e8e6e1;">
                 <div class="section-label" style="margin-bottom: 10px;">Ask AI about Max Guerois</div>
@@ -809,58 +882,42 @@
             </div>
         </div>
 
-        <hr class="divider fade-in">
-
-        <!-- Work -->
-        <div class="section fade-in">
-            <div class="section-label">01 / Work</div>
-
-            <div class="work-item">
-                <div class="work-left">
-                    <div class="work-top">
-                        <span class="work-name">Lucis</span>
-                        <span class="work-badge">Founder</span>
-                    </div>
-                    <div class="work-desc">Bloodwork &amp; AI to catch disease before it happens — 500K+ tests run across France, UK, Ireland &amp; Portugal · $8.5M seed (GC · YC)</div>
-                    <div class="work-links">
-                        <a href="https://lucis.life" class="work-link" target="_blank">lucis.life <span class="arr">↗</span></a>
-                        <a href="https://www.ycombinator.com/companies/lucis" class="work-link" target="_blank">Y Combinator <span class="arr">↗</span></a>
-                    </div>
+        <!-- Numbers -->
+        <div class="section fade-in" style="margin-top: 0; padding-top: 0;">
+            <div class="numbers-grid">
+                <div class="number-item">
+                    <div class="number-value">−9.7 <span class="number-unit">yrs</span></div>
+                    <div class="number-label">Biological age vs. chronological</div>
+                    <div class="number-sub">PhenoAge · Feb 2026</div>
                 </div>
-                <span class="work-date">2024 – now</span>
+                <div class="number-item">
+                    <div class="number-value">0.74</div>
+                    <div class="number-label">DunedinPACE aging rate</div>
+                    <div class="number-sub">Population avg: 1.00</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value">40 <span class="number-unit">bpm</span></div>
+                    <div class="number-label">Resting heart rate</div>
+                    <div class="number-sub">Tracked via WHOOP</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value">500K<span class="number-unit">+</span></div>
+                    <div class="number-label">Blood tests run at Lucis</div>
+                    <div class="number-sub">France · UK · Ireland · Portugal</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value">50K<span class="number-unit">+</span></div>
+                    <div class="number-label">Community members built</div>
+                    <div class="number-sub">Zero Club · The Arch</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value">$8.5M</div>
+                    <div class="number-label">Raised for Lucis</div>
+                    <div class="number-sub">General Catalyst · YC</div>
+                </div>
             </div>
-
-            <div class="work-item">
-                <div class="work-left">
-                    <div class="work-top">
-                        <span class="work-name">Zero Club</span>
-                        <span class="work-badge">Founder</span>
-                    </div>
-                    <div class="work-desc">30K+ members across 20+ countries — Europe's longevity community, became Lucis</div>
-                </div>
-                <span class="work-date">2024 – 2025</span>
-            </div>
-
-            <div class="work-item">
-                <div class="work-left">
-                    <div class="work-top">
-                        <span class="work-name">The Arch</span>
-                        <span class="work-badge">Founder</span>
-                    </div>
-                    <div class="work-desc">Where Web3 founders, operators &amp; talent found each other — across 20+ countries</div>
-                </div>
-                <span class="work-date">2022 – 2024</span>
-            </div>
-
-            <div class="work-item">
-                <div class="work-left">
-                    <div class="work-top">
-                        <span class="work-name">Practup</span>
-                        <span class="work-badge">Founder</span>
-                    </div>
-                    <div class="work-desc">Fitness app to sync your health data and find workout buddies — 50k+ users in France</div>
-                </div>
-                <span class="work-date">2021 – 2022</span>
+            <div style="margin-top: 20px;">
+                <a href="/max-biomarkers" class="newsletter-cta">Full biomarker report <span class="arr">→</span></a>
             </div>
         </div>
 
@@ -868,7 +925,7 @@
 
         <!-- Health -->
         <div class="section fade-in">
-            <div class="section-label">02 / Health</div>
+            <div class="section-label">01 / Health</div>
             <div class="health-photos">
                 <img src="/health-journey/zeromeetup-157.webp" alt="Training" class="health-photo" loading="lazy">
                 <img src="/health-journey/nutrition.webp" alt="Nutrition" class="health-photo" loading="lazy">
@@ -896,6 +953,61 @@
                 </div>
                 <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
+        </div>
+
+        <hr class="divider fade-in">
+
+        <!-- Work -->
+        <div class="section fade-in">
+            <div class="section-label">02 / Work</div>
+
+            <div class="work-item">
+                <div class="work-left">
+                    <div class="work-top">
+                        <span class="work-name">Lucis</span>
+                        <span class="work-badge">Founder</span>
+                    </div>
+                    <div class="work-desc">Bloodwork &amp; AI to catch disease before it happens — 500K+ tests run across France, UK, Ireland &amp; Portugal · $8.5M seed (GC · YC). The company that Zero Club was always pointing toward.</div>
+                    <div class="work-links">
+                        <a href="https://lucis.life" class="work-link" target="_blank">lucis.life <span class="arr">↗</span></a>
+                        <a href="https://www.ycombinator.com/companies/lucis" class="work-link" target="_blank">Y Combinator <span class="arr">↗</span></a>
+                    </div>
+                </div>
+                <span class="work-date">2024 – now</span>
+            </div>
+
+            <div class="work-item">
+                <div class="work-left">
+                    <div class="work-top">
+                        <span class="work-name">Zero Club</span>
+                        <span class="work-badge">Founder</span>
+                    </div>
+                    <div class="work-desc">50K+ members across 20+ countries — Europe's longevity community. Built to find the people obsessed with health optimization. It grew so fast it became Lucis.</div>
+                </div>
+                <span class="work-date">2024 – 2025</span>
+            </div>
+
+            <div class="work-item">
+                <div class="work-left">
+                    <div class="work-top">
+                        <span class="work-name">The Arch</span>
+                        <span class="work-badge">Founder</span>
+                    </div>
+                    <div class="work-desc">Where Web3 founders, operators &amp; talent found each other — across 20+ countries. Proved I could build community at scale. Then I realized health was the community I actually wanted to build.</div>
+                </div>
+                <span class="work-date">2022 – 2024</span>
+            </div>
+
+            <div class="work-item">
+                <div class="work-left">
+                    <div class="work-top">
+                        <span class="work-name">Practup</span>
+                        <span class="work-badge">Founder</span>
+                    </div>
+                    <div class="work-desc">Fitness app to sync your health data and find workout buddies — 50k+ users in France. My first instinct that health &amp; community belonged together. The seed of everything that followed.</div>
+                </div>
+                <span class="work-date">2021 – 2022</span>
+            </div>
         </div>
 
         <hr class="divider fade-in">
@@ -928,66 +1040,9 @@
 
         <hr class="divider fade-in">
 
-        <!-- Highlights -->
-        <div class="section fade-in">
-            <div class="section-label">04 / Highlights</div>
-            <div class="tweet-grid">
-                <blockquote class="twitter-tweet" data-theme="light" data-dnt="true">
-                    <a href="https://twitter.com/maxguerois/status/1901981501123604980"></a>
-                </blockquote>
-            </div>
-            <a href="https://x.com/maxguerois/status/1914717625143451985" class="tweet-link" target="_blank">
-                <div class="tweet-link-content">
-                    <div class="tweet-link-text">"Today, we're proud to share: Lucis is now a YC-backed company."</div>
-                    <div class="tweet-link-meta">@maxguerois · Apr 2025</div>
-                </div>
-                <svg class="tweet-link-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <a href="https://x.com/maxguerois/status/1937880538829697495" class="tweet-link" target="_blank">
-                <div class="tweet-link-content">
-                    <div class="tweet-link-text">"We spent $20k+/month to move 10x faster during YC. Here's how we spent it and why we'd do it again:"</div>
-                    <div class="tweet-link-meta">@maxguerois · Jun 2025</div>
-                </div>
-                <svg class="tweet-link-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <a href="https://x.com/maxguerois/status/1847206551569789089" class="tweet-link" target="_blank">
-                <div class="tweet-link-content">
-                    <div class="tweet-link-text">"Getting bloodwork in Europe is a REAL STRUGGLE"</div>
-                    <div class="tweet-link-meta">@maxguerois · Oct 2024</div>
-                </div>
-                <svg class="tweet-link-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <div style="margin-top: 20px;">
-                <a href="https://x.com/maxguerois/highlights" class="newsletter-cta" target="_blank">See all highlights <span class="arr">↗</span></a>
-            </div>
-        </div>
-
-        <hr class="divider fade-in">
-
-        <!-- Newsletter -->
-        <div class="section fade-in">
-            <div class="section-label">05 / Newsletter</div>
-            <div class="newsletter-block">
-                <div class="newsletter-header">
-                    <span class="newsletter-name">Grind & Thrive</span>
-                    <span class="newsletter-tag">Newsletter</span>
-                </div>
-                <p class="newsletter-desc">Health optimization meets startup grind — what I'm learning as a founder. Launching soon.</p>
-                <ul class="newsletter-topics">
-                    <li>Health optimization</li>
-                    <li>Networking</li>
-                    <li>Startups</li>
-                    <li>Y Combinator</li>
-                </ul>
-                <a href="https://substack.com/@maxgm" class="newsletter-cta" target="_blank">Subscribe <span class="arr">↗</span></a>
-            </div>
-        </div>
-
-        <hr class="divider fade-in">
-
         <!-- Contact -->
         <div class="section fade-in">
-            <div class="section-label">06 / Say hi</div>
+            <div class="section-label">04 / Say hi</div>
             <div class="contact-links">
                 <a href="mailto:hello@gm-max.com?subject=Hey%20Max&body=Hi%20Max%2C%0A%0AI%20found%20your%20website%20and%20wanted%20to%20reach%20out%20about%20" class="contact-link">Email</a>
                 <a href="https://twitter.com/maxguerois" class="contact-link" target="_blank">Twitter / X</a>
@@ -996,6 +1051,5 @@
             </div>
         </div>
     </div>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
