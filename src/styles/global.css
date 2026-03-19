@@ -366,7 +366,7 @@ body {
 /* ── Numbers grid ── */
 .numbers-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 0;
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
@@ -377,8 +377,8 @@ body {
     border-right: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
 }
-.number-item:nth-child(3n) { border-right: none; }
-.number-item:nth-last-child(-n+3) { border-bottom: none; }
+.number-item:nth-child(2n) { border-right: none; }
+.number-item:nth-last-child(-n+2) { border-bottom: none; }
 .number-value {
     font-family: var(--font-display);
     font-size: 32px;
@@ -582,10 +582,9 @@ body {
     .contact-links { flex-wrap: wrap; gap: 20px; }
     .health-photos { gap: var(--sp-1); margin-bottom: 20px; }
     .arr { display: none; }
-    .numbers-grid { grid-template-columns: repeat(2, 1fr); }
-    .number-item:nth-child(3n) { border-right: 1px solid var(--border); }
-    .number-item:nth-child(2n) { border-right: none; }
-    .number-item:nth-last-child(-n+3) { border-bottom: 1px solid var(--border); }
-    .number-item:nth-last-child(-n+2) { border-bottom: none; }
+    .numbers-grid { grid-template-columns: 1fr; }
+    .number-item:nth-child(2n) { border-right: 1px solid var(--border); }
+    .number-item { border-right: none; }
+    .number-item:last-child { border-bottom: none; }
     .number-value { font-size: 26px; }
 }
