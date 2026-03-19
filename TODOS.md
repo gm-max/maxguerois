@@ -21,14 +21,8 @@
 - [x] Buttons formalisés : `.btn-primary`, `.btn-outline`, `.btn-accent`
 - [x] Tags formalisés : `.tag`, `.tag-accent`
 
-## P2 — Astro Content Collections
-**What:** Migrer les articles MDX vers Astro Content Collections (src/content/) avec validation frontmatter et getCollection() API.
-**Why:** Quand 5+ articles existent, /experiments doit les lister dynamiquement au lieu d'être hardcodé.
-**Pros:** Index auto-généré, frontmatter typé (titre, date, tagline), zéro hardcoding dans experiments.astro.
-**Cons:** Réorganisation src/pages/experiments/ → src/content/. Petite migration à faire.
-**Context:** Actuellement, experiments.astro liste les 3 articles existants en dur. Avec Content Collections, getCollection('experiments') retourne tous les articles automatiquement. Démarrer dans src/content/experiments/ + définir le schema Zod.
-**Effort:** S human (~4h) → CC (~20min)
-**Depends on:** Avoir 5+ articles MDX publiés.
+## ~~P2 — Astro Content Collections~~
+**Status:** DONE (2026-03-19). Data collection with Zod schema. Articles stay as .astro pages (too complex for MDX), metadata in JSON files. experiments.astro + index.astro use getCollection() for dynamic listing.
 
 ## ~~P3 — DESIGN.md (design system documentation)~~
 **Status:** DONE (2026-03-19). DESIGN.md créé via /design-consultation, enrichi via /plan-design-review avec section Components, Accessibility, Dark Mode, CSS Architecture.

@@ -9,9 +9,10 @@ interface Props {
     description?: string;
     ogUrl?: string;
     ogImage?: string;
+    articleStyles?: string;
 }
 
-const { title, description, ogUrl, ogImage } = Astro.props;
+const { title, description, ogUrl, ogImage, articleStyles } = Astro.props;
 ---
 <Layout
     title={title}
@@ -23,5 +24,6 @@ const { title, description, ogUrl, ogImage } = Astro.props;
     ogImage={ogImage}
     extraStyles={["/styles/article.css"]}
 >
+    {articleStyles && <style set:html={articleStyles} />}
     <slot />
 </Layout>

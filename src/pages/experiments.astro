@@ -1,5 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const experiments = await getCollection('experiments');
+// Sort by date descending (newest first)
+experiments.sort((a, b) => b.data.date.localeCompare(a.data.date));
 ---
 <Layout
     title="Experiments — Max Guerois"
@@ -7,7 +12,7 @@ import Layout from '../layouts/Layout.astro';
     ogUrl="https://maxguerois.com/experiments"
     ogImage="https://maxguerois.com/health-journey/og/bloodwork.jpg"
     extraStyles={["/styles/article.css"]}
-/>
+>
 
 <style>
     .experiments-header {
@@ -129,25 +134,13 @@ import Layout from '../layouts/Layout.astro';
     </div>
 
     <div class="experiments-list">
-
-        <a href="/max-biomarkers" class="experiment-item">
-            <div class="experiment-tag">Health Baseline · Feb 2026</div>
-            <div class="experiment-title">My Biomarkers — Full Snapshot <span class="experiment-arrow">&rarr;</span></div>
-            <div class="experiment-desc">Metabolism, hormones, body composition, strength, and biological age. −9.7 years biological age vs. chronological. Pace of aging: 0.74.</div>
-        </a>
-
-        <a href="/testosterone" class="experiment-item">
-            <div class="experiment-tag">Male Protocol · Mar 2026</div>
-            <div class="experiment-title">31 Tips to Fix Low Testosterone <span class="experiment-arrow">&rarr;</span></div>
-            <div class="experiment-desc">Nothing besides TRT will drastically increase levels. The key is lifestyle. 31 science-backed actions, organized into morning ritual, evening ritual, diet, training, and stress management.</div>
-        </a>
-
-        <a href="/sleep" class="experiment-item">
-            <div class="experiment-tag">Sleep Protocol · Mar 2025</div>
-            <div class="experiment-title">7 Tips for High-Quality Sleep <span class="experiment-arrow">&rarr;</span></div>
-            <div class="experiment-desc">3 months of tracking with the Ultrahuman Ring Air. Took my sleep score from 82 to 100 in 15 days. 7 changes that actually moved the needle.</div>
-        </a>
-
+        {experiments.map((exp) => (
+            <a href={`/${exp.data.slug}`} class="experiment-item">
+                <div class="experiment-tag">{exp.data.category} · {exp.data.date}</div>
+                <div class="experiment-title">{exp.data.title} <span class="experiment-arrow">&rarr;</span></div>
+                <div class="experiment-desc">{exp.data.tagline}</div>
+            </a>
+        ))}
     </div>
 
     <div class="newsletter-section">
@@ -165,3 +158,4 @@ import Layout from '../layouts/Layout.astro';
         </div>
     </div>
 </div>
+</Layout>
