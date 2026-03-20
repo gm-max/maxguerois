@@ -146,7 +146,7 @@ experiments.sort((a, b) => b.data.date.localeCompare(a.data.date));
             <a href={`/${exp.data.slug}`} class="experiment-item">
                 <div class="experiment-tag-row">
                     <span class="experiment-tag">{exp.data.category}</span>
-                    {i === 0 && <span class="experiment-tag" style="color: var(--accent); background: var(--accent-light); border-color: var(--accent-mid);">Latest</span>}
+                    {i === 0 && <span class="experiment-tag">Latest</span>}
                 </div>
                 <div class="experiment-title">{exp.data.title}</div>
                 <div class="experiment-desc">{exp.data.tagline}</div>
