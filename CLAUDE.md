@@ -28,10 +28,11 @@ src/
   layouts/ArticleLayout.astro   ← article pages (extends Layout)
   pages/
     index.astro
-    sleep.astro
-    testosterone.astro
-    max-biomarkers.astro
-    experiments.astro
+    experiments/
+      index.astro
+      sleep.astro
+      testosterone.astro
+      max-biomarkers.astro
   styles/
     global.css
     article.css
@@ -43,12 +44,12 @@ public/                         ← static assets (images, favicons)
 GA4 ID: `G-DR1W1B2VV5` — defined once in Layout.astro
 
 ## Newsletter
-Beehiiv embed — placed at bottom of homepage + /experiments page.
+Beehiiv embed — placed at bottom of homepage, /experiments page, and every article footer.
 
 ## Adding a new experiment
-1. Create `src/pages/new-experiment-slug.astro` (or `.mdx`)
-2. Use `ArticleLayout.astro` as the layout
-3. Add it to `src/pages/experiments.astro` list
+1. Create `src/content/experiments/new-slug.json` with schema fields (title, tagline, category, date, slug, ogImage)
+2. Create `src/pages/experiments/new-slug.astro` using `ArticleLayout`
+3. It appears automatically on homepage + /experiments via `getCollection()`
 
 ## Prompt/LLM changes
 No LLM integration in this project.
