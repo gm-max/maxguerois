@@ -93,10 +93,11 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 - **Multiple items:** Stacked with 1px gap, background border trick for shared borders
 
 ### Numbers Grid (homepage stats)
-- **Layout:** 3 columns desktop, 2 columns mobile
-- **Values:** Cormorant Garamond, accent color, weight 300
-- **Labels:** DM Sans 10px uppercase
-- **Borders:** 1px shared borders between cells
+- **Layout:** 4 columns desktop (single row), 2 columns mobile
+- **Values:** Cormorant Garamond 28px, accent color, weight 300, centered
+- **Labels:** DM Sans 10px uppercase, centered
+- **Borders:** 1px gap trick (background: border color, cells: bg color)
+- **Content:** Health metrics only — Bio Age, Pace of aging, RHR, VO₂Max
 
 ### Stat Card (article inline)
 - **Layout:** Flexible row, 1px gap trick for shared borders
@@ -115,9 +116,10 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 - **Accent:** `accent-light` bg + `accent-mid` border + accent text
 
 ### Callout Box
-- **Style:** `bg-subtle` + border + left accent border (3px)
-- **Label:** 10px uppercase accent
-- **Body:** 13px secondary
+- **Style:** border + `radius-lg`, no background fill
+- **Label:** 12px uppercase tertiary
+- **Title:** Cormorant 22px
+- **Body:** 14px secondary
 
 ### TL;DR Box
 - **Style:** `bg-subtle` + border + `radius-md`
@@ -143,8 +145,8 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 - **ARIA:** Social links have `aria-label`, nav landmark present
 
 ## Dark Mode Implementation
-- **Activation:** `[data-theme="dark"]` on `<html>` + respects `prefers-color-scheme: dark`
-- **Toggle:** Optional theme toggle button (pill style, in navbar or footer)
+- **Activation:** `[data-theme="dark"]` on `<html>` via localStorage (no `prefers-color-scheme` auto-detect — light is always default)
+- **Toggle:** Icon-only button (☾/☀) in footer, 60% opacity, hover reveals
 - **Transition:** `var(--duration-base)` ease on background, color, border-color
 - **All tokens override:** bg, bg-subtle, text, text-secondary, text-tertiary, border, accent, accent-light, accent-mid
 - **Navbar:** `rgba(15, 14, 12, 0.85)` with same backdrop-filter blur
@@ -180,3 +182,6 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 | 2026-03-19 | Merge article.css duplication | article.css re-declared :root, reset, body, container. Single source of truth in global.css. |
 | 2026-03-19 | Newsletter CTA in article footers | Article end was a dead-end. Peak engagement moment → Beehiiv embed for conversion. |
 | 2026-03-19 | Keep "Ask AI" section, document it | Unique differentiator — no other personal site has AI prompt links. Added to Components. |
+| 2026-03-20 | Numbers grid → 4 columns, health only | Removed business metrics. Single row: Bio Age, Pace of aging, RHR, VO₂Max. |
+| 2026-03-20 | Dark mode: light default, no auto-detect | localStorage only, no prefers-color-scheme. Toggle icon-only (☾) in footer at 60% opacity. |
+| 2026-03-20 | DESIGN.md sync with code | Fixed drift: numbers grid cols, dark mode activation, callout box style. |

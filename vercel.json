@@ -2,5 +2,10 @@
   "buildCommand": "astro build",
   "outputDirectory": "dist",
   "framework": null,
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/sleep", "destination": "/experiments/sleep", "permanent": true },
+    { "source": "/testosterone", "destination": "/experiments/testosterone", "permanent": true },
+    { "source": "/max-biomarkers", "destination": "/experiments/max-biomarkers", "permanent": true }
+  ]
 }
