@@ -3,6 +3,15 @@
 ## Project
 Personal hub for Max Guerois. Astro SSG, deployed on Vercel.
 
+## Voice & Content Pillars
+**This is the most important section. Every piece of content must follow these rules.**
+
+1. **No jargon. Ever.** Longevity and health science is full of technical terms (DunedinPACE, PhenoAge, VO₂Max, HRV, etc.). On this site, we translate everything into plain language that anyone can understand. "Aging 26% slower than average" not "DunedinPACE 0.74". Technical terms can appear in data tables and biomarker pages as labels, but never in headlines, intros, or descriptions without a plain-language explanation next to them.
+2. **Accessible to everyone.** A 16-year-old with no science background should be able to read any page and understand it. If a sentence requires domain knowledge to parse, rewrite it.
+3. **Actionable.** Every experiment and protocol should give the reader something they can do today. Not theory — practice. "I reduced caffeine to 1 cup" not "caffeine modulation impacts adenosine receptor sensitivity".
+4. **Honest over impressive.** Show real numbers, real timelines, real failures. Don't cherry-pick results or overstate effects. If something didn't work, say so.
+5. **Warm, not clinical.** The tone is a friend explaining what they learned — not a doctor prescribing. First person, conversational, human.
+
 ## Design System
 **Always read DESIGN.md before making any visual or UI decisions.**
 All font choices, colors, spacing, and aesthetic direction are defined there.

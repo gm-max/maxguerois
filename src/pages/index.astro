@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import NewsletterEmbed from '../components/NewsletterEmbed.astro';
 import { getCollection } from 'astro:content';
 
 const experiments = await getCollection('experiments');
@@ -14,7 +15,7 @@ const structuredData = {
   "image": "https://maxguerois.com/profile.jpg",
   "jobTitle": "Co-founder & CEO",
   "age": 29,
-  "description": "29-year-old repeat founder based in Paris. Building Lucis — preventive health platform using bloodwork & AI to catch disease early, 500K+ tests run across France, UK, Ireland & Portugal. Backed by General Catalyst & Y Combinator. Tracks biological age (-9.7 years vs chronological), DunedinPACE aging rate of 0.74, and publishes open health protocols on testosterone optimization, sleep, and longevity biomarkers.",
+  "description": "29-year-old repeat founder based in Paris. Building Lucis — preventive health platform using bloodwork & AI to catch disease early, 500K+ tests run across France, UK, Ireland & Portugal. Backed by General Catalyst & Y Combinator. Biological age 9.7 years younger, aging 26% slower than average. Publishes open health protocols on testosterone optimization, sleep, and longevity biomarkers.",
   "worksFor": {
     "@type": "Organization",
     "name": "Lucis",
@@ -51,7 +52,7 @@ const structuredData = {
       "@type": "Article",
       "name": "Max Guerois's Biomarkers — Health Baseline",
       "url": "https://maxguerois.com/experiments/max-biomarkers",
-      "description": "Full longevity biomarker snapshot: metabolism, hormones, body composition, strength, and biological age. Biological age -9.7 years, DunedinPACE 0.74, resting heart rate 40 bpm."
+      "description": "Full longevity biomarker snapshot: metabolism, hormones, body composition, strength, and biological age. Biological age 9.7 years younger, aging 26% slower than average, resting heart rate 40 bpm."
     },
     {
       "@type": "Article",
@@ -68,7 +69,7 @@ const structuredData = {
 ---
 <Layout
     title="Max Guerois — Builder, Thinker"
-    description="Max Guerois — 29-year-old repeat founder based in Paris. Co-founder & CEO of Lucis (YC, General Catalyst), a preventive health platform with 500K+ blood tests run across Europe. Tracks biological age (-9.7 yrs), DunedinPACE (0.74), and publishes open protocols on longevity, testosterone, and sleep."
+    description="Max Guerois — 29-year-old repeat founder based in Paris. Co-founder & CEO of Lucis (YC, General Catalyst), a preventive health platform with 500K+ blood tests run across Europe. Biological age 9.7 years younger, aging 26% slower than average. Open protocols on longevity, testosterone, and sleep."
     ogUrl="https://maxguerois.com"
     ogTitle="Max Guerois — Builder, Thinker"
     ogDescription="29-year-old repeat founder based in Paris. Co-founder & CEO of Lucis (YC, General Catalyst) — preventive health platform with 500K+ blood tests run across Europe. Biological age -9.7 yrs."
@@ -82,7 +83,7 @@ const structuredData = {
         <div class="name">Max (Maxime) Guerois</div>
         <h1>My blood says I'm 19. <em>Here's how.</em></h1>
         <p class="intro">
-            29-year-old repeat founder based in Paris — biological age −9.7 years, DunedinPACE 0.74.
+            29-year-old repeat founder based in Paris — biological age 9.7 years younger than my real age, aging 26% slower than average.
             I built <strong>Lucis</strong> — preventive health for Europe backed by
             General Catalyst &amp; Y Combinator — because I lived the problem first.
             This site is the protocol.
@@ -247,24 +248,8 @@ const structuredData = {
     <hr class="divider fade-in">
 
     <!-- Newsletter -->
-    <div class="section fade-in" style="margin-bottom: 0; background: var(--bg-subtle); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--sp-8);">
-        <div class="section-label">Follow along</div>
-        <div class="newsletter-block" style="background: var(--bg);">
-            <div class="newsletter-header">
-                <span class="newsletter-name">Follow the experiments</span>
-            </div>
-            <p class="newsletter-desc">When I publish a new experiment or project, it goes to your inbox first.</p>
-            <!-- Beehiiv embed -->
-            <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
-            <iframe
-                src="https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-911b5e3eb2e6"
-                class="beehiiv-embed"
-                data-test-id="beehiiv-embed"
-                frameborder="0"
-                scrolling="no"
-                style="width: 100%; max-width: 100%; height: 120px; margin: 0; border-radius: 0px !important; background-color: transparent;"
-            ></iframe>
-        </div>
+    <div class="fade-in">
+        <NewsletterEmbed />
     </div>
 
     <hr class="divider fade-in">

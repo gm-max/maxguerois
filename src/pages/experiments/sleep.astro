@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
 ---
 <ArticleLayout
     title="7 tips that lead me to high-quality sleep — Max Guerois"
@@ -245,20 +246,8 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
     </div>
 
     <!-- Newsletter CTA -->
-    <div class="newsletter-block" style="margin-top: 48px;">
-        <div class="newsletter-header">
-            <span class="newsletter-name">Follow the experiments</span>
-        </div>
-        <p class="newsletter-desc">When I publish a new experiment or project, it goes to your inbox first.</p>
-        <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
-        <iframe
-            src="https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-911b5e3eb2e6"
-            class="beehiiv-embed"
-            data-test-id="beehiiv-embed"
-            frameborder="0"
-            scrolling="no"
-            style="width: 100%; max-width: 100%; height: 120px; margin: 0; border-radius: 0px !important; background-color: transparent;"
-        ></iframe>
+    <div style="margin-top: 48px;">
+        <NewsletterEmbed />
     </div>
 </div>
 </ArticleLayout>
