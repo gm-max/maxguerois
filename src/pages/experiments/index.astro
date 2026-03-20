@@ -49,46 +49,52 @@ experiments.sort((a, b) => b.data.date.localeCompare(a.data.date));
     }
     .experiment-item {
         display: block;
-        padding: 22px 0;
+        padding: var(--sp-6) 0;
         border-bottom: 1px solid var(--border);
         text-decoration: none;
         color: inherit;
-        transition: opacity var(--duration-short) ease;
     }
-    .experiment-item:hover {
-        opacity: 0.7;
+    .experiment-item:last-child {
+        border-bottom: none;
+    }
+    .experiment-tag-row {
+        display: flex;
+        gap: var(--sp-2);
+        margin-bottom: var(--sp-3);
     }
     .experiment-tag {
+        display: inline-flex;
+        align-items: center;
         font-family: var(--font-body);
         font-size: 11px;
         font-weight: 500;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--text-tertiary);
-        margin-bottom: 6px;
+        letter-spacing: 0.04em;
+        color: var(--text-secondary);
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        padding: 3px 10px;
     }
     .experiment-title {
         font-family: var(--font-display);
-        font-size: 20px;
-        font-weight: 500;
+        font-size: 22px;
+        font-weight: 400;
         color: var(--text);
-        line-height: 1.3;
-        margin-bottom: 6px;
+        line-height: 1.2;
+        margin-bottom: var(--sp-2);
     }
     .experiment-desc {
-        font-size: 14px;
+        font-size: 13px;
         color: var(--text-secondary);
-        line-height: 1.6;
+        line-height: 1.5;
+        margin-bottom: var(--sp-3);
     }
-    .experiment-arrow {
-        display: inline-block;
-        margin-left: 4px;
-        color: var(--text-tertiary);
-        transition: color var(--duration-short) ease, transform var(--duration-short) ease;
-    }
-    .experiment-item:hover .experiment-arrow {
+    .experiment-link {
+        font-size: 12px;
+        font-weight: 500;
         color: var(--accent);
-        transform: translateX(3px);
+        text-decoration: none;
+        letter-spacing: 0.02em;
     }
     .newsletter-section {
         margin: 60px 0 var(--sp-12);
@@ -136,11 +142,15 @@ experiments.sort((a, b) => b.data.date.localeCompare(a.data.date));
     </div>
 
     <div class="experiments-list">
-        {experiments.map((exp) => (
+        {experiments.map((exp, i) => (
             <a href={`/${exp.data.slug}`} class="experiment-item">
-                <div class="experiment-tag">{exp.data.category} · {exp.data.date}</div>
-                <div class="experiment-title">{exp.data.title} <span class="experiment-arrow">&rarr;</span></div>
+                <div class="experiment-tag-row">
+                    <span class="experiment-tag">{exp.data.category}</span>
+                    {i === 0 && <span class="experiment-tag" style="color: var(--accent); background: var(--accent-light); border-color: var(--accent-mid);">Latest</span>}
+                </div>
+                <div class="experiment-title">{exp.data.title}</div>
                 <div class="experiment-desc">{exp.data.tagline}</div>
+                <span class="experiment-link">Read experiment &rarr;</span>
             </a>
         ))}
     </div>
