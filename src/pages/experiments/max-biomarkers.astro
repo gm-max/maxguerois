@@ -1,5 +1,5 @@
 ---
-import ArticleLayout from '../layouts/ArticleLayout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
 const articleStyles = `
     .bio-section {
@@ -118,7 +118,7 @@ const articleStyles = `
 <ArticleLayout
     title="Max Guerois's Biomarkers — Max Guerois"
     description="My full longevity biomarker snapshot — metabolism, hormones, body composition, strength, and biological age. By Max Guerois."
-    ogUrl="https://maxguerois.com/max-biomarkers"
+    ogUrl="https://maxguerois.com/experiments/max-biomarkers"
     ogImage="https://maxguerois.com/health-journey/og/bloodwork.jpg"
     articleStyles={articleStyles}
 >
@@ -397,13 +397,14 @@ const articleStyles = `
             <span class="newsletter-name">Follow the experiments</span>
         </div>
         <p class="newsletter-desc">When I publish a new experiment or project, it goes to your inbox first.</p>
+        <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
         <iframe
-            src="https://embeds.beehiiv.com/85e98c08-d32b-42d7-b3b2-f56dace1e00e?slim=true"
+            src="https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-911b5e3eb2e6"
+            class="beehiiv-embed"
             data-test-id="beehiiv-embed"
-            height="52"
             frameborder="0"
             scrolling="no"
-            style="margin: 0; border-radius: 0px !important; background-color: transparent; width: 100%;"
+            style="width: 100%; max-width: 100%; height: 120px; margin: 0; border-radius: 0px !important; background-color: transparent;"
         ></iframe>
     </div>
 </div>

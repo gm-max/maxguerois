@@ -701,6 +701,32 @@
             }
         }
 
+        /* Newsletter */
+        .newsletter-headline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .newsletter-sub {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .beehiiv-wrapper {
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            overflow: hidden;
+            min-height: 52px;
+            background: var(--bg);
+        }
+
         /* Contact */
         .contact-links {
             display: flex;
@@ -1040,9 +1066,18 @@
 
         <hr class="divider fade-in">
 
+        <!-- Newsletter -->
+        <div class="section fade-in">
+            <div class="section-label">04 / Newsletter</div>
+            <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
+            <iframe src="https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-911b5e3eb2e6" class="beehiiv-embed" data-test-id="beehiiv-embed" frameborder="0" scrolling="no" style="width: 100%; height: 52px; margin: 0; background-color: transparent; border-radius: 0; box-shadow: none; max-width: 100%;"></iframe>
+        </div>
+
+        <hr class="divider fade-in">
+
         <!-- Contact -->
         <div class="section fade-in">
-            <div class="section-label">04 / Say hi</div>
+            <div class="section-label">05 / Say hi</div>
             <div class="contact-links">
                 <a href="mailto:hello@gm-max.com?subject=Hey%20Max&body=Hi%20Max%2C%0A%0AI%20found%20your%20website%20and%20wanted%20to%20reach%20out%20about%20" class="contact-link">Email</a>
                 <a href="https://twitter.com/maxguerois" class="contact-link" target="_blank">Twitter / X</a>
