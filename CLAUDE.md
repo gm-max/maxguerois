@@ -47,6 +47,7 @@ src/
     article.css
     nav.css
 public/                         ← static assets (images, favicons)
+  .well-known/security.txt      ← security contact (RFC 9116)
 ```
 
 ## Analytics
@@ -59,6 +60,11 @@ Beehiiv embed — placed at bottom of homepage, /experiments page, and every art
 1. Create `src/content/experiments/new-slug.json` with schema fields (title, tagline, category, date, slug, ogImage)
 2. Create `src/pages/experiments/new-slug.astro` using `ArticleLayout`
 3. It appears automatically on homepage + /experiments via `getCollection()`
+
+## Security
+- HTTP headers: `vercel.json` sets CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
+- Beehiiv iframe: sandboxed with `allow-scripts allow-same-origin allow-forms`
+- Security contact: `public/.well-known/security.txt`
 
 ## Prompt/LLM changes
 No LLM integration in this project.
