@@ -65,7 +65,7 @@ Beehiiv embed — placed at bottom of homepage, /experiments page, and every art
 - HTTP headers: `vercel.json` sets CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
 - CSP `img-src` includes `https://*.gstatic.com` (Google favicon redirects — homepage “Ask AI” icons) and `https://shop.lucis.life` (sleep article hero image from the Lucis CDN).
 - **External images:** `npm run build` runs `scripts/check-csp-img-src.mjs`, which fails if any `<img src="https://...">` in `src/**/*.astro` uses a host not listed in `img-src`. Prefer assets under `public/` to avoid widening CSP. GitHub Actions runs the same `npm run build` on PRs and `main`.
-- Beehiiv iframe: sandboxed with `allow-scripts allow-same-origin allow-forms`
+- Beehiiv iframe: sandboxed with `allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation` (subscribe flows may open popups or navigate the top window after submit)
 - Security contact: `public/.well-known/security.txt`
 
 ## Prompt/LLM changes
