@@ -63,6 +63,7 @@ Beehiiv embed — placed at bottom of homepage, /experiments page, and every art
 
 ## Security
 - HTTP headers: `vercel.json` sets CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
+- CSP `img-src` includes `https://*.gstatic.com` because Google’s favicon service redirects there; homepage “Ask AI” icons use that URL.
 - Beehiiv iframe: sandboxed with `allow-scripts allow-same-origin allow-forms`
 - Security contact: `public/.well-known/security.txt`
 
