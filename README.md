@@ -13,8 +13,9 @@ Personal hub for [Max Guerois](https://maxguerois.com) — health experiments, b
 
 ```bash
 npm install
-npm run dev        # http://localhost:4321
-npm run build      # output → dist/
+npm run dev              # http://localhost:4321
+npm run check:csp-images # optional — verify external <img> hosts vs CSP (also runs before build)
+npm run build            # CSP image check + astro build → dist/
 ```
 
 ## Adding a new experiment
