@@ -226,8 +226,6 @@ hr {
     border-radius: var(--radius-lg);
     display: block;
     margin-bottom: var(--sp-12);
-    object-fit: cover;
-    max-height: 360px;
 }
 
 /* ── TL;DR box ── */
@@ -365,6 +363,6 @@ hr {
     .stat { min-width: 90px; padding: 14px var(--sp-4); }
     .stat-value { font-size: 26px; }
     .back { margin-bottom: 40px; }
-    .article-img { max-height: 240px; border-radius: var(--radius-sm); }
+    .article-img { border-radius: var(--radius-sm); }
     .section-heading { font-size: 24px; margin-top: 40px; padding-top: var(--sp-8); }
 }
