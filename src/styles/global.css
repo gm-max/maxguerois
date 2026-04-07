@@ -365,6 +365,7 @@ body {
     width: 100%;
     height: 180px;
     object-fit: cover;
+    object-position: center;
     display: block;
     transition: opacity 0.25s;
 }
