@@ -11,5 +11,8 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
     "astro": "^5.18.1"
+  },
+  "optionalDependencies": {
+    "defu": "^6.1.5"
   }
 }
