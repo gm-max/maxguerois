@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "home": "Max Guerois",
+    "linkedin": "LinkedIn",
+    "x": "X",
+    "instagram": "Instagram",
+    "langSwitch": "EN",
+    "langSwitchLabel": "Switch to English"
+  },
+  "common": {
+    "backHome": "← Retour",
+    "readExperiment": "Lire l'expérience →",
+    "allExperiments": "Voir toutes les expériences →",
+    "fullBiomarkerReport": "Voir le bilan complet →",
+    "by": "Par",
+    "latest": "Récent"
+  },
+  "newsletter": {
+    "title": "Reste dans la boucle",
+    "desc": "Nouvelle expérience, nouveau projet — t'es le premier au courant."
+  },
+  "home": {
+    "title": "Max Guerois — Entrepreneur, Penseur",
+    "description": "Max Guerois — 29 ans, Paris. Co-fondateur de Lucis, santé préventive (YC + General Catalyst), 500 000+ analyses de sang en Europe. Âge bio : 19 ans. Vieillissement 26% plus lent. Protocoles ouverts sur la longévité, la testostérone et le sommeil.",
+    "ogDescription": "29 ans, Paris. Co-fondateur de Lucis (YC + General Catalyst), 500 000+ analyses de sang en Europe. Âge bio : 19 ans, vieillissement 26% plus lent.",
+    "name": "Max (Maxime) Guerois",
+    "headline": "Mon sang dit que j'ai 19 ans. <em>Voici comment.</em>",
+    "intro": "Moi c'est Max. 29 ans. Mon âge bio — 19.<br>J'ai cofondé <strong>Lucis</strong>, la plateforme d'analyse de sang la plus complète en Europe. De 0 à 1M$ d'ARR.<br>Aujourd'hui je documente tout ce que je fais sur mon corps. Ce site, c'est le protocole.",
+    "askAi": "Demande à l'IA",
+    "askAiPrompt": "Mon protocole santé, mon parcours de fondateur, mon obsession pour la longévité — demande ce que tu veux.",
+    "bioAge": "Âge bio",
+    "paceOfAging": "Vieillissement — 26% plus lent",
+    "restingHeartRate": "Pouls au repos",
+    "vo2max": "VO₂Max — top 5% cardio",
+    "sectionHealth": "01 / Santé",
+    "sectionWork": "02 / Parcours",
+    "sectionPress": "03 / Presse",
+    "sectionContact": "04 / Contact",
+    "lucisDesc": "Health tech, santé préventive. Backée par General Catalyst et Y Combinator. J'ai construit la marque, le positionnement et la traction initiale en Europe.",
+    "zeroClubDesc": "50 000+ membres, 20+ pays — la communauté longévité en Europe. Créée pour trouver les gens obsédés par vivre mieux et plus longtemps. Ça a grandi si vite que c'est devenu Lucis.",
+    "theArchDesc": "Le point de rencontre des fondateurs, opérateurs et talents Web3 — 20+ pays. J'ai prouvé que je savais créer une communauté à grande échelle. Et puis j'ai compris que la santé, c'était la communauté que je voulais vraiment construire.",
+    "practupDesc": "Appli fitness pour sync tes données de santé et trouver des partenaires d'entraînement — 50 000+ utilisateurs en France. Mon premier instinct : santé et communauté, ça va ensemble.",
+    "cofounder": "Co-fondateur",
+    "founder": "Fondateur"
+  },
+  "experiments": {
+    "title": "Expériences — Max Guerois",
+    "description": "Mes expériences santé : protocoles, données et biomarqueurs. Sommeil, testostérone, longévité.",
+    "meta": "Expériences Santé",
+    "heading": "Mes tests, mes résultats",
+    "intro": "Je teste tout sur moi — sommeil, hormones, biomarqueurs — et je publie les données brutes. Tout est vrai, sourcé, mis à jour régulièrement."
+  },
+  "experimentsMeta": {
+    "sleepTitle": "7 conseils pour un sommeil de qualité",
+    "sleepTagline": "3 mois de suivi avec l'Ultrahuman Ring Air. Score de sommeil : de 82 à 100 en 15 jours. 7 changements qui ont vraiment fait la différence.",
+    "sleepCategory": "Protocole Sommeil",
+    "testosteroneTitle": "31 conseils pour corriger une faible testostérone",
+    "testosteroneTagline": "Rien (à part la TRT) augmentera drastiquement tes niveaux. La clé, c'est le mode de vie. 31 actions fondées sur la science — rituel du matin, du soir, alimentation, entraînement et gestion du stress.",
+    "testosteroneCategory": "Protocole Masculin",
+    "biomarkersTitle": "Mes biomarqueurs — bilan complet",
+    "biomarkersTagline": "Métabolisme, hormones, composition corporelle, force et âge bio. −9,7 ans vs. mon âge réel. Rythme de vieillissement : 0,74.",
+    "biomarkersCategory": "Bilan de Santé",
+    "supplementsTitle": "Je prends 11 compléments par jour",
+    "supplementsTagline": "11 compléments liés à mes analyses de sang. Trois systèmes en panne : hormones, thyroïde, inflammation. Stack complet avec doses, horaires et produits.",
+    "supplementsCategory": "Protocole Compléments"
+  }
+}

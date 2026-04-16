@@ -9,6 +9,7 @@ const experiments = defineCollection({
     date: z.string(),
     slug: z.string(),
     ogImage: z.string().optional(),
+    locale: z.enum(['en', 'fr']).optional().default('en'),
   }),
 });
 

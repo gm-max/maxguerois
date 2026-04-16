@@ -1,19 +1,22 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+import Layout from '../../../layouts/Layout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
 import { getCollection } from 'astro:content';
+import { t } from '../../../i18n/utils';
+
+const locale = 'fr';
 
 const allExperiments = await getCollection('experiments');
-const experiments = allExperiments.filter(e => !e.data.locale || e.data.locale === 'en');
-// Sort by date descending (newest first)
+const experiments = allExperiments.filter(e => (e.data as any).locale === 'fr');
 experiments.sort((a, b) => b.data.date.localeCompare(a.data.date));
 ---
 <Layout
-    title="Experiments — Max Guerois"
-    description="Health experiments, protocols, and biomarker tracking by Max Guerois. Sleep, testosterone, longevity."
-    ogUrl="https://maxguerois.com/experiments"
+    title={t(locale, 'experiments.title')}
+    description={t(locale, 'experiments.description')}
+    ogUrl="https://maxguerois.com/fr/experiments"
     ogImage="https://maxguerois.com/health-journey/og/bloodwork.jpg"
     extraStyles={["/styles/article.css"]}
+    locale={locale}
 >
 
 <style>
@@ -134,30 +137,30 @@ experiments.sort((a, b) => b.data.date.localeCompare(a.data.date));
 </style>
 
 <div class="container">
-    <a href="/" class="back">&larr; Back home</a>
+    <a href="/fr" class="back">{t(locale, 'common.backHome')}</a>
 
     <div class="experiments-header">
-        <div class="experiments-meta">Health Experiments</div>
-        <h1 class="experiments-title">What I'm tracking and learning</h1>
-        <p class="experiments-intro">I run experiments on myself — sleep, hormones, biomarkers — and publish the data. Everything here is honest, sourced, and updated as I learn more.</p>
+        <div class="experiments-meta">{t(locale, 'experiments.meta')}</div>
+        <h1 class="experiments-title">{t(locale, 'experiments.heading')}</h1>
+        <p class="experiments-intro">{t(locale, 'experiments.intro')}</p>
     </div>
 
     <div class="experiments-list">
         {experiments.map((exp, i) => (
-            <a href={`/${exp.data.slug}`} class="experiment-item">
+            <a href={`/fr/${exp.data.slug}`} class="experiment-item">
                 <div class="experiment-tag-row">
                     <span class="experiment-tag">{exp.data.category}</span>
-                    {i === 0 && <span class="experiment-tag">Latest</span>}
+                    {i === 0 && <span class="experiment-tag">{t(locale, 'common.latest')}</span>}
                 </div>
                 <div class="experiment-title">{exp.data.title}</div>
                 <div class="experiment-desc">{exp.data.tagline}</div>
-                <span class="experiment-link">Read experiment &rarr;</span>
+                <span class="experiment-link">{t(locale, 'common.readExperiment')}</span>
             </a>
         ))}
     </div>
 
     <div style="margin: 60px 0 var(--sp-12);">
-        <NewsletterEmbed />
+        <NewsletterEmbed locale={locale} />
     </div>
 </div>
 </Layout>

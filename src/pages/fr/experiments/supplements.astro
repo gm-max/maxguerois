@@ -1,0 +1,626 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+import { t } from '../../../i18n/utils';
+
+const locale = 'fr';
+
+const articleStyles = `
+    .tip {
+        padding: 14px 0;
+        margin-bottom: 0;
+        border-bottom: 1px solid var(--border);
+    }
+    .tip:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 14px;
+    }
+    .tip-number {
+        font-size: 0.65rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        color: var(--text-tertiary);
+        margin-bottom: 1px;
+    }
+    .tip h2 {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 500;
+        line-height: 1.3;
+        margin-bottom: 4px;
+        letter-spacing: 0;
+        color: var(--text);
+    }
+    .tip p {
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 3px;
+    }
+    .tip-ref {
+        font-size: 0.75rem;
+        color: #0066cc;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 3px;
+    }
+    .tip-ref:hover {
+        text-decoration: underline;
+    }
+    .section-title {
+        font-family: var(--font-display, 'Cormorant Garamond', serif);
+        font-size: 1.5rem;
+        font-weight: 400;
+        line-height: 1.3;
+        color: var(--text);
+        margin-top: 56px;
+        margin-bottom: 16px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+    }
+    .section-title:first-of-type {
+        border-top: none;
+        padding-top: 0;
+    }
+    .supp-meta {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 2px 12px;
+        font-size: 0.78rem;
+        color: var(--text-tertiary);
+        margin-top: 6px;
+    }
+    .supp-meta dt {
+        font-weight: 500;
+    }
+    .supp-meta dd {
+        margin: 0;
+    }
+    .supp-meta a {
+        color: #0066cc;
+        text-decoration: none;
+    }
+    .supp-meta a:hover {
+        text-decoration: underline;
+    }
+    .blood-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+        margin: 16px 0 24px;
+    }
+    .blood-table th {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.68rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-tertiary);
+        text-align: left;
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--border);
+    }
+    .blood-table td {
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-secondary);
+        line-height: 1.4;
+    }
+    .blood-table tr td:first-child {
+        color: var(--text);
+        font-weight: 500;
+    }
+    .status-low {
+        color: var(--accent, #c4934a);
+        font-weight: 500;
+    }
+    .status-high {
+        color: var(--accent, #c4934a);
+        font-weight: 500;
+    }
+    .schedule-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+        margin: 16px 0 24px;
+    }
+    .schedule-table td {
+        padding: 8px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-secondary);
+        line-height: 1.4;
+        vertical-align: top;
+    }
+    .schedule-table tr td:first-child {
+        color: var(--text-tertiary);
+        font-weight: 500;
+        font-size: 0.78rem;
+        white-space: nowrap;
+        width: 140px;
+    }
+    .callout-box {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md, 8px);
+        padding: 16px 20px;
+        margin: 24px 0;
+        font-size: 0.88rem;
+        line-height: 1.6;
+        color: var(--text-secondary);
+    }
+    .callout-box strong {
+        color: var(--text);
+    }
+    .retest-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 12px 0 24px;
+    }
+    .retest-list li {
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        padding-left: 14px;
+        position: relative;
+        margin-bottom: 4px;
+        line-height: 1.6;
+    }
+    .retest-list li::before {
+        content: '—';
+        position: absolute;
+        left: 0;
+        color: var(--text-tertiary);
+    }
+`;
+---
+<ArticleLayout
+    title="Je prends 11 compléments par jour — voici la liste complète — Max Guerois"
+    description="11 compléments liés à mes analyses de sang. Ce que mon sang a montré, la science derrière, le stack complet avec doses et timing, et comment construire le tien."
+    ogUrl="https://maxguerois.com/fr/experiments/supplements"
+    ogImage="https://maxguerois.com/health-journey/supplement-breakfast.jpeg"
+    articleStyles={articleStyles}
+    locale={locale}
+>
+
+<div class="container">
+    <a href="/fr" class="back">&larr; Retour</a>
+
+    <div class="article-meta">Protocole Compléments · Avril 2026</div>
+    <h1 class="article-title">Je prends 11 compléments par jour — voici la liste complète</h1>
+
+    <div class="tldr">
+        <div class="tldr-label">TL;DR</div>
+        <ul>
+            <li>11 compléments, chacun lié à un chiffre dans mon sang. Rien au hasard.</li>
+            <li>Protocole conçu par <a href="https://www.instagram.com/pauline.jumeau/" target="_blank" rel="noopener">Pauline Jumeau</a> à partir de bilans sanguins réalisés via <a href="https://lucis.life/" target="_blank" rel="noopener">Lucis</a>.</li>
+            <li>Trois systèmes étaient cassés : hormones, thyroïde, inflammation.</li>
+            <li>Copie pas ça. Fais tes analyses, corrige ce qui est vraiment cassé.</li>
+        </ul>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">11</div>
+            <div class="stat-label">compléments par jour</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">3</div>
+            <div class="stat-label">systèmes ciblés</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">Q2</div>
+            <div class="stat-label">retest prévu</div>
+        </div>
+    </div>
+
+    <img class="article-img" src="/health-journey/supplements-stack.jpeg" alt="Mon stack complet de compléments — bouteilles de Sunday Natural, créatine, glycine et iode sur un plan de travail" loading="lazy">
+
+    <div class="article-body">
+
+        <p>Ma testostérone était à 353 ng/dL à 28 ans.</p>
+
+        <p>Mon zinc : déficient. Ma thyroïde sous-convertissait. Mon inflammation : 3x le plafond.</p>
+
+        <p>Je me sentais bien. Je m'entraînais tous les jours.</p>
+
+        <p>Mais mes analyses disaient autre chose.</p>
+
+        <p>Bilans complets via <a href="https://lucis.life/" target="_blank" rel="noopener">Lucis</a>. J'ai demandé à <a href="https://www.instagram.com/pauline.jumeau/" target="_blank" rel="noopener">Pauline Jumeau</a> de me construire un protocole qui cible exactement ce qui était cassé.</p>
+
+        <p>11 compléments. Chacun lié à un chiffre dans mon sang. Rien au pif.</p>
+
+        <!-- CE QUE MON SANG A MONTRÉ -->
+        <h2 class="section-title">Ce que mon sang a montré</h2>
+
+        <p>Tout le détail sur ma <a href="/fr/experiments/max-biomarkers">page biomarqueurs</a>. Voici la version courte.</p>
+
+        <table class="blood-table">
+            <thead>
+                <tr>
+                    <th>Marqueur</th>
+                    <th>Ma valeur</th>
+                    <th>Référence</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Testosterone</td>
+                    <td>353 ng/dL</td>
+                    <td>400&ndash;1000</td>
+                    <td class="status-low">bas</td>
+                </tr>
+                <tr>
+                    <td>LH <span style="color: var(--text-tertiary); font-weight: 400;">(signal de production de testostérone)</span></td>
+                    <td>2 mIU/mL</td>
+                    <td>1.7&ndash;8.6</td>
+                    <td class="status-low">supprimée</td>
+                </tr>
+                <tr>
+                    <td>SHBG <span style="color: var(--text-tertiary); font-weight: 400;">(lie la testostérone, la rend indisponible)</span></td>
+                    <td>élevé</td>
+                    <td>&mdash;</td>
+                    <td class="status-high">trop élevé</td>
+                </tr>
+                <tr>
+                    <td>Free T3 <span style="color: var(--text-tertiary); font-weight: 400;">(hormone thyroïdienne active)</span></td>
+                    <td>2.67 pg/mL</td>
+                    <td>2.0&ndash;4.4</td>
+                    <td class="status-low">bas-normal</td>
+                </tr>
+                <tr>
+                    <td>Zinc</td>
+                    <td>14 &micro;mol/L</td>
+                    <td>16.8&ndash;22</td>
+                    <td class="status-low">déficient</td>
+                </tr>
+                <tr>
+                    <td>Vitamin D</td>
+                    <td>34.1 ng/mL</td>
+                    <td>30&ndash;100</td>
+                    <td class="status-low">bas</td>
+                </tr>
+                <tr>
+                    <td>PTH <span style="color: var(--text-tertiary); font-weight: 400;">(parathyroïde, signale une perte de calcium osseux)</span></td>
+                    <td>79.9 pg/mL</td>
+                    <td>15&ndash;65</td>
+                    <td class="status-high">élevé</td>
+                </tr>
+                <tr>
+                    <td>Ratio AA/EPA <span style="color: var(--text-tertiary); font-weight: 400;">(inflammation)</span></td>
+                    <td>22.94</td>
+                    <td>8.75&ndash;17.61</td>
+                    <td class="status-high">3x le plafond</td>
+                </tr>
+                <tr>
+                    <td>Omega-3 index</td>
+                    <td>6.07</td>
+                    <td>6.82&ndash;9.77</td>
+                    <td class="status-low">sous la norme</td>
+                </tr>
+                <tr>
+                    <td>Selenium</td>
+                    <td>67 &micro;g/L</td>
+                    <td>60&ndash;120</td>
+                    <td class="status-low">bas</td>
+                </tr>
+                <tr>
+                    <td>Iodine</td>
+                    <td>67 &micro;g/L</td>
+                    <td>100+</td>
+                    <td class="status-low">bas</td>
+                </tr>
+                <tr>
+                    <td>Magnesium <span style="color: var(--text-tertiary); font-weight: 400;">(sérique)</span></td>
+                    <td>2.3 mg/dL</td>
+                    <td>1.6&ndash;2.5</td>
+                    <td>normal <span style="color: var(--text-tertiary);">(non fiable)</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>Trois systèmes étaient cassés :</p>
+
+        <p><strong>Les hormones.</strong> Mon corps fabriquait pas assez de testostérone. Et ce qu'il fabriquait restait verrouillé par la SHBG.</p>
+
+        <p>Zinc, vitamine D, bore et chardon-marie — chacun cible un maillon différent de cette chaîne.</p>
+
+        <p><strong>La thyroïde.</strong> La T3 était bas-normal.</p>
+
+        <p>Le corps fabrique d'abord la T4, puis la convertit en T3. Cette conversion demande du sélénium et de l'iode. Les deux étaient bas.</p>
+
+        <p><strong>L'inflammation.</strong> Mon ratio AA/EPA : 3x le plafond. L'oméga-3, c'est le levier le plus direct pour faire bouger ça.</p>
+
+        <!-- OÙ J'ACHÈTE -->
+        <h2 class="section-title">Où j'achète</h2>
+
+        <p>Presque tout chez <a href="https://www.sunday.de/fr/" target="_blank" rel="noopener">Sunday Natural</a>. Chaque lot testé en labo européen. Transparence totale. Pas d'excipients inutiles (oui, ça compte).</p>
+
+        <p>Attention : la boutique française a pas tout.<br>Certains produits sont dispo que sur le site <a href="https://www.sunday.de/" target="_blank" rel="noopener">allemand</a> ou <a href="https://www.sunday.nl/" target="_blank" rel="noopener">néerlandais</a>.<br>Même boîte, même qualité. Change juste de site si tu trouves pas.</p>
+
+        <!-- MES 11 COMPLÉMENTS -->
+        <h2 class="section-title">Mes 11 compléments</h2>
+
+        <div class="tip">
+            <div class="tip-number">01</div>
+            <h2>Creatine</h2>
+            <p>Pendant YC, je dormais 5h par nuit. J'ai pris 15g/jour pendant 2 mois après avoir vu les recherches de Rhonda Patrick sur la créatine et le manque de sommeil.</p>
+            <p>Matins plus nets. Concentration tenue sur des sessions de 6h+.</p>
+            <p><a class="tip-ref" href="https://www.linkedin.com/posts/maxguerois_i-took-15g-of-creatine-daily-during-yc-activity-7356633540815450112-OnbG/" target="_blank" rel="noopener">J'en ai parlé</a> et internet a pété un câble.</p>
+            <a class="tip-ref" href="https://pubmed.ncbi.nlm.nih.gov/29704637/" target="_blank" rel="noopener">Kreider et al., 2017 — creatine safety &amp; efficacy ↗</a>
+            <dl class="supp-meta">
+                <dt>Dose</dt><dd>5g/jour (en cycle à cette dose actuellement)</dd>
+                <dt>Moment</dt><dd>N'importe quel repas</dd>
+                <dt>Cycle</dt><dd>Aucun, quotidien</dd>
+                <dt>Produit</dt><dd><a href="https://www.nutripure.fr/fr/performances/183-creatine-creapure-en-gelules-3700225602436.html" target="_blank" rel="noopener">Nutripure Creapure ↗</a></dd>
+            </dl>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">02</div>
+            <h2>Vitamin D3 + K2</h2>
+            <p>Vitamine D à 34.1. PTH à 79.9 — mes os compensaient.</p>
+            <p>La D3 nourrit aussi directement la production de testostérone. Et la K2 envoie le calcium vers les os, pas les artères.</p>
+            <a class="tip-ref" href="https://pubmed.ncbi.nlm.nih.gov/21154195/" target="_blank" rel="noopener">Pilz et al., 2011 — vitamin D &amp; testosterone ↗</a>
+            <dl class="supp-meta">
+                <dt>Dose</dt><dd>2 gouttes/jour</dd>
+                <dt>Moment</dt><dd>Petit-déjeuner</dd>
+                <dt>Cycle</dt><dd>3 mois puis retest</dd>
+                <dt>Produit</dt><dd><a href="https://www.sunday.de/fr/vitamines-d3-5000-plus-k2-mk7-200mcg-100-pourcent-tout-trans.html" target="_blank" rel="noopener">Sunday Natural D3+K2 MK7 5000 IU ↗</a></dd>
+            </dl>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">03</div>
+            <h2>Omega-3</h2>
+            <p>Ratio AA/EPA à 22.94. Le plafond est à 17.6.<br>Sûrement le complément le plus impactant du stack.</p>
+            <a class="tip-ref" href="https://pubmed.ncbi.nlm.nih.gov/22317966/" target="_blank" rel="noopener">Calder, 2012 — omega-3 &amp; inflammation ↗</a>
+            <dl class="supp-meta">
+                <dt>Dose</dt><dd>3&ndash;4 gélules/jour</dd>
+                <dt>Moment</dt><dd>Petit-déjeuner</dd>
+                <dt>Cycle</dt><dd>En continu</dd>
+                <dt>Produit</dt><dd><a href="https://www.sunday.de/fr/omega-3-epa-dha-gelules.html" target="_blank" rel="noopener">Sunday Natural Omega-3 EPA &amp; DHA ↗</a></dd>
+            </dl>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">04</div>
+            <h2>Iodine</h2>
+            <p>Iode à 67 &micro;g/L. Devrait être au-dessus de 100.</p>
+            <p>La thyroïde en a besoin pour fabriquer la T4. J'ai laissé tomber le sel iodé — les additifs, ça vaut pas le coup.</p>
+            <dl class="supp-meta">
+                <dt>Dose</dt><dd>1 comprimé/jour</dd>
+                <dt>Moment</dt><dd>À jeun, le matin</dd>
+                <dt>Cycle</dt><dd>Indéfiniment</dd>
+                <dt>Produit</dt><dd><a href="https://www.amazon.fr/comprim%C3%A9s-Potassium-Complement-alimentaire-ind%C3%A9sirables/dp/B0BXMHPJ5Y" target="_blank" rel="noopener">Potassium Iodide ↗</a></dd>
+            </dl>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">05</div>
+            <h2>Glycine</h2>
+            <p>Depuis que je suis passé à 6g, mon HRV a grimpé. Moyenne de 126 ms sur la dernière semaine avec Whoop.</p>
+            <p>Je la mélange dans de l'eau avant de dormir. Pas cher. Quasiment aucun inconvénient (c'est rare).</p>
+            <a class="tip-ref" href="https://pubmed.ncbi.nlm.nih.gov/22293292/" target="_blank" rel="noopener">Bannai et al., 2012 — glycine &amp; sleep quality ↗</a>
+            <dl class="supp-meta">
+                <dt>Dose</dt><dd>6g en poudre</dd>
+                <dt>Moment</dt><dd>Coucher</dd>
+                <dt>Cycle</dt><dd>En continu</dd>
+                <dt>Produit</dt><dd><a href="https://www.sunday.de/fr/glycine-poudre.html" target="_blank" rel="noopener">Sunday Natural Glycine Powder ↗</a></dd>
+            </dl>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">06</div>
+            <h2>Magnesium Bisglycinate</h2>
+            <p>Le sérique dit "normal" — mais le sérique montre que 1% du magnésium total.</p>
+            <p>Je m'entraîne tous les jours, je transpire beaucoup. On perd du magnésium par la sueur. Le bisglycinate s'absorbe bien et défonce pas l'estomac.</p>
+            <a class="tip-ref" href="https://pubmed.ncbi.nlm.nih.gov/28526392/" target="_blank" rel="noopener">Zhang et al., 2017 — magnesium &amp; sleep ↗</a>
+            <dl class="supp-meta">
+                <dt>Dose</dt><dd>3&ndash;5 gélules/jour</dd>
+                <dt>Moment</dt><dd>Soir</dd>
+                <dt>Cycle</dt><dd>En continu</dd>
+                <dt>Produit</dt><dd><a href="https://www.sunday.de/fr/magnesium-bisglycinate-pur-gelules-xl.html" target="_blank" rel="noopener">Sunday Natural Magnesium Bisglycinate XL ↗</a></dd>
+            </dl>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">07</div>
+            <h2>NAC</h2>
+            <p>La SHBG était élevée. Pauline a ajouté ça pour soutenir le foie.</p>
+            <p>Le corps transforme la NAC en glutathion — l'arme de détox numéro un du foie. Estomac vide, sinon la nourriture bloque l'absorption.</p>
+            <a class="tip-ref" href="https://pubmed.ncbi.nlm.nih.gov/34316159/" target="_blank" rel="noopener">Mokhtari et al., 2017 — NAC &amp; liver function ↗</a>
+            <dl class="supp-meta">
+                <dt>Dose</dt><dd>1 gélule</dd>
+                <dt>Moment</dt><dd>Entre les repas, matin ou après-midi</dd>
+                <dt>Cycle</dt><dd>2 mois, 1 mois de pause, 2 mois</dd>
+                <dt>Produit</dt><dd><a href="https://www.sunday.de/fr/nac-n-acetylcysteine-gelules.html" target="_blank" rel="noopener">Sunday Natural NAC 600 ↗</a></dd>
+            </dl>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">08</div>
+            <h2>CoQ10</h2>
+            <p>Mon CoQ10 : 633 &micro;g/L. L'objectif Lucis était plus haut pour quelqu'un qui s'entraîne autant que moi.</p>
+            <p>Le CoQ10 alimente la production d'énergie de tes cellules — surtout le coeur, le cerveau et les muscles.</p>
+            <a class="tip-ref" href="https://pubmed.ncbi.nlm.nih.gov/17482884/" target="_blank" rel="noopener">Littarru &amp; Tiano, 2007 — CoQ10 clinical applications ↗</a>
+            <dl class="supp-meta">
+                <dt>Dose</dt><dd>1 gélule</dd>
+                <dt>Moment</dt><dd>Petit-déjeuner</dd>
+                <dt>Cycle</dt><dd>4 mois puis retest</dd>
+                <dt>Objectif</dt><dd>1.5&ndash;2 &micro;mol/L</dd>
+                <dt>Produit</dt><dd><a href="https://www.sunday.de/fr/coenzyme-q10-100-mg-ubiquinol-60-gelules.html" target="_blank" rel="noopener">Sunday Natural CoQ10 Ubiquinol 100mg ↗</a></dd>
+            </dl>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">09</div>
+            <h2>B12</h2>
+            <p>MHA, c'est la forme bioactive — le corps l'utilise direct.</p>
+            <p>La version pas chère (cyanocobalamine) doit d'abord être convertie. Et tout le monde le fait pas bien. Pauline la cycle pour éviter le surdosage.</p>
+            <dl class="supp-meta">
+                <dt>Dose</dt><dd>1 gélule</dd>
+                <dt>Moment</dt><dd>Petit-déjeuner</dd>
+                <dt>Cycle</dt><dd>2 mois, 1 mois de pause, finir la boîte</dd>
+                <dt>Objectif</dt><dd>Au-dessus de 700 pg/mL</dd>
+                <dt>Produit</dt><dd><a href="https://www.sunday.fr/b12-formule-mha-bioactive.html" target="_blank" rel="noopener">Sunday Natural B12 MHA Bioactive ↗</a></dd>
+            </dl>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">10</div>
+            <h2>Milk Thistle</h2>
+            <p>Cible la SHBG élevée — la protéine qui capte ta testostérone avant que ton corps puisse s'en servir.</p>
+            <p>Le chardon-marie aide le foie à la faire baisser.</p>
+            <a class="tip-ref" href="https://pubmed.ncbi.nlm.nih.gov/28930517/" target="_blank" rel="noopener">Achufusi &amp; Patel, 2017 — milk thistle &amp; liver ↗</a>
+            <dl class="supp-meta">
+                <dt>Dose</dt><dd>2 gélules (mois 1), 1 gélule (mois 2&ndash;3)</dd>
+                <dt>Moment</dt><dd>Avant le dîner</dd>
+                <dt>Cycle</dt><dd>Cure de 3 mois</dd>
+                <dt>Produit</dt><dd><a href="https://www.sunday.de/fr/extrait-chardon-marie-gelules.html" target="_blank" rel="noopener">Sunday Natural Milk Thistle Extract ↗</a></dd>
+            </dl>
+        </div>
+
+        <div class="tip" style="border-bottom: none;">
+            <div class="tip-number">11</div>
+            <h2>Boron</h2>
+            <p>Testostérone libre basse, SHBG élevée.</p>
+            <p>Le bore aide à libérer la testostérone que la SHBG verrouille. Pas une solution miracle — mais la recherche tient pour une cure courte.</p>
+            <a class="tip-ref" href="https://pubmed.ncbi.nlm.nih.gov/21129941/" target="_blank" rel="noopener">Naghii et al., 2011 — boron &amp; testosterone ↗</a>
+            <dl class="supp-meta">
+                <dt>Dose</dt><dd>1 gélule</dd>
+                <dt>Moment</dt><dd>Repas du matin</dd>
+                <dt>Cycle</dt><dd>Finir la boîte, pas racheter</dd>
+                <dt>Produit</dt><dd><a href="https://www.sunday.de/fr/bore-comprimes-borate-sodium-3mg.html" target="_blank" rel="noopener">Sunday Natural Boron 3mg ↗</a></dd>
+            </dl>
+        </div>
+
+        <!-- DES ALIMENTS, PAS DES PILULES -->
+        <h2 class="section-title">Des aliments, pas des pilules</h2>
+
+        <p><strong>Lécithine de tournesol dans mon nutty pudding.</strong></p>
+
+        <p>Chaque matin, je prépare le <a href="https://blueprint.bryanjohnson.com/products/nutty-pudding-fruit-and-nut-mix" target="_blank" rel="noopener">nutty pudding</a> de Bryan Johnson — noix de macadamia, noix, graines de lin, baies, fraises et jus de grenade.</p>
+
+        <p>J'y ajoute une cuillère à soupe de lécithine de tournesol. Source de phosphatidylcholine — même cible foie/SHBG que la NAC et le chardon-marie, par un autre chemin.</p>
+
+        <p>Couvre aussi la choline, dont presque personne a assez mais que personne teste (spoiler : c'est presque tout le monde).</p>
+
+        <p><strong>3 noix du Brésil par jour.</strong></p>
+
+        <p>Sélénium à 67 &micro;g/L. Devrait être au-dessus de 100. Trois noix = environ 200 &micro;g. Mieux absorbé qu'une gélule.</p>
+
+        <p>Elles passent dans mon nutty pudding du matin.</p>
+
+        <p><strong>Une cuillère à soupe d'huile d'olive extra vierge riche en polyphénols.</strong></p>
+
+        <p>Anti-inflammatoire. Se combine avec l'oméga-3 pour continuer à faire baisser le ratio AA/EPA. Une dose avec un repas. Simple.</p>
+
+        <!-- MON PLANNING QUOTIDIEN -->
+        <h2 class="section-title">Mon planning quotidien</h2>
+
+        <img class="article-photo" src="/health-journey/supplement-breakfast.jpeg" alt="Compléments du matin disposés à côté du petit-déjeuner — gouttes D3+K2, gélules oméga-3 et bol de baies" loading="lazy">
+
+        <table class="schedule-table">
+            <tbody>
+                <tr>
+                    <td>Matin, à jeun</td>
+                    <td>Iodine</td>
+                </tr>
+                <tr>
+                    <td>Petit-déjeuner</td>
+                    <td>CoQ10, B12, Boron, Creatine, Vitamin D3+K2, Omega-3</td>
+                </tr>
+                <tr>
+                    <td>Nutty pudding</td>
+                    <td>Sunflower Lecithin, Brazil Nuts</td>
+                </tr>
+                <tr>
+                    <td>Entre les repas</td>
+                    <td>NAC</td>
+                </tr>
+                <tr>
+                    <td>Avant le dîner</td>
+                    <td>Milk Thistle</td>
+                </tr>
+                <tr>
+                    <td>Coucher</td>
+                    <td>Glycine, Magnesium Bisglycinate</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- LA SUITE -->
+        <h2 class="section-title">La suite</h2>
+
+        <p>Pas encore retesté. Le protocole a commencé après les bilans de janvier 2026. Prochain retest prévu Q2 2026.</p>
+
+        <p>Mais certaines choses bougent déjà.</p>
+
+        <p>Depuis l'ajout de 6g de glycine avant de dormir, mon HRV a grimpé. Le résultat : moyenne de 126 ms sur la dernière semaine.</p>
+
+        <img class="article-photo" src="/health-journey/whoop-data-hrv.jpg" alt="Données HRV Whoop — moyenne hebdomadaire de 126 ms, du 29 mars au 4 avril 2026" loading="lazy" style="max-width: 320px;">
+
+        <p>Quand j'aurai les résultats, je mets à jour cette page avec les avant/après. Marqueurs que je suis :</p>
+
+        <ul class="retest-list">
+            <li>Vitamin D</li>
+            <li>Zinc</li>
+            <li>Testosterone (totale + libre)</li>
+            <li>Omega-3 index</li>
+            <li>CoQ10</li>
+            <li>B12</li>
+            <li>T3</li>
+            <li>Cortisol</li>
+            <li>Estradiol</li>
+        </ul>
+
+        <p>L'iode s'accumule pas. Aucun intérêt à retester. Tu le prends, c'est tout.</p>
+
+        <!-- QUI NE DEVRAIT PAS -->
+        <h2 class="section-title">Qui devrait PAS suivre ce protocole</h2>
+
+        <p>Ce protocole, c'est le mien. Fait pour mon sang, mon entraînement, mes carences.</p>
+
+        <p>Si t'es enceinte, sous anticoagulants, si t'as des problèmes rénaux, ou des médicaments qui interagissent avec l'un de ces compléments — parles-en à ton médecin d'abord.</p>
+
+        <p>Le zinc à haute dose peut déséquilibrer le cuivre.</p>
+
+        <p>La NAC interagit avec certains médicaments.</p>
+
+        <p>Supplémenter en fer sans carence confirmée, c'est dangereux.</p>
+
+        <p>T'auto-prescris pas. Fais-toi tester.</p>
+
+        <!-- COMMENT CONSTRUIRE LE VÔTRE -->
+        <h2 class="section-title">Comment construire le tien</h2>
+
+        <p>Tes carences sont pas mes carences.</p>
+
+        <p><strong>Étape 1 :</strong> Fais un bilan sanguin complet.</p>
+
+        <p>J'ai utilisé <a href="https://lucis.life/" target="_blank" rel="noopener">Lucis</a> (code <strong>MAXG10</strong> pour -10%). Ils testent des marqueurs que les bilans standard voient pas.</p>
+
+        <p><strong>Étape 2 :</strong> Travaille avec quelqu'un qui sait lire les données.</p>
+
+        <p>Pas un généraliste qui jette un oeil à tes résultats et dit "tout est normal". Je travaille avec <a href="https://www.instagram.com/pauline.jumeau/" target="_blank" rel="noopener">Pauline Jumeau</a>.</p>
+
+        <p><strong>Étape 3 :</strong> Supplemente que ce qui est cassé.</p>
+
+        <p>Pas ce qu'un podcast t'a dit de prendre.</p>
+
+        <p><strong>Étape 4 :</strong> Reteste dans 3 mois.</p>
+
+        <p>Si un marqueur a pas bougé, change la dose ou la forme. S'il est rentré dans les clous, arrête.</p>
+
+    </div>
+
+    <div class="article-footer">
+        <span class="author-line">Par <a href="/fr">Max Guerois</a></span>
+    </div>
+
+    <!-- Newsletter CTA -->
+    <div style="margin-top: 48px;">
+        <NewsletterEmbed locale={locale} />
+    </div>
+</div>
+</ArticleLayout>
