@@ -1,10 +1,13 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import NewsletterEmbed from '../components/NewsletterEmbed.astro';
+import Layout from '../../layouts/Layout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
 import { getCollection } from 'astro:content';
+import { t } from '../../i18n/utils';
+
+const locale = 'fr';
 
 const allExperiments = await getCollection('experiments');
-const experiments = allExperiments.filter(e => !e.data.locale || e.data.locale === 'en');
+const experiments = allExperiments.filter(e => (e.data as any).locale === 'fr');
 experiments.sort((a, b) => b.data.date.localeCompare(a.data.date));
 
 const structuredData = {
@@ -12,11 +15,11 @@ const structuredData = {
   "@type": "Person",
   "name": "Max Guerois",
   "alternateName": "Maxime Guerois",
-  "url": "https://maxguerois.com",
+  "url": "https://maxguerois.com/fr",
   "image": "https://maxguerois.com/profile.jpg",
-  "jobTitle": "Founder",
+  "jobTitle": "Fondateur",
   "age": 29,
-  "description": "29-year-old repeat founder based in Paris. Co-founded Lucis, a preventive health startup using bloodwork and AI to catch disease early, which ran 500K+ tests across France, UK, Ireland and Portugal. Backed by General Catalyst and Y Combinator. Biological age 9.7 years younger, aging 26% slower than average. Publishes open health protocols on testosterone optimization, sleep, and longevity biomarkers.",
+  "description": "29 ans, Paris. Co-fondateur de Lucis — santé préventive, analyses de sang et IA pour détecter les maladies tôt. 500 000+ tests en France, UK, Irlande et Portugal. Backé par General Catalyst et Y Combinator. Âge bio 19 ans, vieillissement 26% plus lent. Protocoles ouverts sur la testostérone, le sommeil et les biomarqueurs.",
   "founder": [
     { "@type": "Organization", "name": "Lucis", "url": "https://lucis.life" },
     { "@type": "Organization", "name": "Zero Club" },
@@ -29,10 +32,10 @@ const structuredData = {
     "url": "https://www.ycombinator.com/companies/lucis"
   },
   "knowsAbout": [
-    "preventive health", "longevity", "biomarkers", "biological age",
-    "testosterone optimization", "sleep optimization", "biohacking",
-    "epigenetics", "DunedinPACE", "PhenoAge", "bloodwork",
-    "startup building", "health tech"
+    "santé préventive", "longévité", "biomarqueurs", "âge biologique",
+    "optimisation de la testostérone", "optimisation du sommeil", "biohacking",
+    "épigénétique", "DunedinPACE", "PhenoAge", "analyses de sang",
+    "création d'entreprise", "health tech"
   ],
   "sameAs": [
     "https://twitter.com/maxguerois",
@@ -41,51 +44,47 @@ const structuredData = {
     "https://instagram.com/maxguerois",
     "https://www.ycombinator.com/companies/lucis"
   ],
-  "mainEntityOfPage": "https://maxguerois.com",
+  "mainEntityOfPage": "https://maxguerois.com/fr",
   "subjectOf": [
     {
       "@type": "Article",
-      "name": "Max Guerois's Biomarkers — Health Baseline",
-      "url": "https://maxguerois.com/experiments/max-biomarkers",
-      "description": "Full longevity biomarker snapshot: metabolism, hormones, body composition, strength, and biological age. Biological age 9.7 years younger, aging 26% slower than average, resting heart rate 40 bpm."
+      "name": "Les biomarqueurs de Max Guerois — Bilan de Santé",
+      "url": "https://maxguerois.com/fr/experiments/max-biomarkers",
+      "description": "Métabolisme, hormones, composition corporelle, force et âge bio. 19 ans d'âge bio, vieillissement 26% plus lent, pouls au repos 40 bpm."
     },
     {
       "@type": "Article",
-      "name": "31 science-backed tips to fix low testosterone",
-      "url": "https://maxguerois.com/experiments/testosterone"
+      "name": "31 conseils pour corriger une faible testostérone",
+      "url": "https://maxguerois.com/fr/experiments/testosterone"
     },
     {
       "@type": "Article",
-      "name": "7 tips for high-quality sleep after 3 months of tracking",
-      "url": "https://maxguerois.com/experiments/sleep"
+      "name": "7 conseils pour un sommeil de qualité — 3 mois de suivi",
+      "url": "https://maxguerois.com/fr/experiments/sleep"
     }
   ]
 };
 ---
 <Layout
-    title="Max Guerois — Builder, Thinker"
-    description="Max Guerois — 29-year-old repeat founder based in Paris. Co-founded Lucis, a preventive health startup backed by YC and General Catalyst that ran 500K+ blood tests across Europe. Biological age 9.7 years younger, aging 26% slower than average. Open protocols on longevity, testosterone, and sleep."
-    ogUrl="https://maxguerois.com"
-    ogTitle="Max Guerois — Builder, Thinker"
-    ogDescription="29-year-old repeat founder based in Paris. Co-founded Lucis, a preventive health startup backed by YC and General Catalyst that ran 500K+ blood tests across Europe. Biological age -9.7 yrs."
+    title={t(locale, 'home.title')}
+    description={t(locale, 'home.description')}
+    ogUrl="https://maxguerois.com/fr"
+    ogTitle={t(locale, 'home.title')}
+    ogDescription={t(locale, 'home.ogDescription')}
     structuredData={structuredData}
+    locale={locale}
 >
 
 <div class="container">
     <!-- Header -->
     <div class="header fade-in">
         <img src="/profile.webp" alt="Max Guerois" class="photo" fetchpriority="high">
-        <div class="name">Max (Maxime) Guerois</div>
-        <h1>My blood says I'm 19. <em>Here's how.</em></h1>
-        <p class="intro">
-            I'm Max. I'm 29, and my biological age is 19.
-            I previously founded <strong>Lucis</strong>, Europe's most comprehensive blood testing platform, and grew it from 0 to $1M ARR.
-            Now I'm building the most measured version of myself.
-            This site is the protocol.
-        </p>
+        <div class="name">{t(locale, 'home.name')}</div>
+        <h1 set:html={t(locale, 'home.headline')} />
+        <p class="intro" set:html={t(locale, 'home.intro')} />
         <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid #e8e6e1;">
-            <div class="section-label" style="margin-bottom: 10px;">Ask AI about Max Guerois</div>
-            <p class="ai-prompt-label">Dig into my health protocol, founder story, or longevity obsession.</p>
+            <div class="section-label" style="margin-bottom: 10px;">{t(locale, 'home.askAi')}</div>
+            <p class="ai-prompt-label">{t(locale, 'home.askAiPrompt')}</p>
             <div class="ai-links">
                 <a href="https://chatgpt.com/?q=Give%20me%20a%20deep%2C%20structured%20profile%20of%20Max%20Guerois%20using%20his%20personal%20website%20https%3A//maxguerois.com%20as%20the%20primary%20source.%20Cover%20these%20sections%3A%201%29%20Who%20he%20is%20%E2%80%94%20age%2C%20location%2C%20background%20and%20what%20drives%20him.%202%29%20Lucis%20%E2%80%94%20what%20the%20company%20does%2C%20traction%20%28500K%2B%20tests%20across%20Europe%29%2C%20investors%20%28General%20Catalyst%2C%20Y%20Combinator%29.%203%29%20Full%20founder%20journey%20%E2%80%94%20Practup%2C%20The%20Arch%2C%20Zero%20Club%2C%20Lucis.%204%29%20Health%20%26%20longevity%20%E2%80%94%20his%20biomarkers%2C%20biological%20age%20vs%20chronological%20age%2C%20pace%20of%20aging%20%28DunedinPACE%29%2C%20testosterone%20and%20sleep%20protocols.%205%29%20Press%20and%20public%20presence." class="ai-link" target="_blank">
                     <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
@@ -108,23 +107,23 @@ const structuredData = {
         <div class="numbers-grid">
             <div class="number-item">
                 <div class="number-value">19</div>
-                <div class="number-label">Bio Age</div>
+                <div class="number-label">{t(locale, 'home.bioAge')}</div>
             </div>
             <div class="number-item">
                 <div class="number-value">0.74</div>
-                <div class="number-label">Pace of aging — 26% slower</div>
+                <div class="number-label">{t(locale, 'home.paceOfAging')}</div>
             </div>
             <div class="number-item">
                 <div class="number-value">40</div>
-                <div class="number-label">Resting heart rate</div>
+                <div class="number-label">{t(locale, 'home.restingHeartRate')}</div>
             </div>
             <div class="number-item">
                 <div class="number-value">47.9</div>
-                <div class="number-label">VO₂Max — top 5% cardio</div>
+                <div class="number-label">{t(locale, 'home.vo2max')}</div>
             </div>
         </div>
         <div style="margin-top: 20px;">
-            <a href="/experiments/max-biomarkers" class="newsletter-cta">Full biomarker report <span class="arr">→</span></a>
+            <a href="/fr/experiments/max-biomarkers" class="newsletter-cta">{t(locale, 'common.fullBiomarkerReport')}<span class="arr"></span></a>
         </div>
     </div>
 
@@ -132,16 +131,16 @@ const structuredData = {
 
     <!-- Health -->
     <div class="section fade-in">
-        <div class="section-label">01 / Health</div>
+        <div class="section-label">{t(locale, 'home.sectionHealth')}</div>
         <div class="health-photos">
             <img src="/health-journey/workout.jpeg" alt="Training" class="health-photo" loading="lazy">
-            <img src="/health-journey/breakfast.jpg" alt="Breakfast plate" class="health-photo" loading="lazy">
-            <img src="/health-journey/zeromeetup-182.webp" alt="Ice bath" class="health-photo" loading="lazy">
-            <img src="/health-journey/supplement-breakfast.jpeg" alt="Morning supplements and breakfast" class="health-photo" loading="lazy">
+            <img src="/health-journey/breakfast.jpg" alt="Petit-déj" class="health-photo" loading="lazy">
+            <img src="/health-journey/zeromeetup-182.webp" alt="Bain glacé" class="health-photo" loading="lazy">
+            <img src="/health-journey/supplement-breakfast.jpeg" alt="Compléments du matin" class="health-photo" loading="lazy">
         </div>
         <div class="writing-list">
             {experiments.map((exp) => (
-                <a href={`/${exp.data.slug}`} class="writing-item">
+                <a href={`/fr/${exp.data.slug}`} class="writing-item">
                     <div class="writing-item-content">
                         <div class="writing-title">{exp.data.title}</div>
                         <div class="writing-meta">{exp.data.category} · {exp.data.date}</div>
@@ -151,7 +150,7 @@ const structuredData = {
             ))}
         </div>
         <div style="margin-top: 20px;">
-            <a href="/experiments" class="newsletter-cta">All experiments <span class="arr">→</span></a>
+            <a href="/fr/experiments" class="newsletter-cta">{t(locale, 'common.allExperiments')}<span class="arr"></span></a>
         </div>
     </div>
 
@@ -159,15 +158,15 @@ const structuredData = {
 
     <!-- Work -->
     <div class="section fade-in">
-        <div class="section-label">02 / Work</div>
+        <div class="section-label">{t(locale, 'home.sectionWork')}</div>
 
         <div class="work-item">
             <div class="work-left">
                 <div class="work-top">
                     <span class="work-name">Lucis</span>
-                    <span class="work-badge">Co-founder</span>
+                    <span class="work-badge">{t(locale, 'home.cofounder')}</span>
                 </div>
-                <div class="work-desc">Preventive health startup backed by General Catalyst and Y Combinator. Helped build the brand, positioning, and early traction across Europe.</div>
+                <div class="work-desc">{t(locale, 'home.lucisDesc')}</div>
                 <div class="work-links">
                     <a href="https://lucis.life" class="work-link" target="_blank">lucis.life <span class="arr">↗</span></a>
                     <a href="https://www.ycombinator.com/companies/lucis" class="work-link" target="_blank">Y Combinator <span class="arr">↗</span></a>
@@ -180,9 +179,9 @@ const structuredData = {
             <div class="work-left">
                 <div class="work-top">
                     <span class="work-name">Zero Club</span>
-                    <span class="work-badge">Founder</span>
+                    <span class="work-badge">{t(locale, 'home.founder')}</span>
                 </div>
-                <div class="work-desc">50K+ members across 20+ countries — Europe's longevity community. Built to find the people obsessed with health optimization. It grew so fast it became Lucis.</div>
+                <div class="work-desc">{t(locale, 'home.zeroClubDesc')}</div>
             </div>
             <span class="work-date">2024 – 2025</span>
         </div>
@@ -191,9 +190,9 @@ const structuredData = {
             <div class="work-left">
                 <div class="work-top">
                     <span class="work-name">The Arch</span>
-                    <span class="work-badge">Founder</span>
+                    <span class="work-badge">{t(locale, 'home.founder')}</span>
                 </div>
-                <div class="work-desc">Where Web3 founders, operators &amp; talent found each other — across 20+ countries. Proved I could build community at scale. Then I realized health was the community I actually wanted to build.</div>
+                <div class="work-desc">{t(locale, 'home.theArchDesc')}</div>
             </div>
             <span class="work-date">2022 – 2024</span>
         </div>
@@ -202,9 +201,9 @@ const structuredData = {
             <div class="work-left">
                 <div class="work-top">
                     <span class="work-name">Practup</span>
-                    <span class="work-badge">Founder</span>
+                    <span class="work-badge">{t(locale, 'home.founder')}</span>
                 </div>
-                <div class="work-desc">Fitness app to sync your health data and find workout buddies — 50k+ users in France. My first instinct that health &amp; community belonged together.</div>
+                <div class="work-desc">{t(locale, 'home.practupDesc')}</div>
             </div>
             <span class="work-date">2021 – 2022</span>
         </div>
@@ -214,26 +213,26 @@ const structuredData = {
 
     <!-- Press -->
     <div class="section fade-in">
-        <div class="section-label">03 / Press</div>
+        <div class="section-label">{t(locale, 'home.sectionPress')}</div>
         <div class="writing-list">
             <a href="https://www.generalcatalyst.com/stories/seeding-the-future-with-lucis" class="writing-item" target="_blank">
                 <div class="writing-item-content">
                     <div class="writing-title">Seeding the Future with Lucis</div>
-                    <div class="writing-meta">General Catalyst · Dec 2025</div>
+                    <div class="writing-meta">General Catalyst · Déc 2025</div>
                 </div>
                 <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <a href="https://www.linkedin.com/posts/y-combinator_most-healthcare-systems-wait-until-youre-activity-7407087196601540608-PiFG" class="writing-item" target="_blank">
                 <div class="writing-item-content">
                     <div class="writing-title">Most healthcare systems wait until you're sick to act. That's changing.</div>
-                    <div class="writing-meta">Y Combinator · Dec 2025</div>
+                    <div class="writing-meta">Y Combinator · Déc 2025</div>
                 </div>
                 <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
             <a href="https://www.dailymail.co.uk/health/article-14515401/lived-biohacker-bryan-johnson-shocking-effects-body.html" class="writing-item" target="_blank">
                 <div class="writing-item-content">
                     <div class="writing-title">I lived like biohacker Bryan Johnson for two years — the shocking effects on my body</div>
-                    <div class="writing-meta">Daily Mail · Mar 2025</div>
+                    <div class="writing-meta">Daily Mail · Mars 2025</div>
                 </div>
                 <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -244,16 +243,16 @@ const structuredData = {
 
     <!-- Newsletter -->
     <div class="fade-in">
-        <NewsletterEmbed />
+        <NewsletterEmbed locale={locale} />
     </div>
 
     <hr class="divider fade-in">
 
     <!-- Contact -->
     <div class="section fade-in">
-        <div class="section-label">04 / Say hi</div>
+        <div class="section-label">{t(locale, 'home.sectionContact')}</div>
         <div class="contact-links">
-            <a href="mailto:hi@maxguerois.com?subject=Hey%20Max" class="contact-link" target="_top" rel="noopener noreferrer">Email</a>
+            <a href="mailto:hi@maxguerois.com?subject=Salut%20Max" class="contact-link" target="_top" rel="noopener noreferrer">Email</a>
             <a href="https://twitter.com/maxguerois" class="contact-link" target="_blank">Twitter / X</a>
             <a href="https://instagram.com/maxguerois" class="contact-link" target="_blank">Instagram</a>
             <a href="https://linkedin.com/in/maxguerois" class="contact-link" target="_blank">LinkedIn</a>

@@ -1,0 +1,406 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+import { t } from '../../../i18n/utils';
+
+const locale = 'fr';
+
+const articleStyles = `
+    .bio-section {
+        margin-top: 40px;
+    }
+    .bio-section-label {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.68rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--text-tertiary);
+        margin-bottom: 8px;
+    }
+    .bio-table {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .bio-row {
+        display: grid;
+        grid-template-columns: 2fr 1.2fr 0.7fr 1fr;
+        gap: 8px;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border);
+        align-items: start;
+    }
+    .bio-row:last-child {
+        border-bottom: none;
+    }
+    .bio-row-header {
+        background: #f2f0eb;
+        font-size: 0.65rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        padding: 7px 14px;
+    }
+    .bio-col-marker {
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: var(--text);
+    }
+    .bio-col-value {
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        font-variant-numeric: tabular-nums;
+    }
+    .bio-col-value.missing {
+        color: var(--text-tertiary);
+    }
+    .bio-col-test {
+        font-size: 0.75rem;
+        color: var(--text-tertiary);
+    }
+    .bio-col-pct {
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+    .bio-col-pct.missing {
+        color: var(--text-tertiary);
+        font-weight: 400;
+    }
+    .bio-row-header .bio-col-pct,
+    .bio-row-header .bio-col-test {
+        color: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+    }
+    .bio-ref {
+        font-size: 0.68rem;
+        color: #0066cc;
+        text-decoration: none;
+        font-weight: 400;
+        display: inline-block;
+        margin-top: 2px;
+    }
+    .bio-ref:hover { text-decoration: underline; }
+    .tracking-photos {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        margin: 28px 0 36px;
+        border-radius: 8px;
+        overflow: hidden;
+        align-items: stretch;
+    }
+    .tracking-photo {
+        width: 100%;
+        object-fit: cover;
+        display: block;
+        transition: opacity 0.25s;
+    }
+    .tracking-photo:first-child {
+        height: 100%;
+    }
+    .tracking-photo:last-child {
+        aspect-ratio: 9 / 16;
+        height: auto;
+    }
+    .tracking-photo:hover { opacity: 0.88; }
+
+    @media (max-width: 600px) {
+        .stats { flex-direction: column; }
+        .stat { min-width: unset; flex: none; }
+        .bio-row {
+            grid-template-columns: 2fr 1.2fr 1fr;
+        }
+        .bio-col-test { display: none; }
+        .tracking-photos { gap: 4px; }
+    }
+`;
+---
+<ArticleLayout
+    title="Les biomarqueurs de Max Guerois — Max Guerois"
+    description="Mon bilan complet de biomarqueurs de longévité — métabolisme, hormones, composition corporelle, force et âge biologique. Par Max Guerois."
+    ogUrl="https://maxguerois.com/fr/experiments/max-biomarkers"
+    ogImage="https://maxguerois.com/health-journey/og/bloodwork.jpg"
+    articleStyles={articleStyles}
+    locale={locale}
+>
+
+<div class="container">
+    <a href="/fr" class="back">&larr; Retour</a>
+
+    <div class="article-meta">Bilan de Sant&eacute; &middot; F&eacute;vrier 2026</div>
+    <h1 class="article-title">Les biomarqueurs de Max Guerois</h1>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">&minus;9,7 ans</div>
+            <div class="stat-label">&Acirc;ge biologique</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">0,74</div>
+            <div class="stat-label">Rythme de vieillissement</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">40 bpm</div>
+            <div class="stat-label">Fr&eacute;quence cardiaque au repos</div>
+        </div>
+    </div>
+
+    <div class="tracking-photos">
+        <img src="/health-journey/og/bloodwork.jpg" alt="Prise de sang" class="tracking-photo">
+        <img src="/health-journey/whoop.jpg" alt="Whoop 97% récupération" class="tracking-photo" style="object-position: center top;">
+    </div>
+
+    <div class="article-body">
+
+        <p>Je mesure mon &acirc;ge bio comme tout le reste &mdash; avec des donn&eacute;es.</p>
+
+        <p>Voici mon bilan complet, f&eacute;vrier 2026. (oui, tout &ccedil;a se mesure)</p>
+
+        <p>Mon stack de suivi :</p>
+        <ul style="list-style:none; padding-left:0; margin: -8px 0 20px;">
+            <li style="font-size:0.95rem; color:var(--text-secondary); padding-left:14px; position:relative; margin-bottom:6px; line-height:1.6;"><span style="position:absolute;left:0;color:var(--text-tertiary);">&mdash;</span> Analyses de sang &mdash; <a href="https://lucis.life" target="_blank" style="color:inherit; border-bottom: 1px solid var(--border);">Lucis</a> (code <strong>MAXG10</strong> pour &minus;10%)</li>
+            <li style="font-size:0.95rem; color:var(--text-secondary); padding-left:14px; position:relative; margin-bottom:6px; line-height:1.6;"><span style="position:absolute;left:0;color:var(--text-tertiary);">&mdash;</span> R&eacute;cup&eacute;ration &amp; cardio &mdash; <a href="https://join.whoop.com/627BA0EC" target="_blank" style="color:inherit; border-bottom: 1px solid var(--border);">Whoop</a> (1 mois gratuit)</li>
+            <li style="font-size:0.95rem; color:var(--text-secondary); padding-left:14px; position:relative; margin-bottom:6px; line-height:1.6;"><span style="position:absolute;left:0;color:var(--text-tertiary);">&mdash;</span> Composition corporelle &mdash; <a href="https://www.withings.com" target="_blank" style="color:inherit; border-bottom: 1px solid var(--border);">Withings</a></li>
+            <li style="font-size:0.95rem; color:var(--text-secondary); padding-left:14px; position:relative; margin-bottom:6px; line-height:1.6;"><span style="position:absolute;left:0;color:var(--text-tertiary);">&mdash;</span> Test VO2 Max en labo (Paris) &mdash; <a href="https://lelab.run" target="_blank" style="color:inherit; border-bottom: 1px solid var(--border);">Le Lab</a></li>
+            <li style="font-size:0.95rem; color:var(--text-secondary); padding-left:14px; position:relative; margin-bottom:6px; line-height:1.6;"><span style="position:absolute;left:0;color:var(--text-tertiary);">&mdash;</span> &Acirc;ge &eacute;pig&eacute;n&eacute;tique et vieillissement &mdash; <a href="https://trudiagnostic.com" target="_blank" style="color:inherit; border-bottom: 1px solid var(--border);">TruDiagnostic</a></li>
+        </ul>
+
+        <p>Il me reste quelques tests &agrave; faire (DEXA, spirom&eacute;trie). C&rsquo;est en cours.</p>
+
+        <figure style="margin: 32px 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border);">
+            <img src="/health-journey/bio-age-lucis.webp" alt="Âge biologique — plateforme Lucis" style="width: 100%; display: block;" loading="lazy">
+            <figcaption style="font-size: 0.8rem; color: var(--text-tertiary); padding: 10px 14px; background: var(--surface);">Mon &acirc;ge bio sur Lucis &mdash; f&eacute;vrier 2026 (spoiler : c&rsquo;est bon)</figcaption>
+        </figure>
+
+        <!-- MÉTABOLISME -->
+        <div class="bio-section">
+            <div class="bio-section-label">M&eacute;tabolisme</div>
+            <div class="bio-table">
+                <div class="bio-row bio-row-header">
+                    <div>Marqueur</div>
+                    <div>Valeur</div>
+                    <div class="bio-col-test">Test</div>
+                    <div class="bio-col-pct">Percentile (29H)</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Insulin</div>
+                    <div class="bio-col-value">2.2–5.3 µIU/mL</div>
+                    <div class="bio-col-test">Sang</div>
+                    <div class="bio-col-pct">Top ~18%<br><a href="https://pubmed.ncbi.nlm.nih.gov/8985651/" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">HbA1c</div>
+                    <div class="bio-col-value">4.8–4.9%</div>
+                    <div class="bio-col-test">Sang</div>
+                    <div class="bio-col-pct">Top ~25%<br><a href="https://www.cdc.gov/nchs/products/databriefs/db515.htm" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Glyc&eacute;mie &agrave; jeun</div>
+                    <div class="bio-col-value">84–85 mg/dL</div>
+                    <div class="bio-col-test">Sang</div>
+                    <div class="bio-col-pct">Top ~30%<br><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7871645/" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Triglyc&eacute;rides</div>
+                    <div class="bio-col-value">35–42 mg/dL</div>
+                    <div class="bio-col-test">Sang</div>
+                    <div class="bio-col-pct">Top ~3%<br><a href="https://www.ahajournals.org/doi/10.1161/cir.0b013e3182160726" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Indice Omega-3</div>
+                    <div class="bio-col-value missing">&mdash;</div>
+                    <div class="bio-col-test">Sang</div>
+                    <div class="bio-col-pct missing">&mdash;</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">CoQ10</div>
+                    <div class="bio-col-value">633 µg/L</div>
+                    <div class="bio-col-test">Sang</div>
+                    <div class="bio-col-pct">~40e pct</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">hs-CRP</div>
+                    <div class="bio-col-value">0.4–0.52 mg/L</div>
+                    <div class="bio-col-test">Sang</div>
+                    <div class="bio-col-pct">Top ~20%<br><a href="https://www.cdc.gov/nchs/nhanes/index.htm" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">LDL Oxyd&eacute;</div>
+                    <div class="bio-col-value">1400 U/L</div>
+                    <div class="bio-col-test">Sang</div>
+                    <div class="bio-col-pct missing">&mdash;</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HORMONES -->
+        <div class="bio-section">
+            <div class="bio-section-label">Hormones</div>
+            <div class="bio-table">
+                <div class="bio-row bio-row-header">
+                    <div>Marqueur</div>
+                    <div>Valeur</div>
+                    <div class="bio-col-test">Test</div>
+                    <div class="bio-col-pct">Percentile (29H)</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Testost&eacute;rone libre</div>
+                    <div class="bio-col-value">169 pg/mL</div>
+                    <div class="bio-col-test">Sang</div>
+                    <div class="bio-col-pct">Top 10–15%<br><a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/andr.13310" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">TSH</div>
+                    <div class="bio-col-value">0.65–1.02 mIU/L</div>
+                    <div class="bio-col-test">Sang</div>
+                    <div class="bio-col-pct">~20e pct</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">DHEA</div>
+                    <div class="bio-col-value">433 µg/dL</div>
+                    <div class="bio-col-test">Sang</div>
+                    <div class="bio-col-pct">~75e pct<br><a href="https://www.ucsfhealth.org/medical-tests/dhea-sulfate-blood-test" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CORPS & CARDIO -->
+        <div class="bio-section">
+            <div class="bio-section-label">Corps &amp; Cardio</div>
+            <div class="bio-table">
+                <div class="bio-row bio-row-header">
+                    <div>Marqueur</div>
+                    <div>Valeur</div>
+                    <div class="bio-col-test">Test</div>
+                    <div class="bio-col-pct">Percentile (29H)</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Poids</div>
+                    <div class="bio-col-value">71,4 kg</div>
+                    <div class="bio-col-test">Withings</div>
+                    <div class="bio-col-pct missing">&mdash;</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">IMC</div>
+                    <div class="bio-col-value">24,6</div>
+                    <div class="bio-col-test">Withings</div>
+                    <div class="bio-col-pct">~35e pct<br><a href="https://www.cdc.gov/nchs/nhanes/index.htm" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Masse grasse</div>
+                    <div class="bio-col-value">18,9%</div>
+                    <div class="bio-col-test">Withings</div>
+                    <div class="bio-col-pct">Top ~25%<br><a href="https://www.cdc.gov/nchs/nhanes/index.htm" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Fr&eacute;quence cardiaque au repos</div>
+                    <div class="bio-col-value">40 bpm</div>
+                    <div class="bio-col-test">Whoop</div>
+                    <div class="bio-col-pct">Top ~1%<br><a href="https://www.ahajournals.org/doi/10.1161/CIR.0000000000000461" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">&Acirc;ge cardiovasculaire</div>
+                    <div class="bio-col-value">&minus;5,5 ans</div>
+                    <div class="bio-col-test">Whoop</div>
+                    <div class="bio-col-pct">Top ~10%</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">VO2 Max (tapis roulant)</div>
+                    <div class="bio-col-value">47,9 ml/kg/min</div>
+                    <div class="bio-col-test">Le Lab</div>
+                    <div class="bio-col-pct">~49e pct<br><a href="https://www.mayoclinicproceedings.org/article/S0025-6196(15)00642-4/pdf" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">VO2 Max (Garmin)</div>
+                    <div class="bio-col-value">57 ml/kg/min</div>
+                    <div class="bio-col-test">Garmin</div>
+                    <div class="bio-col-pct">~80e pct (est.)<br><a href="https://www.mayoclinicproceedings.org/article/S0025-6196(15)00642-4/pdf" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LONGÉVITÉ -->
+        <div class="bio-section">
+            <div class="bio-section-label">Long&eacute;vit&eacute;</div>
+            <div class="bio-table">
+                <div class="bio-row bio-row-header">
+                    <div>Marqueur</div>
+                    <div>Valeur</div>
+                    <div class="bio-col-test">Test</div>
+                    <div class="bio-col-pct">Percentile (29H)</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">&Acirc;ge biologique<br><a href="https://pubmed.ncbi.nlm.nih.gov/29676998/" class="bio-ref" target="_blank" rel="noopener">PhenoAge ↗</a></div>
+                    <div class="bio-col-value">&minus;9,7 ans</div>
+                    <div class="bio-col-test">&Eacute;pig&eacute;n&eacute;tique</div>
+                    <div class="bio-col-pct">Top ~5%<br><a href="https://pubmed.ncbi.nlm.nih.gov/29676998/" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Rythme de vieillissement<br><a href="https://pubmed.ncbi.nlm.nih.gov/35029144/" class="bio-ref" target="_blank" rel="noopener">DunedinPACE ↗</a></div>
+                    <div class="bio-col-value">0,74</div>
+                    <div class="bio-col-test">TruDiagnostic</div>
+                    <div class="bio-col-pct">Top ~18%<br><a href="https://pubmed.ncbi.nlm.nih.gov/35029144/" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Longueur des t&eacute;lom&egrave;res</div>
+                    <div class="bio-col-value">6,98 Kb</div>
+                    <div class="bio-col-test">Sang</div>
+                    <div class="bio-col-pct">~45e pct</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORCE -->
+        <div class="bio-section">
+            <div class="bio-section-label">Force</div>
+            <p style="font-size:0.82rem; color:var(--text-tertiary); margin: -8px 0 12px; line-height:1.5;">Percentiles par rapport aux pratiquants de muscu (strengthlevel.com). Face &agrave; la pop g&eacute;n&eacute;rale, on serait dans le top 5&nbsp;% &mdash; tr&egrave;s peu de gens soul&egrave;vent 2&times; leur poids au soulev&eacute; de terre.</p>
+            <div class="bio-table">
+                <div class="bio-row bio-row-header">
+                    <div>Marqueur</div>
+                    <div>Valeur</div>
+                    <div class="bio-col-test">Test</div>
+                    <div class="bio-col-pct">Percentile (pratiquants)</div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Soulev&eacute; de terre</div>
+                    <div class="bio-col-value">150 kg</div>
+                    <div class="bio-col-test">1RM</div>
+                    <div class="bio-col-pct">~60e pct<br><a href="https://strengthlevel.com/strength-standards/deadlift" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">D&eacute;velopp&eacute; couch&eacute;</div>
+                    <div class="bio-col-value">105 kg</div>
+                    <div class="bio-col-test">1RM</div>
+                    <div class="bio-col-pct">~65e pct<br><a href="https://strengthlevel.com/strength-standards/bench-press" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Squat arri&egrave;re</div>
+                    <div class="bio-col-value">110 kg</div>
+                    <div class="bio-col-test">1RM</div>
+                    <div class="bio-col-pct">~48e pct<br><a href="https://strengthlevel.com/strength-standards/squat" class="bio-ref" target="_blank" rel="noopener">Source ↗</a></div>
+                </div>
+                <div class="bio-row">
+                    <div class="bio-col-marker">Force de pr&eacute;hension</div>
+                    <div class="bio-col-value missing">&mdash;</div>
+                    <div class="bio-col-test">Dynamom&egrave;tre</div>
+                    <div class="bio-col-pct missing">&mdash;</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="article-footer">
+        <span class="author-line">Par <a href="/fr">Max Guerois</a></span>
+    </div>
+
+    <!-- Newsletter CTA -->
+    <div style="margin-top: 48px;">
+        <NewsletterEmbed locale={locale} />
+    </div>
+</div>
+</ArticleLayout>

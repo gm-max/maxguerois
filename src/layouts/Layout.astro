@@ -1,6 +1,9 @@
 ---
 // Layout.astro — base layout for all pages
 // maxguerois.com
+import type { Locale } from '../i18n/utils';
+import { getLocalizedPath, getAbsoluteUrl, t } from '../i18n/utils';
+
 interface Props {
     title: string;
     description?: string;
@@ -12,6 +15,7 @@ interface Props {
     twitterCard?: string;
     structuredData?: object;
     extraStyles?: string[];
+    locale?: Locale;
 }
 
 const {
@@ -25,15 +29,28 @@ const {
     twitterCard = 'summary_large_image',
     structuredData,
     extraStyles = [],
+    locale = 'en',
 } = Astro.props;
+
+// Build hreflang URLs from current path
+const currentPath = Astro.url.pathname;
+const englishPath = getLocalizedPath(currentPath, 'en');
+const frenchPath = getLocalizedPath(currentPath, 'fr');
+const enUrl = getAbsoluteUrl(englishPath, 'en');
+const frUrl = getAbsoluteUrl(frenchPath, 'fr');
 ---
 <!DOCTYPE html>
-<html lang="en">
+<html lang={locale}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
     {description && <meta name="description" content={description}>}
+
+    <!-- Hreflang — SEO alternate language links -->
+    <link rel="alternate" hreflang="en" href={enUrl}>
+    <link rel="alternate" hreflang="fr" href={frUrl}>
+    <link rel="alternate" hreflang="x-default" href={enUrl}>
 
     <!-- Dark mode — runs before first paint to avoid flash -->
     <script is:inline>
@@ -48,6 +65,27 @@ const {
         })();
     </script>
 
+    <!-- Language auto-detection — redirect French browsers to /fr/ on first visit -->
+    <script is:inline>
+        (function() {
+            try {
+                // Only run on English pages (no /fr/ prefix)
+                if (window.location.pathname.startsWith('/fr')) return;
+                // Respect stored language preference
+                var pref = localStorage.getItem('lang-preference');
+                if (pref) return;
+                // Check browser language
+                var lang = navigator.language || navigator.userLanguage || '';
+                if (lang.substring(0, 2) === 'fr') {
+                    // Build French equivalent of current path
+                    var frPath = '/fr' + (window.location.pathname === '/' ? '' : window.location.pathname);
+                    localStorage.setItem('lang-preference', 'fr');
+                    window.location.replace(frPath);
+                }
+            } catch(e) {}
+        })();
+    </script>
+
     <!-- OpenGraph -->
     <meta property="og:type" content={ogType}>
     {ogUrl && <meta property="og:url" content={ogUrl}>}
@@ -55,6 +93,9 @@ const {
     <meta property="og:title" content={ogTitle || title}>
     {ogDescription && <meta property="og:description" content={ogDescription}>}
     <meta property="og:image" content={ogImage}>
+    <meta property="og:locale" content={locale === 'fr' ? 'fr_FR' : 'en_US'}>
+    {locale === 'en' && <meta property="og:locale:alternate" content="fr_FR">}
+    {locale === 'fr' && <meta property="og:locale:alternate" content="en_US">}
 
     <!-- Twitter / X Card -->
     <meta name="twitter:card" content={twitterCard}>
@@ -98,7 +139,7 @@ const {
         <!-- Default navbar — pages can override with slot="nav" -->
         <nav class="navbar">
             <div class="navbar-inner">
-                <a href="/" class="navbar-name">Max Guerois</a>
+                <a href={locale === 'fr' ? '/fr' : '/'} class="navbar-name">Max Guerois</a>
                 <div class="navbar-social">
                     <a href="https://linkedin.com/in/maxguerois" class="navbar-social-link" target="_blank" aria-label="LinkedIn">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
@@ -109,6 +150,12 @@ const {
                     <a href="https://instagram.com/maxguerois" class="navbar-social-link" target="_blank" aria-label="Instagram">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                     </a>
+                    <a
+                        href={locale === 'fr' ? getLocalizedPath(currentPath, 'en') : getLocalizedPath(currentPath, 'fr')}
+                        class="navbar-lang-switch"
+                        aria-label={t(locale, 'nav.langSwitchLabel')}
+                        data-lang-switch
+                    >{t(locale, 'nav.langSwitch')}</a>
                 </div>
             </div>
         </nav>
@@ -135,6 +182,16 @@ const {
                 document.documentElement.setAttribute('data-theme', newTheme);
                 try { localStorage.setItem('theme', newTheme); } catch(e) {}
                 updateToggle();
+            });
+
+            // Language switcher — save preference on click
+            var langLinks = document.querySelectorAll('[data-lang-switch]');
+            langLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    var target = link.getAttribute('href');
+                    var lang = target && target.startsWith('/fr') ? 'fr' : 'en';
+                    try { localStorage.setItem('lang-preference', lang); } catch(e) {}
+                });
             });
         })();
     </script>

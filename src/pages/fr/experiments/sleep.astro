@@ -1,0 +1,269 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+import { t } from '../../../i18n/utils';
+
+const locale = 'fr';
+---
+<ArticleLayout
+    title="7 conseils pour un sommeil de qualité — Max Guerois"
+    description="3 mois de tracking. 7 conseils qui ont fait passer mon sleep score de 82 à 100. Par Max Guerois, co-fondateur de Lucis."
+    ogUrl="https://maxguerois.com/fr/experiments/sleep"
+    ogImage="https://maxguerois.com/health-journey/og/whoop.jpg"
+    locale={locale}
+>
+
+<div class="container">
+    <a href="/fr" class="back">← Retour à l'accueil</a>
+
+    <div class="article-meta">Protocole Sommeil · Mars 2025</div>
+    <h1 class="article-title">7 conseils pour un sommeil de qualité</h1>
+
+    <img
+        class="article-img"
+        src="/health-journey/sleep-tracking.jpg"
+        alt="Suivi du sommeil"
+        loading="lazy"
+    >
+
+    <div class="tldr">
+        <div class="tldr-label">En bref</div>
+        <ul>
+            <li>Bien dormir, c'est la base de tout.</li>
+            <li>Pour s'améliorer, il faut mesurer.</li>
+            <li>Je suis passé d'une Garmin à un anneau dédié au sommeil : l'Ultrahuman Ring Air.</li>
+            <li>Les clés : moins de caféine, dîner plus tôt, chambre optimisée.</li>
+            <li>Zero Club a noué un partenariat avec Ultrahuman.</li>
+        </ul>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">82</div>
+            <div class="stat-label">Score de départ</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">100</div>
+            <div class="stat-label">Score après 15 jours</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">90+</div>
+            <div class="stat-label">Objectif à maintenir</div>
+        </div>
+    </div>
+
+    <div class="article-body">
+
+        <p>Ça fait un an que je bosse à fond sur mon sommeil. J'ai tout testé — dîner à 17h, les compléments, les routines.</p>
+
+        <p>Voilà ce que j'ai appris.</p>
+
+        <p>Bien dormir, c'est la base de tout. Ton corps se régénère, ton cerveau tourne mieux, ton système immunitaire se renforce.</p>
+
+        <p>C'est le socle de la longévité.</p>
+
+        <p>À l'inverse, le manque de sommeil te détruit. Rester éveillé 18h ou 24h, c'est comme avoir 0,05 % ou 0,1 % d'alcool dans le sang.</p>
+
+        <p>Si tu devais faire qu'une seule chose pour ta santé : dormir.</p>
+
+        <p>Et comment savoir si tu dors bien ? En mesurant.</p>
+
+        <p>On améliore que ce qu'on mesure. Les données te montrent ce qui marche, ce qui plombe ton sommeil, et ce qui l'améliore.</p>
+
+        <p>Plusieurs options pour le tracking :</p>
+
+        <div class="tip" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
+            <ul>
+                <li>Montre connectée (ex : Garmin, Apple Watch)</li>
+                <li>Bracelet (ex : Whoop)</li>
+                <li>Anneau (ex : Ultrahuman, Oura)</li>
+                <li>Journal de sommeil</li>
+            </ul>
+        </div>
+
+        <p style="margin-top: 24px;">Au début, je suivais mon sommeil avec une Garmin Forerunner 245.</p>
+
+        <p>Très vite, j'ai compris que cette montre était pas faite pour ça. Elle donne que la durée — souvent fausse — et ça suffit pas pour progresser.</p>
+
+        <p>Puis avec Max B, on a pris un anneau. Le tracking est devenu beaucoup plus précis et simple.</p>
+
+        <img class="article-photo" src="/sleep-photo-ring.jpg" alt="Déballage de l'Ultrahuman Ring Air chez Noir" loading="lazy">
+
+        <p>Ça fait plus de 3 mois que je porte l'Ultrahuman Ring Air.</p>
+
+        <p>Mon point de départ était plutôt normal. De base, je suis un bon dormeur — je m'endors vite et je fais mes nuits. (Oui, j'ai de la chance.)</p>
+
+        <p>Voilà d'où je partais :</p>
+
+        <div class="baseline">
+            <div class="baseline-label">Point de départ</div>
+            <ul>
+                <li>Score sommeil : 82</li>
+                <li>Durée totale : 7h 53min</li>
+                <li>HRV : 70 ms</li>
+                <li>Baisse de fréquence cardiaque : 37</li>
+                <li>Température cutanée : 94.28</li>
+                <li>Sommeil profond : 1h 08m</li>
+            </ul>
+        </div>
+
+        <p>À partir de là, objectif : devenir un « athlète du sommeil ».</p>
+
+        <p>Pour mes expériences, je me suis inspiré du Bryan Johnson's Blueprint et des membres du Zero Club.</p>
+
+        <p>Mais j'avais une contrainte : garder ma vie sociale. Sorties entre potes, restos — pas question de tout sacrifier.</p>
+
+        <p>Chaque jour, j'apprenais un truc de plus en lisant et en analysant les données de l'appli.</p>
+
+        <p>Il m'a fallu 15 jours pour atteindre un sleep score de 100 % pour la première fois.</p>
+
+        <div class="phone-screenshots">
+            <div class="phone-screenshot-wrap">
+                <img src="/sleep-score-82.png" alt="Score sommeil 82 — score de départ">
+                <div class="phone-screenshot-caption">Score de départ — 5 mai</div>
+            </div>
+            <div class="phone-screenshot-wrap">
+                <img src="/sleep-score-100.png" alt="Score sommeil 100 — après 15 jours">
+                <div class="phone-screenshot-caption">Après 15 jours — 20 mai</div>
+            </div>
+        </div>
+
+        <p>Maintenant j'essaie de tenir ce score. Honnêtement, c'est dur.</p>
+
+        <p>Mon objectif — rester régulièrement au-dessus de 90.</p>
+
+        <h2 class="section-heading">Protocole sommeil</h2>
+
+        <p>J'ai construit un protocole que tout le monde peut suivre facilement. Pas besoin de se compliquer la vie.</p>
+
+        <p>Voilà les 7 habitudes que j'ai intégrées à ma routine.</p>
+
+        <div class="tip">
+            <div class="tip-number">Conseil 01</div>
+            <h2>Café</h2>
+            <p>Je suis passé de 3 cafés par jour à 1 seul. Je prends aussi le Active100, une boisson longévité avec environ 11 mg de caféine.</p>
+            <p>Pour la deuxième tasse, c'est déca. Dur pour un fan de café, mais ça change tout. (Oui, ça change tout.)</p>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">Conseil 02</div>
+            <h2>Exercice</h2>
+            <ul>
+                <li>Minimum 11 000 pas par jour.</li>
+                <li>Régulier sur les entraînements, tous les jours.</li>
+            </ul>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">Conseil 03</div>
+            <h2>Compléments alimentaires</h2>
+            <ul>
+                <li>Le magnésium est essentiel pour bien dormir. Soit via l'alimentation, soit en complément. (Perso, je prends les deux.)</li>
+                <li>250 mg de magnésium par jour.</li>
+                <li>Glycine, 2g/jour</li>
+                <li>Apigénine, 30mg/jour</li>
+            </ul>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">Conseil 04</div>
+            <h2>Alimentation</h2>
+            <ul>
+                <li>Dernier repas limité à 500 kcal. Je mange soit une salade fenouil-orange, soit une patate douce farcie du Bryan Johnson's Blueprint.</li>
+                <li>Dernier repas à 18h ou 19h. Plus tôt, c'est encore mieux.</li>
+                <li>Pas de protéines le soir.</li>
+                <li>Rien 3h avant le coucher.</li>
+            </ul>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">Conseil 05</div>
+            <h2>Environnement de sommeil</h2>
+            <ul>
+                <li>Température la plus basse possible. L'idéal c'est entre 15 et 19 °C. En été à Paris, c'est galère — la clim est indispensable. (Spoiler : ça marche.)</li>
+                <li>Chambre fraîche et noire.</li>
+                <li>Bouchons d'oreilles. Paris, c'est bruyant.</li>
+            </ul>
+            <p class="tip-highlight">Le truc que j'ai découvert : le paramètre qui impacte le plus le score, c'est la température de la peau.</p>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">Conseil 06</div>
+            <h2>Heure de coucher</h2>
+            <ul>
+                <li>La régularité, c'est la clé.</li>
+                <li>Même heure tous les soirs (+/- 30 min).</li>
+                <li>Alarme à 22h30.</li>
+            </ul>
+        </div>
+
+        <div class="tip">
+            <div class="tip-number">Conseil 07</div>
+            <h2>Routine du soir</h2>
+            <p>30 minutes avant de dormir, je déconnecte. Pas d'écran.</p>
+            <p>Un peu de lecture ou de méditation — et c'est tout.</p>
+        </div>
+
+        <h2 class="section-heading">Mon avis sur l'anneau après 3 mois d'utilisation</h2>
+
+        <p>Maintenant que tu as le protocole, tu te demandes peut-être si l'anneau vaut le coup.</p>
+
+        <p>Voilà mon retour — avec les plus et les moins.</p>
+
+        <div class="pros-cons-group">
+            <div class="pros-label">+ Avantages</div>
+            <ul>
+                <li>Confortable. Parfait pour dormir avec. Le look est clean et j'ai eu plein de compliments.</li>
+                <li>L'appli est bien faite. Simple de lire les données et d'en tirer des leçons.</li>
+                <li>Les notifs sont bien dosées. J'aime bien celle qui me dit que ma fenêtre caféine est ouverte.</li>
+                <li>Les rapports hebdo sont utiles. Assez d'infos pour savoir dans quelle direction aller.</li>
+                <li>Côté précision, l'anneau et le Whoop donnent des chiffres très proches pour la fréquence cardiaque au repos et le HRV. En général identiques, ou à un ou deux points près.</li>
+                <li>Autonomie : 5 jours facile.</li>
+                <li>Le support client est réactif et agréable. Ça compte.</li>
+                <li>Achat unique. Pas d'abonnement comme l'Oura Ring.</li>
+            </ul>
+        </div>
+
+        <div class="pros-cons-group">
+            <div class="pros-label">− Inconvénients</div>
+            <ul>
+                <li>L'appli reconnaît pas les exercices. Impossible de tracker ses entraînements.</li>
+                <li>À la salle, je dois enlever l'anneau pour les haltères et les tractions.</li>
+                <li>Le Ring Air mesure la SpO2 que pendant le sommeil. On aimerait pouvoir la mesurer manuellement, comme sur une montre.</li>
+            </ul>
+        </div>
+
+        <p>L'Ultrahuman Ring Air est clean, discret, et donne des analyses utiles pour améliorer son sommeil. Pas besoin de porter une montre la nuit.</p>
+
+        <p>Le suivi cardiaque est comparable à une montre classique grâce au capteur PPG.</p>
+
+        <p>L'appli couvre l'activité, le sommeil et la récupération. Elle te pousse à améliorer tes scores dans chaque domaine.</p>
+
+        <p>Et surtout : pas d'abonnement mensuel. Sur le long terme, ça fait une grosse différence.</p>
+
+        <h2 class="section-heading">Mise à jour — Je suis passé au Whoop après 9 mois</h2>
+
+        <p>Après 9 mois avec l'Ultrahuman Ring Air, je suis passé au Whoop. Trois raisons :</p>
+
+        <div class="pros-cons-group">
+            <ul>
+                <li>Meilleur tracking d'activité — le Whoop capte les entraînements correctement. L'anneau l'a jamais fait.</li>
+                <li>Les tractions et la muscu devenaient pénibles — enlever l'anneau à chaque séance, ça finit par saouler.</li>
+                <li>L'esthétique me plaisait plus. L'anneau faisait trop gros avec le temps. Le bracelet, c'est plus discret.</li>
+            </ul>
+        </div>
+
+        <p>Le protocole sommeil a pas changé. Ces 7 conseils marchent quel que soit le device que tu utilises.</p>
+
+    </div>
+
+    <div class="article-footer">
+        <span class="author-line">Par <a href="/fr">Max Guerois</a></span>
+    </div>
+
+    <!-- Newsletter CTA -->
+    <div style="margin-top: 48px;">
+        <NewsletterEmbed locale={locale} />
+    </div>
+</div>
+</ArticleLayout>

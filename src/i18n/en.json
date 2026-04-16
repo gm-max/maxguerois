@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "home": "Max Guerois",
+    "linkedin": "LinkedIn",
+    "x": "X",
+    "instagram": "Instagram",
+    "langSwitch": "FR",
+    "langSwitchLabel": "Passer en français"
+  },
+  "common": {
+    "backHome": "← Back home",
+    "readExperiment": "Read experiment →",
+    "allExperiments": "All experiments →",
+    "fullBiomarkerReport": "Full biomarker report →",
+    "by": "By",
+    "latest": "Latest"
+  },
+  "newsletter": {
+    "title": "Follow the experiments",
+    "desc": "When I publish a new experiment or project, it goes to your inbox first."
+  },
+  "home": {
+    "title": "Max Guerois — Builder, Thinker",
+    "description": "Max Guerois — 29-year-old repeat founder based in Paris. Co-founded Lucis, a preventive health startup backed by YC and General Catalyst that ran 500K+ blood tests across Europe. Biological age 9.7 years younger, aging 26% slower than average. Open protocols on longevity, testosterone, and sleep.",
+    "ogDescription": "29-year-old repeat founder based in Paris. Co-founded Lucis, a preventive health startup backed by YC and General Catalyst that ran 500K+ blood tests across Europe. Biological age -9.7 yrs.",
+    "name": "Max (Maxime) Guerois",
+    "headline": "My blood says I'm 19. <em>Here's how.</em>",
+    "intro": "I'm Max. I'm 29, and my biological age is 19. I previously founded <strong>Lucis</strong>, Europe's most comprehensive blood testing platform, and grew it from 0 to $1M ARR. Now I'm building the most measured version of myself. This site is the protocol.",
+    "askAi": "Ask AI about Max Guerois",
+    "askAiPrompt": "Dig into my health protocol, founder story, or longevity obsession.",
+    "bioAge": "Bio Age",
+    "paceOfAging": "Pace of aging — 26% slower",
+    "restingHeartRate": "Resting heart rate",
+    "vo2max": "VO₂Max — top 5% cardio",
+    "sectionHealth": "01 / Health",
+    "sectionWork": "02 / Work",
+    "sectionPress": "03 / Press",
+    "sectionContact": "04 / Say hi",
+    "lucisDesc": "Preventive health startup backed by General Catalyst and Y Combinator. Helped build the brand, positioning, and early traction across Europe.",
+    "zeroClubDesc": "50K+ members across 20+ countries — Europe's longevity community. Built to find the people obsessed with health optimization. It grew so fast it became Lucis.",
+    "theArchDesc": "Where Web3 founders, operators & talent found each other — across 20+ countries. Proved I could build community at scale. Then I realized health was the community I actually wanted to build.",
+    "practupDesc": "Fitness app to sync your health data and find workout buddies — 50k+ users in France. My first instinct that health & community belonged together.",
+    "cofounder": "Co-founder",
+    "founder": "Founder"
+  },
+  "experiments": {
+    "title": "Experiments — Max Guerois",
+    "description": "Health experiments, protocols, and biomarker tracking by Max Guerois. Sleep, testosterone, longevity.",
+    "meta": "Health Experiments",
+    "heading": "What I'm tracking and learning",
+    "intro": "I run experiments on myself — sleep, hormones, biomarkers — and publish the data. Everything here is honest, sourced, and updated as I learn more."
+  },
+  "experimentsMeta": {
+    "sleepTitle": "7 Tips for High-Quality Sleep",
+    "sleepTagline": "3 months of tracking with the Ultrahuman Ring Air. Took my sleep score from 82 to 100 in 15 days. 7 changes that actually moved the needle.",
+    "sleepCategory": "Sleep Protocol",
+    "testosteroneTitle": "31 Tips to Fix Low Testosterone",
+    "testosteroneTagline": "Nothing besides TRT will drastically increase levels. The key is lifestyle. 31 science-backed actions, organized into morning ritual, evening ritual, diet, training, and stress management.",
+    "testosteroneCategory": "Male Protocol",
+    "biomarkersTitle": "My Biomarkers — Full Snapshot",
+    "biomarkersTagline": "Metabolism, hormones, body composition, strength, and biological age. −9.7 years biological age vs. chronological. Pace of aging: 0.74.",
+    "biomarkersCategory": "Health Baseline",
+    "supplementsTitle": "I Take 11 Supplements a Day",
+    "supplementsTagline": "11 supplements tied to my bloodwork. Three systems were broken: hormones, thyroid, inflammation. Full stack with doses, timing, and products.",
+    "supplementsCategory": "Supplement Protocol"
+  }
+}

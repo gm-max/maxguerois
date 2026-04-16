@@ -3,6 +3,7 @@
 // Extends Layout.astro — no head duplication
 // maxguerois.com
 import Layout from './Layout.astro';
+import type { Locale } from '../i18n/utils';
 
 interface Props {
     title: string;
@@ -10,9 +11,10 @@ interface Props {
     ogUrl?: string;
     ogImage?: string;
     articleStyles?: string;
+    locale?: Locale;
 }
 
-const { title, description, ogUrl, ogImage, articleStyles } = Astro.props;
+const { title, description, ogUrl, ogImage, articleStyles, locale = 'en' } = Astro.props;
 ---
 <Layout
     title={title}
@@ -23,6 +25,7 @@ const { title, description, ogUrl, ogImage, articleStyles } = Astro.props;
     ogDescription={description}
     ogImage={ogImage}
     extraStyles={["/styles/article.css"]}
+    locale={locale}
 >
     {articleStyles && <style set:html={articleStyles} />}
     <slot />
