@@ -1,4 +1,4 @@
-# maxguerois.com — Claude Instructions
+# maxguerois.com — Codex Instructions
 
 ## Project
 Personal hub for Max Guerois. Astro SSG, deployed on Vercel.
