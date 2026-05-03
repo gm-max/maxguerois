@@ -6,6 +6,8 @@ import { getCollection } from 'astro:content';
 const allExperiments = await getCollection('experiments');
 const experiments = allExperiments.filter(e => !e.data.locale || e.data.locale === 'en');
 experiments.sort((a, b) => b.data.date.localeCompare(a.data.date));
+const aiSummaryPrompt = "Give me a deep, structured profile of Max Guerois using his personal website https://maxguerois.com as the primary source and his current X profile https://x.com/maxguerois as a supporting source. Use the website for factual grounding, and use X to add current voice, interests, and public positioning. Cover these sections: 1) Who he is — age, location, background, and what drives him. 2) Lucis — what the company was, the traction it reached, and Max's role in its early chapter. 3) Full founder journey — Practup, The Arch, Zero Club, Lucis. 4) Health and longevity — his biomarkers, biological age vs chronological age, pace of aging, testosterone and sleep protocols. 5) Current thinking and public voice — themes, interests, and ideas visible on his X profile. 6) Press and public presence.";
+const aiSummaryPromptEncoded = encodeURIComponent(aiSummaryPrompt);
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -87,17 +89,21 @@ const structuredData = {
             <div class="section-label" style="margin-bottom: 10px;">Ask AI about Max Guerois</div>
             <p class="ai-prompt-label">Dig into my health protocol, founder story, or longevity obsession.</p>
             <div class="ai-links">
-                <a href="https://chatgpt.com/?q=Give%20me%20a%20deep%2C%20structured%20profile%20of%20Max%20Guerois%20using%20his%20personal%20website%20https%3A//maxguerois.com%20as%20the%20primary%20source.%20Cover%20these%20sections%3A%201%29%20Who%20he%20is%20%E2%80%94%20age%2C%20location%2C%20background%20and%20what%20drives%20him.%202%29%20Lucis%20%E2%80%94%20what%20the%20company%20does%2C%20traction%20%28500K%2B%20tests%20across%20Europe%29%2C%20investors%20%28General%20Catalyst%2C%20Y%20Combinator%29.%203%29%20Full%20founder%20journey%20%E2%80%94%20Practup%2C%20The%20Arch%2C%20Zero%20Club%2C%20Lucis.%204%29%20Health%20%26%20longevity%20%E2%80%94%20his%20biomarkers%2C%20biological%20age%20vs%20chronological%20age%2C%20pace%20of%20aging%20%28DunedinPACE%29%2C%20testosterone%20and%20sleep%20protocols.%205%29%20Press%20and%20public%20presence." class="ai-link" target="_blank">
+                <a href={`https://chatgpt.com/?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
                     <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
                     ChatGPT
                 </a>
-                <a href="https://claude.ai/new?q=Give%20me%20a%20deep%2C%20structured%20profile%20of%20Max%20Guerois%20using%20his%20personal%20website%20https%3A//maxguerois.com%20as%20the%20primary%20source.%20Cover%20these%20sections%3A%201%29%20Who%20he%20is%20%E2%80%94%20age%2C%20location%2C%20background%20and%20what%20drives%20him.%202%29%20Lucis%20%E2%80%94%20what%20the%20company%20does%2C%20traction%20%28500K%2B%20tests%20across%20Europe%29%2C%20investors%20%28General%20Catalyst%2C%20Y%20Combinator%29.%203%29%20Full%20founder%20journey%20%E2%80%94%20Practup%2C%20The%20Arch%2C%20Zero%20Club%2C%20Lucis.%204%29%20Health%20%26%20longevity%20%E2%80%94%20his%20biomarkers%2C%20biological%20age%20vs%20chronological%20age%2C%20pace%20of%20aging%20%28DunedinPACE%29%2C%20testosterone%20and%20sleep%20protocols.%205%29%20Press%20and%20public%20presence." class="ai-link" target="_blank">
+                <a href={`https://claude.ai/new?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
                     <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
                     Claude
                 </a>
-                <a href="https://www.perplexity.ai/search?q=Give%20me%20a%20deep%2C%20structured%20profile%20of%20Max%20Guerois%20using%20his%20personal%20website%20https%3A//maxguerois.com%20as%20the%20primary%20source.%20Cover%20these%20sections%3A%201%29%20Who%20he%20is%20%E2%80%94%20age%2C%20location%2C%20background%20and%20what%20drives%20him.%202%29%20Lucis%20%E2%80%94%20what%20the%20company%20does%2C%20traction%20%28500K%2B%20tests%20across%20Europe%29%2C%20investors%20%28General%20Catalyst%2C%20Y%20Combinator%29.%203%29%20Full%20founder%20journey%20%E2%80%94%20Practup%2C%20The%20Arch%2C%20Zero%20Club%2C%20Lucis.%204%29%20Health%20%26%20longevity%20%E2%80%94%20his%20biomarkers%2C%20biological%20age%20vs%20chronological%20age%2C%20pace%20of%20aging%20%28DunedinPACE%29%2C%20testosterone%20and%20sleep%20protocols.%205%29%20Press%20and%20public%20presence." class="ai-link" target="_blank">
+                <a href={`https://www.perplexity.ai/search?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
                     <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
                     Perplexity
+                </a>
+                <a href={`https://x.ai/grok?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                    <img src="https://www.google.com/s2/favicons?sz=32&domain=x.ai" alt="Grok" class="ai-icon">
+                    Grok
                 </a>
             </div>
         </div>
