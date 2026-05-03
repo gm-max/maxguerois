@@ -351,6 +351,7 @@ body {
 }
 .ai-link:hover { border-color: var(--text-secondary); color: var(--text); }
 .ai-icon { width: 18px; height: 18px; border-radius: 50%; }
+.ai-icon--square { border-radius: 0; }
 
 /* ── Health journey photos ── */
 .health-photos {
