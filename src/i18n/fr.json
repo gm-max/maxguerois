@@ -16,7 +16,7 @@
     "latest": "Récent"
   },
   "newsletter": {
-    "title": "Reste dans la boucle",
+    "title": "Reçois mes tips pour optimiser ta santé",
     "desc": "Nouvelle expérience, nouveau projet — t'es le premier au courant."
   },
   "home": {
@@ -24,8 +24,8 @@
     "description": "Max Guerois — 29 ans, Paris. Co-fondateur de Lucis, santé préventive (YC + General Catalyst), présent en France, UK, Irlande et Portugal. Âge bio : 19 ans. Vieillissement 26% plus lent. Protocoles ouverts sur la longévité, la testostérone et le sommeil.",
     "ogDescription": "29 ans, Paris. Co-fondateur de Lucis (YC + General Catalyst), présent en France, UK, Irlande et Portugal. Âge bio : 19 ans, vieillissement 26% plus lent.",
     "name": "Max (Maxime) Guerois",
-    "headline": "Mon sang dit que j'ai 19 ans. <em>Voici comment.</em>",
-    "intro": "Moi c'est Max. 29 ans. Mon âge bio — 19.<br>J'ai cofondé <strong>Lucis</strong>, la plateforme d'analyse de sang la plus complète en Europe. De 0 à 7 chiffres de revenu.<br>Aujourd'hui je documente tout ce que je fais sur mon corps. Ce site, c'est le protocole.",
+    "headline": "Mon horloge biologique dit que j'ai 19 ans. <em>Voici comment.</em>",
+    "intro": "Moi c'est Max. 29 ans. Mon âge biologique : 19 ans.<br>J'ai cofondé <strong>Lucis</strong>, la plateforme de santé préventive la plus complète en Europe. Aujourd'hui je documente tout ce que je fais sur mon corps. Ce site, c'est le protocole.",
     "askAi": "Demande à l'IA",
     "askAiPrompt": "Mon protocole santé, mon parcours de fondateur, mon obsession pour la longévité — demande ce que tu veux.",
     "bioAge": "Âge bio",

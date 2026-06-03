@@ -1,0 +1,57 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+
+const locale = 'fr';
+---
+<ArticleLayout
+    title="Quitter Lucis — Max Guerois"
+    description="Il y a quelques mois, j'ai décidé de quitter Lucis, la startup que j'ai cofondée. Un mot sur ce qu'on a construit, et sur la suite."
+    ogUrl="https://maxguerois.com/fr/lucis-chapter"
+    locale={locale}
+>
+
+<div class="container">
+    <a href="/fr" class="back">← Retour à l'accueil</a>
+
+    <div class="article-meta">Juin 2026</div>
+    <h1 class="article-title">Quitter Lucis</h1>
+
+    <div class="article-body">
+
+        <p>Il y a quelques mois, j'ai décidé de quitter Lucis, la startup que j'ai cofondée.</p>
+
+        <p>Lucis est née d'une obsession personnelle pour la santé et l'optimisation. Comment l'optimiser. Comment la mesurer. Comment aller plus loin. (Mes expérimentations sont documentées <a href="/fr/experiments">ici</a>.)</p>
+
+        <p>Tout a commencé avec un groupe WhatsApp. Quelques personnes en Europe, passionnées de longévité, qui essayaient de comprendre leurs bilans sanguins et quoi en faire. On tombait toujours sur le même problème : si on voulait faire de la santé préventive en Europe, il fallait tout faire soi-même.</p>
+
+        <p>Cette obsession est devenue une communauté.</p>
+
+        <p>Cette communauté est devenue une startup.</p>
+
+        <p>Y Combinator a soutenu cette vision.</p>
+
+        <p>Des milliers de personnes nous ont fait confiance. Et Lucis est devenue un des acteurs majeurs dans la santé préventive en Europe.</p>
+
+        <p>Je suis fier de ce qu'on a construit, reconnaissant envers ceux qui y ont cru, et toujours profondément convaincu que la santé préventive et personnalisée, c'est l'avenir de la médecine en Europe.</p>
+
+        <p>Lucis est entre de très bonnes mains.</p>
+
+        <p>Maxime Berthelot et Baptiste Debever ont mis toute leur énergie dans cette entreprise. Je serai le premier à les soutenir.</p>
+
+        <p>Pour la suite : je retourne à ce que j'aime le plus. Repartir d'un problème qui compte, m'entourer des bonnes personnes, et construire quelque chose en partant de zéro.</p>
+
+        <p>Infiniment reconnaissant pour tout ce que Lucis m'a appris. Plus que jamais excité pour la suite.</p>
+
+    </div>
+
+    <div class="article-footer">
+        <span class="author-line">Par <a href="/fr">Max Guerois</a></span>
+    </div>
+
+    <!-- Newsletter CTA -->
+    <div style="margin-top: 48px;">
+        <NewsletterEmbed locale={locale} />
+    </div>
+</div>
+</ArticleLayout>
