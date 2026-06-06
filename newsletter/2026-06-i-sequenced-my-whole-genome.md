@@ -16,9 +16,9 @@ notes: >
 
 Hey,
 
-Most of you found me through the post on [leaving Lucis](https://maxguerois.com/lucis-chapter). So here's what you actually signed up for.
+Most of you found me through the post on [leaving Lucis](https://maxguerois.com/lucis-chapter). Here's what you actually signed up for.
 
-I'm building my next venture in the open. You'll watch it form here in real time: the research, the experiments I run on myself, what works and what blows up. You get the unfiltered version. If you like learning from someone who tests things on himself first, you'll get a lot out of this.
+I'm building my next venture in the open: the research, the experiments I run on myself, what works and what blows up. You get the unfiltered version.
 
 I'll start with the foundation of all of it. The highest-leverage thing I've done for my health, and the base under every experiment that follows.
 
@@ -84,7 +84,7 @@ Two moves turned the report into something I actually use day to day:
 
 The genome is the fixed baseline; the rest shows what's happening week to week. Stacked together, they cross-check each other, and inherited patterns stop looking like noise.
 
-**2. I built a system that interprets it.** All of that feeds an AI layer that reads across everything and tells me what to do. That's the real unlock, and it's Step 3 below.
+**2. I built a system that interprets it.** All of that feeds an LLM layer that reads across everything and tells me what to do. That's the real unlock, and it's Step 3 below.
 
 ## How I de-risk an advanced therapy before I try it
 
@@ -99,8 +99,6 @@ Before the first dose, I ran a three-step check:
 3. **Ask the one question that counts:** given my specific data, is this safe enough to be worth it for me?
 
 This is where the genome earns its place in daily life. It can't yet tell you the ideal dose; the science there is still young [3]. What it does reliably is flag the contraindications, the variants that say "this is riskier for you than for most people." That one safety filter, applied to every supplement, drug, or therapy you're considering, is worth the price of sequencing on its own.
-
-**Want the full retatrutide breakdown,** the protocol, the data, what I'm seeing? Hit reply and say so. If enough of you want it, that's the next issue.
 
 ## The 3 steps to start
 
@@ -121,11 +119,13 @@ A genome on its own gives tendencies. Its value shows up when it sits next to yo
 
 Mine is a markdown wiki: a folder of plain-text files on my computer, one per topic (labs, genome, training, sleep), each tagged with consistent labels. A second brain that holds everything known about my health, structured so a machine can read across all of it. The idea comes from Andrej Karpathy's "LLM wiki" [4]: plain markdown a model can read, reason over, and write back to. I'll write up exactly how I built mine in a future issue.
 
-**3. Let an AI interpret it.**
+**3. Let an LLM interpret it.**
 
 This is the step almost everyone skips, and where the entire payoff lives. Raw data and reports do nothing on their own. I point Claude (or any LLM) at that wiki, and because the files are structured the same way, it reads across all of them at once and gives me specific, daily recommendations that update every time new data lands. The genome stops being a one-time PDF and becomes a live input into decisions, which is what lets me test new things safely.
 
 You can build your own or use a tool that does it for you. The principle is what matters: data you collect is a curiosity; data something acts on compounds.
+
+## The bottom line
 
 A $100 genome is the highest-leverage measurement in health today. Most people will never run it, and most who do let it rot in an app. Read yours, then build the thing that acts on it. That's the game I'll keep playing in front of you here.
 
