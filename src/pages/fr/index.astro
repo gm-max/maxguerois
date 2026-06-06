@@ -145,7 +145,7 @@ const structuredData = {
             <img src="/health-journey/supplement-breakfast.jpeg" alt="Compléments du matin" class="health-photo" loading="lazy">
         </div>
         <div class="writing-list">
-            {experiments.map((exp) => (
+            {experiments.slice(0, 3).map((exp) => (
                 <a href={`/fr/${exp.data.slug}`} class="writing-item">
                     <div class="writing-item-content">
                         <div class="writing-title">{exp.data.title}</div>
