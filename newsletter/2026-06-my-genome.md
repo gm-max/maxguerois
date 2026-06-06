@@ -6,7 +6,7 @@ subject_alts:
 preview_text: The base layer under everything I do with my health, and the three steps to do it yourself.
 status: draft
 tool: Beehiiv (paste this markdown into the post editor)
-companion_post: https://maxguerois.com/i-sequenced-my-whole-genome
+companion_post: https://maxguerois.com/my-genome
 notes: >
   Same body as the blog post. Two images to upload in the editor at the marked
   spots: (1) the typo-fixed cost chart (also use it as the email header / social
