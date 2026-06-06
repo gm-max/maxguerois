@@ -48,16 +48,6 @@ const articleStyles = `
         text-align: center;
         line-height: 1.5;
     }
-    .img-pending {
-        border: 1px dashed var(--border);
-        border-radius: var(--radius-lg);
-        padding: 48px 20px;
-        text-align: center;
-        color: var(--text-tertiary);
-        font-size: 14px;
-        line-height: 1.6;
-        background: var(--bg-subtle);
-    }
     .disclaimer {
         font-size: 14px;
         color: var(--text-tertiary);
@@ -73,6 +63,7 @@ const articleStyles = `
     title="I sequenced my whole genome. Here's what I found."
     description="I sequenced my whole genome during YC. What a DNA test actually is, what it cost, what mine changed, and the three steps to do it yourself."
     ogUrl="https://maxguerois.com/my-genome"
+    ogImage="https://maxguerois.com/health-journey/dna/og-cost-of-sequencing.jpg"
     articleStyles={articleStyles}
 >
 
@@ -120,21 +111,11 @@ const articleStyles = `
         <h2 class="section-heading">Why everyone is suddenly talking about it</h2>
 
         <figure class="fig">
-            <!--
-              IMAGE: cost chart. BLOCKER: pending typo-fixed version from Max
-              (the original had a "Sequensencing" typo in the blue label).
-              When the final file lands, drop it at
-              /health-journey/dna/cost-of-sequencing.png and replace the
-              .img-pending div below with:
-              <img src="/health-journey/dna/cost-of-sequencing.png"
-                   alt="Cost of sequencing a whole human genome (2000 to 2026) versus Moore's Law"
-                   loading="lazy">
-              Also set this image as the OG image on the ArticleLayout above.
-            -->
-            <div class="img-pending">
-                Cost chart pending (typo-fixed version from Max).<br>
-                "Cost of sequencing a whole human genome (2000 to 2026) vs Moore's Law"
-            </div>
+            <img
+                src="/health-journey/dna/cost-of-sequencing.jpeg"
+                alt="Line chart: the cost of sequencing a whole human genome fell from $100M in 2000 to under $100 in 2026, far faster than Moore's Law"
+                loading="lazy"
+            >
             <figcaption>Cost of sequencing a whole human genome (2000 to 2026), versus Moore's Law.</figcaption>
         </figure>
 

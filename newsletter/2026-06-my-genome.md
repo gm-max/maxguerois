@@ -9,9 +9,11 @@ tool: Beehiiv (paste this markdown into the post editor)
 companion_post: https://maxguerois.com/my-genome
 notes: >
   Same body as the blog post. Two images to upload in the editor at the marked
-  spots: (1) the typo-fixed cost chart (also use it as the email header / social
-  image), and (2) the wiki->LLM schema. Beehiiv may not render SVG in email;
-  export wiki-llm-schema.svg to PNG before uploading. No em dashes anywhere.
+  spots: (1) the cost chart at public/health-journey/dna/cost-of-sequencing.jpeg
+  (also use it as the email header / social image), and (2) the wiki->LLM schema.
+  Beehiiv may not render SVG in email; export wiki-llm-schema.svg to PNG before
+  uploading. No em dashes anywhere. Note: the cost chart still shows a
+  "Sequensencing" typo in the blue label (shipping as-is per Max).
 ---
 
 Hey,
@@ -44,7 +46,7 @@ Genotyping samples. Sequencing reads everything. For any real decision, you want
 
 ## Why everyone is suddenly talking about it
 
-[IMAGE: cost chart, typo-fixed. "Cost of sequencing a whole human genome (2000 to 2026) vs Moore's Law". Use as email header / social image too.]
+[IMAGE: cost chart. public/health-journey/dna/cost-of-sequencing.jpeg. "Cost of sequencing a whole human genome (2000 to 2026) vs Moore's Law". Use as email header / social image too.]
 
 The cost of sequencing a human genome dropped from $100M to less than $100 in about 25 years. That's a million-fold decrease, which outpaces even Moore's Law.
 
