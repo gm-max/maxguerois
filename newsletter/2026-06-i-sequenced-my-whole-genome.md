@@ -1,0 +1,146 @@
+---
+subject: I sequenced my whole genome. Here's what I found.
+subject_alts:
+  - The cheapest measurement in modern health
+  - I checked my DNA before trying a single peptide.
+preview_text: The base layer under everything I do with my health, and the three steps to do it yourself.
+status: draft
+tool: Beehiiv (paste this markdown into the post editor)
+companion_post: https://maxguerois.com/i-sequenced-my-whole-genome
+notes: >
+  Same body as the blog post. Two images to upload in the editor at the marked
+  spots: (1) the typo-fixed cost chart (also use it as the email header / social
+  image), and (2) the wiki->LLM schema. Beehiiv may not render SVG in email;
+  export wiki-llm-schema.svg to PNG before uploading. No em dashes anywhere.
+---
+
+Hey,
+
+Most of you found me through the post on [leaving Lucis](https://maxguerois.com/lucis-chapter). So here's what you actually signed up for.
+
+I'm building my next venture in the open. You'll watch it form here in real time: the research, the experiments I run on myself, what works and what blows up. You get the unfiltered version. If you like learning from someone who tests things on himself first, you'll get a lot out of this.
+
+I'll start with the foundation of all of it. The highest-leverage thing I've done for my health, and the base under every experiment that follows.
+
+I sequenced my genome.
+
+I did it during YC. Being in the US gave me access to the most promising DNA test on the market, and I'd known for a while that sequencing was becoming the thing in health. So I used Nucleus, and it ended up running how I manage my health today.
+
+In this issue:
+
+- what a DNA test actually is
+- why everyone's suddenly talking about it
+- what mine changed for me
+- the three steps to do it yourself
+
+## What a "DNA test" actually is
+
+Most people hear "DNA test" and think 23andMe. Wrong tool. There are two:
+
+- **Genotyping** (23andMe, Ancestry): reads ~0.1% of your DNA at preselected spots. Cheap, good for ancestry. It does not read your genome.
+- **Whole genome sequencing (WGS):** reads all 3.2 billion base pairs at 30x. Clinical-grade. Surfaces actionable variants, carrier status, real risk.
+
+Genotyping samples. Sequencing reads everything. For any real decision, you want sequencing.
+
+## Why everyone is suddenly talking about it
+
+[IMAGE: cost chart, typo-fixed. "Cost of sequencing a whole human genome (2000 to 2026) vs Moore's Law". Use as email header / social image too.]
+
+The cost of sequencing a human genome dropped from $100M to less than $100 in about 25 years. That's a million-fold decrease, which outpaces even Moore's Law.
+
+Then the cheap-data era imploded. 23andMe went bankrupt in March 2025 and sold 15 million people's DNA as an asset. Nebula shut down.
+
+So here's the rule that came out of it: your genome is the one data point you can never change or revoke. When the company holding it fails, your DNA gets sold. Own it, or don't hand it over.
+
+## Where this is going
+
+We're about to enter the era of personalized medicine, and it's moving faster than most people realize.
+
+Reading a genome is now cheap and routine. The frontier has moved to editing one. Days ago, scientists at Columbia published the first precise edit of human embryos [1], correcting genes for heart-disease risk and hemoglobin with single-letter base editing that's far cleaner than CRISPR. It's early, and ethically loaded. But the direction is set. Reading your genome was step one. Rewriting it is step two, and it just started.
+
+## What I did, and how it helped
+
+Nucleus is simple, and the UX is genuinely great. A kit arrives, you give a sample, you ship it back, and your results land in a clean app a few weeks later.
+
+Then it took me weeks to open it. Sequencing your genome means reading things you can't unread.
+
+When I did, three things mattered:
+
+- **A pathogenic variant** I didn't know I carried. It changed what I screen for, and how often, with my doctor.
+- **Polygenic risk scores.** These sum thousands of tiny genetic effects into a single estimate of your odds for a common condition. Think of it as a weather forecast for your body: "roughly 1.6x the average lifetime odds of type 2 diabetes," or "below average for one heart condition." Useful for deciding what to watch closely.
+- **Carrier status** that matters for family planning.
+
+What I learned: a genome is not a crystal ball. Most of it reads average. But the handful of findings that are actionable are genuinely actionable, and you only get them if you look.
+
+Two moves turned the report into something I actually use day to day:
+
+**1. I pulled it together with the rest of my data.** Everything went into one place:
+
+- 5 years of blood tests
+- Whoop (recovery, sleep, strain)
+- Strava (training load)
+- Withings (weight, body composition, heart)
+- my family's panels, including my father's
+
+The genome is the fixed baseline; the rest shows what's happening week to week. Stacked together, they cross-check each other, and inherited patterns stop looking like noise.
+
+**2. I built a system that interprets it.** All of that feeds an AI layer that reads across everything and tells me what to do. That's the real unlock, and it's Step 3 below.
+
+## How I de-risk an advanced therapy before I try it
+
+This is how I approach anything serious I put in my body, whether a [supplement](https://maxguerois.com/experiments/supplements), a drug, or an advanced therapy.
+
+Take what I'm running now: GLP-1 peptides, retatrutide specifically. It's a triple agonist (GLP-1, GIP, glucagon) and the most effective metabolic compound tested to date, up to 24% body-weight loss in its phase 2 trial [2]. My purpose is to understand firsthand how it moves my metabolism, body composition, and appetite, on my own data, before I'd have an opinion worth sharing.
+
+Before the first dose, I ran a three-step check:
+
+1. **Map the risk factors.** What the literature says about contraindications, side effects, and the genetics that matter for this specific compound.
+2. **Hand them to my health-OS agent.** Cross-reference those risks against my own genome and bloodwork.
+3. **Ask the one question that counts:** given my specific data, is this safe enough to be worth it for me?
+
+This is where the genome earns its place in daily life. It can't yet tell you the ideal dose; the science there is still young [3]. What it does reliably is flag the contraindications, the variants that say "this is riskier for you than for most people." That one safety filter, applied to every supplement, drug, or therapy you're considering, is worth the price of sequencing on its own.
+
+**Want the full retatrutide breakdown,** the protocol, the data, what I'm seeing? Hit reply and say so. If enough of you want it, that's the next issue.
+
+## The 3 steps to start
+
+**1. Sequence your genome.**
+
+Get whole-genome sequencing (WGS), the kind that reads everything.
+
+- **US:** [Nucleus](https://mynucleus.com/health). Clinical-grade, genetic-counselor access, strong reports. ~$399. What I used.
+- **Europe:** [Myoform](https://myoform.io/pages/pricing) (a friend's company, UK, ships to France and the EU, performance and supplement focus, WGS 30x, ~£359) and [Dante Labs](https://dantelabs.com/products/whole-genome-sequencing) (Italy, raw data, ~€430).
+
+Three rules, no exceptions: it must be whole-genome, you must be able to download your raw data, and you must be able to delete it. 23andMe is why.
+
+**2. Put everything in one place.**
+
+A genome on its own gives tendencies. Its value shows up when it sits next to your bloodwork, your wearables, and your family history, in one organized place.
+
+[IMAGE: wiki schema. Upload wiki-llm-schema (export the SVG to PNG first for email).]
+
+Mine is a markdown wiki: a folder of plain-text files on my computer, one per topic (labs, genome, training, sleep), each tagged with consistent labels. A second brain that holds everything known about my health, structured so a machine can read across all of it. The idea comes from Andrej Karpathy's "LLM wiki" [4]: plain markdown a model can read, reason over, and write back to. I'll write up exactly how I built mine in a future issue.
+
+**3. Let an AI interpret it.**
+
+This is the step almost everyone skips, and where the entire payoff lives. Raw data and reports do nothing on their own. I point Claude (or any LLM) at that wiki, and because the files are structured the same way, it reads across all of them at once and gives me specific, daily recommendations that update every time new data lands. The genome stops being a one-time PDF and becomes a live input into decisions, which is what lets me test new things safely.
+
+You can build your own or use a tool that does it for you. The principle is what matters: data you collect is a curiosity; data something acts on compounds.
+
+A $100 genome is the highest-leverage measurement in health today. Most people will never run it, and most who do let it rot in an app. Read yours, then build the thing that acts on it. That's the game I'll keep playing in front of you here.
+
+Reply if you've sequenced yours and done something real with it. I'm always looking for cases where it actually changed a decision.
+
+More soon,
+Max
+
+*Personal experimentation and documentation, not medical advice. Talk to a doctor before making health decisions.*
+
+---
+
+### References
+
+1. [*Nature*, first precise base-editing of human embryos (June 2026)](https://www.nature.com/articles/d41586-026-01827-8)
+2. [Jastreboff et al., *NEJM* 2023, retatrutide phase 2 trial, up to ~24% body-weight loss](https://www.nejm.org/doi/full/10.1056/NEJMoa2301972)
+3. [*Lancet Diabetes & Endocrinology* 2022, pharmacogenomics of GLP-1 receptor agonists](https://www.thelancet.com/journals/landia/article/PIIS2213-8587(22)00340-0/fulltext)
+4. [Andrej Karpathy on the "LLM wiki" (plain-markdown second brain for LLMs)](https://x.com/karpathy/status/2039805659525644595)
