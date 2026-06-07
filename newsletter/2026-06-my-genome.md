@@ -88,7 +88,7 @@ Two moves turned the report into something I actually use day to day:
 
 The genome is the fixed baseline; the rest shows what's happening week to week. Stacked together, they cross-check each other, and inherited patterns stop looking like noise.
 
-**2. I built a system that interprets it.** All of that feeds an LLM layer that reads across everything and tells me what to do. That's the real unlock, and it's Step 3 below.
+**2. I built the Max Health OS.** An LLM layer that reads across all my data, genome included, and tells me what to do. That's the real unlock, and it's Step 3 below.
 
 ## How I de-risk an advanced therapy before I try it
 
@@ -101,7 +101,7 @@ I want to see firsthand how it moves my metabolism, body composition, and appeti
 Before the first dose, I ran a three-step check:
 
 1. **Map the risk factors.** What the literature says about contraindications, side effects, and the genetics that matter for this specific compound.
-2. **Hand them to my health-OS agent.** Cross-reference those risks against my own genome and bloodwork.
+2. **Hand them to the Max Health OS.** Cross-reference those risks against my own genome and bloodwork.
 3. **Ask the one question that counts:** given my specific data, is this safe enough to be worth it for me?
 
 This is where the genome earns its place in daily life. It can't yet tell you the ideal dose; the science there is still young [3]. What it does reliably is flag the contraindications, the variants that say "this is riskier for you than for most people." That one safety filter, applied to every supplement, drug, or therapy you're considering, is worth the price of sequencing on its own.
