@@ -83,13 +83,7 @@ What I learned: a genome is not a crystal ball. Most of it reads average. But th
 
 Two moves turned the report into something I actually use day to day:
 
-**1. I pulled it together with the rest of my data.** Everything went into one place:
-
-- 5 years of blood tests
-- Whoop (recovery, sleep, strain)
-- Strava (training load)
-- Withings (weight, body composition, heart)
-- my family's panels, including my father's
+**1. I pulled it together with the rest of my data.** Everything went into one place: 5 years of blood tests, Whoop, Strava, Withings, and my family's panels, including my father's.
 
 The genome is the fixed baseline; the rest shows what's happening week to week. Stacked together, they cross-check each other, and inherited patterns stop looking like noise.
 
