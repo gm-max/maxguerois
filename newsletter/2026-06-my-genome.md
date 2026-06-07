@@ -60,7 +60,12 @@ So here's the rule that came out of it: your genome is the one data point you ca
 
 We're about to enter the era of personalized medicine, and it's moving faster than most people realize.
 
-Reading a genome is now cheap and routine. The frontier has moved to editing one. Days ago, scientists at Columbia published the first precise edit of human embryos [1], correcting genes for heart-disease risk and hemoglobin with single-letter base editing that's far cleaner than CRISPR. It's early, and ethically loaded. But the direction is set. Reading your genome was step one. Rewriting it is step two, and it just started.
+Reading a genome is now cheap and routine. Two things happening right now show where it goes next:
+
+- **We're starting to edit genomes, not just read them.** Scientists in the US just corrected disease-causing genes directly in human embryos [1], more precisely than ever before. Early and ethically loaded, but the line has been crossed.
+- **And you can now do the whole thing yourself, privately.** Someone sequenced his entire genome at home, on his kitchen table, without his DNA ever touching the internet [6], using a device smaller than a phone and open-source AI to trace his family's autoimmune conditions.
+
+Reading your genome was step one. Rewriting it, and owning it end to end, is step two. It just started.
 
 ## What I did, and how it helped
 
@@ -168,3 +173,4 @@ Max
 3. [*Lancet Diabetes & Endocrinology* 2022, pharmacogenomics of GLP-1 receptor agonists](https://www.thelancet.com/journals/landia/article/PIIS2213-8587(22)00340-0/fulltext)
 4. [Andrej Karpathy on the "LLM wiki" (plain-markdown second brain for LLMs)](https://x.com/karpathy/status/2039805659525644595)
 5. [Goodwin et al., *Nature Reviews Genetics* 2016, what short-read sequencing is, a review of next-generation sequencing technologies](https://www.nature.com/articles/nrg.2016.49)
+6. [Seth Howes, sequencing his whole genome at home on his kitchen table, no internet, local open-source AI (X, 2026)](https://x.com/SethSHowes/status/2045289299269070978)
