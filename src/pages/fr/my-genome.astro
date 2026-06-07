@@ -1,0 +1,279 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+
+const locale = 'fr';
+
+// Scoped styles for elements not covered by the global article.css
+// (body lists, inline links, figures, references, disclaimer).
+const articleStyles = `
+    .article-body a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        transition: color var(--duration-short) ease;
+    }
+    .article-body a:hover { color: var(--text); }
+    .article-body ul, .article-body ol {
+        margin: 0 0 20px;
+        padding-left: 22px;
+        color: var(--text-secondary);
+    }
+    .article-body li {
+        font-size: 16px;
+        line-height: 1.75;
+        margin-bottom: 8px;
+    }
+    .article-body ul { list-style: disc; }
+    .article-body ol { list-style: decimal; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body sup a { text-decoration: none; font-size: 0.7em; }
+    figure.fig { margin: var(--sp-8) 0; }
+    figure.fig > img {
+        width: 100%;
+        display: block;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+    }
+    .schema-wrap {
+        background: #faf9f7;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 20px;
+    }
+    .schema-wrap img { width: 100%; display: block; }
+    figure.fig figcaption {
+        font-size: 13px;
+        color: var(--text-tertiary);
+        margin-top: 10px;
+        text-align: center;
+        line-height: 1.5;
+    }
+    .disclaimer {
+        font-size: 14px;
+        color: var(--text-tertiary);
+        font-style: italic;
+        margin-top: var(--sp-8);
+        line-height: 1.6;
+    }
+    .ref-list { font-size: 14px; line-height: 1.6; }
+    .ref-list li { margin-bottom: 10px; color: var(--text-secondary); }
+`;
+---
+<ArticleLayout
+    title="J'ai séquencé mon génome entier. Voici ce que j'ai trouvé."
+    description="J'ai séquencé mon génome entier pendant le YC. Ce qu'est vraiment un test ADN, ce que ça coûte, ce que le mien a changé, et les trois étapes pour le faire toi-même."
+    ogUrl="https://maxguerois.com/fr/my-genome"
+    ogImage="https://maxguerois.com/health-journey/dna/og-cheapest-measurement.jpg"
+    locale={locale}
+    articleStyles={articleStyles}
+>
+
+<div class="container">
+    <a href="/fr" class="back">← Retour à l'accueil</a>
+
+    <div class="article-meta">Juin 2026</div>
+    <h1 class="article-title">J'ai séquencé mon génome entier. Voici ce que j'ai trouvé.</h1>
+    <p class="article-subtitle">La couche de base de tout ce que je fais pour ma santé, et les trois étapes pour le faire toi-même.</p>
+
+    <img
+        class="article-img"
+        src="/health-journey/dna/og-cheapest-measurement.jpg"
+        alt="La mesure la moins chère de la médecine moderne"
+        loading="lazy"
+    >
+
+    <div class="article-body">
+
+        <p>Salut,</p>
+
+        <p>Tu m'as sûrement découvert avec mon post sur le <a href="/fr/lucis-chapter">départ de Lucis</a>. Voilà ce pour quoi tu as signé : je construis ma prochaine boîte au grand jour, et tu as la version brute. La recherche, les expériences que je mène sur moi, ce qui marche et ce qui explose en vol.</p>
+
+        <p>Alors je commence par la fondation : la chose au plus fort levier que j'ai faite pour ma santé.</p>
+
+        <p>J'ai séquencé mon génome.</p>
+
+        <p>Je l'ai fait pendant le YC. Être aux États-Unis m'a donné accès au test ADN le plus prometteur du marché, et je savais depuis un moment que le séquençage devenait LE sujet en santé. J'ai utilisé Nucleus, et ça a fini par piloter toute ma gestion de la santé aujourd'hui.</p>
+
+        <p>Au programme :</p>
+
+        <ul>
+            <li>ce qu'est vraiment un test ADN</li>
+            <li>pourquoi tout le monde en parle d'un coup</li>
+            <li>ce que le mien a changé pour moi</li>
+            <li>les trois étapes pour le faire toi-même</li>
+        </ul>
+
+        <h2 class="section-heading">Ce qu'est vraiment un test ADN</h2>
+
+        <p>La plupart des gens entendent "test ADN" et pensent 23andMe. Mauvais outil. Il y en a deux :</p>
+
+        <ul>
+            <li><strong>Le génotypage</strong> (23andMe, Ancestry) : lit un échantillon d'environ 0,1 % de ton ADN, à des positions présélectionnées. Pas cher, bien pour les origines. Ça ne lit pas ton génome.</li>
+            <li><strong>Le séquençage du génome entier (WGS) :</strong> lit les 3,2 milliards de paires de bases, en couverture 30x. Qualité clinique. C'est ce qui fait ressortir les variants actionnables, le statut de porteur, le vrai risque.</li>
+        </ul>
+
+        <p>Le génotypage échantillonne. Le séquençage lit tout. Pour toute décision sérieuse, tu veux le séquençage.</p>
+
+        <h2 class="section-heading">Pourquoi tout le monde en parle d'un coup</h2>
+
+        <figure class="fig">
+            <img
+                src="/health-journey/dna/cost-of-sequencing.jpeg"
+                alt="Graphique : le coût du séquençage d'un génome humain entier est passé de 100 M$ en 2000 à moins de 100 $ en 2026, bien plus vite que la loi de Moore"
+                loading="lazy"
+            >
+            <figcaption>Coût du séquençage d'un génome humain entier (2000 à 2026), face à la loi de Moore.</figcaption>
+        </figure>
+
+        <p>Le coût pour séquencer un génome humain est passé de 100 M$ à moins de 100 $ en environ 25 ans. Une division par un million, qui dépasse même la loi de Moore.</p>
+
+        <p>Puis l'ère de la donnée pas chère a implosé. 23andMe a fait faillite en mars 2025 et a vendu l'ADN de 15 millions de personnes comme un actif. Nebula a fermé.</p>
+
+        <p>D'où la règle qui en ressort : ton génome est la seule donnée que tu ne pourras jamais changer ni révoquer. Quand la boîte qui la détient coule, ton ADN se vend. Possède-le, ou ne le donne pas.</p>
+
+        <h2 class="section-heading">Où ça va</h2>
+
+        <p>On est à l'aube de la médecine personnalisée, et ça va plus vite que la plupart des gens ne le réalisent.</p>
+
+        <p>Lire un génome est désormais peu cher et routinier. La frontière s'est déplacée vers son édition.</p>
+
+        <p>Il y a quelques jours, des chercheurs de Columbia ont publié dans Nature la première édition précise d'embryons humains<sup><a href="#ref-1">[1]</a></sup>, corrigeant des gènes liés au risque cardiovasculaire et à l'hémoglobine, avec du base editing lettre par lettre, bien plus propre que CRISPR. C'est précoce, et lourd de questions éthiques.</p>
+
+        <p>Mais la direction est posée. Lire son génome, c'était l'étape une. Le réécrire, c'est l'étape deux, et elle vient de commencer.</p>
+
+        <h2 class="section-heading">Ce que j'ai fait, et ce que ça m'a apporté</h2>
+
+        <p>Nucleus, c'est simple, et l'UX est vraiment réussie. Un kit arrive chez toi, tu donnes un échantillon, tu le renvoies, et tes résultats arrivent dans une app propre quelques semaines plus tard.</p>
+
+        <p>Puis je suis resté dessus sans l'ouvrir. Ça m'a pris des semaines pour ouvrir les miens. Séquencer son génome, c'est lire des choses qu'on ne peut plus effacer de sa tête.</p>
+
+        <p>Quand je l'ai fait, trois choses comptaient :</p>
+
+        <ul>
+            <li><strong>Un variant pathogène</strong> que je ne savais pas porter. Ça a changé ce que je surveille, et à quelle fréquence, avec mon médecin.</li>
+            <li><strong>Des scores de risque polygénique.</strong> Ils additionnent des milliers de petits effets génétiques en une seule estimation de tes probabilités pour une maladie courante. Vois ça comme une météo de ton corps : "environ 1,6x le risque moyen de diabète de type 2 sur la vie", ou "sous la moyenne pour une maladie cardiaque". Utile pour décider quoi surveiller de près.</li>
+            <li><strong>Un statut de porteur</strong> qui compte pour un projet d'enfant.</li>
+        </ul>
+
+        <p>Ce que j'ai appris : un génome n'est pas une boule de cristal. La plupart se lit "dans la moyenne".</p>
+
+        <p>Mais la poignée de résultats actionnables le sont vraiment, et tu ne les as que si tu regardes.</p>
+
+        <p>Deux mouvements ont transformé le rapport en quelque chose que j'utilise au quotidien :</p>
+
+        <p><strong>1. Je l'ai croisé avec le reste de mes données.</strong><br>Tout est allé au même endroit :</p>
+
+        <ul>
+            <li>5 ans de prises de sang</li>
+            <li>Whoop (récupération, sommeil, charge)</li>
+            <li>Strava (charge d'entraînement)</li>
+            <li>Withings (poids, composition corporelle, cœur)</li>
+            <li>les bilans de ma famille, dont ceux de mon père</li>
+        </ul>
+
+        <p>Le génome est la base fixe ; le reste montre ce qui se passe semaine après semaine. Empilés, ils se recoupent, et les schémas hérités cessent de ressembler à du bruit.</p>
+
+        <p><strong>2. J'ai construit un système qui l'interprète.</strong><br>Tout ça alimente une couche LLM qui lit l'ensemble et me dit quoi faire. C'est le vrai déclic, et c'est l'étape 3 plus bas.</p>
+
+        <h2 class="section-heading">Comment je dérisque une thérapie avancée avant de l'essayer</h2>
+
+        <p>C'est comme ça que j'aborde tout ce que je mets de sérieux dans mon corps, que ce soit un <a href="/fr/experiments/supplements">complément</a>, un médicament ou une thérapie avancée.</p>
+
+        <p>Prends ce que je teste en ce moment : le rétatrutide, un triple agoniste GLP-1/GIP/glucagon et la classe métabolique la plus puissante testée à ce jour, jusqu'à 24 % de perte de poids dans son essai de phase 2<sup><a href="#ref-2">[2]</a></sup>.</p>
+
+        <p>Je veux voir de première main comment il bouge mon métabolisme, ma composition corporelle et mon appétit, sur mes propres données, avant d'avoir un avis qui vaille la peine.</p>
+
+        <p>Avant la première dose, j'ai fait un check en trois temps :</p>
+
+        <ol>
+            <li><strong>Cartographier les facteurs de risque.</strong> Ce que dit la littérature sur les contre-indications, les effets secondaires, et la génétique qui compte pour cette molécule précise.</li>
+            <li><strong>Les passer à mon agent health-OS.</strong> Croiser ces risques avec mon propre génome et mes prises de sang.</li>
+            <li><strong>Poser la seule question qui compte :</strong> au vu de mes données précises, est-ce assez sûr pour que ça en vaille la peine pour moi ?</li>
+        </ol>
+
+        <p>C'est là que le génome gagne sa place dans la vie de tous les jours. Il ne peut pas encore te donner la dose idéale ; la science est encore jeune là-dessus<sup><a href="#ref-3">[3]</a></sup>.</p>
+
+        <p>Ce qu'il fait de façon fiable, c'est signaler les contre-indications, les variants qui disent "c'est plus risqué pour toi que pour la moyenne".</p>
+
+        <p>Ce seul filtre de sécurité, appliqué à chaque complément, médicament ou thérapie que tu envisages, vaut à lui seul le prix du séquençage.</p>
+
+        <h2 class="section-heading">Les 3 étapes pour commencer</h2>
+
+        <p><strong>1. Séquence ton génome.</strong></p>
+
+        <p>Prends du séquençage du génome entier (WGS), celui qui lit tout.</p>
+
+        <ul>
+            <li><strong>Aux US :</strong> <a href="https://mynucleus.com/health" target="_blank" rel="noopener">Nucleus</a>. Séquençage Illumina short-read, génome entier en 30x. Qualité clinique, accès à des conseillers en génétique, rapports solides. ~399 $. Ce que j'ai utilisé.</li>
+            <li><strong>En Europe :</strong> <a href="https://myoform.io/pages/pricing" target="_blank" rel="noopener">Myoform</a>. Génome entier en 30x, données brutes que tu possèdes et peux supprimer. Ils associent ton test ADN à une formule de compléments construite à partir de tes résultats, ou tu peux prendre le test seul. Test ADN seul, ~359 £.</li>
+            <li><strong>En Europe :</strong> <a href="https://dantelabs.com/products/whole-genome-sequencing" target="_blank" rel="noopener">Dante Labs</a>. Séquençage Illumina NovaSeq X (short-read), génome entier en 30x, données brutes complètes incluses. Italie. ~430 €.</li>
+        </ul>
+
+        <p>Trois règles, sans exception : ça doit être le génome entier, tu dois pouvoir télécharger tes données brutes, et tu dois pouvoir les supprimer.</p>
+
+        <p>23andMe, c'est pour ça.</p>
+
+        <p><strong>2. Mets tout au même endroit.</strong></p>
+
+        <p>Un génome seul donne des tendances. Sa valeur apparaît quand il côtoie tes prises de sang, tes wearables et ton historique familial, au même endroit organisé.</p>
+
+        <figure class="fig">
+            <div class="schema-wrap">
+                <img
+                    src="/health-journey/dna/wiki-llm-schema.svg"
+                    alt="Un wiki markdown de fichiers santé en texte brut (génome, prises de sang, biométrie, entraînement), lu d'un bloc par Claude ou n'importe quel LLM"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>Mon wiki santé : un fichier texte par sujet, lu d'un bloc par un LLM.</figcaption>
+        </figure>
+
+        <p>Le mien est un wiki en markdown : un dossier de fichiers en texte brut sur mon ordi, un par sujet (analyses, génome, entraînement, sommeil), chacun étiqueté de façon cohérente. Un second cerveau qui contient tout ce qu'on sait sur ma santé, structuré pour qu'une machine puisse tout lire d'un coup.</p>
+
+        <p>L'idée vient du "LLM wiki" d'Andrej Karpathy<sup><a href="#ref-4">[4]</a></sup> : du markdown brut qu'un modèle peut lire, sur lequel il peut raisonner, et réécrire. J'expliquerai exactement comment j'ai construit le mien dans un prochain numéro.</p>
+
+        <p><strong>3. Laisse un LLM l'interpréter.</strong></p>
+
+        <p>C'est l'étape que presque tout le monde saute, et là où se trouve tout le bénéfice. Des données brutes et des rapports ne font rien tout seuls.</p>
+
+        <p>Je pointe Claude (ou n'importe quel LLM) sur ce wiki, et comme les fichiers sont structurés pareil, il lit l'ensemble d'un coup et me donne des recommandations précises, au quotidien, qui se mettent à jour à chaque nouvelle donnée.</p>
+
+        <p>Le génome cesse d'être un PDF unique pour devenir une entrée vivante dans mes décisions, ce qui me permet de tester de nouvelles choses en sécurité.</p>
+
+        <p>Tu peux construire le tien ou utiliser un outil qui le fait pour toi. Le principe est ce qui compte : une donnée que tu collectes est une curiosité ; une donnée sur laquelle quelque chose agit, ça compose.</p>
+
+        <h2 class="section-heading">Pour finir</h2>
+
+        <p>Un génome à 100 $ est la mesure au plus fort levier en santé aujourd'hui. La plupart des gens ne le feront jamais, et la plupart de ceux qui le font le laissent moisir dans une app.</p>
+
+        <p>Lis le tien, puis construis la chose qui agit dessus. C'est le jeu que je vais continuer à jouer devant toi ici.</p>
+
+        <p>Réponds si tu as séquencé le tien et fait quelque chose de concret avec. Je collectionne les cas où ça a changé une décision pour de vrai.</p>
+
+        <p>À très vite,<br>Max</p>
+
+        <p class="disclaimer">Expérimentation et documentation personnelles, pas un avis médical. Parle à un médecin avant toute décision de santé.</p>
+
+        <h2 class="section-heading">Références</h2>
+
+        <ol class="ref-list">
+            <li id="ref-1"><a href="https://www.nature.com/articles/d41586-026-01827-8" target="_blank" rel="noopener"><em>Nature</em>, première édition précise par base editing d'embryons humains (juin 2026)</a></li>
+            <li id="ref-2"><a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2301972" target="_blank" rel="noopener">Jastreboff et al., <em>NEJM</em> 2023, essai de phase 2 du rétatrutide, jusqu'à ~24 % de perte de poids</a></li>
+            <li id="ref-3"><a href="https://www.thelancet.com/journals/landia/article/PIIS2213-8587(22)00340-0/fulltext" target="_blank" rel="noopener"><em>Lancet Diabetes &amp; Endocrinology</em> 2022, pharmacogénomique des agonistes des récepteurs GLP-1</a></li>
+            <li id="ref-4"><a href="https://x.com/karpathy/status/2039805659525644595" target="_blank" rel="noopener">Andrej Karpathy à propos du "LLM wiki" (second cerveau en markdown pour les LLM)</a></li>
+        </ol>
+
+    </div>
+
+    <div class="article-footer">
+        <span class="author-line">Par <a href="/fr">Max Guerois</a></span>
+    </div>
+
+    <!-- Newsletter CTA -->
+    <div style="margin-top: 48px;">
+        <NewsletterEmbed locale={locale} />
+    </div>
+</div>
+</ArticleLayout>

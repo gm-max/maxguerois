@@ -1,0 +1,276 @@
+---
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../components/NewsletterEmbed.astro';
+
+// Scoped styles for elements not covered by the global article.css
+// (body lists, inline links, figures, references, disclaimer).
+const articleStyles = `
+    .article-body a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        transition: color var(--duration-short) ease;
+    }
+    .article-body a:hover { color: var(--text); }
+    .article-body ul, .article-body ol {
+        margin: 0 0 20px;
+        padding-left: 22px;
+        color: var(--text-secondary);
+    }
+    .article-body li {
+        font-size: 16px;
+        line-height: 1.75;
+        margin-bottom: 8px;
+    }
+    .article-body ul { list-style: disc; }
+    .article-body ol { list-style: decimal; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body sup a { text-decoration: none; font-size: 0.7em; }
+    figure.fig { margin: var(--sp-8) 0; }
+    figure.fig > img {
+        width: 100%;
+        display: block;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+    }
+    .schema-wrap {
+        background: #faf9f7;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 20px;
+    }
+    .schema-wrap img { width: 100%; display: block; }
+    figure.fig figcaption {
+        font-size: 13px;
+        color: var(--text-tertiary);
+        margin-top: 10px;
+        text-align: center;
+        line-height: 1.5;
+    }
+    .disclaimer {
+        font-size: 14px;
+        color: var(--text-tertiary);
+        font-style: italic;
+        margin-top: var(--sp-8);
+        line-height: 1.6;
+    }
+    .ref-list { font-size: 14px; line-height: 1.6; }
+    .ref-list li { margin-bottom: 10px; color: var(--text-secondary); }
+`;
+---
+<ArticleLayout
+    title="I sequenced my whole genome. Here's what I found."
+    description="I sequenced my whole genome during YC. What a DNA test actually is, what it cost, what mine changed, and the three steps to do it yourself."
+    ogUrl="https://maxguerois.com/my-genome"
+    ogImage="https://maxguerois.com/health-journey/dna/og-cheapest-measurement.jpg"
+    articleStyles={articleStyles}
+>
+
+<div class="container">
+    <a href="/" class="back">← Back home</a>
+
+    <div class="article-meta">June 2026</div>
+    <h1 class="article-title">I sequenced my whole genome. Here's what I found.</h1>
+    <p class="article-subtitle">The base layer under everything I do with my health, and the three steps to do it yourself.</p>
+
+    <img
+        class="article-img"
+        src="/health-journey/dna/og-cheapest-measurement.jpg"
+        alt="The cheapest measurement in modern health"
+        loading="lazy"
+    >
+
+    <div class="article-body">
+
+        <p>Hey,</p>
+
+        <p>Most of you found me through the post on <a href="/lucis-chapter">leaving Lucis</a>. Here's what you actually signed up for: I'm building my next venture in the open, and you get the unfiltered version. The research, the experiments I run on myself, what works and what blows up.</p>
+
+        <p>So I'll start with the foundation: the highest-leverage thing I've done for my health.</p>
+
+        <p>I sequenced my genome.</p>
+
+        <p>I did it during YC. Being in the US gave me access to the most promising DNA test on the market, and I'd known for a while that sequencing was becoming the thing in health. So I used Nucleus, and it ended up running how I manage my health today.</p>
+
+        <p>In this issue:</p>
+
+        <ul>
+            <li>what a DNA test actually is</li>
+            <li>why everyone's suddenly talking about it</li>
+            <li>what mine changed for me</li>
+            <li>the three steps to do it yourself</li>
+        </ul>
+
+        <h2 class="section-heading">What a "DNA test" actually is</h2>
+
+        <p>Most people hear "DNA test" and think 23andMe. Wrong tool. There are two:</p>
+
+        <ul>
+            <li><strong>Genotyping</strong> (23andMe, Ancestry): reads ~0.1% of your DNA at preselected spots. Cheap, good for ancestry. It does not read your genome.</li>
+            <li><strong>Whole genome sequencing (WGS):</strong> reads all 3.2 billion base pairs at 30x. Clinical-grade. Surfaces actionable variants, carrier status, real risk.</li>
+        </ul>
+
+        <p>Genotyping samples. Sequencing reads everything. For any real decision, you want sequencing.</p>
+
+        <h2 class="section-heading">Why everyone is suddenly talking about it</h2>
+
+        <figure class="fig">
+            <img
+                src="/health-journey/dna/cost-of-sequencing.jpeg"
+                alt="Line chart: the cost of sequencing a whole human genome fell from $100M in 2000 to under $100 in 2026, far faster than Moore's Law"
+                loading="lazy"
+            >
+            <figcaption>Cost of sequencing a whole human genome (2000 to 2026), versus Moore's Law.</figcaption>
+        </figure>
+
+        <p>The cost of sequencing a human genome dropped from $100M to less than $100 in about 25 years. That's a million-fold decrease, which outpaces even Moore's Law.</p>
+
+        <p>Then the cheap-data era imploded. 23andMe went bankrupt in March 2025 and sold 15 million people's DNA as an asset. Nebula shut down.</p>
+
+        <p>So here's the rule that came out of it: your genome is the one data point you can never change or revoke. When the company holding it fails, your DNA gets sold. Own it, or don't hand it over.</p>
+
+        <h2 class="section-heading">Where this is going</h2>
+
+        <p>We're about to enter the era of personalized medicine, and it's moving faster than most people realize.</p>
+
+        <p>Reading a genome is now cheap and routine. The frontier has moved to editing one.</p>
+
+        <p>Days ago, scientists at Columbia published the first precise edit of human embryos<sup><a href="#ref-1">[1]</a></sup>, correcting genes for heart-disease risk and hemoglobin with single-letter base editing that's far cleaner than CRISPR. It's early, and ethically loaded.</p>
+
+        <p>But the direction is set. Reading your genome was step one. Rewriting it is step two, and it just started.</p>
+
+        <h2 class="section-heading">What I did, and how it helped</h2>
+
+        <p>Nucleus is simple, and the UX is genuinely great. A kit arrives, you give a sample, you ship it back, and your results land in a clean app a few weeks later.</p>
+
+        <p>Then it took me weeks to open it. Sequencing your genome means reading things you can't unread.</p>
+
+        <p>When I did, three things mattered:</p>
+
+        <ul>
+            <li><strong>A pathogenic variant</strong> I didn't know I carried. It changed what I screen for, and how often, with my doctor.</li>
+            <li><strong>Polygenic risk scores.</strong> These sum thousands of tiny genetic effects into a single estimate of your odds for a common condition. Think of it as a weather forecast for your body: "roughly 1.6x the average lifetime odds of type 2 diabetes," or "below average for one heart condition." Useful for deciding what to watch closely.</li>
+            <li><strong>Carrier status</strong> that matters for family planning.</li>
+        </ul>
+
+        <p>What I learned: a genome is not a crystal ball. Most of it reads average.</p>
+
+        <p>But the handful of findings that are actionable are genuinely actionable, and you only get them if you look.</p>
+
+        <p>Two moves turned the report into something I actually use day to day:</p>
+
+        <p><strong>1. I pulled it together with the rest of my data.</strong><br>Everything went into one place:</p>
+
+        <ul>
+            <li>5 years of blood tests</li>
+            <li>Whoop (recovery, sleep, strain)</li>
+            <li>Strava (training load)</li>
+            <li>Withings (weight, body composition, heart)</li>
+            <li>my family's panels, including my father's</li>
+        </ul>
+
+        <p>The genome is the fixed baseline; the rest shows what's happening week to week. Stacked together, they cross-check each other, and inherited patterns stop looking like noise.</p>
+
+        <p><strong>2. I built a system that interprets it.</strong><br>All of that feeds an LLM layer that reads across everything and tells me what to do. That's the real unlock, and it's Step 3 below.</p>
+
+        <h2 class="section-heading">How I de-risk an advanced therapy before I try it</h2>
+
+        <p>This is how I approach anything serious I put in my body, whether a <a href="/experiments/supplements">supplement</a>, a drug, or an advanced therapy.</p>
+
+        <p>Take what I'm running now: retatrutide, a GLP-1/GIP/glucagon triple agonist and the most effective metabolic compound tested so far, up to 24% body-weight loss in its phase 2 trial<sup><a href="#ref-2">[2]</a></sup>.</p>
+
+        <p>I want to see firsthand how it moves my metabolism, body composition, and appetite, on my own data, before I have an opinion worth sharing.</p>
+
+        <p>Before the first dose, I ran a three-step check:</p>
+
+        <ol>
+            <li><strong>Map the risk factors.</strong> What the literature says about contraindications, side effects, and the genetics that matter for this specific compound.</li>
+            <li><strong>Hand them to my health-OS agent.</strong> Cross-reference those risks against my own genome and bloodwork.</li>
+            <li><strong>Ask the one question that counts:</strong> given my specific data, is this safe enough to be worth it for me?</li>
+        </ol>
+
+        <p>This is where the genome earns its place in daily life. It can't yet tell you the ideal dose; the science there is still young<sup><a href="#ref-3">[3]</a></sup>.</p>
+
+        <p>What it does reliably is flag the contraindications, the variants that say "this is riskier for you than for most people."</p>
+
+        <p>That one safety filter, applied to every supplement, drug, or therapy you're considering, is worth the price of sequencing on its own.</p>
+
+        <h2 class="section-heading">The 3 steps to start</h2>
+
+        <p><strong>1. Sequence your genome.</strong></p>
+
+        <p>Get whole-genome sequencing (WGS), the kind that reads everything.</p>
+
+        <ul>
+            <li><strong>US:</strong> <a href="https://mynucleus.com/health" target="_blank" rel="noopener">Nucleus</a>. Illumina short-read sequencing, whole genome at 30x. Clinical-grade, genetic-counselor access, strong reports. ~$399. What I used.</li>
+            <li><strong>Europe:</strong> <a href="https://myoform.io/pages/pricing" target="_blank" rel="noopener">Myoform</a>. Whole genome at 30x, raw data you own and can delete. They pair your DNA test with a supplement formula built from your results, or you can take the test on its own. DNA test only, ~£359.</li>
+            <li><strong>Europe:</strong> <a href="https://dantelabs.com/products/whole-genome-sequencing" target="_blank" rel="noopener">Dante Labs</a>. Illumina NovaSeq X short-read sequencing, whole genome at 30x, full raw data included. Italy. ~€430.</li>
+        </ul>
+
+        <p>Three rules, no exceptions: it must be whole-genome, you must be able to download your raw data, and you must be able to delete it.</p>
+
+        <p>23andMe is why.</p>
+
+        <p><strong>2. Put everything in one place.</strong></p>
+
+        <p>A genome on its own gives tendencies. Its value shows up when it sits next to your bloodwork, your wearables, and your family history, in one organized place.</p>
+
+        <figure class="fig">
+            <div class="schema-wrap">
+                <img
+                    src="/health-journey/dna/wiki-llm-schema.svg"
+                    alt="A markdown wiki of plain-text health files (genome, bloodwork, biometrics, training), read across by Claude or any LLM"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>My health wiki: one plain-text file per topic, read across by an LLM.</figcaption>
+        </figure>
+
+        <p>Mine is a markdown wiki: a folder of plain-text files on my computer, one per topic (labs, genome, training, sleep), each tagged with consistent labels. A second brain that holds everything known about my health, structured so a machine can read across all of it.</p>
+
+        <p>The idea comes from Andrej Karpathy's "LLM wiki"<sup><a href="#ref-4">[4]</a></sup>: plain markdown a model can read, reason over, and write back to. I'll write up exactly how I built mine in a future issue.</p>
+
+        <p><strong>3. Let an LLM interpret it.</strong></p>
+
+        <p>This is the step almost everyone skips, and where the entire payoff lives. Raw data and reports do nothing on their own.</p>
+
+        <p>I point Claude (or any LLM) at that wiki, and because the files are structured the same way, it reads across all of them at once and gives me specific, daily recommendations that update every time new data lands.</p>
+
+        <p>The genome stops being a one-time PDF and becomes a live input into decisions, which is what lets me test new things safely.</p>
+
+        <p>You can build your own or use a tool that does it for you. The principle is what matters: data you collect is a curiosity; data something acts on compounds.</p>
+
+        <h2 class="section-heading">The bottom line</h2>
+
+        <p>A $100 genome is the highest-leverage measurement in health today. Most people will never run it, and most who do let it rot in an app.</p>
+
+        <p>Read yours, then build the thing that acts on it. That's the game I'll keep playing in front of you here.</p>
+
+        <p>Reply if you've sequenced yours and done something real with it. I'm always looking for cases where it actually changed a decision.</p>
+
+        <p>More soon,<br>Max</p>
+
+        <p class="disclaimer">Personal experimentation and documentation, not medical advice. Talk to a doctor before making health decisions.</p>
+
+        <h2 class="section-heading">References</h2>
+
+        <ol class="ref-list">
+            <li id="ref-1"><a href="https://www.nature.com/articles/d41586-026-01827-8" target="_blank" rel="noopener"><em>Nature</em>, first precise base-editing of human embryos (June 2026)</a></li>
+            <li id="ref-2"><a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2301972" target="_blank" rel="noopener">Jastreboff et al., <em>NEJM</em> 2023, retatrutide phase 2 trial, up to ~24% body-weight loss</a></li>
+            <li id="ref-3"><a href="https://www.thelancet.com/journals/landia/article/PIIS2213-8587(22)00340-0/fulltext" target="_blank" rel="noopener"><em>Lancet Diabetes &amp; Endocrinology</em> 2022, pharmacogenomics of GLP-1 receptor agonists</a></li>
+            <li id="ref-4"><a href="https://x.com/karpathy/status/2039805659525644595" target="_blank" rel="noopener">Andrej Karpathy on the "LLM wiki" (plain-markdown second brain for LLMs)</a></li>
+        </ol>
+
+    </div>
+
+    <div class="article-footer">
+        <span class="author-line">By <a href="/">Max Guerois</a></span>
+    </div>
+
+    <!-- Newsletter CTA -->
+    <div style="margin-top: 48px;">
+        <NewsletterEmbed />
+    </div>
+</div>
+</ArticleLayout>
