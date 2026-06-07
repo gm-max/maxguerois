@@ -112,7 +112,8 @@ Get whole-genome sequencing (WGS), the kind that reads everything.
 
 - **US:** [Nucleus](https://mynucleus.com/health). Illumina short-read sequencing, whole genome at 30x. Clinical-grade, genetic-counselor access, strong reports. ~$399. What I used.
 - **Europe:** [Myoform](https://myoform.io/pages/pricing). Whole genome at 30x, raw data you own and can delete. They pair your DNA test with a supplement formula built from your results, or you can take the test on its own. DNA test only, ~£359.
-- **Europe:** [Dante Labs](https://dantelabs.com/products/whole-genome-sequencing). Illumina NovaSeq X short-read sequencing, whole genome at 30x, full raw data included. Italy. ~€430.
+- **Europe:** [YSEQ](https://www.yseq.net/product_info.php?cPath=29&products_id=129554). Illumina NovaSeq short-read sequencing, whole genome at 30x, full raw data (FASTQ, BAM, VCF). Germany. A bare-bones research lab, no interpretation reports, just clean data. ~€399.
+- **Europe:** [Dante Labs](https://dantelabs.com/products/whole-genome-sequencing). Illumina NovaSeq X short-read sequencing, whole genome at 30x, full raw data included. Italy. ~€430, often far less on sale. The catch: turnaround can run long and reviews are mixed, so go in eyes open.
 
 Three rules:
 
