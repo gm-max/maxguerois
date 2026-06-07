@@ -90,7 +90,9 @@ The genome is the fixed baseline; the rest shows what's happening week to week. 
 
 This is how I approach anything serious I put in my body, whether a [supplement](https://maxguerois.com/experiments/supplements), a drug, or an advanced therapy.
 
-Take what I'm running now: GLP-1 peptides, retatrutide specifically. It's a triple agonist (GLP-1, GIP, glucagon) and the most effective metabolic compound tested to date, up to 24% body-weight loss in its phase 2 trial [2]. My purpose is to understand firsthand how it moves my metabolism, body composition, and appetite, on my own data, before I'd have an opinion worth sharing.
+Take what I'm running now: retatrutide, a GLP-1/GIP/glucagon triple agonist and the most effective metabolic compound tested so far, up to 24% body-weight loss in its phase 2 trial [2].
+
+I want to see firsthand how it moves my metabolism, body composition, and appetite, on my own data, before I have an opinion worth sharing.
 
 Before the first dose, I ran a three-step check:
 
