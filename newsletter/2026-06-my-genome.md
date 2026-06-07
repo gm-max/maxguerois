@@ -126,9 +126,9 @@ Three rules:
 
 A genome on its own gives tendencies. Its value shows up when it sits next to your bloodwork, your wearables, and your family history, in one organized place.
 
-[IMAGE: the Max Health OS schema. Upload wiki-llm-schema (export the SVG to PNG first for email).]
-
 That's why I built the Max Health OS.
+
+[IMAGE: the Max Health OS schema. Upload wiki-llm-schema (export the SVG to PNG first for email).]
 
 It's a markdown wiki: a folder of plain-text files on my computer, one per topic, each tagged with consistent labels. A second brain that holds everything known about my health, structured so a machine can read across all of it.
 
