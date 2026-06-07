@@ -114,7 +114,13 @@ Get whole-genome sequencing (WGS), the kind that reads everything.
 - **Europe:** [Myoform](https://myoform.io/pages/pricing). Whole genome at 30x, raw data you own and can delete. They pair your DNA test with a supplement formula built from your results, or you can take the test on its own. DNA test only, ~£359.
 - **Europe:** [Dante Labs](https://dantelabs.com/products/whole-genome-sequencing). Illumina NovaSeq X short-read sequencing, whole genome at 30x, full raw data included. Italy. ~€430.
 
-Three rules, no exceptions: it must be whole-genome, you must be able to download your raw data, and you must be able to delete it. 23andMe is why.
+Three rules:
+
+- it must be whole-genome
+- you must be able to download your raw data
+- you must be able to delete it
+
+23andMe is why.
 
 **2. Put everything in one place.**
 
