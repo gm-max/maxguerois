@@ -176,7 +176,22 @@ const articleStyles = `
 
         <p>The genome is the fixed baseline; the rest shows what's happening week to week. Stacked together, they cross-check each other, and inherited patterns stop looking like noise.</p>
 
-        <p><strong>2. I built the Max Health OS.</strong><br>An LLM layer that reads across all my data, genome included, and tells me what to do. That's the real unlock, and it's Step 3 below.</p>
+        <p><strong>2. I built the Max Health OS.</strong><br>A markdown wiki of everything above, with an LLM layer that reads across all of it and turns it into decisions. That's the real unlock.</p>
+
+        <figure class="fig">
+            <div class="schema-wrap">
+                <img
+                    src="/health-journey/dna/wiki-llm-schema.svg"
+                    alt="The Max Health OS: a markdown wiki of plain-text health files (genome, bloodwork, biometrics, training, medical), read across by Claude or any LLM"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>The Max Health OS: one plain-text file per topic, read across by an LLM.</figcaption>
+        </figure>
+
+        <p>The wiki itself is just a folder of plain-text files on my computer, one per topic, each tagged with consistent labels. A second brain that holds everything known about my health, structured so a machine can read across all of it.</p>
+
+        <p>The idea comes from Andrej Karpathy's "LLM wiki"<sup><a href="#ref-4">[4]</a></sup>: plain markdown a model can read, reason over, and write back to.</p>
 
         <h2 class="section-heading">How I de-risk an advanced therapy before I try it</h2>
 
@@ -234,22 +249,7 @@ const articleStyles = `
 
         <p>A genome on its own gives tendencies. Its value shows up when it sits next to your bloodwork, your wearables, and your family history, in one organized place.</p>
 
-        <p>That's why I built the Max Health OS.</p>
-
-        <figure class="fig">
-            <div class="schema-wrap">
-                <img
-                    src="/health-journey/dna/wiki-llm-schema.svg"
-                    alt="The Max Health OS: a markdown wiki of plain-text health files (genome, bloodwork, biometrics, training, medical), read across by Claude or any LLM"
-                    loading="lazy"
-                >
-            </div>
-            <figcaption>The Max Health OS: one plain-text file per topic, read across by an LLM.</figcaption>
-        </figure>
-
-        <p>It's a markdown wiki: a folder of plain-text files on my computer, one per topic, each tagged with consistent labels. A second brain that holds everything known about my health, structured so a machine can read across all of it.</p>
-
-        <p>The idea comes from Andrej Karpathy's "LLM wiki"<sup><a href="#ref-4">[4]</a></sup>: plain markdown a model can read, reason over, and write back to.</p>
+        <p>For me that's the Max Health OS above. Yours can be anything organized, as long as it all lives in one place.</p>
 
         <p><strong>3. Let an LLM interpret it.</strong></p>
 

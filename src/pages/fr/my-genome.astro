@@ -179,7 +179,22 @@ const articleStyles = `
 
         <p>Le génome est la base fixe ; le reste montre ce qui se passe semaine après semaine. Empilés, ils se recoupent, et les schémas hérités cessent de ressembler à du bruit.</p>
 
-        <p><strong>2. J'ai construit le Max Health OS.</strong><br>Une couche LLM qui lit l'ensemble de mes données, génome compris, et me dit quoi faire. C'est le vrai déclic, et c'est l'étape 3 plus bas.</p>
+        <p><strong>2. J'ai construit le Max Health OS.</strong><br>Un wiki markdown de tout ce qui précède, avec une couche LLM qui lit l'ensemble et le transforme en décisions. C'est le vrai déclic.</p>
+
+        <figure class="fig">
+            <div class="schema-wrap">
+                <img
+                    src="/health-journey/dna/wiki-llm-schema.svg"
+                    alt="Le Max Health OS : un wiki markdown de fichiers santé en texte brut (génome, prises de sang, biométrie, entraînement, médical), lu d'un bloc par Claude ou n'importe quel LLM"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>Le Max Health OS : un fichier texte par sujet, lu d'un bloc par un LLM.</figcaption>
+        </figure>
+
+        <p>Le wiki lui-même n'est qu'un dossier de fichiers en texte brut sur mon ordi, un par sujet, chacun étiqueté de façon cohérente. Un second cerveau qui contient tout ce qu'on sait sur ma santé, structuré pour qu'une machine puisse tout lire d'un coup.</p>
+
+        <p>L'idée vient du "LLM wiki" d'Andrej Karpathy<sup><a href="#ref-4">[4]</a></sup> : du markdown brut qu'un modèle peut lire, sur lequel il peut raisonner, et réécrire.</p>
 
         <h2 class="section-heading">Comment je dérisque une thérapie avancée avant de l'essayer</h2>
 
@@ -237,22 +252,7 @@ const articleStyles = `
 
         <p>Un génome seul donne des tendances. Sa valeur apparaît quand il côtoie tes prises de sang, tes wearables et ton historique familial, au même endroit organisé.</p>
 
-        <p>C'est pour ça que j'ai construit le Max Health OS.</p>
-
-        <figure class="fig">
-            <div class="schema-wrap">
-                <img
-                    src="/health-journey/dna/wiki-llm-schema.svg"
-                    alt="Le Max Health OS : un wiki markdown de fichiers santé en texte brut (génome, prises de sang, biométrie, entraînement, médical), lu d'un bloc par Claude ou n'importe quel LLM"
-                    loading="lazy"
-                >
-            </div>
-            <figcaption>Le Max Health OS : un fichier texte par sujet, lu d'un bloc par un LLM.</figcaption>
-        </figure>
-
-        <p>C'est un wiki en markdown : un dossier de fichiers en texte brut sur mon ordi, un par sujet, chacun étiqueté de façon cohérente. Un second cerveau qui contient tout ce qu'on sait sur ma santé, structuré pour qu'une machine puisse tout lire d'un coup.</p>
-
-        <p>L'idée vient du "LLM wiki" d'Andrej Karpathy<sup><a href="#ref-4">[4]</a></sup> : du markdown brut qu'un modèle peut lire, sur lequel il peut raisonner, et réécrire.</p>
+        <p>Pour moi, c'est le Max Health OS plus haut. Le tien peut être n'importe quoi d'organisé, du moment que tout vit au même endroit.</p>
 
         <p><strong>3. Laisse un LLM l'interpréter.</strong></p>
 

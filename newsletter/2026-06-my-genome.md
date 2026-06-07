@@ -88,7 +88,13 @@ Two moves turned the report into something I actually use day to day:
 
 The genome is the fixed baseline; the rest shows what's happening week to week. Stacked together, they cross-check each other, and inherited patterns stop looking like noise.
 
-**2. I built the Max Health OS.** An LLM layer that reads across all my data, genome included, and tells me what to do. That's the real unlock, and it's Step 3 below.
+**2. I built the Max Health OS.** A markdown wiki of everything above, with an LLM layer that reads across all of it and turns it into decisions. That's the real unlock.
+
+[IMAGE: the Max Health OS schema. Upload wiki-llm-schema (export the SVG to PNG first for email).]
+
+The wiki itself is just a folder of plain-text files on my computer, one per topic, each tagged with consistent labels. A second brain that holds everything known about my health, structured so a machine can read across all of it.
+
+The idea comes from Andrej Karpathy's "LLM wiki" [4]: plain markdown a model can read, reason over, and write back to.
 
 ## How I de-risk an advanced therapy before I try it
 
@@ -134,13 +140,7 @@ Three rules:
 
 A genome on its own gives tendencies. Its value shows up when it sits next to your bloodwork, your wearables, and your family history, in one organized place.
 
-That's why I built the Max Health OS.
-
-[IMAGE: the Max Health OS schema. Upload wiki-llm-schema (export the SVG to PNG first for email).]
-
-It's a markdown wiki: a folder of plain-text files on my computer, one per topic, each tagged with consistent labels. A second brain that holds everything known about my health, structured so a machine can read across all of it.
-
-The idea comes from Andrej Karpathy's "LLM wiki" [4]: plain markdown a model can read, reason over, and write back to.
+For me that's the Max Health OS above. Yours can be anything organized, as long as it all lives in one place.
 
 **3. Let an LLM interpret it.**
 
