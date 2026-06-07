@@ -110,10 +110,17 @@ This is where the genome earns its place in daily life. It can't yet tell you th
 
 Get whole-genome sequencing (WGS), the kind that reads everything.
 
-- **US:** [Nucleus](https://mynucleus.com/health). Illumina short-read sequencing, whole genome at 30x. Clinical-grade, genetic-counselor access, strong reports. ~$399. What I used.
-- **Europe:** [Myoform](https://myoform.io/pages/pricing). Whole genome at 30x, raw data you own and can delete. They pair your DNA test with a supplement formula built from your results, or you can take the test on its own. DNA test only, ~£359.
-- **Europe:** [YSEQ](https://www.yseq.net/product_info.php?cPath=29&products_id=129554). Illumina NovaSeq short-read sequencing, whole genome at 30x, full raw data (FASTQ, BAM, VCF). Germany. A bare-bones research lab, no interpretation reports, just clean data. ~€399.
-- **Europe:** [Dante Labs](https://dantelabs.com/products/whole-genome-sequencing). Illumina NovaSeq X short-read sequencing, whole genome at 30x, full raw data included. Italy. ~€430, often far less on sale. The catch: turnaround can run long and reviews are mixed, so go in eyes open.
+The labs below all use the same proven method, Illumina short-read sequencing [5]: it reads your DNA in hundreds of millions of short fragments, then a computer stitches them back into your full genome. Accurate, and the industry standard.
+
+**US**
+
+- [Nucleus](https://mynucleus.com/health). Whole genome at 30x. Clinical-grade, genetic-counselor access, strong reports. ~$399. What I used.
+
+**Europe**
+
+- [Myoform](https://myoform.io/pages/pricing). Whole genome at 30x, raw data you own and can delete. They pair your DNA test with a supplement formula built from your results, or you can take the test on its own. DNA test only, ~£359.
+- [YSEQ](https://www.yseq.net/product_info.php?cPath=29&products_id=129554). Whole genome at 30x, full raw data (FASTQ, BAM, VCF). Germany. A bare-bones research lab, no interpretation reports, just clean data. ~€399.
+- [Dante Labs](https://dantelabs.com/products/whole-genome-sequencing). Whole genome at 30x, full raw data included. Italy. ~€430, often far less on sale. The catch: turnaround can run long and reviews are mixed, so go in eyes open.
 
 Three rules:
 
@@ -160,3 +167,4 @@ Max
 2. [Jastreboff et al., *NEJM* 2023, retatrutide phase 2 trial, up to ~24% body-weight loss](https://www.nejm.org/doi/full/10.1056/NEJMoa2301972)
 3. [*Lancet Diabetes & Endocrinology* 2022, pharmacogenomics of GLP-1 receptor agonists](https://www.thelancet.com/journals/landia/article/PIIS2213-8587(22)00340-0/fulltext)
 4. [Andrej Karpathy on the "LLM wiki" (plain-markdown second brain for LLMs)](https://x.com/karpathy/status/2039805659525644595)
+5. [Goodwin et al., *Nature Reviews Genetics* 2016, what short-read sequencing is, a review of next-generation sequencing technologies](https://www.nature.com/articles/nrg.2016.49)
