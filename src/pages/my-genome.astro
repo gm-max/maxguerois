@@ -134,7 +134,11 @@ const articleStyles = `
 
         <p>We're about to enter the era of personalized medicine, and it's moving faster than most people realize.</p>
 
-        <p>Reading a genome is now cheap and routine. The frontier has moved to editing one. Days ago, scientists at Columbia published the first precise edit of human embryos<sup><a href="#ref-1">[1]</a></sup>, correcting genes for heart-disease risk and hemoglobin with single-letter base editing that's far cleaner than CRISPR. It's early, and ethically loaded. But the direction is set. Reading your genome was step one. Rewriting it is step two, and it just started.</p>
+        <p>Reading a genome is now cheap and routine. The frontier has moved to editing one.</p>
+
+        <p>Days ago, scientists at Columbia published the first precise edit of human embryos<sup><a href="#ref-1">[1]</a></sup>, correcting genes for heart-disease risk and hemoglobin with single-letter base editing that's far cleaner than CRISPR. It's early, and ethically loaded.</p>
+
+        <p>But the direction is set. Reading your genome was step one. Rewriting it is step two, and it just started.</p>
 
         <h2 class="section-heading">What I did, and how it helped</h2>
 
@@ -150,11 +154,13 @@ const articleStyles = `
             <li><strong>Carrier status</strong> that matters for family planning.</li>
         </ul>
 
-        <p>What I learned: a genome is not a crystal ball. Most of it reads average. But the handful of findings that are actionable are genuinely actionable, and you only get them if you look.</p>
+        <p>What I learned: a genome is not a crystal ball. Most of it reads average.</p>
+
+        <p>But the handful of findings that are actionable are genuinely actionable, and you only get them if you look.</p>
 
         <p>Two moves turned the report into something I actually use day to day:</p>
 
-        <p><strong>1. I pulled it together with the rest of my data.</strong> Everything went into one place:</p>
+        <p><strong>1. I pulled it together with the rest of my data.</strong><br>Everything went into one place:</p>
 
         <ul>
             <li>5 years of blood tests</li>
@@ -166,13 +172,15 @@ const articleStyles = `
 
         <p>The genome is the fixed baseline; the rest shows what's happening week to week. Stacked together, they cross-check each other, and inherited patterns stop looking like noise.</p>
 
-        <p><strong>2. I built a system that interprets it.</strong> All of that feeds an LLM layer that reads across everything and tells me what to do. That's the real unlock, and it's Step 3 below.</p>
+        <p><strong>2. I built a system that interprets it.</strong><br>All of that feeds an LLM layer that reads across everything and tells me what to do. That's the real unlock, and it's Step 3 below.</p>
 
         <h2 class="section-heading">How I de-risk an advanced therapy before I try it</h2>
 
         <p>This is how I approach anything serious I put in my body, whether a <a href="/experiments/supplements">supplement</a>, a drug, or an advanced therapy.</p>
 
-        <p>Take what I'm running now: GLP-1 peptides, retatrutide specifically. It's a triple agonist (GLP-1, GIP, glucagon) and the most effective metabolic compound tested to date, up to 24% body-weight loss in its phase 2 trial<sup><a href="#ref-2">[2]</a></sup>. My purpose is to understand firsthand how it moves my metabolism, body composition, and appetite, on my own data, before I'd have an opinion worth sharing.</p>
+        <p>Take what I'm running now: GLP-1 peptides, retatrutide specifically. It's a triple agonist (GLP-1, GIP, glucagon) and the most effective metabolic compound tested to date, up to 24% body-weight loss in its phase 2 trial<sup><a href="#ref-2">[2]</a></sup>.</p>
+
+        <p>My purpose is to understand firsthand how it moves my metabolism, body composition, and appetite, on my own data, before I'd have an opinion worth sharing.</p>
 
         <p>Before the first dose, I ran a three-step check:</p>
 
@@ -182,7 +190,11 @@ const articleStyles = `
             <li><strong>Ask the one question that counts:</strong> given my specific data, is this safe enough to be worth it for me?</li>
         </ol>
 
-        <p>This is where the genome earns its place in daily life. It can't yet tell you the ideal dose; the science there is still young<sup><a href="#ref-3">[3]</a></sup>. What it does reliably is flag the contraindications, the variants that say "this is riskier for you than for most people." That one safety filter, applied to every supplement, drug, or therapy you're considering, is worth the price of sequencing on its own.</p>
+        <p>This is where the genome earns its place in daily life. It can't yet tell you the ideal dose; the science there is still young<sup><a href="#ref-3">[3]</a></sup>.</p>
+
+        <p>What it does reliably is flag the contraindications, the variants that say "this is riskier for you than for most people."</p>
+
+        <p>That one safety filter, applied to every supplement, drug, or therapy you're considering, is worth the price of sequencing on its own.</p>
 
         <h2 class="section-heading">The 3 steps to start</h2>
 
@@ -196,7 +208,9 @@ const articleStyles = `
             <li><strong>Europe:</strong> <a href="https://dantelabs.com/products/whole-genome-sequencing" target="_blank" rel="noopener">Dante Labs</a>. Illumina NovaSeq X short-read sequencing, whole genome at 30x, full raw data included. Italy. ~€430.</li>
         </ul>
 
-        <p>Three rules, no exceptions: it must be whole-genome, you must be able to download your raw data, and you must be able to delete it. 23andMe is why.</p>
+        <p>Three rules, no exceptions: it must be whole-genome, you must be able to download your raw data, and you must be able to delete it.</p>
+
+        <p>23andMe is why.</p>
 
         <p><strong>2. Put everything in one place.</strong></p>
 
@@ -213,17 +227,25 @@ const articleStyles = `
             <figcaption>My health wiki: one plain-text file per topic, read across by an LLM.</figcaption>
         </figure>
 
-        <p>Mine is a markdown wiki: a folder of plain-text files on my computer, one per topic (labs, genome, training, sleep), each tagged with consistent labels. A second brain that holds everything known about my health, structured so a machine can read across all of it. The idea comes from Andrej Karpathy's "LLM wiki"<sup><a href="#ref-4">[4]</a></sup>: plain markdown a model can read, reason over, and write back to. I'll write up exactly how I built mine in a future issue.</p>
+        <p>Mine is a markdown wiki: a folder of plain-text files on my computer, one per topic (labs, genome, training, sleep), each tagged with consistent labels. A second brain that holds everything known about my health, structured so a machine can read across all of it.</p>
+
+        <p>The idea comes from Andrej Karpathy's "LLM wiki"<sup><a href="#ref-4">[4]</a></sup>: plain markdown a model can read, reason over, and write back to. I'll write up exactly how I built mine in a future issue.</p>
 
         <p><strong>3. Let an LLM interpret it.</strong></p>
 
-        <p>This is the step almost everyone skips, and where the entire payoff lives. Raw data and reports do nothing on their own. I point Claude (or any LLM) at that wiki, and because the files are structured the same way, it reads across all of them at once and gives me specific, daily recommendations that update every time new data lands. The genome stops being a one-time PDF and becomes a live input into decisions, which is what lets me test new things safely.</p>
+        <p>This is the step almost everyone skips, and where the entire payoff lives. Raw data and reports do nothing on their own.</p>
+
+        <p>I point Claude (or any LLM) at that wiki, and because the files are structured the same way, it reads across all of them at once and gives me specific, daily recommendations that update every time new data lands.</p>
+
+        <p>The genome stops being a one-time PDF and becomes a live input into decisions, which is what lets me test new things safely.</p>
 
         <p>You can build your own or use a tool that does it for you. The principle is what matters: data you collect is a curiosity; data something acts on compounds.</p>
 
         <h2 class="section-heading">The bottom line</h2>
 
-        <p>A $100 genome is the highest-leverage measurement in health today. Most people will never run it, and most who do let it rot in an app. Read yours, then build the thing that acts on it. That's the game I'll keep playing in front of you here.</p>
+        <p>A $100 genome is the highest-leverage measurement in health today. Most people will never run it, and most who do let it rot in an app.</p>
+
+        <p>Read yours, then build the thing that acts on it. That's the game I'll keep playing in front of you here.</p>
 
         <p>Reply if you've sequenced yours and done something real with it. I'm always looking for cases where it actually changed a decision.</p>
 
