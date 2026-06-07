@@ -62,7 +62,7 @@ We're about to enter the era of personalized medicine, and it's moving faster th
 
 Reading a genome is now cheap and routine. Two things happening right now show where it goes next:
 
-- **We're starting to edit genomes, not just read them.** Scientists in the US just corrected disease-causing genes directly in human embryos [1], more precisely than ever before. Early and ethically loaded, but the line has been crossed.
+- **We're starting to edit genomes.** Scientists in the US just corrected disease-causing genes directly in human embryos [1], more precisely than ever before. Early and ethically loaded, but the line has been crossed.
 - **And you can now do the whole thing yourself, privately.** Someone sequenced his entire genome at home, on his kitchen table, without his DNA ever touching the internet [6], using a device smaller than a phone and open-source AI to trace his family's autoimmune conditions.
 
 Reading your genome was step one. Rewriting it, and owning it end to end, is step two. It just started.
