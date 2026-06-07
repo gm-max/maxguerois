@@ -18,11 +18,9 @@ notes: >
 
 Hey,
 
-Most of you found me through the post on [leaving Lucis](https://maxguerois.com/lucis-chapter). Here's what you actually signed up for.
+Most of you found me through the post on [leaving Lucis](https://maxguerois.com/lucis-chapter). Here's what you actually signed up for: I'm building my next venture in the open, and you get the unfiltered version. The research, the experiments I run on myself, what works and what blows up.
 
-I'm building my next venture in the open: the research, the experiments I run on myself, what works and what blows up. You get the unfiltered version.
-
-I'll start with the foundation of all of it. The highest-leverage thing I've done for my health, and the base under every experiment that follows.
+So I'll start with the foundation: the highest-leverage thing I've done for my health.
 
 I sequenced my genome.
 
@@ -108,8 +106,9 @@ This is where the genome earns its place in daily life. It can't yet tell you th
 
 Get whole-genome sequencing (WGS), the kind that reads everything.
 
-- **US:** [Nucleus](https://mynucleus.com/health). Clinical-grade, genetic-counselor access, strong reports. ~$399. What I used.
-- **Europe:** [Myoform](https://myoform.io/pages/pricing) (a friend's company, UK, ships to France and the EU, performance and supplement focus, WGS 30x, ~£359) and [Dante Labs](https://dantelabs.com/products/whole-genome-sequencing) (Italy, raw data, ~€430).
+- **US:** [Nucleus](https://mynucleus.com/health). Illumina short-read sequencing, whole genome at 30x. Clinical-grade, genetic-counselor access, strong reports. ~$399. What I used.
+- **Europe:** [Myoform](https://myoform.io/pages/pricing). Whole genome at 30x, raw data you own and can delete. They pair your DNA test with a supplement formula built from your results, or you can take the test on its own. DNA test only, ~£359.
+- **Europe:** [Dante Labs](https://dantelabs.com/products/whole-genome-sequencing). Illumina NovaSeq X short-read sequencing, whole genome at 30x, full raw data included. Italy. ~€430.
 
 Three rules, no exceptions: it must be whole-genome, you must be able to download your raw data, and you must be able to delete it. 23andMe is why.
 
