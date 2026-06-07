@@ -142,6 +142,10 @@ experiments.sort((a, b) => b.data.date.localeCompare(a.data.date));
         <p class="experiments-intro">I run experiments on myself — sleep, hormones, biomarkers — and publish the data. Everything here is honest, sourced, and updated as I learn more.</p>
     </div>
 
+    <div style="margin-bottom: var(--sp-8);">
+        <NewsletterEmbed />
+    </div>
+
     <div class="experiments-list">
         {experiments.map((exp, i) => (
             <a href={`/${exp.data.slug}`} class="experiment-item">
