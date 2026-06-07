@@ -1,13 +1,13 @@
-<svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ttl desc">
-  <title id="ttl">My wiki, read by an LLM</title>
-  <desc id="desc">A markdown wiki of plain-text health files, read across by Claude or any LLM.</desc>
+<svg viewBox="0 0 520 660" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ttl desc">
+  <title id="ttl">The Max Health OS</title>
+  <desc id="desc">A markdown wiki of plain-text health files (genome, bloodwork, biometrics, training, medical), read across by Claude or any LLM.</desc>
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0 0 L10 5 L0 10 z" fill="#6b6b70"/>
     </marker>
     <style>
       .t   { fill: #1d1d1f; font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
-      .sub { fill: #6b6b70; font-family: ui-sans-serif, system-ui, sans-serif; }
+      .sub { fill: #9a9488; font-family: ui-sans-serif, system-ui, sans-serif; }
       .mono{ fill: #1d1d1f; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
       .acc { fill: #c4934a; }
       .box { fill: #f6f6f7; stroke: #d8d8de; stroke-width:1.5; }
@@ -16,18 +16,27 @@
     </style>
   </defs>
 
-  <rect class="box" x="40" y="30" width="400" height="300" rx="16"/>
-  <text class="t" x="240" y="68" text-anchor="middle" font-size="17" font-weight="700">The wiki: my second brain</text>
-  <text class="mono" x="84" y="112" font-size="15">health/</text>
-  <text class="mono" x="84" y="146" font-size="15">├─ genome.md</text>
-  <text class="mono" x="84" y="180" font-size="15">├─ bloodwork/</text>
-  <text class="mono" x="84" y="214" font-size="15">├─ biometrics/   <tspan class="sub">(Whoop · Withings)</tspan></text>
-  <text class="mono" x="84" y="248" font-size="15">├─ training/        <tspan class="sub">(Strava)</tspan></text>
-  <text class="mono" x="84" y="282" font-size="15">└─ medical/stack.md</text>
-  <text class="sub" x="240" y="312" text-anchor="middle" font-size="12">plain markdown · one file per topic · consistent tags</text>
+  <rect class="box" x="20" y="24" width="480" height="500" rx="16"/>
+  <text class="t" x="260" y="58" text-anchor="middle" font-size="18" font-weight="700">The Max Health OS</text>
 
-  <line class="arrow" x1="240" y1="330" x2="240" y2="378" marker-end="url(#arr)"/>
+  <text class="mono" x="44" y="98"  font-size="14.5" xml:space="preserve">health/</text>
+  <text class="mono" x="44" y="126" font-size="14.5" xml:space="preserve">├─ profile.md</text>
+  <text class="mono" x="44" y="154" font-size="14.5" xml:space="preserve">├─ goals.md</text>
+  <text class="mono" x="44" y="182" font-size="14.5" xml:space="preserve">├─ health-data/</text>
+  <text class="mono" x="44" y="210" font-size="14.5" xml:space="preserve">│   ├─ bloodwork/<tspan class="sub" x="320">Lucis · Le Lab</tspan></text>
+  <text class="mono" x="44" y="238" font-size="14.5" xml:space="preserve">│   ├─ genetics.md<tspan class="sub" x="320">Nucleus</tspan></text>
+  <text class="mono" x="44" y="266" font-size="14.5" xml:space="preserve">│   ├─ epigenetics.md</text>
+  <text class="mono" x="44" y="294" font-size="14.5" xml:space="preserve">│   ├─ vo2max.md</text>
+  <text class="mono" x="44" y="322" font-size="14.5" xml:space="preserve">│   ├─ whoop-trends.md<tspan class="sub" x="320">Whoop</tspan></text>
+  <text class="mono" x="44" y="350" font-size="14.5" xml:space="preserve">│   └─ withings-trends.md<tspan class="sub" x="320">Withings</tspan></text>
+  <text class="mono" x="44" y="378" font-size="14.5" xml:space="preserve">├─ training/</text>
+  <text class="mono" x="44" y="406" font-size="14.5" xml:space="preserve">│   ├─ current-program.md<tspan class="sub" x="320">Strava</tspan></text>
+  <text class="mono" x="44" y="434" font-size="14.5" xml:space="preserve">│   └─ method.md</text>
+  <text class="mono" x="44" y="462" font-size="14.5" xml:space="preserve">├─ medical/stack.md</text>
+  <text class="mono" x="44" y="490" font-size="14.5" xml:space="preserve">└─ research/glp1.md</text>
 
-  <rect class="engine" x="40" y="382" width="400" height="68" rx="14"/>
-  <text x="240" y="421" text-anchor="middle" font-size="15"><tspan class="acc" font-weight="700">Claude (or any LLM)</tspan><tspan class="t"> reads across every file</tspan></text>
+  <line class="arrow" x1="260" y1="524" x2="260" y2="586" marker-end="url(#arr)"/>
+
+  <rect class="engine" x="20" y="590" width="480" height="50" rx="14"/>
+  <text x="260" y="621" text-anchor="middle" font-size="15"><tspan class="acc" font-weight="700">Claude (or any LLM)</tspan><tspan class="t"> reads across every file</tspan></text>
 </svg>

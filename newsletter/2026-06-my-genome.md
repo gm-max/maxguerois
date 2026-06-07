@@ -122,9 +122,13 @@ Three rules, no exceptions: it must be whole-genome, you must be able to downloa
 
 A genome on its own gives tendencies. Its value shows up when it sits next to your bloodwork, your wearables, and your family history, in one organized place.
 
-[IMAGE: wiki schema. Upload wiki-llm-schema (export the SVG to PNG first for email).]
+[IMAGE: the Max Health OS schema. Upload wiki-llm-schema (export the SVG to PNG first for email).]
 
-Mine is a markdown wiki: a folder of plain-text files on my computer, one per topic (labs, genome, training, sleep), each tagged with consistent labels. A second brain that holds everything known about my health, structured so a machine can read across all of it. The idea comes from Andrej Karpathy's "LLM wiki" [4]: plain markdown a model can read, reason over, and write back to. I'll write up exactly how I built mine in a future issue.
+That's why I built the Max Health OS.
+
+It's a markdown wiki: a folder of plain-text files on my computer, one per topic, each tagged with consistent labels. A second brain that holds everything known about my health, structured so a machine can read across all of it.
+
+The idea comes from Andrej Karpathy's "LLM wiki" [4]: plain markdown a model can read, reason over, and write back to.
 
 **3. Let an LLM interpret it.**
 
