@@ -18,13 +18,17 @@ notes: >
 
 Hey,
 
-Most of you found me through the post on [leaving Lucis](https://maxguerois.com/lucis-chapter). Here's what you actually signed up for: I'm building my next venture in the open, and you get the unfiltered version. The research, the experiments I run on myself, what works and what blows up.
+Most of you found me through the post on [leaving Lucis](https://maxguerois.com/lucis-chapter). Here's what you actually signed up for: I'm building my next venture in the open, and you get the unfiltered version.
+
+The research, the experiments I run on myself, what works and what blows up.
 
 So I'll start with the foundation: the highest-leverage thing I've done for my health.
 
 I sequenced my genome.
 
-I did it during YC. Being in the US gave me access to the most promising DNA test on the market, and I'd known for a while that sequencing was becoming the thing in health. So I used Nucleus, and it ended up running how I manage my health today.
+I did it during YC. Being in the US gave me access to the most promising DNA test on the market, and I'd known for a while that sequencing was becoming the thing in health.
+
+So I used Nucleus, and it ended up running how I manage my health today.
 
 In this issue:
 
