@@ -1,18 +1,20 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import NewsletterEmbed from '../components/NewsletterEmbed.astro';
+import Layout from '../../layouts/Layout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
 import { getCollection } from 'astro:content';
 
+const locale = 'fr';
 const allExperiments = await getCollection('experiments');
-const archive = allExperiments.filter(e => !e.data.locale || e.data.locale === 'en');
+const archive = allExperiments.filter(e => (e.data as any).locale === 'fr');
 archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 ---
 <Layout
-    title="The long game of staying young, by Max Guerois"
-    description="Building my next venture in the open. Health and longevity for now: peptides, tracking, training, supplements. The experiments I run on myself, the unfiltered version. Two emails a month."
-    ogUrl="https://maxguerois.com/newsletter"
+    title="The long game of staying young, par Max Guerois"
+    description="Je construis ma prochaine boîte au grand jour. Santé et longévité pour l'instant : peptides, tracking, entraînement, compléments. Les expériences que je mène sur moi, la version brute. Deux emails par mois."
+    ogUrl="https://maxguerois.com/fr/newsletter"
     ogImage="https://maxguerois.com/health-journey/banner-staying-young.jpg"
     extraStyles={["/styles/article.css"]}
+    locale={locale}
 >
 
 <style>
@@ -102,41 +104,41 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 </style>
 
 <div class="container">
-    <a href="/" class="back">&larr; Back home</a>
+    <a href="/fr" class="back">&larr; Retour à l'accueil</a>
 
     <img
         class="nl-banner"
         src="/health-journey/banner-staying-young.jpg"
-        alt="The long game of staying young, a newsletter by Max Guerois"
+        alt="The long game of staying young, une newsletter de Max Guerois"
         fetchpriority="high"
     >
 
-    <div class="nl-meta">The newsletter</div>
-    <p class="nl-lead">I left my previous health startup. Now I'm starting from scratch, building my next venture in the open.</p>
-    <p class="nl-lead">I share it as it happens, the unfiltered version: the experiments I run on myself, the research, what works and what blows up.</p>
-    <p class="nl-lead">Right now that's mostly health and longevity: peptides, tracking, training, and supplements.</p>
+    <div class="nl-meta">La newsletter</div>
+    <p class="nl-lead">J'ai quitté ma précédente startup santé. Je repars de zéro, et je construis ma prochaine boîte au grand jour.</p>
+    <p class="nl-lead">Je partage tout au fur et à mesure, la version brute : les expériences que je mène sur moi, la recherche, ce qui marche et ce qui explose en vol.</p>
+    <p class="nl-lead">Pour l'instant c'est surtout santé et longévité : peptides, tracking, entraînement, et compléments.</p>
 
-    <NewsletterEmbed />
+    <NewsletterEmbed locale={locale} />
 
-    <div class="nl-section-label">The archive</div>
-    <h2 class="nl-section-title">What I've been working on</h2>
+    <div class="nl-section-label">L'archive</div>
+    <h2 class="nl-section-title">Ce sur quoi je travaille</h2>
 
     <div class="experiments-list">
         {archive.map((exp, i) => (
-            <a href={`/${exp.data.slug}`} class="experiment-item">
+            <a href={`/fr/${exp.data.slug}`} class="experiment-item">
                 <div class="experiment-tag-row">
                     <span class="experiment-tag">{exp.data.category}</span>
-                    {i === 0 && <span class="experiment-tag">Latest</span>}
+                    {i === 0 && <span class="experiment-tag">Récent</span>}
                 </div>
                 <div class="experiment-title">{exp.data.title}</div>
                 <div class="experiment-desc">{exp.data.tagline}</div>
-                <span class="experiment-link">Read it &rarr;</span>
+                <span class="experiment-link">Lire &rarr;</span>
             </a>
         ))}
     </div>
 
     <div style="margin: var(--sp-12) 0 var(--sp-12);">
-        <NewsletterEmbed />
+        <NewsletterEmbed locale={locale} />
     </div>
 </div>
 </Layout>
