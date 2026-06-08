@@ -1,0 +1,142 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NewsletterEmbed from '../components/NewsletterEmbed.astro';
+import { getCollection } from 'astro:content';
+
+const allExperiments = await getCollection('experiments');
+const archive = allExperiments.filter(e => !e.data.locale || e.data.locale === 'en');
+archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
+---
+<Layout
+    title="The long game of staying young, by Max Guerois"
+    description="Building my next venture in the open. Health and longevity for now: peptides, tracking, training, supplements. The experiments I run on myself, the unfiltered version. Two emails a month."
+    ogUrl="https://maxguerois.com/newsletter"
+    ogImage="https://maxguerois.com/health-journey/banner-staying-young.jpg"
+    extraStyles={["/styles/article.css"]}
+>
+
+<style>
+    .nl-banner {
+        width: 100%;
+        display: block;
+        border-radius: var(--radius-lg);
+        margin: var(--sp-4) 0 var(--sp-8);
+    }
+    .nl-meta {
+        font-family: var(--font-body);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin-bottom: 10px;
+    }
+    .nl-lead {
+        font-size: 17px;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        max-width: 540px;
+        margin: 0 0 var(--sp-8);
+    }
+    .nl-section-label {
+        font-family: var(--font-body);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin: var(--sp-16) 0 var(--sp-2);
+    }
+    .nl-section-title {
+        font-family: var(--font-display);
+        font-size: clamp(24px, 3.5vw, 32px);
+        font-weight: 400;
+        line-height: 1.2;
+        color: var(--text);
+        margin: 0 0 var(--sp-6);
+    }
+    .experiments-list { border-top: 1px solid var(--border); }
+    .experiment-item {
+        display: block;
+        padding: var(--sp-6) 0;
+        border-bottom: 1px solid var(--border);
+        text-decoration: none;
+        color: inherit;
+    }
+    .experiment-item:last-child { border-bottom: none; }
+    .experiment-tag-row { display: flex; gap: var(--sp-2); margin-bottom: var(--sp-3); }
+    .experiment-tag {
+        display: inline-flex;
+        align-items: center;
+        font-family: var(--font-body);
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: var(--text-secondary);
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        padding: 3px 10px;
+    }
+    .experiment-title {
+        font-family: var(--font-display);
+        font-size: 22px;
+        font-weight: 400;
+        color: var(--text);
+        line-height: 1.2;
+        margin-bottom: var(--sp-2);
+    }
+    .experiment-desc {
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        margin-bottom: var(--sp-3);
+    }
+    .experiment-link {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--accent);
+        text-decoration: none;
+        letter-spacing: 0.02em;
+    }
+</style>
+
+<div class="container">
+    <a href="/" class="back">&larr; Back home</a>
+
+    <img
+        class="nl-banner"
+        src="/health-journey/banner-staying-young.jpg"
+        alt="The long game of staying young, a newsletter by Max Guerois"
+        fetchpriority="high"
+    >
+
+    <div class="nl-meta">The newsletter</div>
+    <p class="nl-lead">I left my previous health startup, and now I'm starting from scratch again, building my next venture in the open.</p>
+    <p class="nl-lead">This is where I share all of it as it happens: the experiments I run on myself, the research, what works and what blows up. The unfiltered version.</p>
+    <p class="nl-lead">Right now that's mostly health and longevity: peptides, tracking, training, and supplements.</p>
+
+    <NewsletterEmbed />
+
+    <div class="nl-section-label">The archive</div>
+    <h2 class="nl-section-title">What I've been working on</h2>
+
+    <div class="experiments-list">
+        {archive.map((exp, i) => (
+            <a href={`/${exp.data.slug}`} class="experiment-item">
+                <div class="experiment-tag-row">
+                    <span class="experiment-tag">{exp.data.category}</span>
+                    {i === 0 && <span class="experiment-tag">Latest</span>}
+                </div>
+                <div class="experiment-title">{exp.data.title}</div>
+                <div class="experiment-desc">{exp.data.tagline}</div>
+                <span class="experiment-link">Read it &rarr;</span>
+            </a>
+        ))}
+    </div>
+
+    <div style="margin: var(--sp-12) 0 var(--sp-12);">
+        <NewsletterEmbed />
+    </div>
+</div>
+</Layout>

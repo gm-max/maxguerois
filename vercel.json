@@ -6,7 +6,8 @@
   "redirects": [
     { "source": "/sleep", "destination": "/experiments/sleep", "permanent": true },
     { "source": "/testosterone", "destination": "/experiments/testosterone", "permanent": true },
-    { "source": "/max-biomarkers", "destination": "/experiments/max-biomarkers", "permanent": true }
+    { "source": "/max-biomarkers", "destination": "/experiments/max-biomarkers", "permanent": true },
+    { "source": "/experiments", "destination": "/newsletter", "permanent": true }
   ],
   "headers": [
     {
