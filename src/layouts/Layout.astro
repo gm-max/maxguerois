@@ -140,40 +140,46 @@ const frUrl = getAbsoluteUrl(frenchPath, 'fr');
         <nav class="navbar">
             <div class="navbar-inner">
                 <a href={locale === 'fr' ? '/fr' : '/'} class="navbar-name">Max Guerois</a>
-                <div class="navbar-right">
-                    <a
-                        href={locale === 'fr' ? '/fr/newsletter' : '/newsletter'}
-                        class:list={["navbar-link", { active: currentPath.replace(/\/$/, '').endsWith('newsletter') }]}
-                    >{t(locale, 'nav.newsletter')}</a>
-                    <div class="navbar-social">
-                        <a href="https://linkedin.com/in/maxguerois" class="navbar-social-link" target="_blank" aria-label="LinkedIn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-                        </a>
-                        <a href="https://x.com/maxguerois" class="navbar-social-link" target="_blank" aria-label="X">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        </a>
-                        <a href="https://instagram.com/maxguerois" class="navbar-social-link" target="_blank" aria-label="Instagram">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-                        </a>
-                    </div>
-                    <span class="navbar-sep" aria-hidden="true"></span>
-                    <a
-                        href={locale === 'fr' ? getLocalizedPath(currentPath, 'en') : getLocalizedPath(currentPath, 'fr')}
-                        class="navbar-lang-switch"
-                        aria-label={t(locale, 'nav.langSwitchLabel')}
-                        data-lang-switch
-                    >{t(locale, 'nav.langSwitch')}</a>
-                </div>
+                <a
+                    href={locale === 'fr' ? '/fr/newsletter' : '/newsletter'}
+                    class:list={["navbar-link", { active: currentPath.replace(/\/$/, '').endsWith('newsletter') }]}
+                >{t(locale, 'nav.newsletter')}</a>
             </div>
         </nav>
     </slot>
     <slot />
-    <!-- Theme toggle — subtle footer -->
-    <div style="text-align: center; padding: 16px 24px 32px; opacity: 0.6; transition: opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.6'">
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-            <span id="toggle-icon">☾</span>
-        </button>
-    </div>
+    <!-- Site footer — socials + newsletter + language + theme -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-row">
+                <a
+                    href={locale === 'fr' ? '/fr/newsletter' : '/newsletter'}
+                    class:list={["footer-link", { active: currentPath.replace(/\/$/, '').endsWith('newsletter') }]}
+                >{t(locale, 'nav.newsletter')}</a>
+                <div class="footer-social">
+                    <a href="https://linkedin.com/in/maxguerois" target="_blank" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                    </a>
+                    <a href="https://x.com/maxguerois" target="_blank" aria-label="X">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="https://instagram.com/maxguerois" target="_blank" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                    </a>
+                </div>
+                <a
+                    href={locale === 'fr' ? getLocalizedPath(currentPath, 'en') : getLocalizedPath(currentPath, 'fr')}
+                    class="footer-lang"
+                    aria-label={t(locale, 'nav.langSwitchLabel')}
+                    data-lang-switch
+                >{t(locale, 'nav.langSwitch')}</a>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                    <span id="toggle-icon">☾</span>
+                </button>
+            </div>
+            <div class="footer-copy">© {new Date().getFullYear()} Max Guerois</div>
+        </div>
+    </footer>
     <script is:inline>
         (function() {
             var toggle = document.getElementById('theme-toggle');
