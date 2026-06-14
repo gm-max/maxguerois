@@ -14,5 +14,8 @@
   },
   "optionalDependencies": {
     "defu": "^6.1.5"
+  },
+  "overrides": {
+    "esbuild": "^0.28.1"
   }
 }
