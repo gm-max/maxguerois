@@ -57,15 +57,26 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         color: var(--text);
         margin: 0 0 var(--sp-6);
     }
-    .experiments-list { border-top: 1px solid var(--border); }
+    .experiments-list { display: flex; flex-direction: column; gap: var(--sp-6); }
     .experiment-item {
         display: block;
-        padding: var(--sp-6) 0;
-        border-bottom: 1px solid var(--border);
         text-decoration: none;
         color: inherit;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        background: var(--bg-subtle);
+        transition: border-color 0.2s ease, transform 0.2s ease;
     }
-    .experiment-item:last-child { border-bottom: none; }
+    .experiment-item:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .experiment-cover {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        background: var(--border);
+    }
+    .experiment-body { padding: var(--sp-6); }
     .experiment-tag-row { display: flex; gap: var(--sp-2); margin-bottom: var(--sp-3); }
     .experiment-tag {
         display: inline-flex;
@@ -126,13 +137,18 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
     <div class="experiments-list">
         {archive.map((exp, i) => (
             <a href={`/fr/${exp.data.slug}`} class="experiment-item">
-                <div class="experiment-tag-row">
-                    <span class="experiment-tag">{exp.data.category}</span>
-                    {i === 0 && <span class="experiment-tag">Récent</span>}
+                {exp.data.cover && (
+                    <img class="experiment-cover" src={exp.data.cover} alt={exp.data.title} loading="lazy" />
+                )}
+                <div class="experiment-body">
+                    <div class="experiment-tag-row">
+                        <span class="experiment-tag">{exp.data.category}</span>
+                        {i === 0 && <span class="experiment-tag">Récent</span>}
+                    </div>
+                    <div class="experiment-title">{exp.data.title}</div>
+                    <div class="experiment-desc">{exp.data.tagline}</div>
+                    <span class="experiment-link">Lire &rarr;</span>
                 </div>
-                <div class="experiment-title">{exp.data.title}</div>
-                <div class="experiment-desc">{exp.data.tagline}</div>
-                <span class="experiment-link">Lire &rarr;</span>
             </a>
         ))}
     </div>

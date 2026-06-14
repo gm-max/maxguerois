@@ -1,5 +1,5 @@
 /* =============================================
-   nav.css — fixed top navbar
+   nav.css — fixed top navbar + site footer
    maxguerois.com
    ============================================= */
 
@@ -9,7 +9,7 @@
     left: 0;
     right: 0;
     z-index: 100;
-    height: 52px;
+    height: 56px;
     background: var(--navbar-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -28,63 +28,133 @@
 }
 
 .navbar-name {
-    font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     color: var(--text);
     text-decoration: none;
+    white-space: nowrap;
     display: flex;
     align-items: center;
     min-height: 44px;
     transition: opacity var(--duration-short) ease;
 }
 
-.navbar-name:hover { opacity: 0.5; }
+.navbar-name:hover { opacity: 0.6; }
 
-.navbar-social {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-}
-
-.navbar-social-link {
-    color: var(--text-tertiary);
+.navbar-link {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--text-secondary);
     text-decoration: none;
     display: flex;
     align-items: center;
-    justify-content: center;
-    min-width: 44px;
     min-height: 44px;
-    padding: 14px;
-    margin: -14px;
     transition: color var(--duration-short) ease;
-    line-height: 1;
 }
 
-.navbar-social-link:hover { color: var(--text); }
+.navbar-link:hover { color: var(--text); }
+.navbar-link.active { color: var(--accent); }
 
-.navbar-social-link svg {
-    width: 15px;
-    height: 15px;
+/* =============================================
+   Site footer — socials + newsletter + lang + theme
+   ============================================= */
+
+.site-footer {
+    border-top: 1px solid var(--border);
+    margin-top: var(--sp-20);
+    padding: var(--sp-8) var(--sp-6) var(--sp-12);
+}
+
+.footer-inner {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-6);
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--sp-4);
+}
+
+.footer-sep {
+    width: 1px;
+    height: 12px;
+    background: var(--border);
+}
+
+.footer-link {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-short) ease;
+}
+
+.footer-link:hover { color: var(--text); }
+.footer-link.active { color: var(--accent); }
+
+.footer-social {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.footer-social a {
+    color: var(--text-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--duration-short) ease;
+}
+
+.footer-social a:hover { color: var(--text); }
+
+.footer-social svg {
+    width: 18px;
+    height: 18px;
     display: block;
 }
 
-.navbar-lang-switch {
+.footer-lang {
     font-family: var(--font-body);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.04em;
     color: var(--text-tertiary);
     text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 44px;
-    min-height: 44px;
-    padding: 14px;
-    margin: -14px;
     transition: color var(--duration-short) ease;
 }
 
-.navbar-lang-switch:hover { color: var(--text); }
+.footer-lang:hover { color: var(--text); }
+
+/* slim, border-less theme toggle inside the footer row */
+.site-footer .theme-toggle {
+    border: none;
+    min-width: 0;
+    min-height: 0;
+    padding: 4px;
+    font-size: 14px;
+}
+
+.footer-copy {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    color: var(--text-tertiary);
+}
+
+@media (max-width: 600px) {
+    .navbar-name { font-size: 19px; }
+}
