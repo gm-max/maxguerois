@@ -75,15 +75,21 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--sp-4);
+    gap: var(--sp-6);
 }
 
-.footer-row {
+.footer-links {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    gap: var(--sp-6);
+    gap: var(--sp-4);
+}
+
+.footer-sep {
+    width: 1px;
+    height: 12px;
+    background: var(--border);
 }
 
 .footer-link {
@@ -102,7 +108,7 @@
 .footer-social {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 22px;
 }
 
 .footer-social a {
@@ -116,8 +122,8 @@
 .footer-social a:hover { color: var(--text); }
 
 .footer-social svg {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     display: block;
 }
 
