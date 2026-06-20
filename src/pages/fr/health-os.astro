@@ -1,0 +1,282 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+
+const locale = 'fr';
+
+// Scoped styles for elements not covered by the global article.css
+// (body lists, inline links, figures, references, disclaimer).
+const articleStyles = `
+    .article-body a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        transition: color var(--duration-short) ease;
+    }
+    .article-body a:hover { color: var(--text); }
+    .article-body ul, .article-body ol {
+        margin: 0 0 20px;
+        padding-left: 22px;
+        color: var(--text-secondary);
+    }
+    .article-body li {
+        font-size: 16px;
+        line-height: 1.75;
+        margin-bottom: 8px;
+    }
+    .article-body ul { list-style: disc; }
+    .article-body ol { list-style: decimal; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body sup a { text-decoration: none; font-size: 0.7em; }
+    figure.fig { margin: var(--sp-8) 0; }
+    figure.fig > img {
+        width: 100%;
+        display: block;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+    }
+    .schema-wrap {
+        background: #faf9f7;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 20px;
+    }
+    .schema-wrap img { width: 100%; display: block; }
+    figure.fig figcaption {
+        font-size: 13px;
+        color: var(--text-tertiary);
+        margin-top: 10px;
+        text-align: center;
+        line-height: 1.5;
+    }
+    .arc-line {
+        font-family: var(--font-display);
+        font-size: 20px;
+        line-height: 1.4;
+        color: var(--text);
+        margin: 0 0 20px;
+    }
+    .disclaimer {
+        font-size: 14px;
+        color: var(--text-tertiary);
+        font-style: italic;
+        margin-top: var(--sp-8);
+        line-height: 1.6;
+    }
+    .ref-list { font-size: 14px; line-height: 1.6; }
+    .ref-list li { margin-bottom: 10px; color: var(--text-secondary); }
+`;
+---
+<ArticleLayout
+    title="Mes analyses, mes labos et mes wearables au même endroit, lus par une IA. Voilà comment."
+    description="Tes données santé en simples fichiers texte, lues par une IA qui te dit quoi faire. Le tuto complet."
+    ogUrl="https://maxguerois.com/fr/health-os"
+    ogImage="https://maxguerois.com/health-journey/banner-health-os.jpg"
+    locale={locale}
+    articleStyles={articleStyles}
+>
+
+<div class="container">
+    <a href="/fr/newsletter" class="back">← Retour à la newsletter</a>
+
+    <div class="article-meta">Juin 2026</div>
+    <h1 class="article-title">Mes analyses, mes labos et mes wearables au même endroit, lus par une IA. Voilà comment.</h1>
+    <p class="article-subtitle">Tes données santé en simples fichiers texte, lues par une IA qui te dit quoi faire. Le tuto complet.</p>
+
+    <img
+        class="article-img"
+        src="/health-journey/banner-health-os.jpg"
+        alt="Mes analyses, mes labos et mes wearables au même endroit, lus par une IA"
+        fetchpriority="high"
+    >
+
+    <div class="article-body">
+
+        <p>Salut,</p>
+
+        <p>Après l'édition sur le génome, beaucoup d'entre vous voulaient la même chose, et ce n'était pas le génome. C'était le dossier dans lequel je l'avais déposé : mon Health OS. « Comment j'en construis un ? »</p>
+
+        <p>Mon pote Max Barbier n'a pas attendu le mode d'emploi. Il a construit le sien en une journée :</p>
+
+        <figure class="fig">
+            <img
+                src="/health-journey/max-barbier-conversation.png"
+                alt="Max Barbier m'écrit qu'il a construit son propre Health OS en une journée"
+                loading="lazy"
+            >
+        </figure>
+
+        <p>Alors voilà d'où ça vient, et comment construire le tien.</p>
+
+        <p>Tout est parti d'un tweet. En avril, Andrej Karpathy a parlé d'un « LLM wiki » en simple markdown<sup><a href="#ref-1">[1]</a></sup>. Le déclic : c'était comme ça que j'allais enfin donner du sens à mes données santé éparpillées.</p>
+
+        <p>Bryan Johnson a construit le sien à partir du même post<sup><a href="#ref-2">[2]</a></sup>. Quand lui et un gars à Paris bâtissent la même chose à partir d'un seul tweet, c'est que le truc va quelque part.</p>
+
+        <p>À la fin, tu auras le tien.</p>
+
+        <h2 class="section-heading">C'est quoi, un Health OS</h2>
+
+        <p>C'est simple. Presque bête, même.</p>
+
+        <p>Un dossier sur ton ordinateur, un fichier texte par partie de ta santé : analyses de sang, wearables, génome, antécédents familiaux.</p>
+
+        <p>Et tu l'enrichis en continu. Chaque nouvelle analyse, chaque mois de données wearable se pose sur la précédente. Les fichiers ne sont pas une photo à un instant T. C'est un historique qui s'allonge et se densifie avec le temps.</p>
+
+        <p>Le dossier vit sur ta machine. Tu pointes une IA dessus quand tu veux, et elle lit tout d'un coup, tout l'historique, toutes les sources, et transforme ça en décisions.</p>
+
+        <p>Pas d'app, pas de dashboard, pas de code.</p>
+
+        <figure class="fig">
+            <div class="schema-wrap">
+                <img
+                    src="/health-journey/health-os-schema.png"
+                    alt="Tes fichiers entrent, l'IA les lit en travers, les décisions sortent"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>Tes fichiers entrent, l'IA les lit en travers, les décisions sortent.</figcaption>
+        </figure>
+
+        <h2 class="section-heading">J'avais des années de données. Rien ne les lisait ensemble.</h2>
+
+        <p>Pendant des années, ça s'est accumulé, à deux vitesses.</p>
+
+        <p>Le quotidien : Whoop pour mon sommeil et ma récup, Withings pour mon poids, Strava pour chaque sortie et chaque séance.</p>
+
+        <p>Et les tests de fond, plutôt une fois par an : analyses de sang chez Lucis (la startup que j'ai montée), un DEXA, mon génome, les bilans de ma famille.</p>
+
+        <p>De la bonne data, tout ça. Mais chaque source ne voyait que sa propre tranche.</p>
+
+        <p>Mon Whoop ne savait pas que ma ferritine était basse. Mes analyses ne savaient pas que je m'étais entraîné dur toute la semaine. Rien ne regardait l'ensemble.</p>
+
+        <p>C'est exactement ce trou qu'un LLM vient combler.</p>
+
+        <p>Il lit des fichiers bruts, en vrac, venus de toutes les sources, et trouve ce qu'aucune ne peut voir seule. Pas de base de données, pas d'intégrations.</p>
+
+        <p>Tu lui donnes ton texte, et il raisonne sur tout en même temps. Les données que tu as déjà suffisent. Il leur manquait juste un lecteur unique qui voit tout.</p>
+
+        <h2 class="section-heading">Puis je l'ai fait se mettre à jour tout seul</h2>
+
+        <p>J'ai commencé simple. J'ai tout balancé dans le dossier et j'ai posé des questions. Ça a marché direct. Je pouvais demander n'importe quoi et obtenir une réponse sur toutes mes données à la fois. Des trucs qu'aucune app ne pouvait voir.</p>
+
+        <p>Mais je voulais aller plus loin. Le dossier était déjà top. Il devenait encore meilleur plus il restait à jour, et à partir du moment où il s'actualisait tout seul chaque jour, ça s'est mis à faire boule de neige.</p>
+
+        <p>Le point de friction, c'était de le tenir à jour à la main. Chaque dimanche, je m'asseyais pour planifier mon entraînement, et d'abord je devais :</p>
+
+        <ul>
+            <li>récupérer mes dernières données moi-même, Whoop, Strava, Withings</li>
+            <li>les fusionner avec le reste</li>
+            <li><em>ensuite</em> seulement, planifier</li>
+        </ul>
+
+        <p>Ça marchait. Mais ça bouffait du temps, chaque semaine.</p>
+
+        <p>Alors je l'ai automatisé.</p>
+
+        <p>Et voilà le truc que j'ai encore du mal à croire : je n'ai pas écrit une seule ligne. J'ai dit à Claude Code ce que je voulais, et il a tout construit, les scripts, les intégrations, tout.</p>
+
+        <p>Maintenant, ça tourne tout seul :</p>
+
+        <ul>
+            <li>Whoop, Withings et Strava rentrent automatiquement</li>
+            <li>ça s'enrichit, repère les tendances, prédit sur des données fraîches au lieu d'une photo périmée</li>
+            <li>la seule chose que j'ajoute encore à la main, ce sont les tests de fond, et de toute façon ils ne tombent qu'une fois par an</li>
+        </ul>
+
+        <p>Puis je suis allé un cran plus loin. J'ai demandé à Claude Code de le brancher sur un bot Telegram, Max Health Coach. Maintenant, c'est lui qui vient à moi :</p>
+
+        <ul>
+            <li>chaque matin, tout seul</li>
+            <li>ma readiness, la séance du jour, un petit rappel quand quelque chose cloche</li>
+            <li>je n'ouvre plus aucun dossier, je ne demande même plus. Ça arrive, point.</li>
+        </ul>
+
+        <figure class="fig">
+            <img
+                src="/health-journey/max-health-coach-telegram.png"
+                alt="Max Health Coach m'écrit chaque matin sur Telegram avec ma readiness et ma séance"
+                loading="lazy"
+            >
+        </figure>
+
+        <p>C'est tout le parcours :</p>
+
+        <p class="arc-line"><strong>un dossier que j'interroge → un système qui se met à jour tout seul → un coach qui m'écrit chaque matin.</strong></p>
+
+        <p>Et je n'ai jamais touché au code.</p>
+
+        <h2 class="section-heading">Pourquoi tu devrais en construire un aussi</h2>
+
+        <p>Quelques mois plus tard, voilà ce que ça me rapporte vraiment.</p>
+
+        <ul>
+            <li><strong>Des décisions plus sûres.</strong> Avant que quoi que ce soit de nouveau entre dans mon corps, un peptide, un complément, un nouveau protocole, je le confronte d'abord à mes propres données. C'est exactement ce que j'ai fait avant de démarrer le rétatrutide, le GLP-1 que je teste en ce moment.</li>
+            <li><strong>Vraiment data-driven.</strong> Je peux demander « concrètement, où en est mon expérimentation rétatrutide ? » et il lit tout d'un coup, les marqueurs que je surveille au quotidien, fréquence cardiaque au repos, HRV (à quel point le temps entre mes battements de cœur varie, un bon indicateur de récupération), poids, plus mon entraînement et mes analyses. C'est la data qui me répond, pas une intuition.</li>
+            <li><strong>Du temps et de l'argent gagnés.</strong> Et honnêtement, ça m'a fait moins dépendre d'un médecin pour le quotidien. Pas pour ce qui en nécessite vraiment un, mais les petites questions du type « est-ce que j'ajuste ça ? » pour lesquelles je prenais rendez-vous avant, maintenant je les pose à mes propres données.</li>
+        </ul>
+
+        <p>Si tu mesures quoi que ce soit sur ta santé, c'est ça qui transforme les chiffres en décisions.</p>
+
+        <h2 class="section-heading">Comment le mettre en place, sans code</h2>
+
+        <p>Tu n'as pas besoin de l'automatisation pour démarrer, ça, c'est venu après. Si tu sais éditer un fichier texte et coller un prompt, tu sais le faire.</p>
+
+        <p><strong>1. Choisis un outil qui lit un dossier.</strong> Claude (Cowork ou Claude Code), OpenAI Codex, n'importe quelle IA que tu peux pointer sur un dossier. Les versions gratuites suffisent pour commencer.</p>
+
+        <p><strong>2. Crée le dossier.</strong> Un fichier texte par sujet :</p>
+
+        <ul>
+            <li><strong>profile.md</strong> : toi, tes objectifs, tes cibles</li>
+            <li><strong>data/</strong> : tes résultats bruts, analyses, wearables, composition corporelle, génétique</li>
+            <li><strong>protocol/</strong> : ce que tu fais, compléments, entraînement</li>
+            <li><strong>instructions.md</strong> : le fichier qui transforme l'IA en ton coach</li>
+            <li><strong>dashboard.md</strong> : un instantané qu'elle tient à jour</li>
+        </ul>
+
+        <p><strong>3. Mets tes données dedans.</strong> Colle ce que tu as, les PDF de labo, ton Whoop ou ton Oura, Apple Health, un DEXA. Commence par les analyses de sang et un wearable, tu ajouteras le reste plus tard.</p>
+
+        <p><strong>4. Donne-lui les instructions de coach.</strong> C'est ce fichier qui fait le boulot : tout lire d'abord, ne jamais inventer un chiffre, citer ses sources, signaler tout ce qui est clinique. Demande ton bilan et il te dit où tu en es, ce qui cloche, quoi faire, quoi arrêter, ce qui manque. Il planifie et il coache aussi.</p>
+
+        <p><strong>5. Fais tourner ça chaque semaine.</strong> Une nouvelle donnée arrive, tu la déposes, tu dis « fais-moi mon bilan ». L'image se densifie. Une donnée que tu collectes, c'est une curiosité. Une donnée sur laquelle quelque chose agit chaque semaine, c'est un coach.</p>
+
+        <figure class="fig">
+            <div class="schema-wrap">
+                <img
+                    src="/health-journey/health-os-template-structure.png"
+                    alt="L'arborescence du template Health OS Starter : les fichiers profile, data, protocol, instructions et dashboard"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>L'arborescence du template Health OS Starter.</figcaption>
+        </figure>
+
+        <p>J'ai packagé la structure exacte que j'utilise, le prompt de coach et des données d'exemple (fictives) dans un template de départ, gratuit : <a href="https://github.com/gm-max/health-os-starter" target="_blank" rel="noopener">github.com/gm-max/health-os-starter</a>. Copie-le, mets tes données à la place, et pointe ton IA dessus.</p>
+
+        <p>Le génome, c'était la couche de base. Ça, c'est ce qui agit enfin dessus.</p>
+
+        <p>Si tu en construis un, réponds et dis-moi ce que tu traques. Je lis chaque réponse, et je t'aiderai à mettre le tien en place.</p>
+
+        <p>À très vite,<br>Max</p>
+
+        <p class="disclaimer">Expérimentation et documentation personnelles, pas un avis médical. Parle à un médecin avant toute décision de santé.</p>
+
+        <h2 class="section-heading">Références</h2>
+
+        <ol class="ref-list">
+            <li id="ref-1"><a href="https://x.com/karpathy/status/2039805659525644595" target="_blank" rel="noopener">Andrej Karpathy sur le « LLM wiki » (second cerveau en markdown pour les LLM)</a></li>
+            <li id="ref-2"><a href="https://x.com/bryan_johnson/status/2045962306291699907" target="_blank" rel="noopener">Bryan Johnson sur la création de sa propre base de données santé</a></li>
+        </ol>
+
+    </div>
+
+    <div class="article-footer">
+        <span class="author-line">Par <a href="/fr">Max Guerois</a></span>
+    </div>
+
+    <!-- Newsletter CTA -->
+    <div style="margin-top: 48px;">
+        <NewsletterEmbed locale={locale} />
+    </div>
+</div>
+</ArticleLayout>
