@@ -86,6 +86,9 @@ const frUrl = getAbsoluteUrl(frenchPath, 'fr');
         })();
     </script>
 
+    <!-- Canonical -->
+    {ogUrl && <link rel="canonical" href={ogUrl}>}
+
     <!-- OpenGraph -->
     <meta property="og:type" content={ogType}>
     {ogUrl && <meta property="og:url" content={ogUrl}>}
