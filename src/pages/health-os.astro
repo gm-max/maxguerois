@@ -1,0 +1,193 @@
+---
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../components/NewsletterEmbed.astro';
+
+// Scoped styles for elements not covered by the global article.css
+// (body lists, inline links, figures, references, disclaimer).
+const articleStyles = `
+    .article-body a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        transition: color var(--duration-short) ease;
+    }
+    .article-body a:hover { color: var(--text); }
+    .article-body ul, .article-body ol {
+        margin: 0 0 20px;
+        padding-left: 22px;
+        color: var(--text-secondary);
+    }
+    .article-body li {
+        font-size: 16px;
+        line-height: 1.75;
+        margin-bottom: 8px;
+    }
+    .article-body ul { list-style: disc; }
+    .article-body ol { list-style: decimal; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body sup a { text-decoration: none; font-size: 0.7em; }
+    figure.fig { margin: var(--sp-8) 0; }
+    figure.fig > img {
+        width: 100%;
+        display: block;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+    }
+    .schema-wrap {
+        background: #faf9f7;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 20px;
+    }
+    .schema-wrap img { width: 100%; display: block; }
+    figure.fig figcaption {
+        font-size: 13px;
+        color: var(--text-tertiary);
+        margin-top: 10px;
+        text-align: center;
+        line-height: 1.5;
+    }
+    .disclaimer {
+        font-size: 14px;
+        color: var(--text-tertiary);
+        font-style: italic;
+        margin-top: var(--sp-8);
+        line-height: 1.6;
+    }
+    .ref-list { font-size: 14px; line-height: 1.6; }
+    .ref-list li { margin-bottom: 10px; color: var(--text-secondary); }
+`;
+---
+<ArticleLayout
+    title="My bloodwork, labs, and wearables in one place, read by AI. Here's how."
+    description="The follow-up to my genome post: how I put all my health data in one folder of plain files and pointed an AI at it. A no-code how-to, so you can build your own Health OS."
+    ogUrl="https://maxguerois.com/health-os"
+    ogImage="https://maxguerois.com/health-journey/dna/wiki-llm-schema.png"
+    articleStyles={articleStyles}
+>
+
+<div class="container">
+    <a href="/newsletter" class="back">← Back to the newsletter</a>
+
+    <div class="article-meta">June 2026</div>
+    <h1 class="article-title">My bloodwork, labs, and wearables in one place, read by AI. Here's how.</h1>
+    <p class="article-subtitle">The follow-up to my genome post: a no-code how-to, so you can build your own Health OS by the end of it.</p>
+
+    <img
+        class="article-img"
+        src="/health-journey/dna/wiki-llm-schema.png"
+        alt="The Health OS: plain-text health files (genome, bloodwork, wearables, training, medical) go in, an LLM reads across all of them, daily decisions come out"
+        loading="lazy"
+    >
+
+    <div class="article-body">
+
+        <p>Hey,</p>
+
+        <p>Last issue I told you I sequenced my <a href="/my-genome">whole genome</a> and dropped it into something I keep calling my Health OS. A lot of you replied with the same question: what is that, exactly, and how do I build my own?</p>
+
+        <p>So this one is the full how-to. By the end you'll be able to set up yours.</p>
+
+        <h2 class="section-heading">What a Health OS is</h2>
+
+        <p>Your health data is scattered and none of it talks to each other. Your bloodwork is a PDF in an email, your sleep is in one app, your training is in another, your DEXA scan is a file you opened once. A Health OS fixes that in the simplest way I've found.</p>
+
+        <p>It's your health data as plain text files, all in one folder, with an AI that reads across every file at once and tells you what to do. One file for bloodwork, one for your wearables, one for your genome, one for family history. The AI holds the whole picture instead of one slice, and turns it into decisions. That's the whole thing. No app, no dashboard, no code.</p>
+
+        <h2 class="section-heading">Why I built it</h2>
+
+        <p>For years my data lived in ten places. Five years of blood tests across two countries, Whoop, Strava, Withings, a genome report, my family's panels. Each one on its own told me almost nothing. Nothing read them together.</p>
+
+        <p>Health apps don't fix this, they make it worse. Every app is a silo. It shows you its own data, draws a pretty chart, and stops there. Your sleep app doesn't know your ferritin is low. Your lab portal doesn't know you trained hard all week. None of them know your genome when they look at any of it. They give you numbers, not decisions.</p>
+
+        <p>The thing that changed was realizing an LLM doesn't need any of that to be clean. It can read across plain, messy, personal files and connect them. You don't have to build a database or wait for ten apps to integrate. You hand it your text, and it reasons over the whole thing at once. <em>The data you already have is enough, it just needs one reader that sees all of it.</em></p>
+
+        <h2 class="section-heading">What it's done for me, three months in</h2>
+
+        <p>Three things, mostly:</p>
+
+        <ul>
+            <li>Everything lives in one place, so every new lab makes the whole picture sharper instead of adding one more orphan PDF.</li>
+            <li>I can ask any health question and get an answer grounded in my own numbers, not generic advice.</li>
+            <li>I de-risk anything new before I try it. The genome post covered exactly this for retatrutide: check the risks against my own data first.</li>
+        </ul>
+
+        {/* TODO Max: confirm this section-3 example reflects a real weekly read, and swap in your real protein/marker numbers. Kept category-level and non-sensitive for now. */}
+        <p>Here's a real one from a few weeks ago. I'd just traveled, trained hard, and I'm running a GLP-1, so my appetite is way down. I asked for my weekly read. It pulled across my wearables, my last bloodwork, and my training log and flagged something I'd missed: my protein had quietly dropped well under what I need to hold onto muscle while losing fat on a GLP-1. It cross-checked that against my actual goal, losing fat without losing muscle, and told me what to change: bring protein back up to a daily floor, swap one of that week's hard sessions for an easy one, and recheck a blood marker at my next draw. None of my apps could have caught it, because none of them were looking at my training, my bloodwork, and what I'm taking at the same time.</p>
+
+        <p>The clearest signal it's real: I sent the genome issue to a friend, he rebuilt his own version in a day, and his first message back was <em>"there's a startup to build on this."</em> Maybe. For now it's just a folder and a prompt, and that's the point.</p>
+
+        <h2 class="section-heading">How to set it up, no code</h2>
+
+        <p>If you can edit a text file and paste a prompt, you can run this. Five steps.</p>
+
+        <p><strong>1. Pick a tool that can read a folder.</strong><br>Any AI you can point at a folder of files works: Claude (the Cowork desktop app or Claude Code), OpenAI Codex, or similar. Free tiers are fine to start. The trick is that it reads the whole folder, not one pasted message.</p>
+
+        <p><strong>2. Set up the folder.</strong><br>One plain file per topic. Mine looks like this:</p>
+
+        <ul>
+            <li><strong>profile.md</strong>: who you are, your goals, your targets.</li>
+            <li><strong>data/</strong>: your raw results by source, one file each: bloodwork, wearables, body composition, genetics.</li>
+            <li><strong>protocol/</strong>: what you're actually doing: supplements, training.</li>
+            <li><strong>instructions.md</strong>: the file that turns the AI into your coach.</li>
+            <li><strong>dashboard.md</strong>: a plain-language snapshot the AI keeps updated for you.</li>
+        </ul>
+
+        <p><strong>3. Get your data in.</strong><br>Export what you have and paste the numbers into the matching file. Lab portal PDFs, your Whoop or Oura or Garmin, Apple Health, a DEXA report. You don't need everything on day one. Start with bloodwork and one wearable, add the rest as you go.</p>
+
+        <p><strong>4. Give it the coach instructions.</strong><br>This is the file that does the work. It tells the AI to read every file before answering, never invent a number, cite which file each claim comes from, flag anything that needs a doctor, and return five things when you ask for your read: where you stand, what's flagged, what to do this week, what to stop, and what's missing. Drop the folder into Claude or Codex and it reads it automatically.</p>
+
+        <p><strong>5. Run the weekly loop.</strong><br>Once a week, or whenever new data lands, drop the new lab or month of wearable data into the right file and say "give me my read." The picture compounds. Data you collect is a curiosity; data something acts on every week is a coach.</p>
+
+        <figure class="fig">
+            <div class="schema-wrap">
+                <img
+                    src="/health-journey/dna/wiki-llm-schema.png"
+                    alt="The Health OS: plain-text health files go in, an LLM reads across all of them, daily decisions come out"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>The whole system: your files go in, the AI reads across them, decisions come out.</figcaption>
+        </figure>
+
+        <p>I packaged the exact scaffold I run, the coach prompt, and example (fake) data so you can see the shape, into a starter template: <a href="https://github.com/gm-max/health-os-starter" target="_blank" rel="noopener">github.com/gm-max/health-os-starter</a>. Copy it, replace the example data with yours, point your AI at it. The idea behind all of this comes from Andrej Karpathy's "LLM wiki"<sup><a href="#ref-1">[1]</a></sup>: plain markdown a model can read, reason over, and write back to.</p>
+
+        <h2 class="section-heading">What to watch for</h2>
+
+        <p>Three honest warnings before you run this.</p>
+
+        <p><strong>Privacy, and genetics most of all.</strong> Your health data is sensitive, and your genome is the one part you can never change or revoke. It also implicates your blood relatives. So be deliberate: keep your genetics file local and out of any cloud AI, or store only categories ("I carry a variant relevant to family planning") instead of raw variants, or leave it out entirely until you've decided. Never paste raw variant tables into a cloud model. For everything else, the rule is simple: don't upload anything you wouldn't want stored somewhere.</p>
+
+        <p><strong>This is not medical advice.</strong> It's a tool for organizing your own data and thinking. Anything clinical goes to a doctor. The Health OS is good at spotting patterns and bad at replacing a physician, and it should hand off the moment something looks like it needs one.</p>
+
+        <p><strong>The AI can be wrong.</strong> That's why the coach instructions force it to cite the file behind every claim and never estimate a lab value. Make it show its sources, and sanity-check the numbers yourself. A confident wrong answer about your health is worse than no answer.</p>
+
+        <h2 class="section-heading">Build your own</h2>
+
+        <p>That's the entire system: a folder of plain files and an AI that reads across all of them. The genome was the base layer. This is the thing that finally acts on it, and on everything else you measure.</p>
+
+        <p>Want to build your own? The starter repo is right here: <a href="https://github.com/gm-max/health-os-starter" target="_blank" rel="noopener">github.com/gm-max/health-os-starter</a>. Grab it, and reply to tell me what you're tracking. I'll help you set it up and send you updates as the template evolves.</p>
+
+        <p>More soon,<br>Max</p>
+
+        <p class="disclaimer">Personal experimentation and documentation, not medical advice. Talk to a doctor before making health decisions.</p>
+
+        <h2 class="section-heading">References</h2>
+
+        <ol class="ref-list">
+            <li id="ref-1"><a href="https://x.com/karpathy/status/2039805659525644595" target="_blank" rel="noopener">Andrej Karpathy on the "LLM wiki" (plain-markdown second brain for LLMs)</a></li>
+        </ol>
+
+    </div>
+
+    <div class="article-footer">
+        <span class="author-line">By <a href="/">Max Guerois</a></span>
+    </div>
+
+    <!-- Newsletter CTA -->
+    <div style="margin-top: 48px;">
+        <NewsletterEmbed />
+    </div>
+</div>
+</ArticleLayout>
