@@ -93,6 +93,42 @@ const articleStyles = `
     }
     .ref-list { font-size: 14px; line-height: 1.6; }
     .ref-list li { margin-bottom: 10px; color: var(--text-secondary); }
+    .cta-box {
+        margin: var(--sp-12) 0;
+        padding: var(--sp-8) var(--sp-6);
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        text-align: center;
+    }
+    .cta-box p {
+        margin: 0 0 var(--sp-6);
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.6;
+    }
+    .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--text);
+        color: var(--bg) !important;
+        font-family: var(--font-body);
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        padding: 13px 26px;
+        border-radius: var(--radius-full);
+        text-decoration: none !important;
+        transition: opacity var(--duration-short) ease;
+    }
+    .cta-button:hover { opacity: 0.85; }
+    .cta-repo {
+        display: block;
+        margin-top: var(--sp-4);
+        font-size: 13px;
+        color: var(--text-tertiary);
+    }
 `;
 ---
 <ArticleLayout
@@ -282,7 +318,11 @@ const articleStyles = `
             <figcaption>L'arborescence du template Health OS Starter.</figcaption>
         </figure>
 
-        <p>J'ai packagé la structure exacte que j'utilise, le prompt de coach et des données d'exemple (fictives) dans un template de départ, gratuit : <a href="https://github.com/gm-max/health-os-starter" target="_blank" rel="noopener">github.com/gm-max/health-os-starter</a>. Copie-le, mets tes données à la place, et pointe ton IA dessus.</p>
+        <div class="cta-box">
+            <p>J'ai packagé la structure exacte que j'utilise, le prompt de coach et des données d'exemple (fictives) dans un template de départ, gratuit. Copie-le, mets tes données à la place, et pointe ton IA dessus.</p>
+            <a class="cta-button" href="https://github.com/gm-max/health-os-starter" target="_blank" rel="noopener">Récupère le Health OS Starter →</a>
+            <span class="cta-repo">github.com/gm-max/health-os-starter</span>
+        </div>
 
         <p><a href="/fr/my-genome">Le génome</a>, c'était la couche de base. Ça, c'est ce qui agit enfin dessus.</p>
 

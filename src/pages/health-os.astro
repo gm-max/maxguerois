@@ -91,6 +91,42 @@ const articleStyles = `
     }
     .ref-list { font-size: 14px; line-height: 1.6; }
     .ref-list li { margin-bottom: 10px; color: var(--text-secondary); }
+    .cta-box {
+        margin: var(--sp-12) 0;
+        padding: var(--sp-8) var(--sp-6);
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        text-align: center;
+    }
+    .cta-box p {
+        margin: 0 0 var(--sp-6);
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.6;
+    }
+    .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--text);
+        color: var(--bg) !important;
+        font-family: var(--font-body);
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        padding: 13px 26px;
+        border-radius: var(--radius-full);
+        text-decoration: none !important;
+        transition: opacity var(--duration-short) ease;
+    }
+    .cta-button:hover { opacity: 0.85; }
+    .cta-repo {
+        display: block;
+        margin-top: var(--sp-4);
+        font-size: 13px;
+        color: var(--text-tertiary);
+    }
 `;
 ---
 <ArticleLayout
@@ -279,7 +315,11 @@ const articleStyles = `
             <figcaption>The Health OS Starter template structure.</figcaption>
         </figure>
 
-        <p>I packaged the exact scaffold, the coach prompt, and example (fake) data into a free starter template: <a href="https://github.com/gm-max/health-os-starter" target="_blank" rel="noopener">github.com/gm-max/health-os-starter</a>. Copy it, swap in your data, point your AI at it.</p>
+        <div class="cta-box">
+            <p>I packaged the exact scaffold, the coach prompt, and example (fake) data into a free starter template. Copy it, swap in your data, point your AI at it.</p>
+            <a class="cta-button" href="https://github.com/gm-max/health-os-starter" target="_blank" rel="noopener">Get the Health OS Starter →</a>
+            <span class="cta-repo">github.com/gm-max/health-os-starter</span>
+        </div>
 
         <p><a href="/my-genome">The genome</a> was the base layer. This is the thing that finally acts on it.</p>
 
