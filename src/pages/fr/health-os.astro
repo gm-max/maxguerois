@@ -50,12 +50,39 @@ const articleStyles = `
         text-align: center;
         line-height: 1.5;
     }
-    .arc-line {
-        font-family: var(--font-display);
-        font-size: 20px;
-        line-height: 1.4;
+    .arc-flow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        gap: 10px;
+        margin: var(--sp-6) 0 var(--sp-8);
+    }
+    .arc-step {
+        flex: 1 1 160px;
+        display: flex;
+        align-items: center;
+        font-family: var(--font-body);
+        font-size: 14px;
+        font-weight: 500;
         color: var(--text);
-        margin: 0 0 20px;
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md, 12px);
+        padding: 12px 16px;
+        line-height: 1.35;
+    }
+    .arc-arrow {
+        display: flex;
+        align-items: center;
+        color: var(--accent);
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1;
+    }
+    @media (max-width: 600px) {
+        .arc-flow { flex-direction: column; align-items: stretch; }
+        .arc-step { flex: none; }
+        .arc-arrow { justify-content: center; transform: rotate(90deg); }
     }
     .disclaimer {
         font-size: 14px;
@@ -66,6 +93,42 @@ const articleStyles = `
     }
     .ref-list { font-size: 14px; line-height: 1.6; }
     .ref-list li { margin-bottom: 10px; color: var(--text-secondary); }
+    .cta-box {
+        margin: var(--sp-12) 0;
+        padding: var(--sp-8) var(--sp-6);
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        text-align: center;
+    }
+    .cta-box p {
+        margin: 0 0 var(--sp-6);
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.6;
+    }
+    .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--text);
+        color: var(--bg) !important;
+        font-family: var(--font-body);
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        padding: 13px 26px;
+        border-radius: var(--radius-full);
+        text-decoration: none !important;
+        transition: opacity var(--duration-short) ease;
+    }
+    .cta-button:hover { opacity: 0.85; }
+    .cta-repo {
+        display: block;
+        margin-top: var(--sp-4);
+        font-size: 13px;
+        color: var(--text-tertiary);
+    }
 `;
 ---
 <ArticleLayout
@@ -92,8 +155,6 @@ const articleStyles = `
     >
 
     <div class="article-body">
-
-        <p>Salut,</p>
 
         <p>Après l'édition sur le génome, beaucoup d'entre vous voulaient la même chose, et ce n'était pas le génome. C'était le dossier dans lequel je l'avais déposé : mon Health OS. « Comment j'en construis un ? »</p>
 
@@ -202,7 +263,13 @@ const articleStyles = `
 
         <p>C'est tout le parcours :</p>
 
-        <p class="arc-line"><strong>un dossier que j'interroge → un système qui se met à jour tout seul → un coach qui m'écrit chaque matin.</strong></p>
+        <div class="arc-flow">
+            <span class="arc-step">un dossier que j'interroge</span>
+            <span class="arc-arrow" aria-hidden="true">→</span>
+            <span class="arc-step">un système qui se met à jour tout seul</span>
+            <span class="arc-arrow" aria-hidden="true">→</span>
+            <span class="arc-step">un coach qui m'écrit chaque matin</span>
+        </div>
 
         <p>Et je n'ai jamais touché au code.</p>
 
@@ -251,9 +318,13 @@ const articleStyles = `
             <figcaption>L'arborescence du template Health OS Starter.</figcaption>
         </figure>
 
-        <p>J'ai packagé la structure exacte que j'utilise, le prompt de coach et des données d'exemple (fictives) dans un template de départ, gratuit : <a href="https://github.com/gm-max/health-os-starter" target="_blank" rel="noopener">github.com/gm-max/health-os-starter</a>. Copie-le, mets tes données à la place, et pointe ton IA dessus.</p>
+        <div class="cta-box">
+            <p>J'ai packagé la structure exacte que j'utilise, le prompt de coach et des données d'exemple (fictives) dans un template de départ, gratuit. Copie-le, mets tes données à la place, et pointe ton IA dessus.</p>
+            <a class="cta-button" href="https://github.com/gm-max/health-os-starter" target="_blank" rel="noopener">Récupère le Health OS Starter →</a>
+            <span class="cta-repo">github.com/gm-max/health-os-starter</span>
+        </div>
 
-        <p>Le génome, c'était la couche de base. Ça, c'est ce qui agit enfin dessus.</p>
+        <p><a href="/fr/my-genome">Le génome</a>, c'était la couche de base. Ça, c'est ce qui agit enfin dessus.</p>
 
         <p>Si tu en construis un, réponds et dis-moi ce que tu traques. Je lis chaque réponse, et je t'aiderai à mettre le tien en place.</p>
 
