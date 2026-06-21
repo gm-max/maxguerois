@@ -41,6 +41,19 @@ const articleStyles = `
         padding: 20px;
     }
     .schema-wrap img { width: 100%; display: block; }
+    .file-sample {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--text-secondary);
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md, 12px);
+        padding: 16px 18px;
+        margin: 0 0 20px;
+        white-space: pre-wrap;
+        overflow-x: auto;
+    }
     figure.fig figcaption {
         font-size: 13px;
         color: var(--text-tertiary);
@@ -276,7 +289,7 @@ const articleStyles = `
 
         <ul>
             <li><strong>Safer decisions.</strong> Before anything new goes in my body, a new drug, a supplement, a new protocol, I run it against my own data first. I did exactly that before starting retatrutide, a drug in the same family as Ozempic that I'm experimenting with.</li>
-            <li><strong>Genuinely data-driven.</strong> I can ask "how is my retatrutide experiment actually going?" and it reads across everything at once, the markers I watch daily, resting heart rate, HRV, basically how recovered or stressed my body looks, weight, plus my training and bloodwork. The data tells me, not a hunch.</li>
+            <li><strong>Genuinely data-driven.</strong> I can ask "how is my retatrutide experiment actually going?" and it reads everything at once: resting heart rate, HRV (a read on how recovered I am), weight, my training, my bloodwork. The data tells me, not a hunch.</li>
             <li><strong>Time and money saved.</strong> And honestly, it's made me lean on a doctor less for the day-to-day. Not for anything that genuinely needs one, but the small "should I tweak this?" calls I used to book an appointment for, I just ask my own data now.</li>
         </ul>
 
@@ -305,6 +318,14 @@ const articleStyles = `
             <li><strong>sleep.md</strong> with your last 30 days from Whoop or Oura</li>
             <li><strong>instructions.md</strong> that says: read everything, don't invent numbers, tell me what matters and what to do next</li>
         </ul>
+
+        <p>One of those files can be this plain:</p>
+
+        <pre class="file-sample"># bloodwork.md
+Date: June 2026
+Vitamin D: 38 (a bit low)
+Iron stores: 45 (low)
+Testosterone: 620</pre>
 
         <figure class="fig">
             <div class="schema-wrap">

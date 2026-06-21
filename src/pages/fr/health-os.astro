@@ -43,6 +43,19 @@ const articleStyles = `
         padding: 20px;
     }
     .schema-wrap img { width: 100%; display: block; }
+    .file-sample {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--text-secondary);
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md, 12px);
+        padding: 16px 18px;
+        margin: 0 0 20px;
+        white-space: pre-wrap;
+        overflow-x: auto;
+    }
     figure.fig figcaption {
         font-size: 13px;
         color: var(--text-tertiary);
@@ -279,7 +292,7 @@ const articleStyles = `
 
         <ul>
             <li><strong>Des décisions plus sûres.</strong> Avant que quoi que ce soit de nouveau entre dans mon corps, un nouveau médicament, un complément, un nouveau protocole, je le confronte d'abord à mes propres données. C'est exactement ce que j'ai fait avant de démarrer le rétatrutide, un médicament de la même famille qu'Ozempic, que je teste en ce moment.</li>
-            <li><strong>Vraiment data-driven.</strong> Je peux demander « concrètement, où en est mon expérimentation rétatrutide ? » et il lit tout d'un coup, les marqueurs que je surveille au quotidien, fréquence cardiaque au repos, HRV, en gros un indicateur de récupération, poids, plus mon entraînement et mes analyses. C'est la data qui me répond, pas une intuition.</li>
+            <li><strong>Vraiment data-driven.</strong> Je peux demander « concrètement, où en est mon expérimentation rétatrutide ? » et il lit tout d'un coup : fréquence cardiaque au repos, HRV (un indicateur de récupération), poids, mon entraînement, mes analyses. C'est la data qui me répond, pas une intuition.</li>
             <li><strong>Du temps et de l'argent gagnés.</strong> Et honnêtement, ça m'a fait moins dépendre d'un médecin pour le quotidien. Pas pour ce qui en nécessite vraiment un, mais les petites questions du type « est-ce que j'ajuste ça ? » pour lesquelles je prenais rendez-vous avant, maintenant je les pose à mes propres données.</li>
         </ul>
 
@@ -308,6 +321,14 @@ const articleStyles = `
             <li><strong>sleep.md</strong> avec tes 30 derniers jours de Whoop ou Oura</li>
             <li><strong>instructions.md</strong> qui dit : lis tout, n'invente aucun chiffre, dis-moi ce qui compte et quoi faire ensuite</li>
         </ul>
+
+        <p>Un de ces fichiers peut être aussi simple que ça :</p>
+
+        <pre class="file-sample"># bloodwork.md
+Date : juin 2026
+Vitamine D : 38 (un peu bas)
+Réserves en fer : 45 (bas)
+Testostérone : 620</pre>
 
         <figure class="fig">
             <div class="schema-wrap">
