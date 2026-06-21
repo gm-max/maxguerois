@@ -48,12 +48,39 @@ const articleStyles = `
         text-align: center;
         line-height: 1.5;
     }
-    .arc-line {
-        font-family: var(--font-display);
-        font-size: 20px;
-        line-height: 1.4;
+    .arc-flow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        gap: 10px;
+        margin: var(--sp-6) 0 var(--sp-8);
+    }
+    .arc-step {
+        flex: 1 1 160px;
+        display: flex;
+        align-items: center;
+        font-family: var(--font-body);
+        font-size: 14px;
+        font-weight: 500;
         color: var(--text);
-        margin: 0 0 20px;
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md, 12px);
+        padding: 12px 16px;
+        line-height: 1.35;
+    }
+    .arc-arrow {
+        display: flex;
+        align-items: center;
+        color: var(--accent);
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1;
+    }
+    @media (max-width: 600px) {
+        .arc-flow { flex-direction: column; align-items: stretch; }
+        .arc-step { flex: none; }
+        .arc-arrow { justify-content: center; transform: rotate(90deg); }
     }
     .disclaimer {
         font-size: 14px;
@@ -89,8 +116,6 @@ const articleStyles = `
     >
 
     <div class="article-body">
-
-        <p>Hey,</p>
 
         <p>After the genome issue, a lot of you wanted the same thing, and it wasn't the genome. It was the folder I dropped it into: my Health OS. "How do I build one?"</p>
 
@@ -199,7 +224,13 @@ const articleStyles = `
 
         <p>That's the whole arc:</p>
 
-        <p class="arc-line"><strong>a folder I query → a system that updates itself → a coach that texts me every morning.</strong></p>
+        <div class="arc-flow">
+            <span class="arc-step">a folder I query</span>
+            <span class="arc-arrow" aria-hidden="true">→</span>
+            <span class="arc-step">a system that updates itself</span>
+            <span class="arc-arrow" aria-hidden="true">→</span>
+            <span class="arc-step">a coach that texts me every morning</span>
+        </div>
 
         <p>And I never touched the code.</p>
 
@@ -250,7 +281,7 @@ const articleStyles = `
 
         <p>I packaged the exact scaffold, the coach prompt, and example (fake) data into a free starter template: <a href="https://github.com/gm-max/health-os-starter" target="_blank" rel="noopener">github.com/gm-max/health-os-starter</a>. Copy it, swap in your data, point your AI at it.</p>
 
-        <p>The genome was the base layer. This is the thing that finally acts on it.</p>
+        <p><a href="/my-genome">The genome</a> was the base layer. This is the thing that finally acts on it.</p>
 
         <p>If you build one, reply and tell me what you're tracking. I read every reply, and I'll help you get yours set up.</p>
 
