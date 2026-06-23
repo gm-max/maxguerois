@@ -29,4 +29,83 @@ const { title, description, ogUrl, ogImage, articleStyles, locale = 'en' } = Ast
 >
     {articleStyles && <style set:html={articleStyles} />}
     <slot />
+
+    <!-- Sticky subscribe bar — always-visible signup path while reading -->
+    <div class="subscribe-bar" data-subscribe-bar aria-hidden="true">
+        <span class="subscribe-bar-text">{locale === 'fr' ? 'Reçois ma prochaine expérience par email' : 'Get my next experiment in your inbox'}</span>
+        <button class="subscribe-bar-btn" type="button" data-subscribe-scroll>{locale === 'fr' ? "S'abonner" : 'Subscribe'}</button>
+    </div>
+
+    <style>
+        .subscribe-bar {
+            position: fixed;
+            left: 0; right: 0; bottom: 0;
+            z-index: 90;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 12px 20px;
+            background: var(--navbar-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border);
+            transform: translateY(120%);
+            transition: transform 0.3s ease;
+        }
+        .subscribe-bar.visible { transform: translateY(0); }
+        .subscribe-bar-text {
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+        }
+        .subscribe-bar-btn {
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--bg);
+            background: var(--text);
+            border: none;
+            border-radius: var(--radius-full);
+            padding: 9px 22px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: opacity 0.15s ease;
+        }
+        .subscribe-bar-btn:hover { opacity: 0.85; }
+        @media (max-width: 600px) {
+            .subscribe-bar { gap: 10px; padding: 10px 14px; }
+            .subscribe-bar-text { font-size: 13px; line-height: 1.25; }
+            .subscribe-bar-btn { padding: 9px 16px; font-size: 13px; }
+        }
+    </style>
+
+    <script is:inline>
+        (function () {
+            var bar = document.querySelector('[data-subscribe-bar]');
+            if (!bar) return;
+            var btn = bar.querySelector('[data-subscribe-scroll]');
+            var forms = document.querySelectorAll('.newsletter-block');
+            if (!forms.length) return;
+            function formInView() {
+                for (var i = 0; i < forms.length; i++) {
+                    var r = forms[i].getBoundingClientRect();
+                    if (r.top < window.innerHeight && r.bottom > 0) return true;
+                }
+                return false;
+            }
+            function update() {
+                var show = window.scrollY > 500 && !formInView();
+                bar.classList.toggle('visible', show);
+                bar.setAttribute('aria-hidden', show ? 'false' : 'true');
+            }
+            btn.addEventListener('click', function () {
+                forms[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+            window.addEventListener('scroll', update, { passive: true });
+            window.addEventListener('resize', update, { passive: true });
+            update();
+        })();
+    </script>
 </Layout>
