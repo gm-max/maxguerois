@@ -1,7 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
-import HeroFooter from '../../components/HeroFooter.astro';
 import { getCollection } from 'astro:content';
 import { t } from '../../i18n/utils';
 
@@ -76,23 +75,9 @@ const structuredData = {
     ogDescription={t(locale, 'home.ogDescription')}
     structuredData={structuredData}
     locale={locale}
-    hideFooter
 >
 
-<style>
-    /* Hero fills the first screen; HeroFooter pins to its bottom (margin-top:auto). */
-    .hero {
-        min-height: calc(100dvh - var(--sp-20));
-        display: flex;
-        flex-direction: column;
-        margin-bottom: var(--sp-12);
-    }
-    .hero > .header { margin-bottom: 0; }
-</style>
-
 <div class="container">
-    <!-- Hero -->
-    <section class="hero">
     <div class="header fade-in">
         <img src="/profile.webp" alt="Max Guerois" class="photo" fetchpriority="high">
         <div class="name">{t(locale, 'home.name')}</div>
@@ -122,8 +107,6 @@ const structuredData = {
             </div>
         </div>
     </div>
-        <HeroFooter locale={locale} currentPath={Astro.url.pathname} />
-    </section>
 
     <!-- Ask AI -->
     <div class="section fade-in" style="margin-top: 0; padding-top: 0;">
