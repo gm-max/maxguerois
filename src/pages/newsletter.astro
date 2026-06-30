@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import NewsletterEmbed from '../components/NewsletterEmbed.astro';
+import HeroFooter from '../components/HeroFooter.astro';
 import { getCollection } from 'astro:content';
 
 const allExperiments = await getCollection('experiments');
@@ -13,9 +14,17 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
     ogUrl="https://maxguerois.com/newsletter"
     ogImage="https://maxguerois.com/health-journey/banner-staying-young.jpg"
     extraStyles={["/styles/article.css"]}
+    hideFooter
 >
 
 <style>
+    /* Hero fills the first screen; HeroFooter pins to its bottom (margin-top:auto).
+       Flexbox means content can never be overlapped by the footer. */
+    .hero {
+        min-height: calc(100dvh - var(--sp-20));
+        display: flex;
+        flex-direction: column;
+    }
     .nl-banner {
         width: 100%;
         display: block;
@@ -113,21 +122,25 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 </style>
 
 <div class="container">
-    <a href="/" class="back">&larr; Back home</a>
+    <section class="hero">
+        <img
+            class="nl-banner"
+            src="/health-journey/banner-staying-young.jpg"
+            alt="The long game of staying young, a newsletter by Max Guerois"
+            fetchpriority="high"
+        >
 
-    <img
-        class="nl-banner"
-        src="/health-journey/banner-staying-young.jpg"
-        alt="The long game of staying young, a newsletter by Max Guerois"
-        fetchpriority="high"
-    >
+        <div class="nl-meta">The newsletter</div>
+        <p class="nl-lead">I left my previous health startup. Now I'm starting from scratch, building my next venture in the open.</p>
+        <p class="nl-lead">I share it as it happens, the unfiltered version: the experiments I run on myself, the research, what works and what blows up.</p>
+        <p class="nl-lead">Right now that's mostly health and longevity: peptides, tracking, training, and supplements.</p>
 
-    <div class="nl-meta">The newsletter</div>
-    <p class="nl-lead">I left my previous health startup. Now I'm starting from scratch, building my next venture in the open.</p>
-    <p class="nl-lead">I share it as it happens, the unfiltered version: the experiments I run on myself, the research, what works and what blows up.</p>
-    <p class="nl-lead">Right now that's mostly health and longevity: peptides, tracking, training, and supplements.</p>
+        <HeroFooter currentPath={Astro.url.pathname} />
+    </section>
 
-    <NewsletterEmbed />
+    <div style="margin: var(--sp-12) 0;">
+        <NewsletterEmbed />
+    </div>
 
     <div class="nl-section-label">The archive</div>
     <h2 class="nl-section-title">What I've been working on</h2>
@@ -149,10 +162,6 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
                 </div>
             </a>
         ))}
-    </div>
-
-    <div style="margin: var(--sp-12) 0 var(--sp-12);">
-        <NewsletterEmbed />
     </div>
 </div>
 </Layout>

@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import NewsletterEmbed from '../components/NewsletterEmbed.astro';
+import HeroFooter from '../components/HeroFooter.astro';
 import { getCollection } from 'astro:content';
 
 const allExperiments = await getCollection('experiments');
@@ -71,10 +72,24 @@ const structuredData = {
     ogTitle="Max Guerois — Builder, Thinker"
     ogDescription="29-year-old repeat founder based in Paris. Co-founded Lucis, a preventive health startup backed by YC and General Catalyst, operating across France, UK, Ireland and Portugal. Biological age -9.7 yrs."
     structuredData={structuredData}
+    hideFooter
 >
 
+<style>
+    /* Hero fills the first screen; HeroFooter pins to its bottom (margin-top:auto).
+       Flexbox guarantees the footer can never overlap the header content. */
+    .hero {
+        min-height: calc(100dvh - var(--sp-20));
+        display: flex;
+        flex-direction: column;
+        margin-bottom: var(--sp-12);
+    }
+    .hero > .header { margin-bottom: 0; }
+</style>
+
 <div class="container">
-    <!-- Header -->
+    <!-- Hero -->
+    <section class="hero">
     <div class="header fade-in">
         <img src="/profile.webp" alt="Max Guerois" class="photo" fetchpriority="high">
         <div class="name">Max (Maxime) Guerois</div>
@@ -108,6 +123,8 @@ const structuredData = {
             </div>
         </div>
     </div>
+        <HeroFooter currentPath={Astro.url.pathname} />
+    </section>
 
     <!-- Numbers -->
     <div class="section fade-in" style="margin-top: 0; padding-top: 0;">

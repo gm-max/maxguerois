@@ -16,6 +16,7 @@ interface Props {
     structuredData?: object;
     extraStyles?: string[];
     locale?: Locale;
+    hideFooter?: boolean;
 }
 
 const {
@@ -30,6 +31,7 @@ const {
     structuredData,
     extraStyles = [],
     locale = 'en',
+    hideFooter = false,
 } = Astro.props;
 
 // Build hreflang URLs from current path
@@ -151,7 +153,9 @@ const frUrl = getAbsoluteUrl(frenchPath, 'fr');
         </nav>
     </slot>
     <slot />
-    <!-- Site footer — socials + newsletter + language + theme -->
+    <!-- Site footer — socials + newsletter + language + theme.
+         Pages with an in-hero footer pass hideFooter to avoid doubling up. -->
+    {!hideFooter && (
     <footer class="site-footer">
         <div class="footer-inner">
             <div class="footer-social">
@@ -185,22 +189,25 @@ const frUrl = getAbsoluteUrl(frenchPath, 'fr');
             <div class="footer-copy">© {new Date().getFullYear()} Max Guerois</div>
         </div>
     </footer>
+    )}
     <script is:inline>
         (function() {
             var toggle = document.getElementById('theme-toggle');
             var icon = document.getElementById('toggle-icon');
-            function updateToggle() {
-                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-                icon.textContent = isDark ? '☀' : '☾';
-            }
-            updateToggle();
-            toggle.addEventListener('click', function() {
-                var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-                var newTheme = isDark ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', newTheme);
-                try { localStorage.setItem('theme', newTheme); } catch(e) {}
+            if (toggle && icon) {
+                var updateToggle = function() {
+                    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    icon.textContent = isDark ? '☀' : '☾';
+                };
                 updateToggle();
-            });
+                toggle.addEventListener('click', function() {
+                    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    var newTheme = isDark ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    try { localStorage.setItem('theme', newTheme); } catch(e) {}
+                    updateToggle();
+                });
+            }
 
             // Language switcher — save preference on click
             var langLinks = document.querySelectorAll('[data-lang-switch]');

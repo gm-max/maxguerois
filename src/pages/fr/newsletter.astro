@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+import HeroFooter from '../../components/HeroFooter.astro';
 import { getCollection } from 'astro:content';
 
 const locale = 'fr';
@@ -15,9 +16,16 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
     ogImage="https://maxguerois.com/health-journey/banner-staying-young.jpg"
     extraStyles={["/styles/article.css"]}
     locale={locale}
+    hideFooter
 >
 
 <style>
+    /* Hero fills the first screen; HeroFooter pins to its bottom (margin-top:auto). */
+    .hero {
+        min-height: calc(100dvh - var(--sp-20));
+        display: flex;
+        flex-direction: column;
+    }
     .nl-banner {
         width: 100%;
         display: block;
@@ -115,21 +123,25 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 </style>
 
 <div class="container">
-    <a href="/fr" class="back">&larr; Retour à l'accueil</a>
+    <section class="hero">
+        <img
+            class="nl-banner"
+            src="/health-journey/banner-staying-young.jpg"
+            alt="The long game of staying young, une newsletter de Max Guerois"
+            fetchpriority="high"
+        >
 
-    <img
-        class="nl-banner"
-        src="/health-journey/banner-staying-young.jpg"
-        alt="The long game of staying young, une newsletter de Max Guerois"
-        fetchpriority="high"
-    >
+        <div class="nl-meta">La newsletter</div>
+        <p class="nl-lead">J'ai quitté ma précédente startup santé. Je repars de zéro, et je construis ma prochaine boîte au grand jour.</p>
+        <p class="nl-lead">Je partage tout au fur et à mesure, la version brute : les expériences que je mène sur moi, la recherche, ce qui marche et ce qui explose en vol.</p>
+        <p class="nl-lead">Pour l'instant c'est surtout santé et longévité : peptides, tracking, entraînement, et compléments.</p>
 
-    <div class="nl-meta">La newsletter</div>
-    <p class="nl-lead">J'ai quitté ma précédente startup santé. Je repars de zéro, et je construis ma prochaine boîte au grand jour.</p>
-    <p class="nl-lead">Je partage tout au fur et à mesure, la version brute : les expériences que je mène sur moi, la recherche, ce qui marche et ce qui explose en vol.</p>
-    <p class="nl-lead">Pour l'instant c'est surtout santé et longévité : peptides, tracking, entraînement, et compléments.</p>
+        <HeroFooter locale={locale} currentPath={Astro.url.pathname} />
+    </section>
 
-    <NewsletterEmbed locale={locale} />
+    <div style="margin: var(--sp-12) 0;">
+        <NewsletterEmbed locale={locale} />
+    </div>
 
     <div class="nl-section-label">L'archive</div>
     <h2 class="nl-section-title">Ce sur quoi je travaille</h2>
@@ -151,10 +163,6 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
                 </div>
             </a>
         ))}
-    </div>
-
-    <div style="margin: var(--sp-12) 0 var(--sp-12);">
-        <NewsletterEmbed locale={locale} />
     </div>
 </div>
 </Layout>
