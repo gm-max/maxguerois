@@ -136,7 +136,7 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 
     <div class="experiments-list">
         {archive.map((exp, i) => (
-            <a href={`/fr/${exp.data.slug}`} class="experiment-item">
+            <a href={`/fr/newsletter/${exp.data.slug}`} class="experiment-item">
                 {exp.data.cover && (
                     <img class="experiment-cover" src={exp.data.cover} alt={exp.data.title} loading="lazy" />
                 )}

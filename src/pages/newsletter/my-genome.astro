@@ -1,6 +1,6 @@
 ---
-import ArticleLayout from '../layouts/ArticleLayout.astro';
-import NewsletterEmbed from '../components/NewsletterEmbed.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
 
 // Scoped styles for elements not covered by the global article.css
 // (body lists, inline links, figures, references, disclaimer).
@@ -62,7 +62,7 @@ const articleStyles = `
 <ArticleLayout
     title="I sequenced my whole genome. Here's what I found."
     description="I sequenced my whole genome during YC. What a DNA test actually is, what it cost, what mine changed, and the three steps to do it yourself."
-    ogUrl="https://maxguerois.com/my-genome"
+    ogUrl="https://maxguerois.com/newsletter/my-genome"
     ogImage="https://maxguerois.com/health-journey/dna/og-cheapest-measurement.jpg"
     articleStyles={articleStyles}
 >
@@ -85,7 +85,7 @@ const articleStyles = `
 
         <p>Hey,</p>
 
-        <p>Most of you found me through the post on <a href="/lucis-chapter">leaving Lucis</a>. Here's what you actually signed up for: I'm building my next venture in the open, and you get the unfiltered version.</p>
+        <p>Most of you found me through the post on <a href="/newsletter/lucis-chapter">leaving Lucis</a>. Here's what you actually signed up for: I'm building my next venture in the open, and you get the unfiltered version.</p>
 
         <p>The research, the experiments I run on myself, what works and what blows up.</p>
 

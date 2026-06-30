@@ -45,11 +45,16 @@ src/
   layouts/ArticleLayout.astro   ← article pages (extends Layout)
   pages/
     index.astro
-    experiments/
-      index.astro
+    newsletter.astro              ← newsletter hub / archive (/newsletter)
+    newsletter/                   ← individual articles (/newsletter/<slug>)
       sleep.astro
       testosterone.astro
+      supplements.astro
       max-biomarkers.astro
+      health-os.astro
+      my-genome.astro
+      lucis-chapter.astro
+    fr/                           ← French mirror (/fr/newsletter/<slug>)
   styles/
     global.css
     article.css
@@ -64,10 +69,11 @@ GA4 ID: `G-DR1W1B2VV5` — defined once in Layout.astro
 ## Newsletter
 Beehiiv embed — placed at bottom of homepage, /experiments page, and every article footer.
 
-## Adding a new experiment
-1. Create `src/content/experiments/new-slug.json` with schema fields (title, tagline, category, date, slug, ogImage)
-2. Create `src/pages/experiments/new-slug.astro` using `ArticleLayout`
-3. It appears automatically on homepage + /experiments via `getCollection()`
+## Adding a new article
+1. Create `src/content/experiments/new-slug.json` with schema fields (title, tagline, category, date, slug, ogImage). `slug` is the bare name (e.g. `sleep`), no folder prefix.
+2. Create `src/pages/newsletter/new-slug.astro` using `ArticleLayout` (and `src/pages/fr/newsletter/new-slug.astro` for the FR mirror)
+3. It appears automatically on the homepage + /newsletter via `getCollection()`, linked as `/newsletter/<slug>`
+4. If the article previously lived at an old URL, add a 301 in `vercel.json` `redirects` and a `<url>` entry in `public/sitemap.xml`
 
 ## Security
 - HTTP headers: `vercel.json` sets CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
