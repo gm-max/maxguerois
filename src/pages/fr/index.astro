@@ -98,54 +98,54 @@ const structuredData = {
         <div class="name">{t(locale, 'home.name')}</div>
         <h1 set:html={t(locale, 'home.headline')} />
         <p class="intro" set:html={t(locale, 'home.intro')} />
-        <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid #e8e6e1;">
-            <div class="section-label" style="margin-bottom: 10px;">{t(locale, 'home.askAi')}</div>
-            <p class="ai-prompt-label">{t(locale, 'home.askAiPrompt')}</p>
-            <div class="ai-links">
-                <a href={`https://chatgpt.com/?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                    <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
-                    ChatGPT
-                </a>
-                <a href={`https://claude.ai/new?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                    <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
-                    Claude
-                </a>
-                <a href={`https://www.perplexity.ai/search?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                    <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
-                    Perplexity
-                </a>
-                <a href={`https://x.com/i/grok?text=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                    <img src="/grok.svg" alt="Grok" class="ai-icon ai-icon--square">
-                    Grok
-                </a>
+        <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border);">
+            <div class="numbers-grid">
+                <div class="number-item">
+                    <div class="number-value">19</div>
+                    <div class="number-label">{t(locale, 'home.bioAge')}</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value">0.74</div>
+                    <div class="number-label">{t(locale, 'home.paceOfAging')}</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value">40</div>
+                    <div class="number-label">{t(locale, 'home.restingHeartRate')}</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value">52.4</div>
+                    <div class="number-label">{t(locale, 'home.vo2max')}</div>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <a href="/fr/newsletter/max-biomarkers" class="newsletter-cta">{t(locale, 'common.fullBiomarkerReport')}<span class="arr"></span></a>
             </div>
         </div>
     </div>
         <HeroFooter locale={locale} currentPath={Astro.url.pathname} />
     </section>
 
-    <!-- Numbers -->
+    <!-- Ask AI -->
     <div class="section fade-in" style="margin-top: 0; padding-top: 0;">
-        <div class="numbers-grid">
-            <div class="number-item">
-                <div class="number-value">19</div>
-                <div class="number-label">{t(locale, 'home.bioAge')}</div>
-            </div>
-            <div class="number-item">
-                <div class="number-value">0.74</div>
-                <div class="number-label">{t(locale, 'home.paceOfAging')}</div>
-            </div>
-            <div class="number-item">
-                <div class="number-value">40</div>
-                <div class="number-label">{t(locale, 'home.restingHeartRate')}</div>
-            </div>
-            <div class="number-item">
-                <div class="number-value">52.4</div>
-                <div class="number-label">{t(locale, 'home.vo2max')}</div>
-            </div>
-        </div>
-        <div style="margin-top: 20px;">
-            <a href="/fr/newsletter/max-biomarkers" class="newsletter-cta">{t(locale, 'common.fullBiomarkerReport')}<span class="arr"></span></a>
+        <div class="section-label" style="margin-bottom: 10px;">{t(locale, 'home.askAi')}</div>
+        <p class="ai-prompt-label">{t(locale, 'home.askAiPrompt')}</p>
+        <div class="ai-links">
+            <a href={`https://chatgpt.com/?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
+                ChatGPT
+            </a>
+            <a href={`https://claude.ai/new?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
+                Claude
+            </a>
+            <a href={`https://www.perplexity.ai/search?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
+                Perplexity
+            </a>
+            <a href={`https://x.com/i/grok?text=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="/grok.svg" alt="Grok" class="ai-icon ai-icon--square">
+                Grok
+            </a>
         </div>
     </div>
 

@@ -100,54 +100,54 @@ const structuredData = {
             Now I'm building the most measured version of myself.
             This site is the protocol.
         </p>
-        <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid #e8e6e1;">
-            <div class="section-label" style="margin-bottom: 10px;">Ask AI about Max Guerois</div>
-            <p class="ai-prompt-label">Dig into my health protocol, founder story, or longevity obsession.</p>
-            <div class="ai-links">
-                <a href={`https://chatgpt.com/?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                    <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
-                    ChatGPT
-                </a>
-                <a href={`https://claude.ai/new?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                    <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
-                    Claude
-                </a>
-                <a href={`https://www.perplexity.ai/search?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                    <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
-                    Perplexity
-                </a>
-                <a href={`https://x.com/i/grok?text=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                    <img src="/grok.svg" alt="Grok" class="ai-icon ai-icon--square">
-                    Grok
-                </a>
+        <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border);">
+            <div class="numbers-grid">
+                <div class="number-item">
+                    <div class="number-value">19</div>
+                    <div class="number-label">Bio Age</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value">0.74</div>
+                    <div class="number-label">Pace of aging, 26% slower</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value">40</div>
+                    <div class="number-label">Resting heart rate</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value">52.4</div>
+                    <div class="number-label">VO₂Max, top 25% cardio</div>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <a href="/newsletter/max-biomarkers" class="newsletter-cta">Full biomarker report <span class="arr">→</span></a>
             </div>
         </div>
     </div>
         <HeroFooter currentPath={Astro.url.pathname} />
     </section>
 
-    <!-- Numbers -->
+    <!-- Ask AI -->
     <div class="section fade-in" style="margin-top: 0; padding-top: 0;">
-        <div class="numbers-grid">
-            <div class="number-item">
-                <div class="number-value">19</div>
-                <div class="number-label">Bio Age</div>
-            </div>
-            <div class="number-item">
-                <div class="number-value">0.74</div>
-                <div class="number-label">Pace of aging — 26% slower</div>
-            </div>
-            <div class="number-item">
-                <div class="number-value">40</div>
-                <div class="number-label">Resting heart rate</div>
-            </div>
-            <div class="number-item">
-                <div class="number-value">52.4</div>
-                <div class="number-label">VO₂Max — top 25% cardio</div>
-            </div>
-        </div>
-        <div style="margin-top: 20px;">
-            <a href="/newsletter/max-biomarkers" class="newsletter-cta">Full biomarker report <span class="arr">→</span></a>
+        <div class="section-label" style="margin-bottom: 10px;">Ask AI about Max Guerois</div>
+        <p class="ai-prompt-label">Dig into my health protocol, founder story, or longevity obsession.</p>
+        <div class="ai-links">
+            <a href={`https://chatgpt.com/?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
+                ChatGPT
+            </a>
+            <a href={`https://claude.ai/new?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
+                Claude
+            </a>
+            <a href={`https://www.perplexity.ai/search?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
+                Perplexity
+            </a>
+            <a href={`https://x.com/i/grok?text=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="/grok.svg" alt="Grok" class="ai-icon ai-icon--square">
+                Grok
+            </a>
         </div>
     </div>
 
