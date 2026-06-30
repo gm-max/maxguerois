@@ -35,6 +35,36 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         margin-top: var(--sp-16);
         max-width: 480px;
     }
+    /* Editorial masthead: type leads, banner demoted to a thumbnail */
+    .nl-title {
+        font-family: var(--font-display);
+        font-size: clamp(40px, 8vw, 60px);
+        font-weight: 500;
+        line-height: 1.06;
+        letter-spacing: -0.01em;
+        color: var(--text);
+        margin: 6px 0 var(--sp-6);
+    }
+    .nl-title em {
+        display: block;
+        font-style: italic;
+        color: var(--accent);
+    }
+    .nl-reassure {
+        font-family: var(--font-body);
+        font-size: 13px;
+        color: var(--text-tertiary);
+        margin: var(--sp-3) 0 0;
+    }
+    .nl-banner-thumb {
+        display: block;
+        width: 100%;
+        max-width: 320px;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        border-radius: var(--radius-lg);
+        margin-top: var(--sp-12);
+    }
     .nl-banner {
         width: 100%;
         display: block;
@@ -133,21 +163,21 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 
 <div class="container">
     <section class="hero">
-        <img
-            class="nl-banner"
-            src="/health-journey/banner-staying-young.jpg"
-            alt="The long game of staying young, une newsletter de Max Guerois"
-            fetchpriority="high"
-        >
-
         <div class="nl-meta">La newsletter</div>
-        <p class="nl-lead">J'ai quitté ma précédente startup santé. Je repars de zéro, et je construis ma prochaine boîte au grand jour.</p>
-        <p class="nl-lead">Je partage tout au fur et à mesure, la version brute : les expériences que je mène sur moi, la recherche, ce qui marche et ce qui explose en vol.</p>
-        <p class="nl-lead">Pour l'instant c'est surtout santé et longévité : peptides, tracking, entraînement, et compléments.</p>
+        <h1 class="nl-title">The long game of <em>staying young</em></h1>
+        <p class="nl-lead">Je construis ma prochaine boîte au grand jour. Santé et longévité pour l'instant : les expériences que je mène sur moi, la recherche, ce qui marche et ce qui explose en vol.</p>
 
         <div class="nl-form">
             <NewsletterEmbed locale={locale} minimal />
         </div>
+        <p class="nl-reassure">Deux emails par mois. Désabonnement à tout moment.</p>
+
+        <img
+            class="nl-banner-thumb"
+            src="/health-journey/banner-staying-young.jpg"
+            alt="The long game of staying young, une newsletter de Max Guerois"
+            loading="lazy"
+        >
 
         <HeroFooter locale={locale} currentPath={Astro.url.pathname} />
     </section>
