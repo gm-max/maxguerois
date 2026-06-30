@@ -25,6 +25,8 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         min-height: calc(100dvh - var(--sp-20));
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        padding-bottom: var(--sp-16); /* clear the fixed footer bar */
     }
     /* Minimal inline signup: just the email input + button */
     .nl-form {
@@ -157,7 +159,7 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         <div class="nl-form">
             <NewsletterEmbed locale={locale} minimal />
         </div>
-        <p class="nl-reassure">Deux emails par mois. Désabonnement à tout moment.</p>
+        <p class="nl-reassure">Rejoins des milliers de lecteurs. Deux emails par mois, désabonnement à tout moment.</p>
 
         <HeroFooter locale={locale} currentPath={Astro.url.pathname} />
     </section>
