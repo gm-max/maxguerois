@@ -44,6 +44,7 @@ const langHref = locale === 'fr'
         bottom: 0;
         z-index: 50;
         pointer-events: none; /* let clicks fall through the empty bar area */
+        border-top: 1px solid var(--border); /* full-width divider */
         transition: opacity 0.35s ease, transform 0.35s ease;
     }
     .hero-dock-inner {
@@ -53,7 +54,6 @@ const langHref = locale === 'fr'
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-top: 1px solid var(--border);
     }
     .hd-lang {
         pointer-events: auto;
