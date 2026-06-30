@@ -33,10 +33,6 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         margin-top: var(--sp-2);
         max-width: 480px;
     }
-    .nl-form--bottom {
-        margin-top: var(--sp-16);
-        max-width: 480px;
-    }
     /* Editorial masthead: type leads, banner demoted to a thumbnail */
     .nl-title {
         font-family: var(--font-display);
@@ -184,10 +180,6 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
                 </div>
             </a>
         ))}
-    </div>
-
-    <div class="nl-form nl-form--bottom">
-        <NewsletterEmbed locale={locale} minimal />
     </div>
 </div>
 </Layout>
