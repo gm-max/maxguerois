@@ -51,18 +51,18 @@ const structuredData = {
     {
       "@type": "Article",
       "name": "Les biomarqueurs de Max Guerois — Bilan de Santé",
-      "url": "https://maxguerois.com/fr/experiments/max-biomarkers",
+      "url": "https://maxguerois.com/fr/newsletter/max-biomarkers",
       "description": "Métabolisme, hormones, composition corporelle, force et âge bio. 19 ans d'âge bio, vieillissement 26% plus lent, pouls au repos 40 bpm."
     },
     {
       "@type": "Article",
       "name": "31 conseils pour corriger une faible testostérone",
-      "url": "https://maxguerois.com/fr/experiments/testosterone"
+      "url": "https://maxguerois.com/fr/newsletter/testosterone"
     },
     {
       "@type": "Article",
       "name": "7 conseils pour un sommeil de qualité — 3 mois de suivi",
-      "url": "https://maxguerois.com/fr/experiments/sleep"
+      "url": "https://maxguerois.com/fr/newsletter/sleep"
     }
   ]
 };
@@ -129,7 +129,7 @@ const structuredData = {
             </div>
         </div>
         <div style="margin-top: 20px;">
-            <a href="/fr/experiments/max-biomarkers" class="newsletter-cta">{t(locale, 'common.fullBiomarkerReport')}<span class="arr"></span></a>
+            <a href="/fr/newsletter/max-biomarkers" class="newsletter-cta">{t(locale, 'common.fullBiomarkerReport')}<span class="arr"></span></a>
         </div>
     </div>
 
@@ -146,7 +146,7 @@ const structuredData = {
         </div>
         <div class="writing-list">
             {experiments.slice(0, 3).map((exp) => (
-                <a href={`/fr/${exp.data.slug}`} class="writing-item">
+                <a href={`/fr/newsletter/${exp.data.slug}`} class="writing-item">
                     <div class="writing-item-content">
                         <div class="writing-title">{exp.data.title}</div>
                         <div class="writing-meta">{exp.data.category} · {exp.data.date}</div>
@@ -175,7 +175,7 @@ const structuredData = {
                 <div class="work-desc">{t(locale, 'home.lucisDesc')}</div>
                 <div class="work-links">
                     <a href="https://lucis.life" class="work-link" target="_blank">lucis.life <span class="arr">↗</span></a>
-                    <a href="/fr/lucis-chapter" class="work-link">Départ Lucis <span class="arr">→</span></a>
+                    <a href="/fr/newsletter/lucis-chapter" class="work-link">Départ Lucis <span class="arr">→</span></a>
                 </div>
             </div>
             <span class="work-date">2024 – 2025</span>

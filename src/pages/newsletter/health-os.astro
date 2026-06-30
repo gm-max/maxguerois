@@ -1,6 +1,6 @@
 ---
-import ArticleLayout from '../layouts/ArticleLayout.astro';
-import NewsletterEmbed from '../components/NewsletterEmbed.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
 
 // Scoped styles for elements not covered by the global article.css
 // (body lists, inline links, figures, references, disclaimer).
@@ -145,7 +145,7 @@ const articleStyles = `
 <ArticleLayout
     title="My Health OS: all my health data in one place, read by AI"
     description="Bloodwork, wearables, genome, all in one folder. Here's how to build your Health Operating System."
-    ogUrl="https://maxguerois.com/health-os"
+    ogUrl="https://maxguerois.com/newsletter/health-os"
     ogImage="https://maxguerois.com/health-journey/banner-health-os.jpg"
     articleStyles={articleStyles}
 >
@@ -354,7 +354,7 @@ Testosterone: 620</pre>
             <span class="cta-repo">github.com/gm-max/health-os-starter</span>
         </div>
 
-        <p><a href="/my-genome">The genome</a> was the base layer. This is the thing that finally acts on it.</p>
+        <p><a href="/newsletter/my-genome">The genome</a> was the base layer. This is the thing that finally acts on it.</p>
 
         <p>If you build one, reply and tell me what you're tracking. I read every reply, and I'll help you get yours set up.</p>
 

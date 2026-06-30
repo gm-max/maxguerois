@@ -26,8 +26,8 @@ export function t(locale: Locale, key: string): string {
 
 /**
  * Get the equivalent path in the other locale.
- * e.g. getLocalizedPath('/experiments/sleep', 'fr') → '/fr/experiments/sleep'
- *      getLocalizedPath('/fr/experiments/sleep', 'en') → '/experiments/sleep'
+ * e.g. getLocalizedPath('/newsletter/sleep', 'fr') → '/fr/newsletter/sleep'
+ *      getLocalizedPath('/fr/newsletter/sleep', 'en') → '/newsletter/sleep'
  */
 export function getLocalizedPath(path: string, targetLocale: Locale): string {
   // Strip trailing slash (except root)

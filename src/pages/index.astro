@@ -48,18 +48,18 @@ const structuredData = {
     {
       "@type": "Article",
       "name": "Max Guerois's Biomarkers — Health Baseline",
-      "url": "https://maxguerois.com/experiments/max-biomarkers",
+      "url": "https://maxguerois.com/newsletter/max-biomarkers",
       "description": "Full longevity biomarker snapshot: metabolism, hormones, body composition, strength, and biological age. Biological age 9.7 years younger, aging 26% slower than average, resting heart rate 40 bpm."
     },
     {
       "@type": "Article",
       "name": "31 science-backed tips to fix low testosterone",
-      "url": "https://maxguerois.com/experiments/testosterone"
+      "url": "https://maxguerois.com/newsletter/testosterone"
     },
     {
       "@type": "Article",
       "name": "7 tips for high-quality sleep after 3 months of tracking",
-      "url": "https://maxguerois.com/experiments/sleep"
+      "url": "https://maxguerois.com/newsletter/sleep"
     }
   ]
 };
@@ -130,7 +130,7 @@ const structuredData = {
             </div>
         </div>
         <div style="margin-top: 20px;">
-            <a href="/experiments/max-biomarkers" class="newsletter-cta">Full biomarker report <span class="arr">→</span></a>
+            <a href="/newsletter/max-biomarkers" class="newsletter-cta">Full biomarker report <span class="arr">→</span></a>
         </div>
     </div>
 
@@ -147,7 +147,7 @@ const structuredData = {
         </div>
         <div class="writing-list">
             {experiments.slice(0, 3).map((exp) => (
-                <a href={`/${exp.data.slug}`} class="writing-item">
+                <a href={`/newsletter/${exp.data.slug}`} class="writing-item">
                     <div class="writing-item-content">
                         <div class="writing-title">{exp.data.title}</div>
                         <div class="writing-meta">{exp.data.category} · {exp.data.date}</div>
@@ -176,7 +176,7 @@ const structuredData = {
                 <div class="work-desc">Preventive health startup backed by General Catalyst and Y Combinator. Helped build the brand, positioning, and early traction across Europe.</div>
                 <div class="work-links">
                     <a href="https://lucis.life" class="work-link" target="_blank">lucis.life <span class="arr">↗</span></a>
-                    <a href="/lucis-chapter" class="work-link">Leaving Lucis <span class="arr">→</span></a>
+                    <a href="/newsletter/lucis-chapter" class="work-link">Leaving Lucis <span class="arr">→</span></a>
                 </div>
             </div>
             <span class="work-date">2024 – 2025</span>
