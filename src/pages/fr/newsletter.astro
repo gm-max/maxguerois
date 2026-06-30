@@ -26,6 +26,15 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         display: flex;
         flex-direction: column;
     }
+    /* Minimal inline signup: just the email input + button */
+    .nl-form {
+        margin-top: var(--sp-2);
+        max-width: 480px;
+    }
+    .nl-form--bottom {
+        margin-top: var(--sp-16);
+        max-width: 480px;
+    }
     .nl-banner {
         width: 100%;
         display: block;
@@ -136,12 +145,12 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         <p class="nl-lead">Je partage tout au fur et à mesure, la version brute : les expériences que je mène sur moi, la recherche, ce qui marche et ce qui explose en vol.</p>
         <p class="nl-lead">Pour l'instant c'est surtout santé et longévité : peptides, tracking, entraînement, et compléments.</p>
 
+        <div class="nl-form">
+            <NewsletterEmbed locale={locale} minimal />
+        </div>
+
         <HeroFooter locale={locale} currentPath={Astro.url.pathname} />
     </section>
-
-    <div style="margin: var(--sp-12) 0;">
-        <NewsletterEmbed locale={locale} />
-    </div>
 
     <div class="nl-section-label">L'archive</div>
     <h2 class="nl-section-title">Ce sur quoi je travaille</h2>
@@ -163,6 +172,10 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
                 </div>
             </a>
         ))}
+    </div>
+
+    <div class="nl-form nl-form--bottom">
+        <NewsletterEmbed locale={locale} minimal />
     </div>
 </div>
 </Layout>

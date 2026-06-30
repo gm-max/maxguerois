@@ -7,15 +7,21 @@ import { t } from '../i18n/utils';
 
 interface Props {
     locale?: Locale;
+    /** Render only the email input + button (no heading or description). */
+    minimal?: boolean;
 }
 
-const { locale = 'en' } = Astro.props;
+const { locale = 'en', minimal = false } = Astro.props;
 ---
-<div class="newsletter-block">
-    <div class="newsletter-header">
-        <span class="newsletter-name">{t(locale, 'newsletter.title')}</span>
-    </div>
-    <p class="newsletter-desc">{t(locale, 'newsletter.desc')}</p>
+<div class:list={["newsletter-block", { "newsletter-block--minimal": minimal }]}>
+    {!minimal && (
+        <>
+            <div class="newsletter-header">
+                <span class="newsletter-name">{t(locale, 'newsletter.title')}</span>
+            </div>
+            <p class="newsletter-desc">{t(locale, 'newsletter.desc')}</p>
+        </>
+    )}
     <script type="text/javascript" async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>
     <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
     <iframe

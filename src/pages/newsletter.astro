@@ -25,6 +25,15 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         display: flex;
         flex-direction: column;
     }
+    /* Minimal inline signup: just the email input + button */
+    .nl-form {
+        margin-top: var(--sp-2);
+        max-width: 480px;
+    }
+    .nl-form--bottom {
+        margin-top: var(--sp-16);
+        max-width: 480px;
+    }
     .nl-banner {
         width: 100%;
         display: block;
@@ -135,12 +144,12 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         <p class="nl-lead">I share it as it happens, the unfiltered version: the experiments I run on myself, the research, what works and what blows up.</p>
         <p class="nl-lead">Right now that's mostly health and longevity: peptides, tracking, training, and supplements.</p>
 
+        <div class="nl-form">
+            <NewsletterEmbed minimal />
+        </div>
+
         <HeroFooter currentPath={Astro.url.pathname} />
     </section>
-
-    <div style="margin: var(--sp-12) 0;">
-        <NewsletterEmbed />
-    </div>
 
     <div class="nl-section-label">The archive</div>
     <h2 class="nl-section-title">What I've been working on</h2>
@@ -162,6 +171,10 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
                 </div>
             </a>
         ))}
+    </div>
+
+    <div class="nl-form nl-form--bottom">
+        <NewsletterEmbed minimal />
     </div>
 </div>
 </Layout>
