@@ -11,7 +11,7 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 ---
 <Layout
     title="The long game of staying young, par Max Guerois"
-    description="Je construis ma prochaine boîte au grand jour. Santé et longévité pour l'instant : peptides, tracking, entraînement, compléments. Les expériences que je mène sur moi, la version brute. Deux emails par mois."
+    description="Je construis ma prochaine startup au grand jour. Santé et longévité pour l'instant : peptides, tracking, entraînement, compléments. Les expériences que je mène sur moi, la version brute. Deux emails par mois."
     ogUrl="https://maxguerois.com/fr/newsletter"
     ogImage="https://maxguerois.com/health-journey/banner-staying-young.jpg"
     extraStyles={["/styles/article.css"]}
@@ -55,21 +55,6 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         font-size: 13px;
         color: var(--text-tertiary);
         margin: var(--sp-3) 0 0;
-    }
-    .nl-banner-thumb {
-        display: block;
-        width: 100%;
-        max-width: 320px;
-        aspect-ratio: 16 / 9;
-        object-fit: cover;
-        border-radius: var(--radius-lg);
-        margin-top: var(--sp-12);
-    }
-    .nl-banner {
-        width: 100%;
-        display: block;
-        border-radius: var(--radius-lg);
-        margin: var(--sp-4) 0 var(--sp-8);
     }
     .nl-meta {
         font-family: var(--font-body);
@@ -165,19 +150,12 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
     <section class="hero">
         <div class="nl-meta">La newsletter</div>
         <h1 class="nl-title">The long game of <em>staying young</em></h1>
-        <p class="nl-lead">Je construis ma prochaine boîte au grand jour. Santé et longévité pour l'instant : les expériences que je mène sur moi, la recherche, ce qui marche et ce qui explose en vol.</p>
+        <p class="nl-lead">Je construis ma prochaine startup au grand jour. Santé et longévité pour l'instant : les expériences que je mène sur moi, la recherche, ce qui marche et ce qui explose en vol.</p>
 
         <div class="nl-form">
             <NewsletterEmbed locale={locale} minimal />
         </div>
         <p class="nl-reassure">Deux emails par mois. Désabonnement à tout moment.</p>
-
-        <img
-            class="nl-banner-thumb"
-            src="/health-journey/banner-staying-young.jpg"
-            alt="The long game of staying young, une newsletter de Max Guerois"
-            loading="lazy"
-        >
 
         <HeroFooter locale={locale} currentPath={Astro.url.pathname} />
     </section>

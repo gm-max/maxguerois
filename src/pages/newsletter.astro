@@ -55,21 +55,6 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         color: var(--text-tertiary);
         margin: var(--sp-3) 0 0;
     }
-    .nl-banner-thumb {
-        display: block;
-        width: 100%;
-        max-width: 320px;
-        aspect-ratio: 16 / 9;
-        object-fit: cover;
-        border-radius: var(--radius-lg);
-        margin-top: var(--sp-12);
-    }
-    .nl-banner {
-        width: 100%;
-        display: block;
-        border-radius: var(--radius-lg);
-        margin: var(--sp-4) 0 var(--sp-8);
-    }
     .nl-meta {
         font-family: var(--font-body);
         font-size: 12px;
@@ -170,13 +155,6 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
             <NewsletterEmbed minimal />
         </div>
         <p class="nl-reassure">Two emails a month. Unsubscribe anytime.</p>
-
-        <img
-            class="nl-banner-thumb"
-            src="/health-journey/banner-staying-young.jpg"
-            alt="The long game of staying young, a newsletter by Max Guerois"
-            loading="lazy"
-        >
 
         <HeroFooter currentPath={Astro.url.pathname} />
     </section>
