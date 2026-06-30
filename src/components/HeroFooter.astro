@@ -45,7 +45,8 @@ const langHref = locale === 'fr'
         z-index: 50;
         pointer-events: none; /* let clicks fall through the empty bar area */
         border-top: 1px solid var(--border); /* full-width divider */
-        transition: opacity 0.35s ease, transform 0.35s ease;
+        will-change: opacity, transform;
+        transition: opacity 0.18s ease-out, transform 0.18s ease-out;
     }
     .hero-dock-inner {
         max-width: var(--content-width);
@@ -88,7 +89,7 @@ const langHref = locale === 'fr'
         var dock = document.querySelector('[data-hero-dock]');
         if (!dock) return;
         var onScroll = function () {
-            var hide = window.scrollY > 24;
+            var hide = window.scrollY > 8;
             dock.style.opacity = hide ? '0' : '1';
             dock.style.transform = hide ? 'translateY(14px)' : 'translateY(0)';
             dock.style.pointerEvents = hide ? 'none' : '';
