@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import NewsletterEmbed from '../components/NewsletterEmbed.astro';
+import HeroFooter from '../components/HeroFooter.astro';
 import { getCollection } from 'astro:content';
 
 const allExperiments = await getCollection('experiments');
@@ -13,14 +14,44 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
     ogUrl="https://maxguerois.com/newsletter"
     ogImage="https://maxguerois.com/health-journey/banner-staying-young.jpg"
     extraStyles={["/styles/article.css"]}
+    hideFooter
 >
 
 <style>
-    .nl-banner {
-        width: 100%;
+    /* Hero fills the first screen; HeroFooter pins to its bottom (margin-top:auto).
+       Flexbox means content can never be overlapped by the footer. */
+    .hero {
+        min-height: calc(100dvh - var(--sp-20));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-bottom: var(--sp-16); /* clear the fixed footer bar */
+    }
+    /* Minimal inline signup: just the email input + button */
+    .nl-form {
+        margin-top: var(--sp-2);
+        max-width: 480px;
+    }
+    /* Editorial masthead: type leads, banner demoted to a thumbnail */
+    .nl-title {
+        font-family: var(--font-display);
+        font-size: clamp(40px, 8vw, 60px);
+        font-weight: 500;
+        line-height: 1.06;
+        letter-spacing: -0.01em;
+        color: var(--text);
+        margin: 6px 0 var(--sp-6);
+    }
+    .nl-title em {
         display: block;
-        border-radius: var(--radius-lg);
-        margin: var(--sp-4) 0 var(--sp-8);
+        font-style: italic;
+        color: var(--accent);
+    }
+    .nl-reassure {
+        font-family: var(--font-body);
+        font-size: 13px;
+        color: var(--text-tertiary);
+        margin: var(--sp-3) 0 0;
     }
     .nl-meta {
         font-family: var(--font-body);
@@ -49,9 +80,9 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
     }
     .nl-section-title {
         font-family: var(--font-display);
-        font-size: clamp(24px, 3.5vw, 32px);
+        font-size: clamp(30px, 5vw, 42px);
         font-weight: 400;
-        line-height: 1.2;
+        line-height: 1.15;
         color: var(--text);
         margin: 0 0 var(--sp-6);
     }
@@ -113,24 +144,23 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 </style>
 
 <div class="container">
-    <a href="/" class="back">&larr; Back home</a>
+    <section class="hero">
+        <div class="nl-meta">The newsletter</div>
+        <h1 class="nl-title">The long game of <em>staying young</em></h1>
+        <p class="nl-lead">I left my previous health startup. Now I'm starting from scratch, building my next venture in the open.</p>
+        <p class="nl-lead">I share it as it happens, the unfiltered version: the experiments I run on myself, the research, what works and what blows up.</p>
+        <p class="nl-lead">Right now that's mostly health and longevity: peptides, tracking, training, and supplements.</p>
 
-    <img
-        class="nl-banner"
-        src="/health-journey/banner-staying-young.jpg"
-        alt="The long game of staying young, a newsletter by Max Guerois"
-        fetchpriority="high"
-    >
+        <div class="nl-form">
+            <NewsletterEmbed minimal />
+        </div>
+        <p class="nl-reassure">Join 1,000+ readers. Two emails a month, unsubscribe anytime.</p>
 
-    <div class="nl-meta">The newsletter</div>
-    <p class="nl-lead">I left my previous health startup. Now I'm starting from scratch, building my next venture in the open.</p>
-    <p class="nl-lead">I share it as it happens, the unfiltered version: the experiments I run on myself, the research, what works and what blows up.</p>
-    <p class="nl-lead">Right now that's mostly health and longevity: peptides, tracking, training, and supplements.</p>
-
-    <NewsletterEmbed />
+        <HeroFooter currentPath={Astro.url.pathname} />
+    </section>
 
     <div class="nl-section-label">The archive</div>
-    <h2 class="nl-section-title">What I've been working on</h2>
+    <h2 class="nl-section-title">The experiments so far</h2>
 
     <div class="experiments-list">
         {archive.map((exp, i) => (
@@ -149,10 +179,6 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
                 </div>
             </a>
         ))}
-    </div>
-
-    <div style="margin: var(--sp-12) 0 var(--sp-12);">
-        <NewsletterEmbed />
     </div>
 </div>
 </Layout>

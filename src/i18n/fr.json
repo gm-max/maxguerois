@@ -18,7 +18,7 @@
   },
   "newsletter": {
     "title": "Suis l'exploration",
-    "desc": "Sois au courant en premier pour ma prochaine boîte. L'avancée de mon exploration, direct dans ta boîte mail. Désabonnement à tout moment."
+    "desc": "Sois au courant en premier pour ma prochaine startup. L'avancée de mon exploration, direct dans ta boîte mail. Désabonnement à tout moment."
   },
   "home": {
     "title": "Max Guerois — Entrepreneur, Penseur",
@@ -28,11 +28,11 @@
     "headline": "Mon horloge biologique dit que j'ai 19 ans. <em>Voici comment.</em>",
     "intro": "Moi c'est Max. 29 ans. Mon âge biologique : 19 ans.<br>J'ai cofondé <strong>Lucis</strong>, la plateforme de santé préventive la plus complète en Europe. Aujourd'hui je documente tout ce que je fais sur mon corps. Ce site, c'est le protocole.",
     "askAi": "Demande à l'IA",
-    "askAiPrompt": "Mon protocole santé, mon parcours de fondateur, mon obsession pour la longévité — demande ce que tu veux.",
+    "askAiPrompt": "Mon protocole santé, mon parcours de fondateur, mon obsession pour la longévité : demande ce que tu veux.",
     "bioAge": "Âge bio",
-    "paceOfAging": "Vieillissement — 26% plus lent",
+    "paceOfAging": "Vieillissement, 26% plus lent",
     "restingHeartRate": "Pouls au repos",
-    "vo2max": "VO₂Max — top 25% cardio",
+    "vo2max": "VO₂Max, top 25% cardio",
     "sectionHealth": "01 / Santé",
     "sectionWork": "02 / Parcours",
     "sectionPress": "03 / Presse",
