@@ -3,6 +3,15 @@
 > **Status: PROPOSED — for review.** Nothing in here is implemented yet.
 > This spec is derived from an audit of the codebase (2026-06). Review, edit,
 > or re-prioritize the requirements below; implementation happens in follow-up PRs.
+>
+> **Verification pass (mega-check):** each requirement was traced back to a spotted
+> issue against the code. Findings baked in below:
+> - `lucis-chapter` (EN + FR) is **not** in the content collection, so REQ-1/REQ-4
+>   need an explicit data source for it (see caveats).
+> - Heading structure is already clean (1 `<h1>`/page verified) — REQ-6 is a
+>   regression guard, not a fix.
+> - REQ-9 (breadcrumbs) is an enhancement, not tied to a spotted issue.
+> - The client-side FR redirect (a minor spotted issue) is now tracked as REQ-10.
 
 ## Context
 
@@ -38,8 +47,13 @@ content collection (no hand-maintained duplication).
   `inLanguage` (`en` / `fr`).
 - **Scope:** `src/pages/newsletter/*.astro` + `src/pages/fr/newsletter/*.astro`
   (7 + 7), likely wired through `ArticleLayout.astro` reading collection data.
-- **Acceptance:** each article carries a `<script type="application/ld+json">` with
-  `@type: Article`; passes Google Rich Results Test; build + CSP pass; no console errors.
+- **⚠️ Data-source caveat (verified):** the content collection has only 6 EN + 6 FR
+  entries — `lucis-chapter` (EN + FR) is **not** in it, so it has no `date`/`image`
+  to source from. Sub-requirement: **add `lucis-chapter` to the collection**
+  (preferred) or pass `datePublished`/`image` explicitly in those two pages.
+- **Acceptance:** all 14 articles (incl. `lucis-chapter`) carry a
+  `<script type="application/ld+json">` with `@type: Article`; passes Google Rich
+  Results Test; build + CSP pass; no console errors.
 
 ### REQ-2 · HowTo / FAQ schema on list-style articles
 Step/tip articles emit `HowTo` (or `FAQPage`) JSON-LD — **only** where the content
@@ -65,6 +79,9 @@ core topics, and links to the canonical articles (EN + key FR).
 Each `sitemap.xml` `<url>` includes `<lastmod>` from the article's date; home/hub
 use the most recent article date.
 
+- **⚠️ Data-source caveat (verified):** same as REQ-1 — `lucis-chapter` has no
+  collection date; and the home/hub URLs have no intrinsic date. Decide a source
+  for those (e.g. build date, or newest-article date for the hub).
 - **Acceptance:** every `<url>` has a W3C-format `<lastmod>`. (Consider generating
   the sitemap from the content collection so it can't drift.)
 
@@ -76,9 +93,12 @@ image is a 1200×630 asset.
 - **Acceptance:** the three `og:image:*` tags render on every page; default `ogImage`
   is 1200×630.
 
-### REQ-6 · Heading hierarchy
+### REQ-6 · Heading hierarchy (regression guard — no defect found)
 Exactly one `<h1>` per page; subheads ordered `h2`/`h3` with no skipped levels.
 
+- **Note:** spot-check confirmed pages already have exactly **1 `<h1>`**. This is a
+  *guard*, not a fix — verify across all pages and keep it from regressing. Low value;
+  could be dropped or folded into a CI check.
 - **Acceptance:** automated check across all 19 built pages: 1 `h1`/page, no level skips.
 
 ### REQ-7 · 404 not indexable
@@ -97,10 +117,21 @@ make it an explicit, commented decision in `robots.txt`.
 
 - **Acceptance:** `robots.txt` documents the intentional allow of major AI bots.
 
-### REQ-9 · Breadcrumb schema (optional)
+### REQ-9 · Breadcrumb schema (enhancement — not a spotted issue)
 `BreadcrumbList` JSON-LD on articles: Home › Newsletter › Article.
 
+- **Note:** additive nicety, not tied to an audit finding. Keep only if wanted.
 - **Acceptance:** articles emit valid breadcrumb schema.
+
+### REQ-10 · Crawler-safe locale redirect
+The client-side "FR browser → `/fr`" redirect in `Layout.astro` should not create
+crawler/indexing ambiguity. hreflang already gives the correct signal, so this is
+low risk — but make it intentional.
+
+- **Options:** skip the redirect for known bots, or rely purely on hreflang and
+  drop the auto-redirect, or accept as-is and document why.
+- **Acceptance:** documented decision; if kept, verified not to interfere with
+  Googlebot indexing the canonical (en) URLs.
 
 ---
 
@@ -117,7 +148,24 @@ make it an explicit, commented decision in `robots.txt`.
 - [ ] REQ-3 · llms.txt
 - [ ] REQ-4 · Sitemap lastmod
 - [ ] REQ-5 · OG image metadata
-- [ ] REQ-6 · Heading hierarchy
+- [ ] REQ-6 · Heading hierarchy (regression guard)
 - [ ] REQ-7 · 404 noindex
 - [ ] REQ-8 · Explicit AI-crawler policy
-- [ ] REQ-9 · Breadcrumb schema (optional)
+- [ ] REQ-9 · Breadcrumb schema (enhancement)
+- [ ] REQ-10 · Crawler-safe locale redirect
+
+## Traceability (issue → requirement)
+
+| Spotted issue | Requirement | Solves? |
+|---|---|---|
+| No Article schema on 14 pages | REQ-1 | ✅ (needs `lucis-chapter` data source) |
+| Articles lack datePublished/author | REQ-1 | ✅ (same) |
+| No HowTo/FAQ on tip articles | REQ-2 | ✅ (per-article validation) |
+| No llms.txt | REQ-3 | ✅ |
+| Sitemap no lastmod | REQ-4 | ✅ (needs date source for lucis-chapter + hub/home) |
+| og:image missing dims/alt | REQ-5 | ✅ |
+| 404 not noindex | REQ-7 | ✅ |
+| AI-crawler access not explicit | REQ-8 | ✅ |
+| Client-side FR redirect ambiguity | REQ-10 | ✅ (tracked) |
+| _(no issue — guard)_ | REQ-6 | n/a — 1 h1/page already |
+| _(no issue — enhancement)_ | REQ-9 | n/a — additive |
