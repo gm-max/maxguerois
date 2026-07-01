@@ -4,6 +4,23 @@ import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
 import { t } from '../../../i18n/utils';
 
 const locale = 'fr';
+
+// REQ-2 — Schema HowTo reprenant les 7 conseils sommeil de la page (1:1, sans invention).
+const sleepHowTo = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: "Comment j'obtiens un sommeil de qualité : mon protocole en 7 conseils",
+    description: 'Les 7 changements qui ont fait passer mon score de sommeil de 82 à 100 après 3 mois de suivi.',
+    step: [
+        { '@type': 'HowToStep', position: 1, name: 'Café', text: 'Passé de 3 cafés par jour à 1 seul, avec la deuxième tasse en déca.' },
+        { '@type': 'HowToStep', position: 2, name: 'Exercice', text: 'Minimum 11 000 pas par jour et des entraînements réguliers.' },
+        { '@type': 'HowToStep', position: 3, name: 'Compléments alimentaires', text: "250 mg de magnésium, 2 g de glycine et 30 mg d'apigénine par jour." },
+        { '@type': 'HowToStep', position: 4, name: 'Alimentation', text: 'Dernier repas à 18h ou 19h, environ 500 kcal, sans protéines, et rien 3h avant le coucher.' },
+        { '@type': 'HowToStep', position: 5, name: 'Environnement de sommeil', text: 'Chambre fraîche (15 à 19°C), sombre et silencieuse, avec bouchons et clim si besoin.' },
+        { '@type': 'HowToStep', position: 6, name: 'Heure de coucher', text: 'Se coucher à la même heure chaque soir, vers 22h30 (à 30 minutes près).' },
+        { '@type': 'HowToStep', position: 7, name: 'Routine du soir', text: 'Se détendre 30 minutes avant le coucher, sans écrans, en lisant ou en méditant.' },
+    ],
+};
 ---
 <ArticleLayout
     title="7 conseils pour un sommeil de qualité — Max Guerois"
@@ -11,6 +28,7 @@ const locale = 'fr';
     ogUrl="https://maxguerois.com/fr/newsletter/sleep"
     ogImage="https://maxguerois.com/health-journey/banner-sleep.jpg"
     locale={locale}
+    structuredExtra={sleepHowTo}
 >
 
 <div class="container">

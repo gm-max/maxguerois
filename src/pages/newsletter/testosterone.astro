@@ -58,6 +58,28 @@ const articleStyles = `
         border-top: none;
     }
 `;
+
+// REQ-2 — HowTo mirroring the 31 on-page tips (names verbatim from the page;
+// em-dashes removed because this is authored JSON, per the no-em-dash rule).
+const tTips = [
+    'Vitamin D3', 'Tongkat Ali', 'B-Vitamin Complex', 'Boron', 'Maca Root', 'Creatine',
+    'Zinc', 'Magnesium (Citrate or Glycinate)', 'Omega-3 Fatty Acids',
+    'Remove Sugar and Processed Foods', 'Remove Seed Oils', 'Say No to Alcohol',
+    'Adios Tobacco and Drugs', 'Hydration', 'Test Diet',
+    'Raw or Fat Natural Milk & Coconut Water', 'Coffee Intake',
+    'Weight Lifting, 3 to 5 times a week', 'HIIT Training', 'Bedroom Activities (Morning)',
+    'Regular Movement', 'Outdoor Activities', 'Quality Sleep', 'Sleep Tracking',
+    'Personal Care & Household Products', 'Cold Showers', 'Ice Baths, 2 to 4 times a week',
+    'Mindfulness & Relaxation', 'Fasting Once a Week (24h) or Every Two Weeks (36h)',
+    'Short-Term Fasting', 'Weight Loss & Testosterone',
+];
+const testosteroneHowTo = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to fix low testosterone: 31 science-backed tips',
+    description: '31 lifestyle, supplement, diet, training, sleep, and stress tips to naturally support testosterone.',
+    step: tTips.map((tip, i) => ({ '@type': 'HowToStep', position: i + 1, name: tip, text: tip })),
+};
 ---
 <ArticleLayout
     title="31 science-backed tips to fix low testosterone — Max Guerois"
@@ -65,6 +87,7 @@ const articleStyles = `
     ogUrl="https://maxguerois.com/newsletter/testosterone"
     ogImage="https://maxguerois.com/health-journey/banner-low-testosterone.jpg"
     articleStyles={articleStyles}
+    structuredExtra={testosteroneHowTo}
 >
 
 <div class="container">
