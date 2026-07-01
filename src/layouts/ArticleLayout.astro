@@ -55,10 +55,23 @@ const articleSchema = {
     publisher: person,
 };
 
+// REQ-9 — BreadcrumbList: Home > Newsletter > Article.
+const breadcrumbSchema = ogUrl
+    ? {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+              { '@type': 'ListItem', position: 1, name: locale === 'fr' ? 'Accueil' : 'Home', item: locale === 'fr' ? 'https://maxguerois.com/fr' : 'https://maxguerois.com/' },
+              { '@type': 'ListItem', position: 2, name: 'Newsletter', item: locale === 'fr' ? 'https://maxguerois.com/fr/newsletter' : 'https://maxguerois.com/newsletter' },
+              { '@type': 'ListItem', position: 3, name: noEmDash(head), item: ogUrl },
+          ],
+      }
+    : null;
+
 const extras = structuredExtra
     ? (Array.isArray(structuredExtra) ? structuredExtra : [structuredExtra])
     : [];
-const structuredData = [articleSchema, ...extras];
+const structuredData = [articleSchema, ...(breadcrumbSchema ? [breadcrumbSchema] : []), ...extras];
 ---
 <Layout
     title={title}

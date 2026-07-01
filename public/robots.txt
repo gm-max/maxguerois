@@ -1,4 +1,38 @@
+# robots.txt for maxguerois.com
+# Policy: everything is open to everyone, and AI answer engines are
+# explicitly welcome. This site is written to be read and cited by LLMs
+# (generative engine optimization). See /llms.txt for a machine-readable
+# summary of the site.
+
 User-agent: *
+Allow: /
+
+# AI / LLM crawlers, explicitly allowed (a documented decision, not just a default):
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
 Allow: /
 
 Sitemap: https://maxguerois.com/sitemap.xml
