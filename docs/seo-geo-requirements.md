@@ -150,9 +150,9 @@ low risk — but make it intentional.
 - [x] REQ-5 · OG image metadata (+ default fixed to og.jpg)
 - [x] REQ-6 · Heading hierarchy — verified 1 h1/page on all 19 pages (no CI guard added)
 - [x] REQ-7 · 404 noindex
-- [ ] REQ-8 · Explicit AI-crawler policy (P3, not in this PR)
-- [ ] REQ-9 · Breadcrumb schema (P3, not in this PR)
-- [ ] REQ-10 · Crawler-safe locale redirect (P3, not in this PR)
+- [x] REQ-8 · Explicit AI-crawler policy (P3 PR)
+- [x] REQ-9 · Breadcrumb schema — BreadcrumbList on all 14 articles (P3 PR)
+- [x] REQ-10 · Crawler-safe locale redirect — bot guard added (P3 PR)
 
 ## Implementation notes / deviations (P1+P2 PR)
 
