@@ -20,6 +20,7 @@ interface Props {
     extraStyles?: string[];
     locale?: Locale;
     hideFooter?: boolean;
+    noindex?: boolean;
 }
 
 const {
@@ -38,6 +39,7 @@ const {
     extraStyles = [],
     locale = 'en',
     hideFooter = false,
+    noindex = false,
 } = Astro.props;
 
 // Build hreflang URLs from current path
@@ -54,6 +56,7 @@ const frUrl = getAbsoluteUrl(frenchPath, 'fr');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
     {description && <meta name="description" content={description}>}
+    {noindex && <meta name="robots" content="noindex, follow">}
 
     <!-- Hreflang — SEO alternate language links -->
     <link rel="alternate" hreflang="en" href={enUrl}>
