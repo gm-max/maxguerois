@@ -4,6 +4,7 @@
   "framework": null,
   "cleanUrls": true,
   "redirects": [
+    { "source": "/:path*", "has": [{ "type": "host", "value": "www.maxguerois.com" }], "destination": "https://maxguerois.com/:path*", "permanent": true },
     { "source": "/health-os", "destination": "/newsletter/health-os", "permanent": true },
     { "source": "/my-genome", "destination": "/newsletter/my-genome", "permanent": true },
     { "source": "/lucis-chapter", "destination": "/newsletter/lucis-chapter", "permanent": true },
