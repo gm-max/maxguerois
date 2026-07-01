@@ -1,12 +1,30 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+
+// REQ-2 — HowTo JSON-LD mirroring the 7 on-page sleep tips (1:1, no fabrication).
+const sleepHowTo = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How I get high-quality sleep: my 7-tip protocol',
+    description: 'The 7 changes that took my sleep score from 82 to 100 over 3 months of tracking.',
+    step: [
+        { '@type': 'HowToStep', position: 1, name: 'Coffee', text: 'Cut coffee from 3 cups to 1 and switched the second cup to decaf.' },
+        { '@type': 'HowToStep', position: 2, name: 'Exercise', text: 'At least 11K steps a day and consistent daily workouts.' },
+        { '@type': 'HowToStep', position: 3, name: 'Supplements', text: '250 mg magnesium, 2 g glycine, and 30 mg apigenin daily.' },
+        { '@type': 'HowToStep', position: 4, name: 'Food', text: 'Last meal at 6 to 7 PM, about 500 kcal, no protein, and no food 3 hours before bed.' },
+        { '@type': 'HowToStep', position: 5, name: 'Sleep environment', text: 'Keep the room cool (60 to 67°F / 15 to 19°C), dark, and quiet, with earplugs and A/C as needed.' },
+        { '@type': 'HowToStep', position: 6, name: 'Time to bed', text: 'Go to bed at the same time each night, around 10:30 PM (plus or minus 30 minutes).' },
+        { '@type': 'HowToStep', position: 7, name: 'Bedtime routine', text: 'Wind down 30 minutes before bed with no screens, reading, or meditation.' },
+    ],
+};
 ---
 <ArticleLayout
     title="7 tips that lead me to high-quality sleep — Max Guerois"
     description="3 months of tracking. 7 tips that took my sleep score from 82 to 100. By Max Guerois, who co-founded Lucis."
     ogUrl="https://maxguerois.com/newsletter/sleep"
     ogImage="https://maxguerois.com/health-journey/banner-sleep.jpg"
+    structuredExtra={sleepHowTo}
 >
 
 <div class="container">

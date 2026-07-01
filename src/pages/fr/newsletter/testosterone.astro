@@ -61,6 +61,28 @@ const articleStyles = `
         border-top: none;
     }
 `;
+
+// REQ-2 — Schema HowTo reprenant les 31 conseils de la page (noms verbatim ;
+// tirets longs retirés car c'est du JSON rédigé, règle sans tiret long).
+const tTips = [
+    'Vitamin D3', 'Tongkat Ali', 'Complexe de vitamines B', 'Boron', 'Maca Root', 'Creatine',
+    'Zinc', 'Magnesium (Citrate ou Glycinate)', 'Omega-3',
+    'Virer le sucre et les aliments transformés', 'Virer les huiles de graines',
+    "Lâche l'alcool", 'Adios tabac et drogues', 'Hydratation', 'Alimentation testostérone',
+    'Lait cru ou entier & eau de coco', 'Café',
+    'Musculation, 3 à 5 fois par semaine', 'HIIT', 'Activités au lit (le matin)',
+    'Bouger régulièrement', 'Sors dehors', 'Dormir bien', 'Tracking du sommeil',
+    "Produits d'hygiène & ménagers", 'Douches froides', 'Bains glacés, 2 à 4 fois par semaine',
+    'Méditation & relaxation', 'Jeûner une fois par semaine (24h) ou toutes les deux semaines (36h)',
+    'Jeûne court', 'Perdre du gras = plus de testostérone',
+];
+const testosteroneHowTo = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'Comment corriger une faible testostérone : 31 conseils',
+    description: '31 conseils (compléments, alimentation, entraînement, sommeil, stress) pour soutenir naturellement la testostérone.',
+    step: tTips.map((tip, i) => ({ '@type': 'HowToStep', position: i + 1, name: tip, text: tip })),
+};
 ---
 <ArticleLayout
     title="Faible testostérone ? 31 conseils prouvés par la science — Max Guerois"
@@ -69,6 +91,7 @@ const articleStyles = `
     ogImage="https://maxguerois.com/health-journey/banner-low-testosterone.jpg"
     articleStyles={articleStyles}
     locale={locale}
+    structuredExtra={testosteroneHowTo}
 >
 
 <div class="container">
