@@ -80,6 +80,10 @@ const frUrl = getAbsoluteUrl(frenchPath, 'fr');
     <script is:inline>
         (function() {
             try {
+                // REQ-10: never redirect crawlers, so canonical (en) URLs stay
+                // indexable. hreflang is the real language signal for bots.
+                var ua = navigator.userAgent || '';
+                if (/bot|crawl|spider|slurp|Googlebot|bingbot|GPTBot|ClaudeBot|PerplexityBot|Google-Extended|facebookexternalhit|embedly/i.test(ua)) return;
                 // Only run on English pages (no /fr/ prefix)
                 if (window.location.pathname.startsWith('/fr')) return;
                 // Respect stored language preference
