@@ -14,7 +14,6 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
     ogUrl="https://maxguerois.com/newsletter"
     ogImage="https://maxguerois.com/health-journey/banner-staying-young.jpg"
     extraStyles={["/styles/article.css"]}
-    hideFooter
 >
 
 <style>
@@ -87,6 +86,7 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         margin: 0 0 var(--sp-6);
     }
     .experiments-list { display: flex; flex-direction: column; gap: var(--sp-6); }
+    .nl-subscribe { margin-top: var(--sp-16); }
     .experiment-item {
         display: block;
         text-decoration: none;
@@ -179,6 +179,10 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
                 </div>
             </a>
         ))}
+    </div>
+
+    <div class="nl-subscribe">
+        <NewsletterEmbed />
     </div>
 </div>
 </Layout>

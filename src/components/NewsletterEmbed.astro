@@ -22,8 +22,24 @@ const { locale = 'en', minimal = false } = Astro.props;
             <p class="newsletter-desc">{t(locale, 'newsletter.desc')}</p>
         </>
     )}
-    <script type="text/javascript" async src="https://subscribe-forms.beehiiv.com/attribution.js"></script>
-    <script async src="https://subscribe-forms.beehiiv.com/embed.js"></script>
+    {/* Load beehiiv's scripts at most once per page. Two <script src> tags would
+        execute embed.js twice and double-bind its resize listener, making the
+        iframes race their height. This guard lets multiple embeds coexist. */}
+    <script is:inline>
+        (function () {
+            var srcs = [
+                'https://subscribe-forms.beehiiv.com/attribution.js',
+                'https://subscribe-forms.beehiiv.com/embed.js'
+            ];
+            srcs.forEach(function (src) {
+                if (document.querySelector('script[src="' + src + '"]')) return;
+                var s = document.createElement('script');
+                s.src = src;
+                s.async = true;
+                document.head.appendChild(s);
+            });
+        })();
+    </script>
     <iframe
         src="https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-911b5e3eb2e6"
         class="beehiiv-embed"
