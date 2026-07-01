@@ -1,51 +1,45 @@
 {
-  "$ref": "#/definitions/experiments",
-  "definitions": {
-    "experiments": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "tagline": {
-          "type": "string"
-        },
-        "category": {
-          "type": "string"
-        },
-        "date": {
-          "type": "string"
-        },
-        "slug": {
-          "type": "string"
-        },
-        "ogImage": {
-          "type": "string"
-        },
-        "cover": {
-          "type": "string"
-        },
-        "locale": {
-          "type": "string",
-          "enum": [
-            "en",
-            "fr"
-          ],
-          "default": "en"
-        },
-        "$schema": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "title",
-        "tagline",
-        "category",
-        "date",
-        "slug"
-      ],
-      "additionalProperties": false
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "ogImage": {
+      "type": "string"
+    },
+    "cover": {
+      "type": "string"
+    },
+    "locale": {
+      "default": "en",
+      "type": "string",
+      "enum": [
+        "en",
+        "fr"
+      ]
+    },
+    "$schema": {
+      "type": "string"
     }
   },
-  "$schema": "http://json-schema.org/draft-07/schema#"
+  "required": [
+    "title",
+    "tagline",
+    "category",
+    "date",
+    "slug"
+  ]
 }
