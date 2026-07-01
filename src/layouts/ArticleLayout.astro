@@ -3,6 +3,7 @@
 // Extends Layout.astro — no head duplication
 // maxguerois.com
 import Layout from './Layout.astro';
+import { getCollection } from 'astro:content';
 import type { Locale } from '../i18n/utils';
 
 interface Props {
@@ -12,9 +13,48 @@ interface Props {
     ogImage?: string;
     articleStyles?: string;
     locale?: Locale;
+    // REQ-1 fallbacks for articles not in the content collection (e.g. lucis-chapter)
+    datePublished?: string;
+    headline?: string;
+    // REQ-2: optional HowTo / FAQPage JSON-LD (must mirror on-page content 1:1)
+    structuredExtra?: object | object[];
 }
 
-const { title, description, ogUrl, ogImage, articleStyles, locale = 'en' } = Astro.props;
+const {
+    title, description, ogUrl, ogImage, articleStyles, locale = 'en',
+    datePublished, headline, structuredExtra,
+} = Astro.props;
+
+// REQ-1 — Article JSON-LD, sourced from the content collection where possible.
+// Slug is derived from the canonical URL so the 12 collection articles need no
+// per-page changes; lucis-chapter (not in the collection) passes its own props.
+const slug = ogUrl ? ogUrl.replace(/\/$/, '').split('/').pop() : undefined;
+const experiments = await getCollection('experiments');
+const entry = slug
+    ? experiments.find((e) => e.data.slug === slug && (e.data.locale || 'en') === locale)
+    : undefined;
+
+const pubDate = datePublished || entry?.data.date;
+const head = headline || entry?.data.title || title;
+const person = { '@type': 'Person', name: 'Max Guerois', url: 'https://maxguerois.com' };
+
+const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: head,
+    ...(description ? { description } : {}),
+    ...(ogImage ? { image: ogImage } : {}),
+    ...(pubDate ? { datePublished: pubDate, dateModified: pubDate } : {}),
+    inLanguage: locale === 'fr' ? 'fr-FR' : 'en-US',
+    ...(ogUrl ? { mainEntityOfPage: { '@type': 'WebPage', '@id': ogUrl }, url: ogUrl } : {}),
+    author: person,
+    publisher: person,
+};
+
+const extras = structuredExtra
+    ? (Array.isArray(structuredExtra) ? structuredExtra : [structuredExtra])
+    : [];
+const structuredData = [articleSchema, ...extras];
 ---
 <Layout
     title={title}
@@ -26,6 +66,7 @@ const { title, description, ogUrl, ogImage, articleStyles, locale = 'en' } = Ast
     ogImage={ogImage}
     extraStyles={["/styles/article.css"]}
     locale={locale}
+    structuredData={structuredData}
 >
     {articleStyles && <style set:html={articleStyles} />}
     <slot />
