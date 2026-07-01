@@ -1,0 +1,27 @@
+# Max Guerois
+
+> Max Guerois is a repeat founder based in Paris, writing in the open about health, longevity, and building his next startup. He co-founded Lucis, a preventive health company backed by Y Combinator and General Catalyst. This site publishes his open, self-experiment health protocols in plain language.
+
+Max tracks his own biomarkers and shares what works and what does not: bloodwork, wearables, genome, supplements, training, sleep, and testosterone. Each entry below links to the full article.
+
+## Newsletter articles
+
+- [My Health OS: all my health data in one place, read by AI](https://maxguerois.com/newsletter/health-os): Bloodwork, wearables, and genome in one folder, read by an AI that tells you what to do. A no-code how-to.
+- [I sequenced my whole genome. Here's what I found.](https://maxguerois.com/newsletter/my-genome): What a DNA test actually is, what mine changed, and the three steps to do it yourself.
+- [My Biomarkers: Full Snapshot](https://maxguerois.com/newsletter/max-biomarkers): Biological age 19, pace of aging 0.74, resting heart rate 40, VO2 Max 52.4. A full snapshot across metabolism, hormones, body composition, and strength.
+- [31 Tips to Fix Low Testosterone](https://maxguerois.com/newsletter/testosterone): 31 science-backed lifestyle actions to support testosterone naturally, organized into morning ritual, evening ritual, diet, training, and stress management.
+- [7 Tips for High-Quality Sleep](https://maxguerois.com/newsletter/sleep): 3 months of tracking that took a sleep score from 82 to 100. The 7 changes that moved the needle.
+- [I Take 11 Supplements a Day](https://maxguerois.com/newsletter/supplements): 11 supplements tied to bloodwork, with doses, timing, and products.
+- [Leaving Lucis](https://maxguerois.com/newsletter/lucis-chapter): Why Max stepped away from Lucis, the company he co-founded, and what comes next.
+
+## Newsletter hub
+
+- [The newsletter](https://maxguerois.com/newsletter): Every article, plus the email signup. Two emails a month.
+
+## Francais
+
+A French version of every page is available under the /fr/ path, for example https://maxguerois.com/fr/newsletter.
+
+## About
+
+- [Home](https://maxguerois.com): Who Max is, his biomarkers, and his founder story (Lucis, Zero Club, The Arch, Practup).
