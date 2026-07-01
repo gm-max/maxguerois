@@ -143,16 +143,30 @@ low risk — but make it intentional.
 
 ## Tracking checklist
 
-- [ ] REQ-1 · Article structured data (14 articles)
-- [ ] REQ-2 · HowTo / FAQ schema (tip articles)
-- [ ] REQ-3 · llms.txt
-- [ ] REQ-4 · Sitemap lastmod
-- [ ] REQ-5 · OG image metadata
-- [ ] REQ-6 · Heading hierarchy (regression guard)
-- [ ] REQ-7 · 404 noindex
-- [ ] REQ-8 · Explicit AI-crawler policy
-- [ ] REQ-9 · Breadcrumb schema (enhancement)
-- [ ] REQ-10 · Crawler-safe locale redirect
+- [x] REQ-1 · Article structured data (14/14 articles)
+- [x] REQ-2 · HowTo schema (sleep 7 steps + testosterone 31 steps; supplements/health-os intentionally skipped)
+- [x] REQ-3 · llms.txt
+- [x] REQ-4 · Sitemap lastmod (generated from collection)
+- [x] REQ-5 · OG image metadata (+ default fixed to og.jpg)
+- [x] REQ-6 · Heading hierarchy — verified 1 h1/page on all 19 pages (no CI guard added)
+- [x] REQ-7 · 404 noindex
+- [ ] REQ-8 · Explicit AI-crawler policy (P3, not in this PR)
+- [ ] REQ-9 · Breadcrumb schema (P3, not in this PR)
+- [ ] REQ-10 · Crawler-safe locale redirect (P3, not in this PR)
+
+## Implementation notes / deviations (P1+P2 PR)
+
+- **lucis-chapter** was NOT added to the collection (would have bumped an
+  experiment off the home top-3 and into the archive). Instead it passes
+  `headline` + `datePublished` directly to ArticleLayout — the doc's approved
+  alternative. Its date is **2026-06-09**, the article's own visible dateline
+  (not the June 3 git-creation date), so schema matches the visible date.
+- **REQ-2 value:** Google deprecated HowTo/FAQ rich results in 2023, so the
+  payoff is GEO (AI-engine extraction), not Google rich snippets.
+- **Em-dashes:** all authored JSON-LD is em-dash-free. Note a *separate*
+  pre-existing issue remains out of scope: visible `<title>` tags use the
+  "Page — Max Guerois" convention, and some article bodies / i18n strings use
+  em-dashes. Recommend a dedicated copy pass.
 
 ## Traceability (issue → requirement)
 
