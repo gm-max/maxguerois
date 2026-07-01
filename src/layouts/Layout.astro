@@ -12,6 +12,9 @@ interface Props {
     ogTitle?: string;
     ogDescription?: string;
     ogImage?: string;
+    ogImageAlt?: string;
+    ogImageWidth?: number;
+    ogImageHeight?: number;
     twitterCard?: string;
     structuredData?: object | object[];
     extraStyles?: string[];
@@ -26,7 +29,10 @@ const {
     ogUrl,
     ogTitle,
     ogDescription,
-    ogImage = 'https://maxguerois.com/profile.jpg',
+    ogImage = 'https://maxguerois.com/og.jpg',
+    ogImageAlt,
+    ogImageWidth = 1200,
+    ogImageHeight = 630,
     twitterCard = 'summary_large_image',
     structuredData,
     extraStyles = [],
@@ -98,6 +104,9 @@ const frUrl = getAbsoluteUrl(frenchPath, 'fr');
     <meta property="og:title" content={ogTitle || title}>
     {ogDescription && <meta property="og:description" content={ogDescription}>}
     <meta property="og:image" content={ogImage}>
+    <meta property="og:image:width" content={String(ogImageWidth)}>
+    <meta property="og:image:height" content={String(ogImageHeight)}>
+    <meta property="og:image:alt" content={ogImageAlt || ogTitle || title}>
     <meta property="og:locale" content={locale === 'fr' ? 'fr_FR' : 'en_US'}>
     {locale === 'en' && <meta property="og:locale:alternate" content="fr_FR">}
     {locale === 'fr' && <meta property="og:locale:alternate" content="en_US">}
@@ -108,6 +117,7 @@ const frUrl = getAbsoluteUrl(frenchPath, 'fr');
     <meta name="twitter:title" content={ogTitle || title}>
     {ogDescription && <meta name="twitter:description" content={ogDescription}>}
     <meta name="twitter:image" content={ogImage}>
+    <meta name="twitter:image:alt" content={ogImageAlt || ogTitle || title}>
 
     {structuredData && (
         <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
