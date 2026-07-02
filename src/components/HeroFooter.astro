@@ -82,6 +82,19 @@ const langHref = locale === 'fr'
     }
     .hd-social a:hover { color: var(--text); }
     .hd-social svg { width: 18px; height: 18px; display: block; }
+
+    /* Mobile: the hero content is taller than the viewport, so a fixed bar
+       overlaps the signup. Drop the dock into normal flow at the end of the
+       hero instead (divider spans the content column, scroll-fade disabled). */
+    @media (max-width: 600px) {
+        .hero-dock {
+            position: static;
+            opacity: 1 !important;
+            transform: none !important;
+            pointer-events: auto;
+            margin-top: var(--sp-8);
+        }
+    }
 </style>
 
 <script is:inline>
@@ -89,6 +102,13 @@ const langHref = locale === 'fr'
         var dock = document.querySelector('[data-hero-dock]');
         if (!dock) return;
         var onScroll = function () {
+            // On mobile the dock is in normal flow (position: static) — never fade it.
+            if (getComputedStyle(dock).position !== 'fixed') {
+                dock.style.opacity = '';
+                dock.style.transform = '';
+                dock.style.pointerEvents = '';
+                return;
+            }
             var hide = window.scrollY > 8;
             dock.style.opacity = hide ? '0' : '1';
             dock.style.transform = hide ? 'translateY(14px)' : 'translateY(0)';
