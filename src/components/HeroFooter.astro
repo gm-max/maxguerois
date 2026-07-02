@@ -44,6 +44,9 @@ const langHref = locale === 'fr'
         bottom: 0;
         z-index: 50;
         pointer-events: none; /* let clicks fall through the empty bar area */
+        background: var(--navbar-bg); /* opaque bar so hero content scrolls cleanly under it, never bleeds through */
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border-top: 1px solid var(--border); /* full-width divider */
         will-change: opacity, transform;
         transition: opacity 0.18s ease-out, transform 0.18s ease-out;

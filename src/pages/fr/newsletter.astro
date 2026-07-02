@@ -27,6 +27,15 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         justify-content: center;
         padding-bottom: var(--sp-16); /* clear the fixed footer bar */
     }
+    /* Mobile: flow from the top (the dock drops into normal flow, see HeroFooter). */
+    @media (max-width: 600px) {
+        .hero {
+            min-height: 0;
+            justify-content: flex-start;
+            padding-top: var(--sp-4);
+            padding-bottom: 0;
+        }
+    }
     /* Minimal inline signup: just the email input + button */
     .nl-form {
         margin-top: var(--sp-2);
