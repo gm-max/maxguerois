@@ -1,0 +1,338 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+
+// Scoped styles for elements not covered by the global article.css
+// (body lists, inline links, figures, references, disclaimer).
+const articleStyles = `
+    .article-body a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        transition: color var(--duration-short) ease;
+    }
+    .article-body a:hover { color: var(--text); }
+    .article-body ul, .article-body ol {
+        margin: 0 0 20px;
+        padding-left: 22px;
+        color: var(--text-secondary);
+    }
+    .article-body li {
+        font-size: 16px;
+        line-height: 1.75;
+        margin-bottom: 8px;
+    }
+    .article-body ul { list-style: disc; }
+    .article-body ol { list-style: decimal; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body sup a { text-decoration: none; font-size: 0.7em; }
+    figure.fig { margin: var(--sp-8) 0; }
+    figure.fig > img {
+        width: 100%;
+        display: block;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+    }
+    .schema-wrap {
+        background: #faf9f7;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 20px;
+    }
+    .schema-wrap img { width: 100%; display: block; }
+    figure.fig figcaption {
+        font-size: 13px;
+        color: var(--text-tertiary);
+        margin-top: 10px;
+        text-align: center;
+        line-height: 1.5;
+    }
+    .disclaimer {
+        font-size: 14px;
+        color: var(--text-tertiary);
+        font-style: italic;
+        margin-top: var(--sp-8);
+        line-height: 1.6;
+    }
+    .ref-list { font-size: 14px; line-height: 1.6; }
+    .ref-list li { margin-bottom: 10px; color: var(--text-secondary); }
+    figure.fig .img-pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    figure.fig .img-pair img {
+        width: 100%;
+        display: block;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+    }
+    @media (max-width: 520px) {
+        figure.fig .img-pair { grid-template-columns: 1fr; }
+    }
+    figure.fig img.phone-shot {
+        max-width: 320px;
+        margin-inline: auto;
+    }
+    figure.fig img.portrait-shot {
+        max-width: 360px;
+        margin-inline: auto;
+    }
+`;
+---
+<ArticleLayout
+    title="I microdosed the strongest weight-loss drug in the world. Here's the honest version."
+    description="Retatrutide, run through my own data and a clinician. The honest version: what worked, what didn't, and where my data hit its limit."
+    ogUrl="https://maxguerois.com/newsletter/retatrutide"
+    ogImage="https://maxguerois.com/health-journey/banner-weight-loss-og.jpg"
+    articleStyles={articleStyles}
+>
+
+<div class="container">
+    <a href="/newsletter" class="back">← Back to the newsletter</a>
+
+    <div class="article-meta">July 16, 2026</div>
+    <h1 class="article-title">I microdosed the strongest weight-loss drug in the world. Here's the honest version.</h1>
+    <p class="article-subtitle">Retatrutide, run through my own data and a clinician. What my Health OS caught, and where it hit a wall.</p>
+
+    <img
+        class="article-img"
+        src="/health-journey/banner-weight-loss-2x.jpg"
+        alt="I microdosed the strongest weight-loss drug in the world. Here's the honest version."
+        fetchpriority="high"
+    >
+
+    <div class="article-body">
+
+        <p>Peptides are having a moment. About 10 million searches a month in the US now. This spring I stopped searching and ran one on myself: retatrutide, the strongest one in the trial data so far.</p>
+
+        <figure class="fig">
+            <img
+                src="/health-journey/peptide-growth.jpeg"
+                alt="Line chart: US search interest for peptides climbing from about 12 in 2019 to 100 in 2026, with a marker where GLP-1s went mainstream in 2023"
+                loading="lazy"
+            >
+            <figcaption>From niche to everywhere in seven years. Google Trends.</figcaption>
+        </figure>
+
+        <p>They're not new, though. Insulin, the first peptide we ever turned into medicine, has kept people alive since 1922<sup><a href="#ref-1">[1]</a></sup>. Ozempic, the one that made the whole class a household name, only landed in 2017<sup><a href="#ref-2">[2]</a></sup>. Reta is the newest of the line, and the most powerful yet.</p>
+
+        <p>Mine was two shots over two weeks, then I stopped. It worked, that was never the problem. The problem was that the most obsessive health setup I could build still couldn't answer the one question that mattered. Here's what actually happened.</p>
+
+        <h2 class="section-heading">What it is, fast</h2>
+
+        <p>Quick bit of science, and I'll keep it painless.</p>
+
+        <p>Your body already runs on peptides. Insulin is one. Ozempic is one too. They're short chains of amino acids your body uses as signals.</p>
+
+        <p>Ozempic mimics GLP-1, a gut hormone that tells your brain you're full. Natural GLP-1 burns off in minutes; the drug makes it last a week. Mounjaro added a second signal. Reta adds a third, glucagon<sup><a href="#ref-3">[3]</a></sup>. That one is the leading explanation for why it out-loses the others: it seems to push your liver to burn more at rest, so it touches what you burn, not just what you eat.</p>
+
+        <figure class="fig">
+            <div class="schema-wrap">
+                <img
+                    src="/health-journey/reta-mechanism.jpeg"
+                    alt="Retatrutide hits three receptors, GLP-1, GIP and glucagon, which suppress appetite, raise fat metabolism and improve insulin sensitivity, driving weight loss and better blood sugar"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>Three receptors, three levers: less appetite, more fat burned, steadier blood sugar.</figcaption>
+        </figure>
+
+        <p>The trial numbers, because they matter: in the phase 2 obesity trial reta dropped about 24% of body weight at 48 weeks<sup><a href="#ref-4">[4]</a></sup>, and the curve still hadn't flattened when the trial ended. In diabetics it's lower, around 15%<sup><a href="#ref-3">[3]</a></sup>. Population and duration move the number a lot, anyone quoting one figure hasn't read past the headline.</p>
+
+        <p>What pulled me in wasn't just the weight, it was both. In those same trials it also cut liver fat by around 86%<sup><a href="#ref-5">[5]</a></sup> and pulled most prediabetics back to normal blood sugar. Fatty liver hits 40% of the world.</p>
+
+        <figure class="fig">
+            <div class="schema-wrap">
+                <img
+                    src="/health-journey/trial-reta.jpeg"
+                    alt="Trial charts showing retatrutide cutting liver fat by up to 86% at 48 weeks, rising with dose, versus almost nothing on placebo"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>Liver fat drop by dose, out to 48 weeks. From the phase 2a trial<sup><a href="#ref-5">[5]</a></sup>.</figcaption>
+        </figure>
+
+        <p>And that's just what's proven. It's being studied for heart and kidney disease, and, stranger, for dialing down compulsion, more on that below.</p>
+
+        <p>This is a metabolic drug that happens to also make you lean. The weight might end up the least interesting thing it does.</p>
+
+        <h2 class="section-heading">Why I did it</h2>
+
+        <p>Three reasons, honestly.</p>
+
+        <p><strong>One, curiosity.</strong> Reta is a metabolic drug, and my metabolism already runs in the top 10 to 20%:</p>
+
+        <ul>
+            <li>Blood sugar low and steady (HbA1c under 5%)</li>
+            <li>Fasting insulin low (around 2 to 5)</li>
+            <li>Triglycerides in the 30s and 40s</li>
+        </ul>
+
+        <p>So this was never about rescue. The question was simpler: what does the strongest metabolic drug in the world do to a baseline that's already dialed in? <a href="/newsletter/max-biomarkers">Full panel here</a>.</p>
+
+        <p><strong>Two, and this is the real one: the reason I can't put a number on.</strong> I don't want to think about food all day, and on reta I barely did. The willpower food takes is a tax on everything else, and for me that tax went quiet. You don't notice how much of your head it eats until it's gone.</p>
+
+        <p>And it reaches past food. The whole class seems to dial down compulsion: less pull to drink, to scroll, to shop, to gamble. Still just anecdote, but the overlap between dopamine and metabolism might be one of the most under-studied corners of medicine. That's the part I'm actually here for.</p>
+
+        <p><strong>Three, vanity.</strong> A DEXA the week before put me at 11.2% body fat. I wanted the last stubborn bit, closer to 9%.</p>
+
+        <h2 class="section-heading">It all started with my Health OS</h2>
+
+        <p>Last month I <a href="/newsletter/health-os">showed you my Health OS</a>: all my data in one folder an AI reads across. My Whoop, my labs, my DEXA, my genome. I built it to run experiments on myself the way Bryan Johnson does, without his medical team or his millions.</p>
+
+        <p>Here's how I actually used it for reta. Three steps.</p>
+
+        <p><strong>One, everything in one place:</strong> my genome, my blood panels, my body composition, my family history, the daily wearable data. The whole picture in one folder.</p>
+
+        <p><strong>Two, a documented safety pass with Claude.</strong> Not a vibe check: I hand it all of that and ask, in writing, is there anything in here that says don't touch this? It came back clean, with the reasons logged so I could keep them.</p>
+
+        <p><strong>Three, daily logging once I started.</strong> Every shot, how I felt, plus the Whoop and weight numbers, flowing back into the same folder each morning. The AI checked each one against my baselines and flagged anything drifting. I didn't have to remember to watch. It watched.</p>
+
+        <h2 class="section-heading">What I knew going in</h2>
+
+        <p>Two things, and they pulled in opposite directions.</p>
+
+        <p><strong>The upside.</strong> Everything above. The fat loss, the metabolic wins, the food noise gone.</p>
+
+        <p><strong>The catch.</strong> Reta seems to cost more muscle than the others. In the data, 37 to 40% of the weight lost was lean mass, versus about 25% on Mounjaro. It's unclear how much is the drug and how much is low-protein, sedentary trial populations. But I was already lean and holding muscle the natural way, daily training and enough protein. So that risk was the whole game for me.</p>
+
+        <p>It's the reason people rarely run reta alone. They pair it with something that does the opposite. Usually tesamorelin, a peptide that nudges your body into making more of its own growth hormone. More growth hormone means you hold onto muscle while the fat comes off. Reta burns, tesamorelin protects.</p>
+
+        <p>I didn't stack anything. I wanted to see what reta does on its own first.</p>
+
+        <h2 class="section-heading">Getting it is the easy part</h2>
+
+        <p>This is the question I get more than any other. And it's the scariest part of the whole thing.</p>
+
+        <p>Reta isn't approved. You can't walk into a pharmacy and ask for it. So most people buy "research-grade" peptides online, and almost all of it traces back to one place: the Chinese grey market. Unregulated labs, a vial, a label, and not much else.</p>
+
+        <figure class="fig">
+            <div class="img-pair">
+                <img
+                    src="/health-journey/vial-reta-cover.jpeg"
+                    alt="Hand holding a small dark glass vial labeled GLP-3 16mg with a handwritten marking"
+                    loading="lazy"
+                >
+                <img
+                    src="/health-journey/vial-reta-botom.jpeg"
+                    alt="The same vial turned around: a printed label with a barcode, lot number RET16V1225C, manufacture date and expiry"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>Mine, both sides. A vial, a handwritten label, a lot number and an expiry. That's the whole paper trail.</figcaption>
+        </figure>
+
+        <p>I wasn't willing to run an unapproved drug blind. So I did it under a doctor I actually know and trust, Dr. <a href="https://jonathannkuomd.com/" target="_blank" rel="noopener">Jonathann Kuo</a> at Extension Health, with real medical oversight the whole way, someone I could message the second something felt off.</p>
+
+        <p>That's the real gap: not getting the stuff, but knowing it's real, clean, and safe to keep taking. For most people, there's still no good answer.</p>
+
+        <h2 class="section-heading">How I microdosed it</h2>
+
+        <p>In the trials people work up to 12mg. I started at 1mg a week, a fraction of that. The number wasn't mine to pick, it was Dr. Kuo's call: he'd run reta with his own patients, he had my baseline markers, and he knew what I was after, the metabolic edge, not 50 pounds (23kg) to lose.</p>
+
+        <figure class="fig">
+            <img
+                class="portrait-shot"
+                src="/health-journey/max-reta-june.jpg"
+                alt="Hand holding an insulin syringe drawn up to a small dose in a kitchen"
+                loading="lazy"
+            >
+            <figcaption>Drawing up the microdose at home.</figcaption>
+        </figure>
+
+        <p>I took it in the evening, once a week, so it ramped up overnight and was working by the next day.</p>
+
+        <p>And before either shot, I wrote my stop-lines off my own baselines. Not a protocol, mine:</p>
+
+        <ul>
+            <li>Resting HR up 8 from my ~44, stop.</li>
+            <li>HRV down 25%, stop.</li>
+            <li>More than 2kg lost in two weeks, stop.</li>
+            <li>Strength down two sessions, stop.</li>
+        </ul>
+
+        <div style="margin: var(--sp-12) 0;">
+            <NewsletterEmbed />
+        </div>
+
+        <h2 class="section-heading">What happened</h2>
+
+        <p>The food noise went silent. And I mean silent. You just forget to be hungry, which is a strange thing to feel if you've spent your whole life thinking about the next meal. Energy stayed level too, no crash, sharp all day.</p>
+
+        <p>On the scale, it came off fast: around 74 down to 71 in the two weeks I was on it, then drifting to 69.7 over the six weeks my scale covers. Almost 4kg in all.</p>
+
+        <figure class="fig">
+            <img
+                class="phone-shot"
+                src="/health-journey/withings-screenshot.png"
+                alt="Withings weight trend from 27 April to 8 June 2026, from about 74kg down toward 69kg, a 4.2kg drop"
+                loading="lazy"
+            >
+            <figcaption>My Withings scale across the run and the weeks after. Trend: down 4.2kg.</figcaption>
+        </figure>
+
+        <p>That was the win. It was also the alarm. Three kilos in two weeks blew past my "more than 2kg and I stop" line. Even microdosed, 1mg was too much for my frame. For what I was after, half that, 0.5mg, is where I'd start next time. The right dose for a lean guy holding muscle is nothing like the dose for someone with real weight to lose. There is no one protocol.</p>
+
+        <p>Then my Whoop told the fuller story.</p>
+
+        <p>Week one on reta, the clean read: HRV held between 105 and 116ms, resting heart rate flat at 43 to 45. My log literally said "no autonomic disruption." Nothing flagged. It looked calm.</p>
+
+        <p>Week two, everything cratered. HRV fell from 116 to 64. Resting heart rate jumped from 44 to 58. That got my attention fast.</p>
+
+        <figure class="fig">
+            <div class="schema-wrap">
+                <img
+                    src="/health-journey/reta-autonomic.png"
+                    alt="Whoop reads over the two weeks: week one HRV 105 to 116ms and resting heart rate 43 to 45, week two HRV down to 64 and resting heart rate up to 58"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>Two weeks on my Whoop. Week two is confounded by travel, more on that below.</figcaption>
+        </figure>
+
+        <h2 class="section-heading">Why I stopped</h2>
+
+        <p>I stopped after two shots. My own stop-lines made the call.</p>
+
+        <p><strong>Two of them tripped at once.</strong> HRV crashed from 116 to 64, way past my 25% line. And I'd lost almost 4kg, past my 2kg line.</p>
+
+        <p><strong>And I couldn't even tell what caused it.</strong> That same week I was traveling and barely sleeping, so was the crash the reta or the trip? My data couldn't separate them. That's the wall: it caught the problem, it just couldn't explain it.</p>
+
+        <p>I ran it past Dr. Kuo, and we agreed. Two shots, then stop.</p>
+
+        <h2 class="section-heading">What's next</h2>
+
+        <p>Next I'm testing the ones I'm honestly more curious about than weight loss. Semax and Selank, the focus peptides, to see if I can get a sharp, calm head without the crash you get off stimulants. And CJC, for recovery and holding muscle, the exact thing reta put at risk.</p>
+
+        <p>Same method every time. Genetics first. Guardrails off my own baselines. A doctor in the loop. And I'll show you all of it here, the numbers that worked and the ones that didn't, same as I just did with reta.</p>
+
+        <p>That's the point of doing this in the open. Not to hand you a protocol, there isn't one. Just to show what it actually looks like to treat your own body like an experiment worth running right.</p>
+
+        <p>More soon,<br>Max</p>
+
+        <p class="disclaimer">Personal experimentation, not medical advice. Retatrutide is not FDA-approved. This was my baseline and my clinician, not a template. Talk to a doctor before touching any of this.</p>
+
+        <h2 class="section-heading">References</h2>
+
+        <ol class="ref-list">
+            <li id="ref-1"><a href="https://www.history.com/this-day-in-history/january-11/insulin-isolated-in-toronto" target="_blank" rel="noopener">Leonard Thompson receives the first insulin injection</a>. Toronto, January 1922.</li>
+            <li id="ref-2"><a href="https://www.drugs.com/history/ozempic.html" target="_blank" rel="noopener">Ozempic (semaglutide) FDA approval history</a>. First approved December 2017.</li>
+            <li id="ref-3">Bajaj HS, et al. <a href="https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(26)00967-0/abstract" target="_blank" rel="noopener">Efficacy and safety of retatrutide, a GIP, GLP-1, and glucagon receptor agonist, in people with type 2 diabetes and inadequate glycaemic control with diet and exercise (TRANSCEND-T2D-1), a phase 3 trial</a>. The Lancet, 2026.</li>
+            <li id="ref-4">Jastreboff AM, et al. <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2301972" target="_blank" rel="noopener">Triple-Hormone-Receptor Agonist Retatrutide for Obesity, a Phase 2 Trial</a>. New England Journal of Medicine, 2023.</li>
+            <li id="ref-5">Sanyal AJ, et al. <a href="https://www.nature.com/articles/s41591-024-03018-2" target="_blank" rel="noopener">Triple hormone receptor agonist retatrutide for metabolic dysfunction-associated steatotic liver disease, a randomized phase 2a trial</a>. Nature Medicine, 2024.</li>
+        </ol>
+
+    </div>
+
+    <div class="article-footer">
+        <span class="author-line">By <a href="/">Max Guerois</a></span>
+    </div>
+
+    <!-- Newsletter CTA -->
+    <div style="margin-top: 48px;">
+        <NewsletterEmbed />
+    </div>
+</div>
+</ArticleLayout>
