@@ -1,0 +1,242 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+
+const locale = 'fr';
+
+// Scoped styles for elements not covered by the global article.css
+// (body lists, inline links, figures, references, disclaimer).
+const articleStyles = `
+    .article-body a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        transition: color var(--duration-short) ease;
+    }
+    .article-body a:hover { color: var(--text); }
+    .article-body ul, .article-body ol {
+        margin: 0 0 20px;
+        padding-left: 22px;
+        color: var(--text-secondary);
+    }
+    .article-body li {
+        font-size: 16px;
+        line-height: 1.75;
+        margin-bottom: 8px;
+    }
+    .article-body ul { list-style: disc; }
+    .article-body ol { list-style: decimal; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body sup a { text-decoration: none; font-size: 0.7em; }
+    figure.fig { margin: var(--sp-8) 0; }
+    figure.fig > img {
+        width: 100%;
+        display: block;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+    }
+    .schema-wrap {
+        background: #faf9f7;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 20px;
+    }
+    .schema-wrap img { width: 100%; display: block; }
+    figure.fig figcaption {
+        font-size: 13px;
+        color: var(--text-tertiary);
+        margin-top: 10px;
+        text-align: center;
+        line-height: 1.5;
+    }
+    .disclaimer {
+        font-size: 14px;
+        color: var(--text-tertiary);
+        font-style: italic;
+        margin-top: var(--sp-8);
+        line-height: 1.6;
+    }
+    .ref-list { font-size: 14px; line-height: 1.6; }
+    .ref-list li { margin-bottom: 10px; color: var(--text-secondary); }
+`;
+---
+<ArticleLayout
+    title="J'ai pris le médicament amincissant le plus puissant du monde pendant deux semaines. Puis j'ai arrêté."
+    description="Le retatrutide, passé au filtre de mes propres données et d'un médecin. La version honnête : ce qui a marché, ce qui n'a pas marché, et là où mes données ont atteint leur limite."
+    ogUrl="https://maxguerois.com/fr/newsletter/retatrutide"
+    ogImage="https://maxguerois.com/health-journey/banner-retatrutide.jpg"
+    locale={locale}
+    articleStyles={articleStyles}
+>
+
+<div class="container">
+    <a href="/fr/newsletter" class="back">← Retour à la newsletter</a>
+
+    <div class="article-meta">16 juillet 2026</div>
+    <h1 class="article-title">J'ai pris le médicament amincissant le plus puissant du monde pendant deux semaines. Puis j'ai arrêté.</h1>
+    <p class="article-subtitle">Le retatrutide, passé au filtre de mes propres données et d'un médecin. Ce que mon Health OS a capté, et là où il a buté.</p>
+
+    <img
+        class="article-img"
+        src="/health-journey/banner-retatrutide.jpg"
+        alt="J'ai pris le médicament amincissant le plus puissant du monde pendant deux semaines. Puis j'ai arrêté."
+        fetchpriority="high"
+    >
+
+    <div class="article-body">
+
+        <p>Les peptides ont le vent en poupe. Environ 10 millions de recherches par mois aux États-Unis. Il y a deux semaines, j'ai arrêté de chercher et j'en ai testé un sur moi : le retatrutide, le plus puissant dans les données d'essais à ce jour.</p>
+
+        <p>Deux injections, deux semaines, puis j'ai arrêté. Pas parce que ça ne marchait pas. Ça marchait. J'ai arrêté parce que le setup santé le plus obsessionnel que je pouvais construire n'arrivait toujours pas à répondre à la seule question qui comptait. Voilà ce qui s'est vraiment passé.</p>
+
+        <h2 class="section-heading">Tout est parti de mon Health OS</h2>
+
+        <p>Il y a deux semaines, je t'ai <a href="/fr/newsletter/health-os">montré mon Health OS</a> : toutes mes données dans un seul dossier qu'une IA lit en travers. Mon Whoop, mes analyses, mon DEXA, mon génome.</p>
+
+        <p>La vraie raison pour laquelle je l'ai construit : je voulais mener des expériences sur moi-même comme le fait Bryan Johnson, mais sans son équipe médicale et ses millions. Juste moi, mes propres données, lues correctement par une IA.</p>
+
+        <p>Et faire tourner le reta par-dessus m'a appris deux choses : jusqu'où tes propres données peuvent t'emmener, et le point exact où ça ne suffit plus.</p>
+
+        <h2 class="section-heading">Pourquoi je l'ai fait</h2>
+
+        <p>Une semaine avant, un DEXA me situait à 11,2 % de masse grasse. Je visais 9 %, le dernier bout tenace qui ne part pas avec le régime et l'entraînement. Et je voulais faire taire le côté mental, le bruit de la faim, cette petite musique de fond qui pense au prochain repas. Sur le papier, le reta fait les deux.</p>
+
+        <p>Mais je ne mets rien de nouveau dans mon corps sans le passer d'abord au filtre de ma génétique, mes antécédents familiaux, mes propres marqueurs de risque. C'est ça, la vraie base, et c'est la première chose que mon Health OS vérifie. Sur un truc aussi fort, c'est cette vérif qui m'a même permis de l'envisager.</p>
+
+        <h2 class="section-heading">Ce que c'est, vite fait</h2>
+
+        <p>Un peu de science, et je fais court, promis.</p>
+
+        <p>Ton corps tourne déjà aux peptides. L'insuline en est un. L'Ozempic aussi. Ce sont de courtes chaînes d'acides aminés que ton corps utilise comme des signaux.</p>
+
+        <p>L'Ozempic imite le GLP-1, une hormone intestinale qui dit à ton cerveau que tu es rassasié. Le GLP-1 naturel se dégrade en quelques minutes ; le médicament le fait durer une semaine. Le Mounjaro a ajouté un deuxième signal. Le reta en ajoute un troisième, le glucagon. C'est l'explication qui tient le mieux pour dire pourquoi il fait perdre plus que les autres : il semble pousser ton foie à brûler davantage au repos, donc il touche à ce que tu dépenses, pas juste à ce que tu manges.</p>
+
+        <figure class="fig">
+            <div class="schema-wrap">
+                <img
+                    src="/health-journey/receptor-ladder.png"
+                    alt="L'Ozempic touche un signal, le Mounjaro deux, le retatrutide trois, avec le poids perdu dans les essais sous chacun"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>Plus de récepteurs, plus de poids perdu dans les essais.</figcaption>
+        </figure>
+
+        <p>Les chiffres des essais, parce qu'ils comptent : dans l'essai de phase 2 sur l'obésité, le reta a fait perdre environ 24 % du poids corporel à 48 semaines<sup><a href="#ref-1">[1]</a></sup>, et la courbe n'avait toujours pas fini de descendre à la fin de l'essai. Chez les diabétiques, c'est plus bas, autour de 15 %. La population et la durée font beaucoup bouger le chiffre, quiconque cite un seul nombre n'a pas lu au-delà du titre.</p>
+
+        <p>Et ce qui a retenu mon attention, ce n'était pas le poids. Dans ces mêmes essais, il a réduit la graisse du foie d'environ 86 %<sup><a href="#ref-2">[2]</a></sup> et ramené la plupart des prédiabétiques à une glycémie normale. Le foie gras touche 40 % de la planète. Et ça, c'est juste ce qui est prouvé. Il est à l'étude pour les maladies cardiaques et rénales, et, plus étrange, pour émousser l'addiction, moins d'envie de boire, de scroller ou de parier. C'est un médicament métabolique qui, accessoirement, te rend sec. Le poids finira peut-être par être ce qu'il fait de moins intéressant.</p>
+
+        <h2 class="section-heading">Ce que je savais en y allant</h2>
+
+        <p>Deux choses, et elles tiraient en sens opposés.</p>
+
+        <p><strong>Le bon côté.</strong> Tout ce qui précède. La perte de gras, les gains métaboliques, le bruit de la faim qui disparaît.</p>
+
+        <p><strong>Le piège.</strong> Le reta semble coûter plus de muscle que les autres. Dans les données, 37 à 40 % du poids perdu était de la masse maigre, contre environ 25 % sous Mounjaro. On ne sait pas bien quelle part vient du médicament et quelle part vient de populations d'essai sédentaires et sous-protéinées. Mais j'étais déjà sec et je cherchais à garder mon muscle. Donc ce risque, c'était tout l'enjeu pour moi.</p>
+
+        <p>C'est pour ça qu'on fait rarement tourner le reta seul. On le combine avec quelque chose qui fait l'inverse. En général la tésamoréline, un peptide qui pousse ton corps à produire plus de sa propre hormone de croissance. Plus d'hormone de croissance, c'est garder le muscle pendant que le gras s'en va. Le reta brûle, la tésamoréline protège.</p>
+
+        <p>Je n'ai rien empilé. Je voulais d'abord voir ce que le reta fait tout seul.</p>
+
+        <h2 class="section-heading">Alors j'ai d'abord posé mes règles</h2>
+
+        <p>Je ne visais pas les doses de perte de poids. Dans les essais, les gens montent jusqu'à 12 mg. J'ai microdosé, démarré à 1 mg, une fraction de ça, parce que je suis sec et que je cherche l'avantage métabolique, pas 20 kilos à perdre.</p>
+
+        <p>Et avant chaque injection, j'ai écrit mes conditions d'arrêt à partir de mes propres bases. Pas un protocole, les miennes :</p>
+
+        <ul>
+            <li>Fréquence cardiaque au repos +8 par rapport à mon ~44, j'arrête.</li>
+            <li>HRV en baisse de 25 %, j'arrête.</li>
+            <li>Plus de 2 kg perdus en deux semaines, j'arrête.</li>
+            <li>Force en baisse sur deux séances, j'arrête.</li>
+        </ul>
+
+        <p>Ensuite je l'ai suivi, et voilà comment. Chaque matin, mes chiffres Whoop, récup, HRV, fréquence cardiaque au repos, plus mon poids sur la balance Withings, arrivent dans le même dossier que lit mon Health OS. L'IA compare chacun à mes propres bases et signale ce qui dérive. Je n'avais pas à penser à surveiller. Elle surveillait.</p>
+
+        <div style="margin: var(--sp-12) 0;">
+            <NewsletterEmbed />
+        </div>
+
+        <h2 class="section-heading">Où est-ce qu'on trouve ce truc, d'ailleurs</h2>
+
+        <p>C'est la question qu'on me pose le plus. Et c'est la partie la plus flippante de toute l'histoire.</p>
+
+        <p>Le reta n'est pas approuvé. Tu ne peux pas entrer en pharmacie et le demander. Alors la plupart des gens achètent des peptides « research-grade » en ligne, et presque tout remonte au même endroit : le marché gris chinois. Des labos non régulés, un flacon, une étiquette, et pas grand-chose d'autre.</p>
+
+        <ul>
+            <li>Est-ce vraiment du retatrutide ?</li>
+            <li>Est-ce dosé à peu près comme l'étiquette le dit ?</li>
+            <li>Est-ce seulement propre ?</li>
+        </ul>
+
+        <p>Et le plus souvent, aucun moyen de vérifier. Tu fais confiance à la parole d'un vendeur, pour tout.</p>
+
+        <p>Je n'étais pas prêt à faire tourner un médicament non approuvé sur cette base. Alors je l'ai fait sous la supervision d'un médecin que je connais et en qui j'ai confiance, le Dr Jonathan Kuo chez Extension Health, avec un vrai suivi médical du début à la fin, quelqu'un à qui je pouvais écrire à la seconde où un truc clochait.</p>
+
+        <p>Et c'est ça, honnêtement, tout le fossé. Mettre la main sur la molécule, c'est la partie facile. Savoir qu'elle est vraie, qu'elle est propre, qu'il est sûr de continuer, ça n'a toujours pas de bonne réponse pour la plupart des gens. C'est ce à quoi je reviens sans arrêt.</p>
+
+        <h2 class="section-heading">Ce qui s'est passé</h2>
+
+        <p>Le bruit de la faim s'est éteint. Et je veux dire vraiment éteint. Tu oublies simplement d'avoir faim, ce qui fait une drôle de sensation quand tu as passé ta vie à penser au prochain repas. L'énergie est restée stable aussi, pas de coup de mou, net toute la journée.</p>
+
+        <p>Sur la balance, presque 4 kg partis en deux semaines, d'environ 74 à 69,7.</p>
+
+        <p>C'était la victoire. C'était aussi l'alarme. Presque 4 kg, ça explosait ma ligne « plus de 2 kg et j'arrête ». Même microdosé, 1 mg était trop pour mon gabarit. Pour ce que je visais, la moitié, 0,5 mg, c'est là que je repartirais la prochaine fois. La bonne dose pour un mec sec qui garde son muscle n'a rien à voir avec la dose de quelqu'un qui a vraiment du poids à perdre. Il n'y a pas de protocole unique.</p>
+
+        <p>Ensuite, mon Whoop a raconté le reste de l'histoire.</p>
+
+        <p>Semaine un sous reta, la lecture propre : HRV entre 105 et 116 ms, fréquence cardiaque au repos stable à 43-45. Mon journal disait littéralement « aucune perturbation autonome ». Rien de signalé. Ça avait l'air calme.</p>
+
+        <p>Semaine deux, tout s'est effondré. La HRV est tombée de 116 à 64. La fréquence cardiaque au repos a bondi de 44 à 58. Là, ça a tout de suite attiré mon attention.</p>
+
+        <figure class="fig">
+            <div class="schema-wrap">
+                <img
+                    src="/health-journey/reta-autonomic.png"
+                    alt="Lectures Whoop sur les deux semaines : semaine un HRV 105 à 116 ms et fréquence cardiaque au repos 43 à 45, semaine deux HRV tombée à 64 et fréquence cardiaque au repos montée à 58"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>Deux semaines sur mon Whoop. La semaine deux est brouillée par les voyages, j'y reviens juste en dessous.</figcaption>
+        </figure>
+
+        <h2 class="section-heading">Pourquoi j'ai arrêté</h2>
+
+        <p>Voilà le problème. Je serais incapable de te dire ce qui a causé cet effondrement. Parce que la même semaine, je voyageais, hors de ma routine, je dormais à peine. Donc la HRV qui passe de 116 à 64, c'était le reta ou le voyage ? Deux variables, un seul chiffre. Mes données ne pouvaient pas les séparer. Même le poids était trouble : l'essentiel de la baisse est tombé pendant cette semaine loin de chez moi, et sans deuxième DEXA, quelle part était du gras et quelle part juste de l'eau ? Impossible à dire. (La libido a baissé aussi. Même question.)</p>
+
+        <p>C'est ça, le problème d'attribution, et c'est exactement là qu'un dossier de données s'arrête. Il a capté la dérive. Il ne pouvait pas me dire pourquoi. Et les deux questions qui comptaient le plus, ma source était-elle propre et était-il sûr de continuer, il ne pouvait répondre à aucune. Ces réponses-là sont venues du médecin.</p>
+
+        <p>Alors j'ai arrêté après deux injections.</p>
+
+        <p>Ce que j'en retiens. Mon Health OS a fait son boulot. Il a capté la dérive, m'a tenu à mes règles, m'a dit quand décrocher. Mais les données ont une limite, et je l'ai atteinte. Il ne pouvait pas vérifier ma source. Il ne pouvait pas trancher sur mon corps quand le signal est devenu bruité. Ça, ça demande encore un médecin en qui tu as confiance. Tes données, un clinicien, une source propre. Voilà toute la formule. C'est la seule façon dont je ferais tourner quoi que ce soit de tout ça.</p>
+
+        <p>Ensuite, je teste ceux qui m'intriguent honnêtement plus que la perte de poids. Le Semax et le Selank, les peptides de focus, pour voir si je peux avoir la tête nette et calme sans le crash des stimulants. Et le CJC, pour la récup et le maintien du muscle, exactement ce que le reta a mis en danger.</p>
+
+        <p>Même méthode à chaque fois. La génétique d'abord. Les garde-fous à partir de mes propres bases. Un médecin dans la boucle. Et je te montrerai tout ici, les chiffres qui ont marché et ceux qui n'ont pas marché, comme je viens de le faire avec le reta.</p>
+
+        <p>C'est ça, l'intérêt de le faire au grand jour. Pas pour te tendre un protocole, il n'y en a pas. Juste pour montrer à quoi ça ressemble vraiment de traiter son propre corps comme une expérience qui mérite d'être menée correctement.</p>
+
+        <p>À bientôt,<br>Max</p>
+
+        <p class="disclaimer">Expérimentation personnelle, pas un avis médical. Le retatrutide n'est pas approuvé par la FDA. C'était ma base et mon médecin, pas un modèle à suivre. Parle à un médecin avant de toucher à tout ça.</p>
+
+        <h2 class="section-heading">Références</h2>
+
+        <ol class="ref-list">
+            <li id="ref-1">Jastreboff AM, et al. <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2301972" target="_blank" rel="noopener">Triple-Hormone-Receptor Agonist Retatrutide for Obesity, a Phase 2 Trial</a>. New England Journal of Medicine, 2023.</li>
+            <li id="ref-2">Sanyal AJ, et al. <a href="https://www.nature.com/articles/s41591-024-03018-2" target="_blank" rel="noopener">Triple hormone receptor agonist retatrutide for metabolic dysfunction-associated steatotic liver disease, a randomized phase 2a trial</a>. Nature Medicine, 2024.</li>
+        </ol>
+
+    </div>
+
+    <div class="article-footer">
+        <span class="author-line">Par <a href="/fr">Max Guerois</a></span>
+    </div>
+
+    <!-- Newsletter CTA -->
+    <div style="margin-top: 48px;">
+        <NewsletterEmbed />
+    </div>
+</div>
+</ArticleLayout>
