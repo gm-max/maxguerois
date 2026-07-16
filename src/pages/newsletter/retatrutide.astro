@@ -71,6 +71,10 @@ const articleStyles = `
     @media (max-width: 520px) {
         figure.fig .img-pair { grid-template-columns: 1fr; }
     }
+    figure.fig img.phone-shot {
+        max-width: 320px;
+        margin-inline: auto;
+    }
 `;
 ---
 <ArticleLayout
@@ -97,7 +101,7 @@ const articleStyles = `
 
     <div class="article-body">
 
-        <p>Peptides are having a moment. About 10 million searches a month in the US now. Two weeks ago I stopped searching and ran one on myself: retatrutide, the strongest one in the trial data so far.</p>
+        <p>Peptides are having a moment. About 10 million searches a month in the US now. This spring I stopped searching and ran one on myself: retatrutide, the strongest one in the trial data so far.</p>
 
         <figure class="fig">
             <img
@@ -112,7 +116,7 @@ const articleStyles = `
 
         <h2 class="section-heading">It all started with my Health OS</h2>
 
-        <p>Two weeks ago I <a href="/newsletter/health-os">showed you my Health OS</a>: all my data in one folder an AI reads across. My Whoop, my labs, my DEXA, my genome.</p>
+        <p>Last month I <a href="/newsletter/health-os">showed you my Health OS</a>: all my data in one folder an AI reads across. My Whoop, my labs, my DEXA, my genome.</p>
 
         <p>Here's the honest reason I built it. I wanted to run experiments on myself the way Bryan Johnson does, but without his medical team and his millions. Just me, my own data, read properly by an AI.</p>
 
@@ -229,9 +233,19 @@ const articleStyles = `
 
         <p>The food noise went silent. And I mean silent. You just forget to be hungry, which is a strange thing to feel if you've spent your whole life thinking about the next meal. Energy stayed level too, no crash, sharp all day.</p>
 
-        <p>On the scale, almost 4kg gone over about six weeks, from around 74 down to 69.7.</p>
+        <p>On the scale, it came off fast: around 74 down to 71 in the two weeks I was on it, then drifting to 69.7 over the six weeks my scale covers. Almost 4kg in all.</p>
 
-        <p>That was the win. It was also the alarm. Almost 4kg blew past my "more than 2kg and I stop" line. Even microdosed, 1mg was too much for my frame. For what I was after, half that, 0.5mg, is where I'd start next time. The right dose for a lean guy holding muscle is nothing like the dose for someone with real weight to lose. There is no one protocol.</p>
+        <figure class="fig">
+            <img
+                class="phone-shot"
+                src="/health-journey/withings-screenshot.png"
+                alt="Withings weight trend from 27 April to 8 June 2026, from about 74kg down toward 69kg, a 4.2kg drop"
+                loading="lazy"
+            >
+            <figcaption>My Withings scale across the run and the weeks after. Trend: down 4.2kg.</figcaption>
+        </figure>
+
+        <p>That was the win. It was also the alarm. Three kilos in two weeks blew past my "more than 2kg and I stop" line. Even microdosed, 1mg was too much for my frame. For what I was after, half that, 0.5mg, is where I'd start next time. The right dose for a lean guy holding muscle is nothing like the dose for someone with real weight to lose. There is no one protocol.</p>
 
         <p>Then my Whoop told the fuller story.</p>
 

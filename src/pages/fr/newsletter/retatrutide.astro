@@ -73,6 +73,10 @@ const articleStyles = `
     @media (max-width: 520px) {
         figure.fig .img-pair { grid-template-columns: 1fr; }
     }
+    figure.fig img.phone-shot {
+        max-width: 320px;
+        margin-inline: auto;
+    }
 `;
 ---
 <ArticleLayout
@@ -100,7 +104,7 @@ const articleStyles = `
 
     <div class="article-body">
 
-        <p>Les peptides ont le vent en poupe. Environ 10 millions de recherches par mois aux États-Unis. Il y a deux semaines, j'ai arrêté de chercher et j'en ai testé un sur moi : le retatrutide, le plus puissant dans les données d'essais à ce jour.</p>
+        <p>Les peptides ont le vent en poupe. Environ 10 millions de recherches par mois aux États-Unis. Ce printemps, j'ai arrêté de chercher et j'en ai testé un sur moi : le retatrutide, le plus puissant dans les données d'essais à ce jour.</p>
 
         <figure class="fig">
             <img
@@ -115,7 +119,7 @@ const articleStyles = `
 
         <h2 class="section-heading">Tout est parti de mon Health OS</h2>
 
-        <p>Il y a deux semaines, je t'ai <a href="/fr/newsletter/health-os">montré mon Health OS</a> : toutes mes données dans un seul dossier qu'une IA lit en travers. Mon Whoop, mes analyses, mon DEXA, mon génome.</p>
+        <p>Le mois dernier, je t'ai <a href="/fr/newsletter/health-os">montré mon Health OS</a> : toutes mes données dans un seul dossier qu'une IA lit en travers. Mon Whoop, mes analyses, mon DEXA, mon génome.</p>
 
         <p>La vraie raison pour laquelle je l'ai construit : je voulais mener des expériences sur moi-même comme le fait Bryan Johnson, mais sans son équipe médicale et ses millions. Juste moi, mes propres données, lues correctement par une IA.</p>
 
@@ -232,9 +236,19 @@ const articleStyles = `
 
         <p>Le bruit de la faim s'est éteint. Et je veux dire vraiment éteint. Tu oublies simplement d'avoir faim, ce qui fait une drôle de sensation quand tu as passé ta vie à penser au prochain repas. L'énergie est restée stable aussi, aucun creux, net toute la journée.</p>
 
-        <p>Sur la balance, presque 4 kg partis sur environ six semaines, d'environ 74 à 69,7.</p>
+        <p>Sur la balance, c'est parti vite : d'environ 74 à 71 en deux semaines, puis une descente lente jusqu'à 69,7 sur les six semaines que couvre ma balance. Presque 4 kg en tout.</p>
 
-        <p>C'était la victoire. C'était aussi l'alarme. Presque 4 kg, ça explosait ma ligne « plus de 2 kg et j'arrête ». Même microdosé, 1 mg était trop pour mon gabarit. Pour ce que je visais, la moitié, 0,5 mg, c'est là que je repartirais la prochaine fois. La bonne dose pour quelqu'un de sec qui garde son muscle n'a rien à voir avec la dose de quelqu'un qui a vraiment du poids à perdre. Il n'y a pas de protocole unique.</p>
+        <figure class="fig">
+            <img
+                class="phone-shot"
+                src="/health-journey/withings-screenshot.png"
+                alt="Tendance de poids Withings du 27 avril au 8 juin 2026, d'environ 74 kg à près de 69 kg, une baisse de 4,2 kg"
+                loading="lazy"
+            >
+            <figcaption>Ma balance Withings sur l'essai et les semaines d'après. Tendance : -4,2 kg.</figcaption>
+        </figure>
+
+        <p>C'était la victoire. C'était aussi l'alarme. Trois kilos en deux semaines, ça explosait ma ligne « plus de 2 kg et j'arrête ». Même microdosé, 1 mg était trop pour mon gabarit. Pour ce que je visais, la moitié, 0,5 mg, c'est là que je repartirais la prochaine fois. La bonne dose pour quelqu'un de sec qui garde son muscle n'a rien à voir avec la dose de quelqu'un qui a vraiment du poids à perdre. Il n'y a pas de protocole unique.</p>
 
         <p>Ensuite, mon Whoop a raconté le reste de l'histoire.</p>
 
