@@ -77,13 +77,17 @@ const articleStyles = `
         max-width: 320px;
         margin-inline: auto;
     }
+    figure.fig img.portrait-shot {
+        max-width: 360px;
+        margin-inline: auto;
+    }
 `;
 ---
 <ArticleLayout
     title="J'ai microdosé le médicament amincissant le plus puissant du monde. La version honnête."
     description="Le retatrutide, passé au filtre de mes propres données et d'un médecin. La version honnête : ce qui a marché, ce qui n'a pas marché, et là où mes données ont atteint leur limite."
     ogUrl="https://maxguerois.com/fr/newsletter/retatrutide"
-    ogImage="https://maxguerois.com/health-journey/banner-retatrutide.jpg"
+    ogImage="https://maxguerois.com/health-journey/banner-weight-loss-2x.jpg"
     locale={locale}
     articleStyles={articleStyles}
 >
@@ -97,7 +101,7 @@ const articleStyles = `
 
     <img
         class="article-img"
-        src="/health-journey/banner-retatrutide.jpg"
+        src="/health-journey/banner-weight-loss-2x.jpg"
         alt="J'ai microdosé le médicament amincissant le plus puissant du monde. La version honnête."
         fetchpriority="high"
     >
@@ -176,6 +180,7 @@ const articleStyles = `
 
         <figure class="fig">
             <img
+                class="portrait-shot"
                 src="/health-journey/max-reta-june.jpg"
                 alt="Main tenant une seringue à insuline remplie d'une petite dose dans une cuisine"
                 loading="lazy"
