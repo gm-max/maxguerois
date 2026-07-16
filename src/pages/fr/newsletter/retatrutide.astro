@@ -59,6 +59,20 @@ const articleStyles = `
     }
     .ref-list { font-size: 14px; line-height: 1.6; }
     .ref-list li { margin-bottom: 10px; color: var(--text-secondary); }
+    figure.fig .img-pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    figure.fig .img-pair img {
+        width: 100%;
+        display: block;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+    }
+    @media (max-width: 520px) {
+        figure.fig .img-pair { grid-template-columns: 1fr; }
+    }
 `;
 ---
 <ArticleLayout
@@ -95,6 +109,15 @@ const articleStyles = `
                 loading="lazy"
             >
             <figcaption>Recherches de « peptides » aux États-Unis, 12 derniers mois. Google Trends.</figcaption>
+        </figure>
+
+        <figure class="fig">
+            <img
+                src="/health-journey/peptide-growth.jpeg"
+                alt="Graphique : l'intérêt de recherche pour les peptides aux États-Unis grimpe d'environ 12 en 2019 à 100 en 2026, avec un repère au moment où les GLP-1 sont devenus grand public en 2023"
+                loading="lazy"
+            >
+            <figcaption>La vue longue : de niche à partout en sept ans.</figcaption>
         </figure>
 
         <p>Deux injections, deux semaines, puis j'ai arrêté. Pas parce que ça ne marchait pas. Ça marchait. J'ai arrêté parce que le setup santé le plus obsessionnel que je pouvais construire n'arrivait toujours pas à répondre à la seule question qui comptait. Voilà ce qui s'est vraiment passé.</p>
@@ -152,6 +175,15 @@ const articleStyles = `
 
         <p>Je ne visais pas les doses de perte de poids. Dans les essais, les gens montent jusqu'à 12 mg. J'ai microdosé, démarré à 1 mg, une fraction de ça, parce que je suis sec et que je cherche l'avantage métabolique, pas 20 kilos à perdre.</p>
 
+        <figure class="fig">
+            <img
+                src="/health-journey/max-reta-june.jpg"
+                alt="Main tenant une seringue à insuline remplie d'une petite dose dans une cuisine"
+                loading="lazy"
+            >
+            <figcaption>Préparation de la microdose à la maison.</figcaption>
+        </figure>
+
         <p>Et avant chaque injection, j'ai écrit mes conditions d'arrêt à partir de mes propres bases. Pas un protocole, les miennes :</p>
 
         <ul>
@@ -172,6 +204,22 @@ const articleStyles = `
         <p>C'est la question qu'on me pose le plus. Et c'est la partie la plus flippante de toute l'histoire.</p>
 
         <p>Le reta n'est pas approuvé. Tu ne peux pas entrer en pharmacie et le demander. Alors la plupart des gens achètent des peptides « research-grade » en ligne, et presque tout remonte au même endroit : le marché gris chinois. Des labos non régulés, un flacon, une étiquette, et pas grand-chose d'autre.</p>
+
+        <figure class="fig">
+            <div class="img-pair">
+                <img
+                    src="/health-journey/vial-reta-cover.jpeg"
+                    alt="Main tenant un petit flacon en verre foncé étiqueté GLP-3 16mg avec une inscription manuscrite"
+                    loading="lazy"
+                >
+                <img
+                    src="/health-journey/vial-reta-botom.jpeg"
+                    alt="Le même flacon retourné : une étiquette imprimée avec un code-barres, le numéro de lot RET16V1225C, la date de fabrication et la péremption"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>Le mien, des deux côtés. Un flacon, une étiquette écrite à la main, un numéro de lot et une péremption. Voilà tout ce que tu as pour vérifier.</figcaption>
+        </figure>
 
         <ul>
             <li>Est-ce vraiment du retatrutide ?</li>
@@ -219,6 +267,8 @@ const articleStyles = `
         <p>Alors j'ai arrêté après deux injections.</p>
 
         <p>Ce que j'en retiens. Mon Health OS a fait son boulot. Il a capté la dérive, m'a tenu à mes règles, m'a dit quand décrocher. Mais les données ont une limite, et je l'ai atteinte. Il ne pouvait pas vérifier ma source. Il ne pouvait pas trancher sur mon corps quand le signal est devenu bruité. Ça, ça demande encore un médecin en qui tu as confiance. Tes données, un clinicien, une source propre. Voilà toute la formule. C'est la seule façon dont je ferais tourner quoi que ce soit de tout ça.</p>
+
+        <h2 class="section-heading">La suite</h2>
 
         <p>Ensuite, je teste ceux qui m'intriguent honnêtement plus que la perte de poids. Le Semax et le Selank, les peptides de focus, pour voir si je peux avoir la tête nette et calme sans le crash des stimulants. Et le CJC, pour la récup et le maintien du muscle, exactement ce que le reta a mis en danger.</p>
 

@@ -57,6 +57,20 @@ const articleStyles = `
     }
     .ref-list { font-size: 14px; line-height: 1.6; }
     .ref-list li { margin-bottom: 10px; color: var(--text-secondary); }
+    figure.fig .img-pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    figure.fig .img-pair img {
+        width: 100%;
+        display: block;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+    }
+    @media (max-width: 520px) {
+        figure.fig .img-pair { grid-template-columns: 1fr; }
+    }
 `;
 ---
 <ArticleLayout
@@ -92,6 +106,15 @@ const articleStyles = `
                 loading="lazy"
             >
             <figcaption>Searches for "peptides" in the US, past 12 months. Google Trends.</figcaption>
+        </figure>
+
+        <figure class="fig">
+            <img
+                src="/health-journey/peptide-growth.jpeg"
+                alt="Line chart: US search interest for peptides climbing from about 12 in 2019 to 100 in 2026, with a marker where GLP-1s went mainstream in 2023"
+                loading="lazy"
+            >
+            <figcaption>The longer view: from niche to everywhere in seven years.</figcaption>
         </figure>
 
         <p>Two shots, two weeks, then I stopped. Not because it didn't work. It worked. I stopped because the most obsessive health setup I could build still couldn't answer the one question that mattered. Here's what actually happened.</p>
@@ -149,6 +172,15 @@ const articleStyles = `
 
         <p>I wasn't chasing weight-loss doses. In the trials people work up to 12mg. I microdosed, started at 1mg, a fraction of that, because I'm lean and after the metabolic edge, not 50 pounds of loss.</p>
 
+        <figure class="fig">
+            <img
+                src="/health-journey/max-reta-june.jpg"
+                alt="Hand holding an insulin syringe drawn up to a small dose in a kitchen"
+                loading="lazy"
+            >
+            <figcaption>Drawing up the microdose at home.</figcaption>
+        </figure>
+
         <p>And before either shot, I wrote my abort conditions off my own baselines. Not a protocol, mine:</p>
 
         <ul>
@@ -169,6 +201,22 @@ const articleStyles = `
         <p>This is the question I get more than any other. And it's the scariest part of the whole thing.</p>
 
         <p>Reta isn't approved. You can't walk into a pharmacy and ask for it. So most people buy "research-grade" peptides online, and almost all of it traces back to one place: the Chinese grey market. Unregulated labs, a vial, a label, and not much else.</p>
+
+        <figure class="fig">
+            <div class="img-pair">
+                <img
+                    src="/health-journey/vial-reta-cover.jpeg"
+                    alt="Hand holding a small dark glass vial labeled GLP-3 16mg with a handwritten marking"
+                    loading="lazy"
+                >
+                <img
+                    src="/health-journey/vial-reta-botom.jpeg"
+                    alt="The same vial turned around: a printed label with a barcode, lot number RET16V1225C, manufacture date and expiry"
+                    loading="lazy"
+                >
+            </div>
+            <figcaption>Mine, both sides. A vial, a handwritten label, a lot number and an expiry. That's the whole paper trail.</figcaption>
+        </figure>
 
         <ul>
             <li>Is it actually retatrutide?</li>
@@ -216,6 +264,8 @@ const articleStyles = `
         <p>So I stopped after two shots.</p>
 
         <p>Here's what I took from it. My Health OS did its job. It caught the drift, held me to my rules, told me when to walk away. But data has an edge, and I hit it. It couldn't vet my source. It couldn't make the call on my body when the signal went noisy. That still takes a doctor you trust. Your data, a clinician, a clean source. That's the whole formula. It's the only way I'd run any of this.</p>
+
+        <h2 class="section-heading">What's next</h2>
 
         <p>Next I'm testing the ones I'm honestly more curious about than weight loss. Semax and Selank, the focus peptides, to see if I can get a sharp, calm head without the crash you get off stimulants. And CJC, for recovery and holding muscle, the exact thing reta put at risk.</p>
 
