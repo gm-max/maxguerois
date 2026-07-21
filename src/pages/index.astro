@@ -75,75 +75,43 @@ const structuredData = {
 
 <div class="container">
     <div class="header fade-in">
-        <img src="/profile.webp" alt="Max Guerois" class="photo" fetchpriority="high">
+        <div class="photo-slider js-slider" style="margin-bottom: 28px;">
+            <div class="photo-viewport js-viewport">
+                <div class="photo-track js-track">
+                    <figure class="photo-slide js-slide"><img src="/health-journey/surf-costarica.jpeg" alt="Surfing in Costa Rica" loading="eager" decoding="async" fetchpriority="high"></figure>
+                    <figure class="photo-slide js-slide"><img src="/health-journey/breakfast.jpg" alt="Breakfast plate" loading="lazy" decoding="async"></figure>
+                    <figure class="photo-slide js-slide"><img src="/health-journey/workout.jpeg" alt="Training" loading="lazy" decoding="async"></figure>
+                    <figure class="photo-slide js-slide"><img src="/health-journey/zeromeetup-182.webp" alt="Ice bath" loading="lazy" decoding="async"></figure>
+                    <figure class="photo-slide js-slide"><img src="/health-journey/supplement-breakfast.jpeg" alt="Morning supplements and breakfast" loading="lazy" decoding="async"></figure>
+                </div>
+            </div>
+            <div class="photo-bar">
+                <div class="photo-segs js-segs">
+                    <button type="button" class="is-active" aria-label="Photo 1"></button>
+                    <button type="button" aria-label="Photo 2"></button>
+                    <button type="button" aria-label="Photo 3"></button>
+                    <button type="button" aria-label="Photo 4"></button>
+                    <button type="button" aria-label="Photo 5"></button>
+                </div>
+            </div>
+        </div>
         <div class="name">Max (Maxime) Guerois</div>
-        <h1>My blood says I'm 19. <em>Here's how.</em></h1>
+        <h1>Just a builder, <em>passionate about health and longevity.</em></h1>
         <p class="intro">
             I'm Max. I'm 29, and my biological age is 19.
             I previously founded <strong>Lucis</strong>, Europe's most comprehensive preventive health platform, and grew it from 0 to seven-figure revenue.
             Now I'm building the most measured version of myself.
             This site is the protocol.
         </p>
-        <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border);">
-            <div class="numbers-grid">
-                <div class="number-item">
-                    <div class="number-value">19</div>
-                    <div class="number-label">Bio Age</div>
-                </div>
-                <div class="number-item">
-                    <div class="number-value">0.74</div>
-                    <div class="number-label">Pace of aging, 26% slower</div>
-                </div>
-                <div class="number-item">
-                    <div class="number-value">40</div>
-                    <div class="number-label">Resting heart rate</div>
-                </div>
-                <div class="number-item">
-                    <div class="number-value">52.4</div>
-                    <div class="number-label">VO₂Max, top 25% cardio</div>
-                </div>
-            </div>
-            <div style="margin-top: 20px;">
-                <a href="/newsletter/max-biomarkers" class="newsletter-cta">Full biomarker report <span class="arr">→</span></a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Ask AI -->
-    <div class="section fade-in" style="margin-top: 0; padding-top: 0;">
-        <div class="section-label" style="margin-bottom: 10px;">Ask AI about Max Guerois</div>
-        <p class="ai-prompt-label">Dig into my health protocol, founder story, or longevity obsession.</p>
-        <div class="ai-links">
-            <a href={`https://chatgpt.com/?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
-                ChatGPT
-            </a>
-            <a href={`https://claude.ai/new?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
-                Claude
-            </a>
-            <a href={`https://www.perplexity.ai/search?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
-                Perplexity
-            </a>
-            <a href={`https://x.com/i/grok?text=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                <img src="/grok.svg" alt="Grok" class="ai-icon ai-icon--square">
-                Grok
-            </a>
-        </div>
     </div>
 
     <hr class="divider fade-in">
 
-    <!-- Health -->
+    <!-- Newsletter -->
     <div class="section fade-in">
-        <div class="section-label">01 / Health</div>
-        <div class="health-photos">
-            <img src="/health-journey/workout.jpeg" alt="Training" class="health-photo" loading="lazy">
-            <img src="/health-journey/breakfast.jpg" alt="Breakfast plate" class="health-photo" loading="lazy">
-            <img src="/health-journey/zeromeetup-182.webp" alt="Ice bath" class="health-photo" loading="lazy">
-            <img src="/health-journey/supplement-breakfast.jpeg" alt="Morning supplements and breakfast" class="health-photo" loading="lazy">
-        </div>
+        <div class="section-label">01 / Newsletter</div>
+        <a href="/newsletter"><img src="/health-journey/banner-staying-young.jpg" alt="The long game of staying young" width="1200" height="630" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:var(--radius-sm);margin-bottom:20px;"></a>
+        <p class="ai-prompt-label">I run health experiments and publish my progress and findings publicly. Every week, in your inbox.</p>
         <div class="writing-list">
             {experiments.slice(0, 3).map((exp) => (
                 <a href={`/newsletter/${exp.data.slug}`} class="writing-item">
@@ -155,8 +123,8 @@ const structuredData = {
                 </a>
             ))}
         </div>
-        <div style="margin-top: 20px;">
-            <a href="/newsletter" class="newsletter-cta">The long game of staying young <span class="arr">→</span></a>
+        <div style="margin-top: 24px;">
+            <NewsletterEmbed />
         </div>
     </div>
 
@@ -247,9 +215,28 @@ const structuredData = {
 
     <hr class="divider fade-in">
 
-    <!-- Newsletter -->
-    <div class="fade-in">
-        <NewsletterEmbed />
+    <!-- Ask AI -->
+    <div class="section fade-in">
+        <div class="section-label" style="margin-bottom: 10px;">Ask AI about Max Guerois</div>
+        <p class="ai-prompt-label">Dig into my health protocol, founder story, or longevity obsession.</p>
+        <div class="ai-links">
+            <a href={`https://chatgpt.com/?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
+                ChatGPT
+            </a>
+            <a href={`https://claude.ai/new?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
+                Claude
+            </a>
+            <a href={`https://www.perplexity.ai/search?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
+                Perplexity
+            </a>
+            <a href={`https://x.com/i/grok?text=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="/grok.svg" alt="Grok" class="ai-icon ai-icon--square">
+                Grok
+            </a>
+        </div>
     </div>
 
     <hr class="divider fade-in">
@@ -265,4 +252,58 @@ const structuredData = {
         </div>
     </div>
 </div>
+
+<script is:inline>
+    (function () {
+        function init(slider) {
+            var viewport = slider.querySelector('.js-viewport');
+            var track = slider.querySelector('.js-track');
+            var slides = slider.querySelectorAll('.js-slide');
+            var segs = slider.querySelectorAll('.js-segs button');
+            if (!viewport || !track || !slides.length) return;
+            var n = slides.length, i = 0, timer = null;
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var noAuto = slider.hasAttribute('data-noautoplay');
+            function offset(k) {
+                var maxT = track.scrollWidth - viewport.clientWidth;
+                var t = Math.min(slides[k].offsetLeft, maxT);
+                return t < 0 ? 0 : t;
+            }
+            function go(k) {
+                i = (k + n) % n;
+                track.style.transform = 'translateX(' + (-offset(i)) + 'px)';
+                for (var s = 0; s < segs.length; s++) segs[s].classList.toggle('is-active', s === i);
+            }
+            function start() { if (n > 1 && !reduce && !noAuto && !timer) timer = setInterval(function () { go(i + 1); }, 5500); }
+            function stop() { if (timer) { clearInterval(timer); timer = null; } }
+            for (var s = 0; s < segs.length; s++) {
+                (function (idx) { segs[idx].addEventListener('click', function () { go(idx); stop(); start(); }); })(s);
+            }
+            slider.addEventListener('mouseenter', stop);
+            slider.addEventListener('mouseleave', start);
+            window.addEventListener('resize', function () { go(i); });
+            var dragging = false, startX = 0, base = 0, moved = 0;
+            viewport.addEventListener('pointerdown', function (e) {
+                dragging = true; startX = e.clientX; base = -offset(i); moved = 0;
+                track.style.transition = 'none'; stop();
+                try { viewport.setPointerCapture(e.pointerId); } catch (err) {}
+            });
+            viewport.addEventListener('pointermove', function (e) {
+                if (!dragging) return; moved = e.clientX - startX;
+                track.style.transform = 'translateX(' + (base + moved) + 'px)';
+            });
+            function endDrag() {
+                if (!dragging) return; dragging = false; track.style.transition = '';
+                if (moved < -45) go(i + 1); else if (moved > 45) go(i - 1); else go(i);
+                start();
+            }
+            viewport.addEventListener('pointerup', endDrag);
+            viewport.addEventListener('pointercancel', endDrag);
+            viewport.addEventListener('dragstart', function (e) { e.preventDefault(); });
+            go(0); start();
+        }
+        var sliders = document.querySelectorAll('.js-slider');
+        for (var j = 0; j < sliders.length; j++) init(sliders[j]);
+    })();
+</script>
 </Layout>
