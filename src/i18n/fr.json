@@ -17,15 +17,15 @@
     "latest": "Récent"
   },
   "newsletter": {
-    "title": "Mes tips santé et mes explorations",
-    "desc": "Sois au courant en premier pour ma prochaine startup. L'avancée de mon exploration, direct dans ta boîte mail. Désabonnement à tout moment."
+    "title": "Suis mes expériences santé",
+    "desc": "Les expériences santé que je mène sur moi, publiées en entier, ce qui marche et ce qui rate. Direct dans ta boîte mail. Désabonnement à tout moment."
   },
   "home": {
-    "title": "Max Guerois — Entrepreneur, Penseur",
-    "description": "Max Guerois — 29 ans, Paris. Co-fondateur de Lucis, santé préventive (YC + General Catalyst), présent en France, UK, Irlande et Portugal. Âge bio : 19 ans. Vieillissement 26% plus lent. Protocoles ouverts sur la longévité, la testostérone et le sommeil.",
-    "ogDescription": "29 ans, Paris. Co-fondateur de Lucis (YC + General Catalyst), présent en France, UK, Irlande et Portugal. Âge bio : 19 ans, vieillissement 26% plus lent.",
+    "title": "Max Guerois — santé et longévité, au grand jour",
+    "description": "Moi c'est Max, juste un builder, passionné de santé et de longévité. Mon âge biologique est de 19 ans. Je mène des expériences sur moi-même et je publie tout ce que j'apprends, ce qui marche et ce qui rate.",
+    "ogDescription": "Juste un builder, passionné de santé et de longévité. Âge biologique : 19 ans. Je mène des expériences sur moi-même et je publie tout, au grand jour.",
     "name": "Max (Maxime) Guerois",
-    "headline": "Mon horloge biologique dit que j'ai 19 ans. <em>Voici comment.</em>",
+    "headline": "Juste un builder, <em>passionné de santé et de longévité.</em>",
     "intro": "Moi c'est Max. 29 ans. Mon âge biologique : 19 ans.<br>J'ai cofondé <strong>Lucis</strong>, la plateforme de santé préventive la plus complète en Europe. Aujourd'hui je documente tout ce que je fais sur mon corps. Ce site, c'est le protocole.",
     "askAi": "Demande à l'IA",
     "askAiPrompt": "Mon protocole santé, mon parcours de fondateur, mon obsession pour la longévité : demande ce que tu veux.",
@@ -33,7 +33,7 @@
     "paceOfAging": "Vieillissement, 26% plus lent",
     "restingHeartRate": "Pouls au repos",
     "vo2max": "VO₂Max, top 25% cardio",
-    "sectionHealth": "01 / Santé",
+    "sectionHealth": "01 / Newsletter",
     "sectionWork": "02 / Parcours",
     "sectionPress": "03 / Presse",
     "sectionContact": "04 / Contact",
