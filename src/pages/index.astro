@@ -79,65 +79,19 @@ const structuredData = {
         <div class="name">Max (Maxime) Guerois</div>
         <h1>My blood says I'm 19. <em>Here's how.</em></h1>
         <p class="intro">
-            I'm Max. I'm 29, and my biological age is 19.
-            I previously founded <strong>Lucis</strong>, Europe's most comprehensive preventive health platform, and grew it from 0 to seven-figure revenue.
-            Now I'm building the most measured version of myself.
+            I'm Max, just a builder, passionate about health and longevity.
+            I'm 29, and my blood says I'm 19.
+            Now I'm building the most measured version of myself, in the open.
             This site is the protocol.
         </p>
-        <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border);">
-            <div class="numbers-grid">
-                <div class="number-item">
-                    <div class="number-value">19</div>
-                    <div class="number-label">Bio Age</div>
-                </div>
-                <div class="number-item">
-                    <div class="number-value">0.74</div>
-                    <div class="number-label">Pace of aging, 26% slower</div>
-                </div>
-                <div class="number-item">
-                    <div class="number-value">40</div>
-                    <div class="number-label">Resting heart rate</div>
-                </div>
-                <div class="number-item">
-                    <div class="number-value">52.4</div>
-                    <div class="number-label">VO₂Max, top 25% cardio</div>
-                </div>
-            </div>
-            <div style="margin-top: 20px;">
-                <a href="/newsletter/max-biomarkers" class="newsletter-cta">Full biomarker report <span class="arr">→</span></a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Ask AI -->
-    <div class="section fade-in" style="margin-top: 0; padding-top: 0;">
-        <div class="section-label" style="margin-bottom: 10px;">Ask AI about Max Guerois</div>
-        <p class="ai-prompt-label">Dig into my health protocol, founder story, or longevity obsession.</p>
-        <div class="ai-links">
-            <a href={`https://chatgpt.com/?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
-                ChatGPT
-            </a>
-            <a href={`https://claude.ai/new?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
-                Claude
-            </a>
-            <a href={`https://www.perplexity.ai/search?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
-                Perplexity
-            </a>
-            <a href={`https://x.com/i/grok?text=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
-                <img src="/grok.svg" alt="Grok" class="ai-icon ai-icon--square">
-                Grok
-            </a>
-        </div>
     </div>
 
     <hr class="divider fade-in">
 
-    <!-- Health -->
+    <!-- Newsletter -->
     <div class="section fade-in">
-        <div class="section-label">01 / Health</div>
+        <div class="section-label">01 / Newsletter</div>
+        <p class="ai-prompt-label">I run health experiments and publish my progress and findings publicly. Every week, in your inbox.</p>
         <div class="health-photos">
             <img src="/health-journey/workout.jpeg" alt="Training" class="health-photo" loading="lazy">
             <img src="/health-journey/breakfast.jpg" alt="Breakfast plate" class="health-photo" loading="lazy">
@@ -250,6 +204,32 @@ const structuredData = {
     <!-- Newsletter -->
     <div class="fade-in">
         <NewsletterEmbed />
+    </div>
+
+    <hr class="divider fade-in">
+
+    <!-- Ask AI -->
+    <div class="section fade-in">
+        <div class="section-label" style="margin-bottom: 10px;">Ask AI about Max Guerois</div>
+        <p class="ai-prompt-label">Dig into my health protocol, founder story, or longevity obsession.</p>
+        <div class="ai-links">
+            <a href={`https://chatgpt.com/?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt="ChatGPT" class="ai-icon">
+                ChatGPT
+            </a>
+            <a href={`https://claude.ai/new?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt="Claude" class="ai-icon">
+                Claude
+            </a>
+            <a href={`https://www.perplexity.ai/search?q=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt="Perplexity" class="ai-icon">
+                Perplexity
+            </a>
+            <a href={`https://x.com/i/grok?text=${aiSummaryPromptEncoded}`} class="ai-link" target="_blank">
+                <img src="/grok.svg" alt="Grok" class="ai-icon ai-icon--square">
+                Grok
+            </a>
+        </div>
     </div>
 
     <hr class="divider fade-in">
