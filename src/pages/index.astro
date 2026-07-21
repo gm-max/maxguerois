@@ -75,7 +75,26 @@ const structuredData = {
 
 <div class="container">
     <div class="header fade-in">
-        <img src="/profile.webp" alt="Max Guerois" class="photo" fetchpriority="high">
+        <div class="photo-slider js-slider" style="margin-bottom: 28px;">
+            <div class="photo-viewport js-viewport">
+                <div class="photo-track js-track">
+                    <figure class="photo-slide js-slide"><img src="/health-journey/surf-costarica.jpeg" alt="Surfing in Costa Rica" loading="eager" decoding="async" fetchpriority="high"></figure>
+                    <figure class="photo-slide js-slide"><img src="/health-journey/breakfast.jpg" alt="Breakfast plate" loading="lazy" decoding="async"></figure>
+                    <figure class="photo-slide js-slide"><img src="/health-journey/workout.jpeg" alt="Training" loading="lazy" decoding="async"></figure>
+                    <figure class="photo-slide js-slide"><img src="/health-journey/zeromeetup-182.webp" alt="Ice bath" loading="lazy" decoding="async"></figure>
+                    <figure class="photo-slide js-slide"><img src="/health-journey/supplement-breakfast.jpeg" alt="Morning supplements and breakfast" loading="lazy" decoding="async"></figure>
+                </div>
+            </div>
+            <div class="photo-bar">
+                <div class="photo-segs js-segs">
+                    <button type="button" class="is-active" aria-label="Photo 1"></button>
+                    <button type="button" aria-label="Photo 2"></button>
+                    <button type="button" aria-label="Photo 3"></button>
+                    <button type="button" aria-label="Photo 4"></button>
+                    <button type="button" aria-label="Photo 5"></button>
+                </div>
+            </div>
+        </div>
         <div class="name">Max (Maxime) Guerois</div>
         <h1>Just a builder, <em>passionate about health and longevity.</em></h1>
         <p class="intro">
@@ -91,27 +110,8 @@ const structuredData = {
     <!-- Newsletter -->
     <div class="section fade-in">
         <div class="section-label">01 / Newsletter</div>
+        <a href="/newsletter"><img src="/health-journey/banner-staying-young.jpg" alt="The long game of staying young" width="1200" height="630" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:var(--radius-sm);margin-bottom:20px;"></a>
         <p class="ai-prompt-label">I run health experiments and publish my progress and findings publicly. Every week, in your inbox.</p>
-        <div class="photo-slider js-slider">
-            <div class="photo-viewport js-viewport">
-                <div class="photo-track js-track">
-                    <figure class="photo-slide js-slide"><img src="/health-journey/surf-costarica.jpeg" alt="Surfing in Costa Rica" loading="lazy" decoding="async"></figure>
-                    <figure class="photo-slide js-slide"><img src="/health-journey/workout.jpeg" alt="Training" loading="lazy" decoding="async"></figure>
-                    <figure class="photo-slide js-slide"><img src="/health-journey/breakfast.jpg" alt="Breakfast plate" loading="lazy" decoding="async"></figure>
-                    <figure class="photo-slide js-slide"><img src="/health-journey/zeromeetup-182.webp" alt="Ice bath" loading="lazy" decoding="async"></figure>
-                    <figure class="photo-slide js-slide"><img src="/health-journey/supplement-breakfast.jpeg" alt="Morning supplements and breakfast" loading="lazy" decoding="async"></figure>
-                </div>
-            </div>
-            <div class="photo-bar">
-                <div class="photo-segs js-segs">
-                    <button type="button" class="is-active" aria-label="Photo 1"></button>
-                    <button type="button" aria-label="Photo 2"></button>
-                    <button type="button" aria-label="Photo 3"></button>
-                    <button type="button" aria-label="Photo 4"></button>
-                    <button type="button" aria-label="Photo 5"></button>
-                </div>
-            </div>
-        </div>
         <div class="writing-list">
             {experiments.slice(0, 3).map((exp) => (
                 <a href={`/newsletter/${exp.data.slug}`} class="writing-item">
@@ -123,8 +123,8 @@ const structuredData = {
                 </a>
             ))}
         </div>
-        <div style="margin-top: 20px;">
-            <a href="/newsletter" class="newsletter-cta">The long game of staying young <span class="arr">→</span></a>
+        <div style="margin-top: 24px;">
+            <NewsletterEmbed />
         </div>
     </div>
 
@@ -211,14 +211,6 @@ const structuredData = {
                 <svg class="writing-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
         </div>
-    </div>
-
-    <hr class="divider fade-in">
-
-    <!-- Newsletter -->
-    <div class="fade-in">
-        <img src="/health-journey/banner-staying-young.jpg" alt="The long game of staying young" width="1200" height="630" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:var(--radius-sm);margin-bottom:24px;">
-        <NewsletterEmbed />
     </div>
 
     <hr class="divider fade-in">
