@@ -79,16 +79,12 @@ const structuredData = {
 
 <div class="container">
     <div class="header fade-in">
-        <img src="/profile.webp" alt="Max Guerois" class="photo" fetchpriority="high">
-        <div class="name">{t(locale, 'home.name')}</div>
-        <h1 set:html={t(locale, 'home.headline')} />
-        <p class="intro" set:html={t(locale, 'home.intro')} />
-        <div class="photo-slider js-slider" style="margin-top: 32px;">
+        <div class="photo-slider js-slider" style="margin-bottom: 28px;">
             <div class="photo-viewport js-viewport">
                 <div class="photo-track js-track">
-                    <figure class="photo-slide js-slide"><img src="/health-journey/surf-costarica.jpeg" alt="Surf au Costa Rica" loading="lazy" decoding="async"></figure>
-                    <figure class="photo-slide js-slide"><img src="/health-journey/workout.jpeg" alt="Entraînement" loading="lazy" decoding="async"></figure>
+                    <figure class="photo-slide js-slide"><img src="/health-journey/surf-costarica.jpeg" alt="Surf au Costa Rica" loading="eager" decoding="async" fetchpriority="high"></figure>
                     <figure class="photo-slide js-slide"><img src="/health-journey/breakfast.jpg" alt="Petit-déj" loading="lazy" decoding="async"></figure>
+                    <figure class="photo-slide js-slide"><img src="/health-journey/workout.jpeg" alt="Entraînement" loading="lazy" decoding="async"></figure>
                     <figure class="photo-slide js-slide"><img src="/health-journey/zeromeetup-182.webp" alt="Bain glacé" loading="lazy" decoding="async"></figure>
                     <figure class="photo-slide js-slide"><img src="/health-journey/supplement-breakfast.jpeg" alt="Compléments du matin" loading="lazy" decoding="async"></figure>
                 </div>
@@ -103,6 +99,9 @@ const structuredData = {
                 </div>
             </div>
         </div>
+        <div class="name">{t(locale, 'home.name')}</div>
+        <h1 set:html={t(locale, 'home.headline')} />
+        <p class="intro" set:html={t(locale, 'home.intro')} />
     </div>
 
     <hr class="divider fade-in">
