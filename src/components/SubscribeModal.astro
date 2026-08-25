@@ -220,17 +220,31 @@ const { locale = 'en', delayMs = 15000 } = Astro.props;
         background: transparent;
     }
 
-    /* Pin the embed height. beehiiv's embed.js sets an INLINE `height: 2000px`
-       on its iframe once it loads. That is not something this modal introduced:
-       it already happens on the live site's in-page embed, where a 2000px iframe
-       merely leaves whitespace. Inside a fixed card it is fatal, stretching the
-       card to 2220px and pushing its top 623px above the viewport.
-       A stylesheet !important beats a plain inline style, which is the one lever
-       available against a cross-origin script we do not control. 80px matches
-       the height the embed component itself sets inline. If beehiiv ever needs
-       more room for a post-submit state, this is the line to revisit. */
+    /* Bound the embed instead of pinning it.
+       beehiiv's embed.js briefly sets an inline `height: 2000px` on its iframe
+       while it measures, then settles to the real height (47px for this form).
+       Left alone, that transient stretches the card to 2220px and throws it off
+       screen. It only bites when the modal opens during the window, which in
+       practice means ?popup=1, since the 15s delay outlasts the handshake.
+
+       The first fix here pinned `height: 80px !important`. That killed the
+       transient but also capped the iframe forever, so a taller state (the
+       confirmation beehiiv swaps in after a successful subscribe) would have
+       been clipped with no way to see it. Trading a preview-only glitch for a
+       broken success screen is the wrong way round.
+
+       So: cap rather than fix. max-height bounds the transient, lets the form
+       size itself, and still allows a taller post-subscribe state. The card caps
+       itself against the viewport and scrolls as the last resort, so no height
+       beehiiv ever chooses can push the modal off screen.
+       Verified live at 47px, 2000px and 420px: all three stay fully on screen. */
+    .submodal__card {
+        max-height: calc(100vh - var(--sp-4) * 2);
+        overflow-y: auto;
+    }
     .submodal__card :global(iframe.beehiiv-embed) {
-        height: 80px !important;
+        height: auto !important;
+        max-height: 60vh !important;
     }
 
     @keyframes submodal-fade {
