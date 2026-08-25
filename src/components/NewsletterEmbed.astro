@@ -9,9 +9,18 @@ interface Props {
     locale?: Locale;
     /** Render only the email input + button (no heading or description). */
     minimal?: boolean;
+    /**
+     * Emit `data-src` instead of `src`, leaving the caller to start the load.
+     * Used by the modal: it only ever shows once per visitor, so on every later
+     * visit the iframe would otherwise be fetched for a modal that can never
+     * appear. The caller sets src at page load when the modal is still due, so
+     * the frame is ready by the time it opens.
+     */
+    deferSrc?: boolean;
 }
 
-const { locale = 'en', minimal = false } = Astro.props;
+const { locale = 'en', minimal = false, deferSrc = false } = Astro.props;
+const embedSrc = 'https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-911b5e3eb2e6';
 ---
 <div class:list={["newsletter-block", { "newsletter-block--minimal": minimal }]}>
     {!minimal && (
@@ -41,7 +50,8 @@ const { locale = 'en', minimal = false } = Astro.props;
         })();
     </script>
     <iframe
-        src="https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-911b5e3eb2e6"
+        src={deferSrc ? undefined : embedSrc}
+        data-src={deferSrc ? embedSrc : undefined}
         class="beehiiv-embed"
         data-test-id="beehiiv-embed"
         frameborder="0"

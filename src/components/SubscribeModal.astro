@@ -50,7 +50,7 @@ const { locale = 'en', delayMs = 15000 } = Astro.props;
         <h2 class="submodal__title" id="submodal-title">{t(locale, 'modal.title')}</h2>
         <p class="submodal__desc" id="submodal-desc">{t(locale, 'modal.desc')}</p>
 
-        <NewsletterEmbed locale={locale} minimal />
+        <NewsletterEmbed locale={locale} minimal deferSrc />
 
         <p class="submodal__note">{t(locale, 'modal.note')}</p>
     </div>
@@ -66,6 +66,22 @@ const { locale = 'en', delayMs = 15000 } = Astro.props;
     var preview = new URLSearchParams(window.location.search).get('popup') === '1';
     var lastFocus = null;
     var timer = null;
+
+    function alreadySeen() {
+        try { return localStorage.getItem(STORE_KEY) === '1'; } catch (e) { return false; }
+    }
+
+    // Start the embed load HERE, at page load, and only when this visitor can
+    // still be shown the modal. Two things depend on the timing:
+    //   - not before: a visitor who dismissed the modal once would otherwise
+    //     fetch a third-party iframe on every page view, forever, for a modal
+    //     that can never appear again.
+    //   - not later: deferring to the open event is what made the form arrive
+    //     about four seconds after the card, which is the bug this replaced.
+    if (preview || !alreadySeen()) {
+        var frame = root.querySelector('iframe[data-src]');
+        if (frame && !frame.src) frame.src = frame.getAttribute('data-src');
+    }
 
     function track(name) {
         // Guarded: the site loads gtag, but never let analytics break the modal.
@@ -123,9 +139,7 @@ const { locale = 'en', delayMs = 15000 } = Astro.props;
 
     if (preview) { arm(); return; }
 
-    var seen = false;
-    try { seen = localStorage.getItem(STORE_KEY) === '1'; } catch (e) { seen = false; }
-    if (seen) return;
+    if (alreadySeen()) return;
 
     var delay = parseInt(root.getAttribute('data-delay'), 10);
     if (!(delay >= 0)) delay = 15000;
