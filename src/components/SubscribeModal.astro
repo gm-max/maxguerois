@@ -1,0 +1,249 @@
+---
+/**
+ * One-per-visitor email modal, adapted from the ouroslab.co subscribe popup.
+ *
+ * Two deliberate differences from the Ouros original, both forced by beehiiv:
+ *
+ * 1. The Ouros popup closes itself when the visitor subscribes, because its form
+ *    posts same-origin and the component gets a callback. Ours wraps beehiiv's
+ *    CROSS-ORIGIN iframe, so the page cannot see a submission at all. beehiiv
+ *    publishes no documented postMessage on submit, and its embed.js sits behind
+ *    Cloudflare so the behaviour could not be verified either. Rather than code
+ *    against a guess, this modal never tries to detect a subscribe.
+ *
+ * 2. Because of (1), the once-per-visitor flag is written when the modal is
+ *    SHOWN, not when it is dismissed. The modal covers the page, so a visitor has
+ *    to deal with it either way, and writing on show means someone who subscribes
+ *    and then closes the tab is never asked twice. Erring toward showing it less.
+ *
+ * Preview it any time with ?popup=1, which ignores the flag.
+ */
+import type { Locale } from '../i18n/utils';
+import { t } from '../i18n/utils';
+import NewsletterEmbed from './NewsletterEmbed.astro';
+
+interface Props {
+    locale?: Locale;
+    /** Milliseconds before it appears. Long enough not to interrupt the first read. */
+    delayMs?: number;
+}
+
+const { locale = 'en', delayMs = 15000 } = Astro.props;
+---
+
+<div class="submodal" data-submodal data-delay={delayMs} hidden>
+    <div class="submodal__backdrop" data-submodal-dismiss></div>
+    <div
+        class="submodal__card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="submodal-title"
+        aria-describedby="submodal-desc"
+    >
+        <button
+            type="button"
+            class="submodal__close"
+            data-submodal-dismiss
+            aria-label={t(locale, 'modal.close')}
+        >&times;</button>
+
+        <h2 class="submodal__title" id="submodal-title">{t(locale, 'modal.title')}</h2>
+        <p class="submodal__desc" id="submodal-desc">{t(locale, 'modal.desc')}</p>
+
+        <NewsletterEmbed locale={locale} minimal />
+
+        <p class="submodal__note">{t(locale, 'modal.note')}</p>
+    </div>
+</div>
+
+<script is:inline>
+(function () {
+    var root = document.querySelector('[data-submodal]');
+    if (!root) return;
+
+    var STORE_KEY = 'mg_email_modal_v1';
+    var card = root.querySelector('.submodal__card');
+    var preview = new URLSearchParams(window.location.search).get('popup') === '1';
+    var lastFocus = null;
+    var timer = null;
+
+    function track(name) {
+        // Guarded: the site loads gtag, but never let analytics break the modal.
+        try { if (typeof window.gtag === 'function') window.gtag('event', name); } catch (e) {}
+    }
+
+    function remember() {
+        try { localStorage.setItem(STORE_KEY, '1'); } catch (e) {
+            // Private mode or storage blocked. The modal may reappear next visit,
+            // which is the acceptable failure here.
+        }
+    }
+
+    function open() {
+        lastFocus = document.activeElement;
+        root.hidden = false;
+        document.body.style.overflow = 'hidden';
+        // Focus the close button, not the iframe: focus must stay in the parent
+        // document so Escape and the focus trap keep working.
+        var closeBtn = root.querySelector('.submodal__close');
+        if (closeBtn) closeBtn.focus();
+        if (!preview) remember();
+        track('email_modal_shown');
+    }
+
+    function close() {
+        root.hidden = true;
+        document.body.style.overflow = '';
+        if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+        document.removeEventListener('keydown', onKey, true);
+        track('email_modal_dismissed');
+    }
+
+    function onKey(e) {
+        if (e.key === 'Escape') { close(); return; }
+        if (e.key !== 'Tab') return;
+        // Trap focus inside the card. The beehiiv iframe is one stop in the ring:
+        // tabbing into it hands focus to the embed, and shift-tabbing out returns.
+        var items = card.querySelectorAll('button, iframe, a[href], input, [tabindex]:not([tabindex="-1"])');
+        if (!items.length) return;
+        var first = items[0];
+        var last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+
+    root.querySelectorAll('[data-submodal-dismiss]').forEach(function (el) {
+        el.addEventListener('click', close);
+    });
+
+    function arm() {
+        document.addEventListener('keydown', onKey, true);
+        open();
+    }
+
+    if (preview) { arm(); return; }
+
+    var seen = false;
+    try { seen = localStorage.getItem(STORE_KEY) === '1'; } catch (e) { seen = false; }
+    if (seen) return;
+
+    var delay = parseInt(root.getAttribute('data-delay'), 10);
+    if (!(delay >= 0)) delay = 15000;
+    timer = window.setTimeout(arm, delay);
+
+    // Do not ambush someone who is leaving or was never really here: if the tab
+    // was hidden the whole time, drop this visit's attempt rather than firing the
+    // modal at a page nobody is looking at.
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden' && timer) {
+            window.clearTimeout(timer);
+            timer = null;
+        }
+    });
+})();
+</script>
+
+<style>
+    .submodal[hidden] { display: none; }
+
+    .submodal {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--sp-4);
+    }
+
+    .submodal__backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 14, 12, 0.45);
+        animation: submodal-fade 160ms ease-out;
+    }
+
+    .submodal__card {
+        position: relative;
+        width: 100%;
+        max-width: 420px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: var(--sp-8) var(--sp-6) var(--sp-6);
+        box-shadow: 0 24px 64px rgba(15, 14, 12, 0.28);
+        animation: submodal-rise 200ms ease-out;
+    }
+
+    .submodal__close {
+        position: absolute;
+        top: var(--sp-2);
+        right: var(--sp-3);
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        font-size: 26px;
+        line-height: 1;
+        color: var(--text-tertiary);
+        padding: var(--sp-1) var(--sp-2);
+    }
+    .submodal__close:hover { color: var(--text); }
+
+    .submodal__title {
+        margin: 0 0 var(--sp-2);
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 500;
+        line-height: 1.2;
+        color: var(--text);
+    }
+
+    .submodal__desc {
+        margin: 0 0 var(--sp-4);
+        font-size: 0.94rem;
+        line-height: 1.5;
+        color: var(--text-secondary);
+    }
+
+    .submodal__note {
+        margin: var(--sp-3) 0 0;
+        font-size: 0.78rem;
+        color: var(--text-tertiary);
+    }
+
+    /* The embed carries its own block spacing for in-page use; inside the card
+       that would push the iframe off the bottom edge. */
+    .submodal__card :global(.newsletter-block) {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: transparent;
+    }
+
+    /* Pin the embed height. beehiiv's embed.js sets an INLINE `height: 2000px`
+       on its iframe once it loads. That is not something this modal introduced:
+       it already happens on the live site's in-page embed, where a 2000px iframe
+       merely leaves whitespace. Inside a fixed card it is fatal, stretching the
+       card to 2220px and pushing its top 623px above the viewport.
+       A stylesheet !important beats a plain inline style, which is the one lever
+       available against a cross-origin script we do not control. 80px matches
+       the height the embed component itself sets inline. If beehiiv ever needs
+       more room for a post-submit state, this is the line to revisit. */
+    .submodal__card :global(iframe.beehiiv-embed) {
+        height: 80px !important;
+    }
+
+    @keyframes submodal-fade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes submodal-rise {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .submodal__backdrop,
+        .submodal__card { animation: none; }
+    }
+</style>

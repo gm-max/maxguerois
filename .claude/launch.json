@@ -3,9 +3,9 @@
   "configurations": [
     {
       "name": "gm-max",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "dist", "--listen", "4000"],
-      "port": 4000
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["scripts/dev.sh", "--port", "4321"],
+      "port": 4321
     }
   ]
 }

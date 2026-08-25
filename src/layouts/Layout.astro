@@ -1,6 +1,7 @@
 ---
 // Layout.astro — base layout for all pages
 // maxguerois.com
+import SubscribeModal from '../components/SubscribeModal.astro';
 import type { Locale } from '../i18n/utils';
 import { getLocalizedPath, getAbsoluteUrl, t } from '../i18n/utils';
 
@@ -19,6 +20,8 @@ interface Props {
     structuredData?: object | object[];
     extraStyles?: string[];
     locale?: Locale;
+    /** Set false to suppress the one-per-visitor email modal on this page. */
+    emailModal?: boolean;
     hideFooter?: boolean;
     noindex?: boolean;
 }
@@ -40,6 +43,7 @@ const {
     locale = 'en',
     hideFooter = false,
     noindex = false,
+    emailModal = true,
 } = Astro.props;
 
 // Build hreflang URLs from current path
@@ -48,6 +52,12 @@ const englishPath = getLocalizedPath(currentPath, 'en');
 const frenchPath = getLocalizedPath(currentPath, 'fr');
 const enUrl = getAbsoluteUrl(englishPath, 'en');
 const frUrl = getAbsoluteUrl(frenchPath, 'fr');
+
+// The modal shows everywhere by default, including the newsletter pages (Max's
+// call, 2026-08-25). Pages opt out individually with `emailModal={false}`, which
+// is how /404 excludes itself: a path list could not do it there, since a 404's
+// runtime pathname is whatever missing URL the visitor typed, not '/404'.
+const showEmailModal = emailModal;
 ---
 <!DOCTYPE html>
 <html lang={locale}>
@@ -237,5 +247,6 @@ const frUrl = getAbsoluteUrl(frenchPath, 'fr');
             });
         })();
     </script>
+    {showEmailModal && <SubscribeModal locale={locale} />}
 </body>
 </html>

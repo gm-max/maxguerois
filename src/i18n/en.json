@@ -20,6 +20,12 @@
     "title": "Follow the experiments",
     "desc": "The health experiments I run on myself, published in full, the wins and the misses. Straight to your inbox. Unsubscribe anytime."
   },
+  "modal": {
+    "title": "Before you go",
+    "desc": "I run health experiments on myself and publish the full results, the wins and the misses. One email when there is something worth sending.",
+    "close": "Close",
+    "note": "No spam. Unsubscribe anytime."
+  },
   "home": {
     "title": "Max Guerois — Builder, Thinker",
     "description": "Max Guerois — 29-year-old repeat founder based in Paris. Co-founded Lucis, a preventive health startup backed by YC and General Catalyst, operating across France, UK, Ireland and Portugal. Biological age 9.7 years younger, aging 26% slower than average. Open protocols on longevity, testosterone, and sleep.",

@@ -20,6 +20,12 @@
     "title": "Suis mes expériences santé",
     "desc": "Les expériences santé que je mène sur moi, publiées en entier, ce qui marche et ce qui rate. Direct dans ta boîte mail. Désabonnement à tout moment."
   },
+  "modal": {
+    "title": "Avant de partir",
+    "desc": "Je mène des expériences santé sur moi et je publie les résultats en entier, ce qui marche et ce qui rate. Un email quand il y a vraiment quelque chose à envoyer.",
+    "close": "Fermer",
+    "note": "Pas de spam. Désabonnement à tout moment."
+  },
   "home": {
     "title": "Max Guerois — santé et longévité, au grand jour",
     "description": "Moi c'est Max, juste un builder, passionné de santé et de longévité. Mon âge biologique est de 19 ans. Je mène des expériences sur moi-même et je publie tout ce que j'apprends, ce qui marche et ce qui rate.",

@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "astro dev",
+    "dev": "bash scripts/dev.sh",
     "check:csp-images": "node scripts/check-csp-img-src.mjs",
     "build": "npm run check:csp-images && astro build",
     "preview": "astro preview"
