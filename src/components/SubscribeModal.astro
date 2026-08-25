@@ -192,7 +192,7 @@ const { locale = 'en', delayMs = 15000 } = Astro.props;
         position: absolute;
         inset: 0;
         background: rgba(15, 14, 12, 0.45);
-        animation: submodal-fade 160ms ease-out;
+        animation: submodal-fade var(--duration-short) var(--ease-out);
     }
 
     .submodal__card {
@@ -204,20 +204,28 @@ const { locale = 'en', delayMs = 15000 } = Astro.props;
         border-radius: 10px;
         padding: var(--sp-8) var(--sp-6) var(--sp-6);
         box-shadow: 0 24px 64px rgba(15, 14, 12, 0.28);
-        animation: submodal-rise 200ms ease-out;
+        animation: submodal-rise var(--duration-base) var(--ease-out);
     }
 
     .submodal__close {
         position: absolute;
-        top: var(--sp-2);
-        right: var(--sp-3);
+        top: var(--sp-1);
+        right: var(--sp-1);
         border: 0;
         background: transparent;
         cursor: pointer;
         font-size: 26px;
         line-height: 1;
         color: var(--text-tertiary);
-        padding: var(--sp-1) var(--sp-2);
+        /* 44x44 is the touch-target minimum in DESIGN.md. Grow the HIT AREA, not
+           the glyph: a bigger cross would fight the card's restraint, and the
+           button measured 31x34 before this, which is a real miss with a thumb
+           at the exact moment the modal is interrupting someone. */
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        padding: 0;
     }
     .submodal__close:hover { color: var(--text); }
 
