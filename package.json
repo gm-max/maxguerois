@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "dev": "bash scripts/dev.sh",
-    "build": "npm run check:csp && astro build",
-    "preview": "astro preview",
+    "dev": "bash scripts/with-node.sh dev",
+    "build": "npm run check:csp && bash scripts/with-node.sh build",
+    "preview": "bash scripts/with-node.sh preview",
     "check:csp": "node scripts/check-csp.mjs"
   },
   "engines": {

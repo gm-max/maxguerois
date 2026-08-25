@@ -44,22 +44,36 @@ function loadImgSrcTokens() {
 
 function hostAllowedByToken(hostname, token) {
   const h = hostname.toLowerCase();
-  if (token === "'self'" || token === 'self') return false;
-  if (token === 'data:') return false;
-  if (!/^https?:\/\//.test(token)) return false;
 
-  if (token.includes('*.')) {
-    const suffix = token.replace(/^https:\/\//, '').replace(/^\*\./, '').split('/')[0].toLowerCase();
-    return h === suffix || h.endsWith('.' + suffix);
+  // Keyword sources never grant an external host.
+  if (/^'/.test(token)) return false;
+  if (token === 'data:' || token === 'blob:') return false;
+
+  // scheme-source: `https:` allows ANY host over that scheme. `*` allows any.
+  // Previously these returned false, so a perfectly valid CSP was reported as
+  // failing.
+  if (token === '*') return true;
+  if (/^[a-z][a-z0-9+.-]*:$/i.test(token)) return true;
+
+  // Strip an optional scheme, then any path. Previously the scheme was stripped
+  // with a literal /^https:\/\//, so an http:// token never matched anything.
+  const hostPart = token.replace(/^[a-z][a-z0-9+.-]*:\/\//i, '').split('/')[0].toLowerCase();
+  if (!hostPart) return false;
+
+  const bare = hostPart.replace(/:\d+$/, '');   // drop an optional port
+
+  if (bare.startsWith('*.')) {
+    // CSP wildcards match SUBDOMAINS ONLY. The apex is not covered.
+    // The previous version returned true for the apex, which would have
+    // green-lit a CSP the browser blocks: precisely the failure this file
+    // exists to catch.
+    const suffix = bare.slice(2);
+    return h !== suffix && h.endsWith('.' + suffix);
   }
 
-  try {
-    const host = new URL(token).hostname.toLowerCase();
-    return h === host;
-  } catch {
-    return false;
-  }
+  return h === bare;
 }
+
 
 function isImgSrcAllowed(urlString, tokens) {
   const s = urlString.trim();
