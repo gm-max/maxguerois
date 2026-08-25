@@ -49,6 +49,39 @@ const embedSrc = 'https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-91
             });
         })();
     </script>
+    {/* Correct beehiiv's no-measurement fallback height.
+        Its embed.js writes an inline height on the iframe after measuring. When
+        that handshake does not complete it writes 2000px, which is not a
+        measurement but a give-up value. Inside the modal the 60vh cap keeps the
+        card on screen but leaves it half empty under the Subscribe button; in
+        page it inflated .newsletter-block from 205px to 2158px and the homepage
+        from 3541px to 5494px.
+
+        Only the exact fallback is touched. Any other height beehiiv writes is a
+        real measurement, including the taller confirmation it swaps in after a
+        successful subscribe, and passes through untouched. */}
+    <script is:inline>
+        (function () {
+            var FALLBACK = '2000px';
+            // DESIGN.md documents 80px as the reserved height for this embed, and
+            // the iframe already ships with it inline. Falling back to the
+            // documented value beats inventing one: the form measures 47px when
+            // beehiiv gets it right, so 80px holds it with room to spare.
+            var DOCUMENTED = '80px';
+            var script = document.currentScript;
+            var frame = script && script.parentElement
+                ? script.parentElement.querySelector('iframe.beehiiv-embed') : null;
+            if (!frame || typeof MutationObserver !== 'function') return;
+
+            var ours = null;   // guard: our own write must not retrigger us
+            new MutationObserver(function () {
+                var h = frame.style.height;
+                if (h === ours) return;
+                if (h === FALLBACK) { ours = DOCUMENTED; frame.style.height = DOCUMENTED; }
+                else { ours = null; }
+            }).observe(frame, { attributes: true, attributeFilter: ['style'] });
+        })();
+    </script>
     <iframe
         src={deferSrc ? undefined : embedSrc}
         data-src={deferSrc ? embedSrc : undefined}
