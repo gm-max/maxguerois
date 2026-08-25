@@ -53,12 +53,11 @@ const frenchPath = getLocalizedPath(currentPath, 'fr');
 const enUrl = getAbsoluteUrl(englishPath, 'en');
 const frUrl = getAbsoluteUrl(frenchPath, 'fr');
 
-// The email modal is suppressed on the newsletter pages: someone already looking
-// at the signup form does not need it thrown over the top of that form. Opt a
-// page out explicitly with `emailModal={false}`.
-const suppressedPaths = ['/newsletter', '/fr/newsletter'];
-const modalPath = currentPath.replace(/\/+$/, '') || '/';
-const showEmailModal = emailModal && !suppressedPaths.includes(modalPath);
+// The modal shows everywhere by default, including the newsletter pages (Max's
+// call, 2026-08-25). Pages opt out individually with `emailModal={false}`, which
+// is how /404 excludes itself: a path list could not do it there, since a 404's
+// runtime pathname is whatever missing URL the visitor typed, not '/404'.
+const showEmailModal = emailModal;
 ---
 <!DOCTYPE html>
 <html lang={locale}>
