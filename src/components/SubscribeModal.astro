@@ -24,11 +24,16 @@ import NewsletterEmbed from './NewsletterEmbed.astro';
 
 interface Props {
     locale?: Locale;
-    /** Milliseconds before it appears. Long enough not to interrupt the first read. */
+    /**
+     * Milliseconds before it appears. 8s (was 15s, shortened 2026-08-25): long
+     * enough not to land on the first paint, short enough to reach someone who
+     * skims and leaves. The shorter it gets, the more it can race beehiiv's
+     * height handshake, which the guard in NewsletterEmbed absorbs.
+     */
     delayMs?: number;
 }
 
-const { locale = 'en', delayMs = 15000 } = Astro.props;
+const { locale = 'en', delayMs = 8000 } = Astro.props;
 ---
 
 <dialog class="submodal" data-submodal data-delay={delayMs} aria-labelledby="submodal-title" aria-describedby="submodal-desc">
@@ -126,7 +131,7 @@ const { locale = 'en', delayMs = 15000 } = Astro.props;
     if (alreadySeen()) return;
 
     var delay = parseInt(root.getAttribute('data-delay'), 10);
-    if (!(delay >= 0)) delay = 15000;
+    if (!(delay >= 0)) delay = 8000;
     timer = window.setTimeout(arm, delay);
 
     // Do not fire at a page nobody is looking at.
@@ -245,7 +250,9 @@ const { locale = 'en', delayMs = 15000 } = Astro.props;
        while it measures, then settles to the real height (47px for this form).
        Left alone, that transient stretches the card to 2220px and throws it off
        screen. It only bites when the modal opens during the window, which in
-       practice means ?popup=1, since the 15s delay outlasts the handshake.
+       practice meant ?popup=1 while the delay was 15s, which outlasted the
+       handshake. At 8s that margin is thinner, which is why the fallback-height
+       guard in NewsletterEmbed matters rather than being belt-and-braces.
 
        The first fix here pinned `height: 80px !important`. That killed the
        transient but also capped the iframe forever, so a taller state (the

@@ -133,7 +133,7 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 - **Placement:** Below hero intro, above numbers grid
 
 ### Email Modal
-- **Trigger:** 15s after load, once per visitor ever (`localStorage.mg_email_modal_v1`, written on show, not on dismiss)
+- **Trigger:** 8s after load, once per visitor ever (`localStorage.mg_email_modal_v1`, written on show, not on dismiss)
 - **Card:** max-width 420px, `--bg` on `--border`, radius 10px, `max-height: calc(100vh - var(--sp-4) * 2)` with `overflow-y: auto`
 - **Close:** 44x44 hit area, 26px glyph, `--text-tertiary` to `--text` on hover
 - **Motion:** `submodal-fade` `--duration-short`, `submodal-rise` `--duration-base`, both `--ease-out`, disabled under reduced motion
@@ -193,7 +193,7 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 | 2026-03-19 | Keep "Ask AI" section, document it | Unique differentiator — no other personal site has AI prompt links. Added to Components. |
 | 2026-03-20 | Numbers grid → 4 columns, health only | Removed business metrics. Single row: Bio Age, Pace of aging, RHR, VO₂Max. |
 | 2026-03-20 | Dark mode: light default, no auto-detect | localStorage only, no prefers-color-scheme. Toggle icon-only (☾) in footer at 60% opacity. |
-| 2026-08-25 | Email modal, once per visitor | Site had no interruptive capture. 15s delay, one showing ever, suppressed on /404. |
+| 2026-08-25 | Email modal, once per visitor | Site had no interruptive capture. 8s delay, one showing ever, suppressed on /404. |
 | 2026-08-25 | Modal closed with visibility, not display | display:none gives zero layout, so the beehiiv iframe measured 0 and the form took ~4s to appear after opening. |
 | 2026-08-25 | Beehiiv iframe bounded min 47px / max 60vh | beehiiv's handshake was observed landing on 2000px (its no-measurement fallback) and on 0px. Neither is reachable now. |
 | 2026-03-20 | DESIGN.md sync with code | Fixed drift: numbers grid cols, dark mode activation, callout box style. |
