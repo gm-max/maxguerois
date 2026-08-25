@@ -49,6 +49,16 @@ const embedSrc = 'https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-91
             });
         })();
     </script>
+    <iframe
+        src={deferSrc ? undefined : embedSrc}
+        data-src={deferSrc ? embedSrc : undefined}
+        class="beehiiv-embed"
+        data-test-id="beehiiv-embed"
+        frameborder="0"
+        scrolling="no"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation"
+        style="width: 100%; max-width: 100%; height: 80px; margin: 0; border-radius: 0px !important; background-color: transparent;"
+    ></iframe>
     {/* Correct beehiiv's no-measurement fallback height.
         Its embed.js writes an inline height on the iframe after measuring. When
         that handshake does not complete it writes 2000px, which is not a
@@ -68,9 +78,15 @@ const embedSrc = 'https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-91
             // documented value beats inventing one: the form measures 47px when
             // beehiiv gets it right, so 80px holds it with room to spare.
             var DOCUMENTED = '80px';
+            // This script is placed AFTER the iframe on purpose: currentScript runs
+            // during parsing, so an earlier position would query a DOM where the
+            // iframe does not exist yet and silently observe nothing.
             var script = document.currentScript;
-            var frame = script && script.parentElement
-                ? script.parentElement.querySelector('iframe.beehiiv-embed') : null;
+            var frame = script && script.previousElementSibling
+                && script.previousElementSibling.matches('iframe.beehiiv-embed')
+                ? script.previousElementSibling
+                : (script && script.parentElement
+                    ? script.parentElement.querySelector('iframe.beehiiv-embed') : null);
             if (!frame || typeof MutationObserver !== 'function') return;
 
             var ours = null;   // guard: our own write must not retrigger us
@@ -82,16 +98,6 @@ const embedSrc = 'https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-91
             }).observe(frame, { attributes: true, attributeFilter: ['style'] });
         })();
     </script>
-    <iframe
-        src={deferSrc ? undefined : embedSrc}
-        data-src={deferSrc ? embedSrc : undefined}
-        class="beehiiv-embed"
-        data-test-id="beehiiv-embed"
-        frameborder="0"
-        scrolling="no"
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation"
-        style="width: 100%; max-width: 100%; height: 80px; margin: 0; border-radius: 0px !important; background-color: transparent;"
-    ></iframe>
 </div>
 
 <style>
