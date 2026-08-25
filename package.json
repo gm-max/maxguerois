@@ -1,9 +1,9 @@
 {
   "scripts": {
     "dev": "bash scripts/dev.sh",
-    "check:csp-images": "node scripts/check-csp-img-src.mjs",
-    "build": "npm run check:csp-images && astro build",
-    "preview": "astro preview"
+    "build": "npm run check:csp && astro build",
+    "preview": "astro preview",
+    "check:csp": "node scripts/check-csp.mjs"
   },
   "engines": {
     "node": "22.x"
