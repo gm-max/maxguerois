@@ -243,7 +243,10 @@ const { locale = 'en', delayMs = 15000 } = Astro.props;
         overflow-y: auto;
     }
     .submodal__card :global(iframe.beehiiv-embed) {
-        height: auto !important;
+        /* max-height ONLY. Do not add a `height` here: an author !important
+           height beats beehiiv's inline one, and `auto`/`revert` then fall back
+           to the CSS default iframe height of 150px rather than the 47px the
+           form actually needs, padding the card with 70px of dead space. */
         max-height: 60vh !important;
     }
 
