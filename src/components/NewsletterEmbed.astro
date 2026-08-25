@@ -50,3 +50,32 @@ const { locale = 'en', minimal = false } = Astro.props;
         style="width: 100%; max-width: 100%; height: 80px; margin: 0; border-radius: 0px !important; background-color: transparent;"
     ></iframe>
 </div>
+
+<style>
+    /* Bound the embed at both ends. beehiiv's embed.js measures the iframe and
+       writes an inline height; when that handshake misbehaves it lands on one of
+       two observed values, both bad:
+
+         2000px  its fallback when it never gets a measurement. Seen on the live
+                 homepage, where it inflated .newsletter-block from 205px to
+                 2158px and the page from 3541px to 5494px, leaving ~1950px of
+                 white space. Reproduced on the pre-modal build too, so it is not
+                 caused by having a second embed on the page.
+         0px     what it writes when it measures the iframe while it is hidden,
+                 which is the modal's case at load. It self-corrects a few
+                 seconds after the modal opens, but the form is invisible until
+                 it does.
+
+       Neither is reachable now. The healthy value is 47px, well inside these
+       bounds, so this rule is inert whenever the handshake works, and it still
+       lets beehiiv grow the frame for the taller confirmation it swaps in after
+       a successful subscribe.
+
+       Measured 6 consecutive loads at 47px after this was written, so the
+       failure is intermittent rather than constant: treat this as a seatbelt,
+       not as a fix for a reproducible bug. */
+    .newsletter-block :global(iframe.beehiiv-embed) {
+        min-height: 47px !important;
+        max-height: 60vh !important;
+    }
+</style>

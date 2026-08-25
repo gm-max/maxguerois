@@ -144,7 +144,25 @@ const { locale = 'en', delayMs = 15000 } = Astro.props;
 </script>
 
 <style>
-    .submodal[hidden] { display: none; }
+    /* NOT `display: none` while closed, on purpose.
+       display:none gives the subtree zero layout, so beehiiv's embed.js measures
+       the iframe at 0 and writes `height: 0px` on it. The frame then stays
+       invisible for several seconds after the modal opens, until beehiiv gets
+       round to re-measuring: 0px at open, 47px about four seconds later. The
+       visitor sees an empty card exactly when we asked for their attention.
+
+       visibility:hidden keeps the subtree in layout, so the iframe has real
+       dimensions from the start and beehiiv measures it correctly before the
+       modal is ever shown. It is also removed from the accessibility tree and
+       from hit-testing, so a closed modal is still inert; opacity and
+       pointer-events make that explicit. position:fixed means it contributes
+       nothing to document flow either way. */
+    .submodal[hidden] {
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+        display: flex;
+    }
 
     .submodal {
         position: fixed;
@@ -242,13 +260,10 @@ const { locale = 'en', delayMs = 15000 } = Astro.props;
         max-height: calc(100vh - var(--sp-4) * 2);
         overflow-y: auto;
     }
-    .submodal__card :global(iframe.beehiiv-embed) {
-        /* max-height ONLY. Do not add a `height` here: an author !important
-           height beats beehiiv's inline one, and `auto`/`revert` then fall back
-           to the CSS default iframe height of 150px rather than the 47px the
-           form actually needs, padding the card with 70px of dead space. */
-        max-height: 60vh !important;
-    }
+    /* The iframe's own bounds live in NewsletterEmbed.astro, so both placements
+       get the same seatbelt. What stays here is modal-specific: cap the CARD
+       against the viewport and let it scroll, so no height beehiiv ever picks
+       can push the modal off screen. */
 
     @keyframes submodal-fade {
         from { opacity: 0; }
