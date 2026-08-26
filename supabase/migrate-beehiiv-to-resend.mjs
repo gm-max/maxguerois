@@ -53,35 +53,73 @@ async function fetchAllBeehiivSubscriptions() {
   return all;
 }
 
+// beehiiv's own migration timestamp. Their API exposes NO unsubscribe date: verified
+// on both the list endpoint and an individual subscription, whose only time field is
+// `created`. So the true opt-out date is unrecoverable. We record the migration date
+// instead, because what matters legally is that the column is NOT NULL — an empty
+// column means "still subscribed", and a later export would wake these people up.
+const MIGRATED_AT = new Date().toISOString();
+
+/**
+ * Three outcomes, because beehiiv's five non-active rows are not one thing.
+ *
+ *   active    a subscriber. Import, opt in, add to the segment.
+ *   inactive  a person who UNSUBSCRIBED. A consent decision: import so the opt-out is
+ *             preserved forever, set unsubscribed_at, opt out of the topic, and never
+ *             add to the segment.
+ *   invalid   a DEAD ADDRESS that bounces. Not a decision, a fault. Importing it as a
+ *             subscriber would record a bounce as a consent choice and keep a dead
+ *             address on a domain that only just started sending. It is suppressed at
+ *             Resend and never enters mg_subscribers.
+ *
+ * The previous version read `sub.unsubscribed_on`, which does not exist in this API,
+ * and lumped invalid in with inactive. Both were caught by the dry run.
+ */
 function planFor(sub) {
   const email = sub.email.toLowerCase();
-  const isActive = sub.status === 'active';
+  const utm = {
+    utm_source: sub.utm_source || null,
+    utm_medium: sub.utm_medium || null,
+    utm_campaign: sub.utm_campaign || null,
+  };
+
+  if (sub.status === 'invalid') {
+    return { email, kind: 'invalid', supabase: null, resend: { suppress: true } };
+  }
+  if (sub.status === 'active') {
+    return {
+      email,
+      kind: 'active',
+      supabase: { unsubscribed_at: null, source: 'beehiiv-migration', ...utm },
+      resend: { contact: { unsubscribed: false }, segment: 'add', topic: 'opt_in' },
+    };
+  }
   return {
     email,
-    supabase: {
-      table: 'mg_subscribers',
-      unsubscribed_at: isActive ? null : sub.unsubscribed_on,
-      source: 'beehiiv-migration',
-    },
-    resend: isActive
-      ? { contact: { unsubscribed: false }, segment: 'add', topic: 'opt_in' }
-      : { contact: 'unchanged', segment: 'skip', topic: 'opt_out' },
+    kind: 'unsubscribed',
+    supabase: { unsubscribed_at: MIGRATED_AT, source: 'beehiiv-migration', ...utm },
+    resend: { contact: 'unchanged', segment: 'skip', topic: 'opt_out' },
   };
 }
 
 async function main() {
   const subs = await fetchAllBeehiivSubscriptions();
   const plans = subs.map(planFor);
-  const active = plans.filter((p) => p.resend.topic === 'opt_in');
-  const inactive = plans.filter((p) => p.resend.topic === 'opt_out');
+  const active = plans.filter((p) => p.kind === 'active');
+  const unsub = plans.filter((p) => p.kind === 'unsubscribed');
+  const invalid = plans.filter((p) => p.kind === 'invalid');
 
   console.log(`beehiiv subscriptions fetched: ${subs.length}`);
-  console.log(`  -> would opt_in  (active):   ${active.length}`);
-  console.log(`  -> would opt_out (inactive): ${inactive.length}`);
-  console.log('\ninactive rows (the critical ones — must land opt_out + unsubscribed_at):');
-  for (const p of inactive) {
-    console.log(`  ${p.email}  unsubscribed_at=${p.supabase.unsubscribed_at}`);
-  }
+  console.log(`  -> import + opt_in   (active):       ${active.length}`);
+  console.log(`  -> import + opt_out  (unsubscribed): ${unsub.length}`);
+  console.log(`  -> suppress, NOT imported (invalid): ${invalid.length}`);
+
+  console.log('\nunsubscribed — must land opt_out AND a non-null unsubscribed_at:');
+  for (const p of unsub) console.log(`  ${p.email}  unsubscribed_at=${p.supabase.unsubscribed_at}`);
+  console.log('  (date = migration time; beehiiv exposes no real opt-out date)');
+
+  console.log('\ninvalid — suppressed at Resend, never added to mg_subscribers:');
+  for (const p of invalid) console.log(`  ${p.email}`);
 
   if (DRY_RUN) {
     console.log('\nDRY RUN — nothing written. Re-run with --execute (and CONFIRM_MIGRATION set) to write.');
@@ -120,16 +158,34 @@ async function main() {
   };
 
   for (const p of plans) {
-    const { error } = await supabase
-      .from('mg_subscribers')
-      .upsert(
-        { email: p.email, unsubscribed_at: p.supabase.unsubscribed_at, source: p.supabase.source },
-        { onConflict: 'email' },
-      );
+    // invalid: a dead address. It never enters mg_subscribers — importing a bounce as
+    // a subscriber records a fault as a consent decision. Suppressing it at Resend is
+    // what actually protects a brand-new sending domain's reputation.
+    if (p.kind === 'invalid') {
+      await rfetch('suppress', p.email, 'https://api.resend.com/suppressions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: p.email }),
+      });
+      continue;
+    }
+
+    const { error } = await supabase.from('mg_subscribers').upsert(
+      {
+        email: p.email,
+        unsubscribed_at: p.supabase.unsubscribed_at,
+        source: p.supabase.source,
+        utm_source: p.supabase.utm_source,
+        utm_medium: p.supabase.utm_medium,
+        utm_campaign: p.supabase.utm_campaign,
+      },
+      { onConflict: 'email' },
+    );
     if (error) {
       failures.push(`${p.email} supabase-upsert: ${error.message}`);
       continue;
     }
+
     if (p.resend.contact !== 'unchanged') {
       await rfetch('create-contact', p.email, 'https://api.resend.com/contacts', {
         method: 'POST',
@@ -142,7 +198,16 @@ async function main() {
         `https://api.resend.com/contacts/${encodeURIComponent(p.email)}/segments/${encodeURIComponent(env('RESEND_SEGMENT_ID'))}`,
         { method: 'POST' },
       );
+    } else {
+      // An unsubscribed person still needs a Resend contact to carry the topic opt_out,
+      // but must never join the segment a broadcast targets.
+      await rfetch('create-contact', p.email, 'https://api.resend.com/contacts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: p.email }),
+      });
     }
+
     await rfetch(
       'topics',
       p.email,
@@ -151,9 +216,7 @@ async function main() {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         // A BARE ARRAY. The Node SDK wraps this in { topics: [...] }; the raw endpoint
-        // does not and 400s on the wrapped form. Wrapped, no active subscriber would
-        // ever have been opted in, and the migration would have reported success while
-        // producing a list that receives nothing.
+        // does not and 400s on the wrapped form.
         body: JSON.stringify([{ id: env('RESEND_TOPIC_ID'), subscription: p.resend.topic }]),
       },
     );
