@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { createClient } from '@supabase/supabase-js';
 import { createHash } from 'node:crypto';
 import { buildUnsubscribeUrl } from './unsubscribe';
+import { WELCOME_SUBJECT, welcomeHtml, welcomeText } from '../../lib/welcome-email';
 
 // The one on-demand route on this site. Everything else prerenders.
 export const prerender = false;
@@ -14,7 +15,7 @@ const RESEND_TIMEOUT_MS = 5000;
 // address already sees it. Kept as consts rather than env vars because they aren't
 // deployment config — changing them is a copy decision, not an infra one.
 const RESEND_FROM = 'Max Guérois <bonjour@maxguerois.com>';
-const RESEND_WELCOME_SUBJECT = 'Bienvenue, votre guide peptides';
+
 
 const MAX_EMAIL = 254;
 const MAX_FIELD = 200;
@@ -259,9 +260,7 @@ async function pushToResend(email: string, origin: string): Promise<void> {
     }),
   );
 
-  // 4. Welcome email carrying the peptides guide. Body content is a placeholder —
-  // the guide itself and its final copy belong to the /fr/peptides landing another
-  // agent is building in parallel; see the final report for what's still open here.
+  // 4. Welcome email. Copy and layout live in src/lib/welcome-email.ts.
   const unsubscribeUrl = buildUnsubscribeUrl(email, origin);
   await resendOrThrow(
     'send-welcome',
@@ -270,7 +269,7 @@ async function pushToResend(email: string, origin: string): Promise<void> {
       body: JSON.stringify({
         from: RESEND_FROM,
         to: [email],
-        subject: RESEND_WELCOME_SUBJECT,
+        subject: WELCOME_SUBJECT,
         // Gmail and Yahoo have required these of bulk senders since Feb 2024. An
         // in-body link alone is not enough: without the pair, the mail client shows
         // no unsubscribe affordance, people press "spam" instead, and the domain's
@@ -280,16 +279,11 @@ async function pushToResend(email: string, origin: string): Promise<void> {
           'List-Unsubscribe': `<${unsubscribeUrl}>`,
           'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
         },
-        text:
-          `Merci pour votre inscription. Le guide peptides arrive très vite.\n\n` +
-          `Vous pouvez vous désabonner à tout moment : ${unsubscribeUrl}`,
-        html:
-          `<p>Merci pour votre inscription. Le guide peptides arrive très vite.</p>` +
-          `<p><a href="${unsubscribeUrl}">Se désabonner</a></p>`,
+        text: welcomeText(unsubscribeUrl),
+        html: welcomeHtml(unsubscribeUrl),
       }),
     }),
-  );
-}
+  );}
 
 function reply(
   request: Request,

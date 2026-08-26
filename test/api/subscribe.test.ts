@@ -676,3 +676,30 @@ describe('no-JS return path', () => {
     }
   });
 });
+
+describe('welcome email', () => {
+  // The regression this guards: the placeholder promised "le guide peptides arrive
+  // très vite" while no guide existed. A first impression that opens on an unkept
+  // promise is worse than no email. It goes back in when the guide is real.
+  it('promises nothing that does not exist yet', async () => {
+    await post({ email: 'a@b.co' });
+    const call = (fetch as any).mock.calls.find(([u]: [string]) => u.endsWith('/emails'));
+    const body = JSON.parse(call[1].body);
+    expect(body.html.toLowerCase()).not.toContain('guide');
+    expect(body.text.toLowerCase()).not.toContain('guide');
+  });
+
+  it('carries the postal address a commercial email legally needs', async () => {
+    await post({ email: 'a@b.co' });
+    const body = JSON.parse((fetch as any).mock.calls.find(([u]: [string]) => u.endsWith('/emails'))[1].body);
+    expect(body.html).toContain('Maubeuge');
+    expect(body.text).toContain('Maubeuge');
+  });
+
+  it('carries no em dash, in either part', async () => {
+    await post({ email: 'a@b.co' });
+    const body = JSON.parse((fetch as any).mock.calls.find(([u]: [string]) => u.endsWith('/emails'))[1].body);
+    expect(body.html).not.toContain('\u2014');
+    expect(body.text).not.toContain('\u2014');
+  });
+});
