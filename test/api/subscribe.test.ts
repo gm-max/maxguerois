@@ -95,6 +95,9 @@ function post(
   return POST({ request, url: new URL(endpoint) } as never);
 }
 
+// Every successful pushToResend() run makes 4 calls, in order: create-contact,
+// add-to-segment, update-contact-topics, send-welcome. Reactivation (409 on create)
+// inserts a 5th, update-contact, right after create.
 const okFetch = () =>
   vi.fn(async () => new Response(JSON.stringify({ data: {} }), { status: 201 }));
 
@@ -102,8 +105,10 @@ beforeEach(() => {
   db.reset();
   process.env.SUPABASE_URL = 'https://example.supabase.co';
   process.env.SUPABASE_SERVICE_ROLE_KEY = 'service-role-key';
-  process.env.BEEHIIV_API_KEY = 'beehiiv-key';
-  process.env.BEEHIIV_PUBLICATION_ID = 'pub_test';
+  process.env.RESEND_API_KEY = 'resend-key';
+  process.env.RESEND_TOPIC_ID = 'topic-test';
+  process.env.RESEND_SEGMENT_ID = 'segment-test';
+  process.env.UNSUBSCRIBE_SECRET = 'unsub-secret';
   process.env.IP_HASH_SALT = 'salt';
   vi.stubGlobal('fetch', okFetch());
   vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -115,7 +120,25 @@ afterEach(() => {
 });
 
 const upsertOf = () => db.calls.find((c) => c.op === 'upsert');
-const beehiivBody = () => JSON.parse((fetch as any).mock.calls[0][1].body);
+
+function fetchCalls(): [string, RequestInit][] {
+  return (fetch as any).mock.calls;
+}
+// Exact-suffix matching on purpose: '/contacts' would also match
+// '/contacts/x/segments/y' with a naive `includes`, and the create-contact and
+// add-to-segment calls both use POST, so a loose match could silently pick either one.
+function callEnding(suffix: string, method: string) {
+  return fetchCalls().find(
+    ([u, init]) => u.endsWith(suffix) && (init as any)?.method === method,
+  );
+}
+const createContactCall = () => callEnding('/contacts', 'POST');
+const segmentCall = () => fetchCalls().find(([u, init]) => u.includes('/segments/') && (init as any)?.method === 'POST');
+const topicsCall = () => callEnding('/topics', 'PATCH');
+const welcomeCall = () => callEnding('/emails', 'POST');
+function bodyOf(call: [string, RequestInit] | undefined): any {
+  return call ? JSON.parse((call[1] as any).body) : undefined;
+}
 
 describe('parsing', () => {
   it('accepts a JSON body', async () => {
@@ -249,14 +272,17 @@ describe('rate limit', () => {
 describe('storing the subscriber', () => {
   it('updates on conflict and clears unsubscribed_at, so a return visit works', async () => {
     // The regression this guards: with ignoreDuplicates a returning unsubscriber kept
-    // their unsubscribed_at, beehiiv was told not to reactivate, and they still saw
+    // their unsubscribed_at, Resend was never told to reactivate, and they still saw
     // a thank-you while never hearing from us again.
     await post({ email: 'back@again.co' });
     const call = upsertOf()!;
     expect(call.options).toEqual({ onConflict: 'email' });
     expect(call.options).not.toMatchObject({ ignoreDuplicates: true });
     expect(call.payload).toMatchObject({ unsubscribed_at: null });
-    expect(beehiivBody().reactivate_existing).toBe(true);
+    // The Resend-side reactivation: a fresh signup always clears the contact's
+    // unsubscribed flag, whether it's a brand-new contact (via the /contacts create
+    // body) or an existing one (via the 409 -> PATCH path tested below).
+    expect(bodyOf(createContactCall())).toMatchObject({ unsubscribed: false });
   });
 
   it('never writes created_at, so the original signup date survives a re-signup', async () => {
@@ -280,24 +306,59 @@ describe('storing the subscriber', () => {
   });
 });
 
-describe('beehiiv sync', () => {
-  it('sends the welcome email that carries the gated guide', async () => {
+describe('resend sync', () => {
+  it('creates the contact, un-unsubscribed', async () => {
     await post({ email: 'a@b.co' });
-    expect(beehiivBody().send_welcome_email).toBe(true);
+    expect(bodyOf(createContactCall())).toMatchObject({ email: 'a@b.co', unsubscribed: false });
   });
 
-  it('forwards attribution so the Instagram funnel stays traceable', async () => {
-    await post({
-      email: 'a@b.co',
-      utm_source: 'instagram',
-      utm_medium: 'bio',
-      utm_campaign: 'science-dm',
-    });
-    expect(beehiivBody()).toMatchObject({
-      utm_source: 'instagram',
-      utm_medium: 'bio',
-      utm_campaign: 'science-dm',
-    });
+  it('adds the contact to the configured segment', async () => {
+    await post({ email: 'a@b.co' });
+    const call = segmentCall();
+    expect(call).toBeTruthy();
+    expect(call![0]).toBe('https://api.resend.com/contacts/a%40b.co/segments/segment-test');
+  });
+
+  it('opts the contact in on the topic explicitly — the topic defaults to opt_out', async () => {
+    await post({ email: 'a@b.co' });
+    // A BARE ARRAY. This assertion previously expected { topics: [...] }, the shape the
+    // Node SDK takes, not the shape the raw endpoint accepts. A mocked fetch happily
+    // confirms whatever shape you assert, which is exactly why it passed while the real
+    // call would have 400'd. Checked against the documented curl example.
+    expect(bodyOf(topicsCall())).toEqual([{ id: 'topic-test', subscription: 'opt_in' }]);
+  });
+
+  it('sends the welcome email that carries the gated guide', async () => {
+    await post({ email: 'a@b.co' });
+    const body = bodyOf(welcomeCall());
+    expect(body.to).toEqual(['a@b.co']);
+    expect(body.subject).toBeTruthy();
+  });
+
+  it('reactivates an existing contact on 409 instead of failing the whole sync', async () => {
+    // The regression this guards: a contact that already exists (e.g. a returning
+    // unsubscriber) 409s on create. Without a fallback, that 409 would bubble up as a
+    // thrown error and abort the segment/topic/welcome steps entirely.
+    let call = 0;
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string) => {
+        call++;
+        if (url.endsWith('/contacts') && call === 1) return new Response('exists', { status: 409 });
+        return new Response(JSON.stringify({ data: {} }), { status: 200 });
+      }),
+    );
+    const res = await post({ email: 'back@again.co' });
+    expect(res.status).toBe(200);
+    const updateContactCall = callEnding('/contacts/back%40again.co', 'PATCH');
+    expect(bodyOf(updateContactCall)).toEqual({ unsubscribed: false });
+    // Guard verified negatively: removing the 409 branch in pushToResend (replacing it
+    // with a plain `await resendOrThrow('create-contact', createRes)`) makes this test
+    // fail — bodyOf(updateContactCall) comes back undefined — confirming this
+    // assertion actually exercises the branch rather than passing vacuously.
+    expect(segmentCall()).toBeTruthy();
+    expect(topicsCall()).toBeTruthy();
+    expect(welcomeCall()).toBeTruthy();
   });
 
   it('marks the row synced on success', async () => {
@@ -307,19 +368,22 @@ describe('beehiiv sync', () => {
     expect((update.payload as any).synced_at).toBeTruthy();
   });
 
-  it('still returns 200 and records the error when beehiiv rejects', async () => {
+  it('still returns 200, and keeps the signup, when Resend rejects', async () => {
+    // The regression this guards: a Resend failure must never cost a real signup.
+    // Supabase already holds the row (asserted below) before Resend is even called.
     vi.stubGlobal(
       'fetch',
       vi.fn(async () => new Response('bad request', { status: 422 })),
     );
     const res = await post({ email: 'a@b.co' });
     expect(res.status).toBe(200);
+    expect(upsertOf()).toBeTruthy();
     const update = db.calls.find((c) => c.op === 'update')!;
     expect((update.payload as any).sync_error).toContain('422');
     expect((update.payload as any).synced_at).toBeUndefined();
   });
 
-  it('still returns 200 when beehiiv times out', async () => {
+  it('still returns 200 when Resend times out', async () => {
     vi.stubGlobal(
       'fetch',
       vi.fn(async () => {
@@ -335,13 +399,13 @@ describe('beehiiv sync', () => {
 
 describe('missing configuration', () => {
   it('does not pretend to succeed when an env var is absent', async () => {
-    delete process.env.BEEHIIV_API_KEY;
-    // The Supabase write already happened, so the signup is NOT lost: the beehiiv
+    delete process.env.RESEND_API_KEY;
+    // The Supabase write already happened, so the signup is NOT lost: the Resend
     // failure is recorded like any other and the visitor still gets a 200.
     const res = await post({ email: 'a@b.co' });
     expect(res.status).toBe(200);
     const update = db.calls.find((c) => c.op === 'update')!;
-    expect((update.payload as any).sync_error).toContain('BEEHIIV_API_KEY');
+    expect((update.payload as any).sync_error).toContain('RESEND_API_KEY');
   });
 });
 

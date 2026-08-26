@@ -1,13 +1,20 @@
 import type { APIRoute } from 'astro';
 import { createClient } from '@supabase/supabase-js';
 import { createHash } from 'node:crypto';
+import { buildUnsubscribeUrl } from './unsubscribe';
 
 // The one on-demand route on this site. Everything else prerenders.
 export const prerender = false;
 
 const RATE_LIMIT_MAX = 5;          // attempts per IP
 const RATE_LIMIT_WINDOW_MIN = 60;
-const BEEHIIV_TIMEOUT_MS = 5000;
+const RESEND_TIMEOUT_MS = 5000;
+
+// D16: not secret, both public in the sense that anyone receiving mail from this
+// address already sees it. Kept as consts rather than env vars because they aren't
+// deployment config — changing them is a copy decision, not an infra one.
+const RESEND_FROM = 'Max Guérois <bonjour@maxguerois.com>';
+const RESEND_WELCOME_SUBJECT = 'Bienvenue, votre guide peptides';
 
 const MAX_EMAIL = 254;
 const MAX_FIELD = 200;
@@ -57,32 +64,117 @@ function clientIp(request: Request): string {
 }
 
 /**
- * Push to beehiiv, the send layer.
- *
- * AWAITED on purpose. In ouros-reddit-scam the equivalent calls were fired without
- * await and the serverless runtime tore the function down as soon as the response
- * returned, killing whatever request was still in flight: 5 of 20 audience adds and
- * 13 of 20 welcome emails vanished, at random and independently. Next fixed it with
- * `after()`. Astro has no equivalent, so the guarantee here comes from awaiting with
- * a timeout instead. Supabase already holds the email by this point, so a failure
- * costs latency and a `sync_error` row, never a lost signup.
+ * One authenticated call to the Resend REST API, timed out the same way every other
+ * outbound call in this file is. No `resend` SDK dependency: this project already
+ * talks to a third party with bare `fetch` (see the beehiiv-era call this replaced),
+ * and adding a client library for four endpoints isn't worth the extra surface.
  */
-async function pushToBeehiiv(payload: Record<string, unknown>): Promise<void> {
-  const res = await fetch(
-    `https://api.beehiiv.com/v2/publications/${env('BEEHIIV_PUBLICATION_ID')}/subscriptions`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${env('BEEHIIV_API_KEY')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(BEEHIIV_TIMEOUT_MS),
+async function resendFetch(path: string, init: RequestInit = {}): Promise<Response> {
+  return fetch(`https://api.resend.com${path}`, {
+    ...init,
+    headers: {
+      Authorization: `Bearer ${env('RESEND_API_KEY')}`,
+      'Content-Type': 'application/json',
+      ...(init.headers as Record<string, string> | undefined),
     },
-  );
-  if (!res.ok) {
-    throw new Error(`beehiiv ${res.status}: ${(await res.text()).slice(0, 300)}`);
+    signal: AbortSignal.timeout(RESEND_TIMEOUT_MS),
+  });
+}
+
+async function resendOrThrow(step: string, res: Response, okStatuses: number[] = []): Promise<void> {
+  if (res.ok || okStatuses.includes(res.status)) return;
+  throw new Error(`resend ${step} ${res.status}: ${(await res.text()).slice(0, 300)}`);
+}
+
+/**
+ * Push to Resend, the send layer (D16 — replaces beehiiv).
+ *
+ * AWAITED on purpose, every step. In ouros-reddit-scam the equivalent calls were fired
+ * without await and the serverless runtime tore the function down as soon as the
+ * response returned, killing whatever request was still in flight: 5 of 20 audience
+ * adds and 13 of 20 welcome emails vanished, at random and independently. Next fixed
+ * it with `after()`. Astro has no equivalent, so the guarantee here comes from
+ * awaiting with a timeout instead. Supabase already holds the email by this point, so
+ * a failure costs latency and a `sync_error` row, never a lost signup — this function
+ * throwing never fails the caller's insert (see the try/catch around its call site).
+ *
+ * Four steps, matching the brief exactly so each is independently testable and each
+ * failure is attributable to one Resend endpoint:
+ *   1. create (or, on 409, reactivate) the contact
+ *   2. add it to the segment
+ *   3. opt it in on the topic — the topic's default is opt_out, so skipping this
+ *      step means the person is in Resend but will never receive anything
+ *   4. send the welcome email
+ */
+async function pushToResend(email: string, origin: string): Promise<void> {
+  const topicId = env('RESEND_TOPIC_ID');
+  const segmentId = env('RESEND_SEGMENT_ID');
+
+  // 1. Create the contact. A 409 means it already exists — this is the reactivation
+  // path. beehiiv's `reactivate_existing: true` has no direct Resend equivalent; the
+  // analogue is unsubscribed:false here plus the explicit topic opt-in in step 3. A
+  // fresh form submission is fresh consent, so clearing unsubscribed is correct.
+  const createRes = await resendFetch('/contacts', {
+    method: 'POST',
+    body: JSON.stringify({ email, unsubscribed: false }),
+  });
+  if (createRes.status === 409) {
+    await resendOrThrow(
+      'update-contact',
+      await resendFetch(`/contacts/${encodeURIComponent(email)}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ unsubscribed: false }),
+      }),
+    );
+  } else {
+    await resendOrThrow('create-contact', createRes);
   }
+
+  // 2. Segment membership. 409 (already a member) is fine.
+  await resendOrThrow(
+    'add-to-segment',
+    await resendFetch(
+      `/contacts/${encodeURIComponent(email)}/segments/${encodeURIComponent(segmentId)}`,
+      { method: 'POST' },
+    ),
+    [409],
+  );
+
+  // 3. Explicit opt-in on the topic.
+  await resendOrThrow(
+    'update-contact-topics',
+    await resendFetch(`/contacts/${encodeURIComponent(email)}/topics`, {
+      method: 'PATCH',
+      // A BARE ARRAY, not { topics: [...] }. The Node SDK wraps it in an object; the
+      // raw HTTP endpoint does not, and a wrapped body 400s. Verified against
+      // resend.com/docs/api-reference/contacts/update-contact-topics. This one line
+      // silently broke the whole flow: the opt-in threw, so nobody was ever subscribed
+      // to the topic AND the welcome email below never even ran.
+      body: JSON.stringify([{ id: topicId, subscription: 'opt_in' }]),
+    }),
+  );
+
+  // 4. Welcome email carrying the peptides guide. Body content is a placeholder —
+  // the guide itself and its final copy belong to the /fr/peptides landing another
+  // agent is building in parallel; see the final report for what's still open here.
+  const unsubscribeUrl = buildUnsubscribeUrl(email, origin);
+  await resendOrThrow(
+    'send-welcome',
+    await resendFetch('/emails', {
+      method: 'POST',
+      body: JSON.stringify({
+        from: RESEND_FROM,
+        to: [email],
+        subject: RESEND_WELCOME_SUBJECT,
+        text:
+          `Merci pour votre inscription. Le guide peptides arrive très vite.\n\n` +
+          `Vous pouvez vous désabonner à tout moment : ${unsubscribeUrl}`,
+        html:
+          `<p>Merci pour votre inscription. Le guide peptides arrive très vite.</p>` +
+          `<p><a href="${unsubscribeUrl}">Se désabonner</a></p>`,
+      }),
+    }),
+  );
 }
 
 function reply(
@@ -176,9 +268,9 @@ export const POST: APIRoute = async ({ request, url }) => {
   //
   // This UPDATES on conflict rather than ignoring it. With ignoreDuplicates the row
   // of someone who had unsubscribed was left untouched, so unsubscribed_at stayed
-  // set, beehiiv was told not to reactivate, and they still got a thank-you and never
-  // heard from us again — the one visitor profile the system lost completely, and the
-  // most motivated one. Submitting the form is fresh consent, so clearing
+  // set, Resend was never told to reactivate, and they still got a thank-you and
+  // never heard from us again — the one visitor profile the system lost completely,
+  // and the most motivated one. Submitting the form is fresh consent, so clearing
   // unsubscribed_at is the correct reading of what they just did.
   // created_at is absent from the payload on purpose: it keeps its original value.
   const { error: insErr } = await supabase
@@ -202,19 +294,13 @@ export const POST: APIRoute = async ({ request, url }) => {
     supabase.from('mg_subscribers').update(patch).eq('email', email);
 
   try {
-    await pushToBeehiiv({
-      email,
-      reactivate_existing: true,       // see the upsert note: a re-signup is consent
-      send_welcome_email: true,        // carries the gated peptides guide
-      referring_site: request.headers.get('referer') ?? undefined,
-      ...Object.fromEntries(Object.entries(utm).filter(([, v]) => v)),
-    });
+    await pushToResend(email, url.origin);
     await markSync({ synced_at: new Date().toISOString(), sync_error: null });
   } catch (e) {
     // Never fails the signup. sync_error + a NULL synced_at leave the row visible
     // to the partial index, so a replay can pick it up later.
     const msg = e instanceof Error ? e.message : String(e);
-    console.error('beehiiv sync failed', msg);
+    console.error('resend sync failed', msg);
     await markSync({ sync_error: msg.slice(0, 500) });
   }
 
