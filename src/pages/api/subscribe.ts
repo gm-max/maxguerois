@@ -26,8 +26,12 @@ const MAX_FIELD = 200;
 // `https://…` and for the protocol-relative `//…` form. Keys in, paths out, no
 // caller-controlled destination anywhere.
 const RETURN_PATHS: Record<string, string> = {
-  fr: '/fr/newsletter',
-  en: '/newsletter',
+  // Thank-you pages, NOT the pages the form lives on. Every page carrying
+  // NewsletterEmbed is prerendered and therefore cannot read `?ok=1` at request time,
+  // so redirecting a no-JS visitor back there showed them a page identical to the one
+  // they left. /fr/merci and /thanks are `prerender = false` and can render the result.
+  fr: '/fr/merci',
+  en: '/thanks',
   // The Instagram funnel landing. Without this key a no-JS signup from
   // /fr/peptides lands back on the blog archive, which is not where the
   // visitor was and does not carry the confirmation.

@@ -1,6 +1,23 @@
 ---
 /**
- * Beehiiv newsletter embed — used on homepage, experiments index, and article footers.
+ * Newsletter signup, on our own stack. Used on both homepages, both newsletter
+ * indexes, every article footer, and inside SubscribeModal — 24 call sites.
+ *
+ * This was a beehiiv <iframe> until 2026-08-26. Replacing it deletes the two
+ * injected beehiiv scripts, the once-per-page script-dedup guard, the MutationObserver
+ * correcting their 2000px no-measurement fallback, and the min/max-height seatbelt —
+ * about 100 lines that existed only to compensate for a cross-origin frame we did not
+ * control. None of that has an equivalent here because there is no frame.
+ *
+ * WITHOUT JAVASCRIPT the form posts natively and the route redirects to a thank-you
+ * page. That indirection is not decoration: every page carrying this component is
+ * PRERENDERED, so it cannot read `?ok=1` at request time and could never render a
+ * confirmation. /fr/merci and /thanks are on-demand and can. Sending someone back to
+ * a page identical to the one they left is how you make them submit twice, then
+ * conclude it is broken.
+ *
+ * WITH JAVASCRIPT the submit is intercepted, the form is replaced in place by the
+ * confirmation, and nothing navigates.
  */
 import type { Locale } from '../i18n/utils';
 import { t } from '../i18n/utils';
@@ -9,18 +26,18 @@ interface Props {
     locale?: Locale;
     /** Render only the email input + button (no heading or description). */
     minimal?: boolean;
-    /**
-     * Emit `data-src` instead of `src`, leaving the caller to start the load.
-     * Used by the modal: it only ever shows once per visitor, so on every later
-     * visit the iframe would otherwise be fetched for a modal that can never
-     * appear. The caller sets src at page load when the modal is still due, so
-     * the frame is ready by the time it opens.
-     */
-    deferSrc?: boolean;
+    /** Distinguishes where a signup came from, stored in mg_subscribers.source. */
+    source?: string;
 }
 
-const { locale = 'en', minimal = false, deferSrc = false } = Astro.props;
-const embedSrc = 'https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-911b5e3eb2e6';
+const { locale = 'en', minimal = false, source = 'site' } = Astro.props;
+
+// The route resolves this key against a whitelist; it never accepts a URL. See the
+// open-redirect note in src/pages/api/subscribe.ts.
+const action = `/api/subscribe?lang=${locale}`;
+// Unique per instance: several embeds share a page (index + article footer), and
+// duplicate ids would make every <label for> point at the first input on the page.
+const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
 ---
 <div class:list={["newsletter-block", { "newsletter-block--minimal": minimal }]}>
     {!minimal && (
@@ -31,100 +48,233 @@ const embedSrc = 'https://subscribe-forms.beehiiv.com/2019016e-a00d-4333-886d-91
             <p class="newsletter-desc">{t(locale, 'newsletter.desc')}</p>
         </>
     )}
-    {/* Load beehiiv's scripts at most once per page. Two <script src> tags would
-        execute embed.js twice and double-bind its resize listener, making the
-        iframes race their height. This guard lets multiple embeds coexist. */}
-    <script is:inline>
-        (function () {
-            var srcs = [
-                'https://subscribe-forms.beehiiv.com/attribution.js',
-                'https://subscribe-forms.beehiiv.com/embed.js'
-            ];
-            srcs.forEach(function (src) {
-                if (document.querySelector('script[src="' + src + '"]')) return;
-                var s = document.createElement('script');
-                s.src = src;
-                s.async = true;
-                document.head.appendChild(s);
-            });
-        })();
-    </script>
-    <iframe
-        src={deferSrc ? undefined : embedSrc}
-        data-src={deferSrc ? embedSrc : undefined}
-        class="beehiiv-embed"
-        data-test-id="beehiiv-embed"
-        frameborder="0"
-        scrolling="no"
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation"
-        style="width: 100%; max-width: 100%; height: 80px; margin: 0; border-radius: 0px !important; background-color: transparent;"
-    ></iframe>
-    {/* Correct beehiiv's no-measurement fallback height.
-        Its embed.js writes an inline height on the iframe after measuring. When
-        that handshake does not complete it writes 2000px, which is not a
-        measurement but a give-up value. Inside the modal the 60vh cap keeps the
-        card on screen but leaves it half empty under the Subscribe button; in
-        page it inflated .newsletter-block from 205px to 2158px and the homepage
-        from 3541px to 5494px.
 
-        Only the exact fallback is touched. Any other height beehiiv writes is a
-        real measurement, including the taller confirmation it swaps in after a
-        successful subscribe, and passes through untouched. */}
-    <script is:inline>
-        (function () {
-            var FALLBACK = '2000px';
-            // DESIGN.md documents 80px as the reserved height for this embed, and
-            // the iframe already ships with it inline. Falling back to the
-            // documented value beats inventing one: the form measures 47px when
-            // beehiiv gets it right, so 80px holds it with room to spare.
-            var DOCUMENTED = '80px';
-            // This script is placed AFTER the iframe on purpose: currentScript runs
-            // during parsing, so an earlier position would query a DOM where the
-            // iframe does not exist yet and silently observe nothing.
-            var script = document.currentScript;
-            var frame = script && script.previousElementSibling
-                && script.previousElementSibling.matches('iframe.beehiiv-embed')
-                ? script.previousElementSibling
-                : (script && script.parentElement
-                    ? script.parentElement.querySelector('iframe.beehiiv-embed') : null);
-            if (!frame || typeof MutationObserver !== 'function') return;
-
-            var ours = null;   // guard: our own write must not retrigger us
-            new MutationObserver(function () {
-                var h = frame.style.height;
-                if (h === ours) return;
-                if (h === FALLBACK) { ours = DOCUMENTED; frame.style.height = DOCUMENTED; }
-                else { ours = null; }
-            }).observe(frame, { attributes: true, attributeFilter: ['style'] });
-        })();
-    </script>
+    <form class="nl-form" data-nl-form method="POST" action={action}>
+        <label class="nl-label" for={uid}>{t(locale, 'newsletter.form.label')}</label>
+        <input type="hidden" name="source" value={source} />
+        {/* Honeypot. Hidden from sight and from screen readers, never from a bot,
+            which fills every input it finds. The route answers 200 and writes
+            nothing, so the bot learns nothing from the response either. */}
+        <input class="nl-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <div class="nl-row">
+            <input
+                id={uid}
+                name="email"
+                type="email"
+                required
+                inputmode="email"
+                autocomplete="email"
+                autocapitalize="off"
+                spellcheck="false"
+                placeholder={t(locale, 'newsletter.form.placeholder')}
+                aria-describedby={`${uid}-err`}
+            />
+            <button type="submit">{t(locale, 'newsletter.form.button')}</button>
+        </div>
+        <p class="nl-err" id={`${uid}-err`} hidden></p>
+        <p class="nl-micro">{t(locale, 'newsletter.form.micro')}</p>
+    </form>
 </div>
 
+<script is:inline define:vars={{ locale }}>
+    (function () {
+        // Bind once per page even though the component renders several times: a second
+        // copy of this script would attach a second submit handler to every form and
+        // send each signup twice.
+        if (window.__nlFormBound) return;
+        window.__nlFormBound = true;
+
+        var COPY = {
+            fr: {
+                busy: 'Une seconde…',
+                done: 'Merci, vous êtes inscrit. Le prochain numéro arrive lundi.',
+                err: {
+                    invalid_email: 'Cette adresse ne semble pas valide.',
+                    rate_limited: 'Trop de tentatives. Réessayez dans un moment.',
+                    store_failed: "L'inscription a échoué. Réessayez dans un instant.",
+                    _: "L'inscription a échoué. Réessayez dans un instant.",
+                },
+            },
+            en: {
+                busy: 'One moment…',
+                done: "Thanks, you're subscribed. The next issue lands Monday.",
+                err: {
+                    invalid_email: "That address doesn't look right.",
+                    rate_limited: 'Too many attempts. Try again in a moment.',
+                    store_failed: 'Signup failed. Try again in a moment.',
+                    _: 'Signup failed. Try again in a moment.',
+                },
+            },
+        };
+
+        function bind(form) {
+            var input = form.querySelector('input[name="email"]');
+            var button = form.querySelector('button[type="submit"]');
+            var err = form.querySelector('.nl-err');
+            // Read the locale off the form's own action, not off the page: an EN
+            // article footer and a FR one can both exist, and the component is
+            // rendered per call site with its own locale.
+            var lang = /lang=fr/.test(form.getAttribute('action') || '') ? 'fr' : 'en';
+            var copy = COPY[lang];
+            var label = button.textContent;
+
+            function showError(msg) {
+                err.textContent = msg;
+                err.hidden = false;
+                input.setAttribute('aria-invalid', 'true');
+            }
+            function clearError() {
+                err.hidden = true;
+                input.removeAttribute('aria-invalid');
+            }
+
+            // Validate on blur, never on keystroke. Correcting someone while they are
+            // still typing their address is the surest way to lose them.
+            input.addEventListener('blur', function () {
+                if (input.value && !input.checkValidity()) showError(copy.err.invalid_email);
+                else clearError();
+            });
+            input.addEventListener('input', clearError);
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (!input.checkValidity()) {
+                    showError(copy.err.invalid_email);
+                    input.focus();
+                    return;
+                }
+                clearError();
+                button.disabled = true;
+                button.textContent = copy.busy;
+                form.setAttribute('aria-busy', 'true');
+
+                var payload = {};
+                new FormData(form).forEach(function (v, k) { payload[k] = v; });
+
+                fetch(form.getAttribute('action'), {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json', accept: 'application/json' },
+                    body: JSON.stringify(payload),
+                })
+                    .then(function (r) {
+                        return r.json().then(function (b) { return { ok: r.ok, body: b }; });
+                    })
+                    .then(function (res) {
+                        if (!res.ok || !res.body.ok) throw new Error(res.body.error || '_');
+                        // Replace the whole form, and move focus to the message. Without
+                        // role + focus a screen reader never learns the signup worked.
+                        var done = document.createElement('p');
+                        done.className = 'nl-done';
+                        done.setAttribute('role', 'status');
+                        done.setAttribute('tabindex', '-1');
+                        done.textContent = copy.done;
+                        form.parentNode.replaceChild(done, form);
+                        done.focus();
+                        // Someone who just subscribed must never be shown the popup
+                        // asking them to subscribe.
+                        try { localStorage.setItem('mg_email_modal_v1', '1'); } catch (e3) {}
+                        var dlg = document.querySelector('dialog.submodal');
+                        if (dlg && dlg.open) dlg.close();
+                    })
+                    .catch(function (e2) {
+                        // The field is NEVER cleared on error.
+                        button.disabled = false;
+                        button.textContent = label;
+                        form.removeAttribute('aria-busy');
+                        showError(copy.err[e2.message] || copy.err._);
+                    });
+            });
+        }
+
+        var forms = document.querySelectorAll('form[data-nl-form]');
+        for (var i = 0; i < forms.length; i++) bind(forms[i]);
+    })();
+</script>
+
 <style>
-    /* Bound the embed at both ends. beehiiv's embed.js measures the iframe and
-       writes an inline height; when that handshake misbehaves it lands on one of
-       two observed values, both bad:
+    .nl-form { margin: 0; }
 
-         2000px  its fallback when it never gets a measurement. Seen on the live
-                 homepage, where it inflated .newsletter-block from 205px to
-                 2158px and the page from 3541px to 5494px, leaving ~1950px of
-                 white space. Reproduced on the pre-modal build too, so it is not
-                 caused by having a second embed on the page.
-         0px     what it writes when it measures the iframe while it is hidden,
-                 which is the modal's case at load. It self-corrects a few
-                 seconds after the modal opens, but the form is invisible until
-                 it does.
+    .nl-label {
+        display: block;
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: var(--sp-2);
+    }
 
-       Neither is reachable now. The healthy value is 47px, well inside these
-       bounds, so this rule is inert whenever the handshake works, and it still
-       lets beehiiv grow the frame for the taller confirmation it swaps in after
-       a successful subscribe.
+    /* Off-screen rather than display:none. A hidden field is skipped by some bots;
+       one that is merely positioned away is filled like any other. */
+    .nl-hp {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+    }
 
-       Measured 6 consecutive loads at 47px after this was written, so the
-       failure is intermittent rather than constant: treat this as a seatbelt,
-       not as a fix for a reproducible bug. */
-    .newsletter-block :global(iframe.beehiiv-embed) {
-        min-height: 47px !important;
-        max-height: 60vh !important;
+    .nl-row { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+
+    .nl-row input[type="email"] {
+        flex: 1 1 220px;
+        min-width: 0;
+        padding: 12px 14px;
+        font-family: var(--font-body);
+        font-size: 16px; /* below 16px, iOS Safari zooms the page on focus */
+        color: var(--text-primary);
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+    }
+
+    .nl-row input[type="email"]:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+
+    .nl-row input[aria-invalid="true"] { border-color: #b3261e; }
+
+    .nl-row button {
+        /* 44px min touch target, per DESIGN.md. */
+        min-height: 44px;
+        padding: 12px 20px;
+        font-family: var(--font-body);
+        font-size: 15px;
+        /* #1a1a1a, never var(--bg): in light mode that resolves to #faf9f7, and
+           near-white on the amber accent measures 2.76:1, which fails WCAG AA.
+           Dark ink on amber passes in both themes. Same call as /fr/peptides,
+           recorded in DESIGN.md on 2026-08-26. */
+        color: #1a1a1a;
+        background: var(--accent);
+        border: 0;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: opacity var(--duration-short) var(--ease-out);
+    }
+
+    .nl-row button:hover { opacity: 0.88; }
+    .nl-row button[disabled] { opacity: 0.6; cursor: default; }
+
+    .nl-err {
+        margin: var(--sp-2) 0 0;
+        font-size: 13px;
+        color: #b3261e;
+    }
+
+    .nl-micro {
+        margin: var(--sp-2) 0 0;
+        font-size: 13px;
+        color: var(--text-tertiary);
+    }
+
+    .nl-done {
+        margin: 0;
+        font-size: 15px;
+        color: var(--text-primary);
+    }
+
+    .nl-done:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .nl-row button { transition: none; }
     }
 </style>

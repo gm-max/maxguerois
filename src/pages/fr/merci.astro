@@ -1,0 +1,70 @@
+---
+/**
+ * Where a signup WITHOUT JavaScript lands.
+ *
+ * `prerender = false` is load-bearing, not a preference. Every page carrying
+ * NewsletterEmbed is prerendered, so none of them can read `?ok=1` at request time:
+ * a no-JS visitor would be redirected back to a page identical to the one they left,
+ * with no confirmation anywhere. They submit again, then conclude it is broken. This
+ * page is rendered on demand, so it can actually say what happened.
+ *
+ * Visitors WITH JavaScript never reach it: the form is intercepted and replaced in
+ * place.
+ */
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+
+const locale = 'fr';
+const params = Astro.url.searchParams;
+const ok = params.get('ok') === '1';
+const code = params.get('error');
+
+const ERRORS: Record<string, string> = {
+    invalid_email: 'Cette adresse ne semble pas valide.',
+    rate_limited: 'Trop de tentatives. Réessayez dans un moment.',
+    store_failed: "L'inscription a échoué. Réessayez dans un instant.",
+    bad_request: "L'inscription a échoué. Réessayez dans un instant.",
+};
+const error = code ? (ERRORS[code] ?? ERRORS.store_failed) : null;
+---
+<Layout
+    title={ok ? 'Merci, vous êtes inscrit' : "L'inscription a échoué"}
+    description="Confirmation d'inscription à la newsletter L'actu peptides."
+    locale={locale}
+    noindex
+    emailModal={false}
+>
+    <main class="merci">
+        {ok ? (
+            <>
+                <h1>C'est fait.</h1>
+                <p>Vous êtes inscrit à <strong>L'actu peptides</strong>. Le prochain numéro arrive lundi.</p>
+                <p class="merci-micro">Vous pouvez vous désabonner en un clic depuis n'importe quel email.</p>
+            </>
+        ) : (
+            <>
+                <h1>L'inscription a échoué.</h1>
+                <p>{error ?? "Quelque chose n'a pas fonctionné."}</p>
+            </>
+        )}
+        <p class="merci-back"><a href="/fr/newsletter">Retour à la newsletter</a></p>
+    </main>
+</Layout>
+
+<style>
+    .merci {
+        max-width: 620px;
+        margin: 0 auto;
+        padding: var(--sp-20) var(--sp-6);
+    }
+    .merci h1 {
+        font-family: var(--font-display);
+        font-size: 36px;
+        font-weight: 300;
+        margin: 0 0 var(--sp-4);
+    }
+    .merci p { font-size: 18px; line-height: 1.6; margin: 0 0 var(--sp-4); }
+    .merci-micro { font-size: 14px; color: var(--text-tertiary); }
+    .merci-back { margin-top: var(--sp-8); font-size: 15px; }
+</style>

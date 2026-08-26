@@ -1,0 +1,61 @@
+---
+/**
+ * The English twin of /fr/merci. See that file for why this is on demand.
+ */
+export const prerender = false;
+
+import Layout from '../layouts/Layout.astro';
+
+const locale = 'en';
+const params = Astro.url.searchParams;
+const ok = params.get('ok') === '1';
+const code = params.get('error');
+
+const ERRORS: Record<string, string> = {
+    invalid_email: "That address doesn't look right.",
+    rate_limited: 'Too many attempts. Try again in a moment.',
+    store_failed: 'Signup failed. Try again in a moment.',
+    bad_request: 'Signup failed. Try again in a moment.',
+};
+const error = code ? (ERRORS[code] ?? ERRORS.store_failed) : null;
+---
+<Layout
+    title={ok ? "Thanks, you're subscribed" : 'Signup failed'}
+    description="Newsletter signup confirmation."
+    locale={locale}
+    noindex
+    emailModal={false}
+>
+    <main class="merci">
+        {ok ? (
+            <>
+                <h1>You're in.</h1>
+                <p>You're subscribed. The next issue lands Monday.</p>
+                <p class="merci-micro">You can unsubscribe in one click from any email.</p>
+            </>
+        ) : (
+            <>
+                <h1>Signup failed.</h1>
+                <p>{error ?? 'Something went wrong.'}</p>
+            </>
+        )}
+        <p class="merci-back"><a href="/newsletter">Back to the newsletter</a></p>
+    </main>
+</Layout>
+
+<style>
+    .merci {
+        max-width: 620px;
+        margin: 0 auto;
+        padding: var(--sp-20) var(--sp-6);
+    }
+    .merci h1 {
+        font-family: var(--font-display);
+        font-size: 36px;
+        font-weight: 300;
+        margin: 0 0 var(--sp-4);
+    }
+    .merci p { font-size: 18px; line-height: 1.6; margin: 0 0 var(--sp-4); }
+    .merci-micro { font-size: 14px; color: var(--text-tertiary); }
+    .merci-back { margin-top: var(--sp-8); font-size: 15px; }
+</style>

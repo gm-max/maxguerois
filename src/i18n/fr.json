@@ -18,7 +18,21 @@
   },
   "newsletter": {
     "title": "L'actu peptides",
-    "desc": "L'actu des peptides décryptée, les signaux qui comptent, et mes essais quand ils valent vraiment le détour. Direct dans votre boîte mail. Désabonnement à tout moment."
+    "desc": "L'actu des peptides décryptée, les signaux qui comptent, et mes essais quand ils valent vraiment le détour. Direct dans votre boîte mail. Désabonnement à tout moment.",
+    "form": {
+      "label": "Votre email",
+      "placeholder": "votre@email.com",
+      "button": "S'inscrire",
+      "busy": "Une seconde…",
+      "micro": "Gratuit. Désabonnement en un clic.",
+      "done": "Merci, vous êtes inscrit. Le prochain numéro arrive lundi.",
+      "err": {
+        "invalid_email": "Cette adresse ne semble pas valide.",
+        "rate_limited": "Trop de tentatives. Réessayez dans un moment.",
+        "store_failed": "L'inscription a échoué. Réessayez dans un instant.",
+        "generic": "L'inscription a échoué. Réessayez dans un instant."
+      }
+    }
   },
   "modal": {
     "title": "Avant de partir",

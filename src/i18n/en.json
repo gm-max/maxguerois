@@ -18,7 +18,21 @@
   },
   "newsletter": {
     "title": "Follow the experiments",
-    "desc": "The health experiments I run on myself, published in full, the wins and the misses. Straight to your inbox. Unsubscribe anytime."
+    "desc": "The health experiments I run on myself, published in full, the wins and the misses. Straight to your inbox. Unsubscribe anytime.",
+    "form": {
+      "label": "Your email",
+      "placeholder": "you@email.com",
+      "button": "Subscribe",
+      "busy": "One moment...",
+      "micro": "Free. One-click unsubscribe.",
+      "done": "Thanks, you're subscribed. The next issue lands Monday.",
+      "err": {
+        "invalid_email": "That address doesn't look right.",
+        "rate_limited": "Too many attempts. Try again in a moment.",
+        "store_failed": "Signup failed. Try again in a moment.",
+        "generic": "Signup failed. Try again in a moment."
+      }
+    }
   },
   "modal": {
     "title": "Before you go",

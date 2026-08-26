@@ -2,19 +2,17 @@
 /**
  * One-per-visitor email modal, adapted from the ouroslab.co subscribe popup.
  *
- * Two deliberate differences from the Ouros original, both forced by beehiiv:
+ * Both of this file's odd shapes existed because it wrapped beehiiv's CROSS-ORIGIN
+ * iframe, and both are gone now that the form is same-origin:
  *
- * 1. The Ouros popup closes itself when the visitor subscribes, because its form
- *    posts same-origin and the component gets a callback. Ours wraps beehiiv's
- *    CROSS-ORIGIN iframe, so the page cannot see a submission at all. beehiiv
- *    publishes no documented postMessage on submit, and its embed.js sits behind
- *    Cloudflare so the behaviour could not be verified either. Rather than code
- *    against a guess, this modal never tries to detect a subscribe.
+ * 1. It could not detect a subscribe, because a page cannot observe a submission
+ *    inside a cross-origin frame and beehiiv documents no postMessage. So it never
+ *    tried. NewsletterEmbed now closes this dialog itself on success.
  *
- * 2. Because of (1), the once-per-visitor flag is written when the modal is
- *    SHOWN, not when it is dismissed. The modal covers the page, so a visitor has
- *    to deal with it either way, and writing on show means someone who subscribes
- *    and then closes the tab is never asked twice. Erring toward showing it less.
+ * 2. The once-per-visitor flag had to be written when the modal was SHOWN, since
+ *    "subscribed" was unobservable. It still is, which is deliberate: the modal
+ *    covers the page, so a visitor deals with it either way, and writing on show
+ *    means nobody is asked twice. Erring toward showing it less.
  *
  * Preview it any time with ?popup=1, which ignores the flag.
  */
@@ -48,7 +46,7 @@ const { locale = 'en', delayMs = 8000 } = Astro.props;
         <h2 class="submodal__title" id="submodal-title">{t(locale, 'modal.title')}</h2>
         <p class="submodal__desc" id="submodal-desc">{t(locale, 'modal.desc')}</p>
 
-        <NewsletterEmbed locale={locale} minimal deferSrc />
+        <NewsletterEmbed locale={locale} minimal source="modal" />
 
         <p class="submodal__note">{t(locale, 'modal.note')}</p>
     </div>
@@ -67,14 +65,10 @@ const { locale = 'en', delayMs = 8000 } = Astro.props;
         try { return localStorage.getItem(STORE_KEY) === '1'; } catch (e) { return false; }
     }
 
-    // Start the embed load at page load, and only when this visitor can still be
-    // shown the modal. Not before: a visitor who dismissed it once would fetch a
-    // third-party iframe on every page view forever. Not later: deferring to the
-    // open event is what made the form arrive ~4s after the card.
-    if (preview || !alreadySeen()) {
-        var frame = root.querySelector('iframe[data-src]');
-        if (frame && !frame.src) frame.src = frame.getAttribute('data-src');
-    }
+    // Nothing to preload any more. This used to start the beehiiv iframe fetch at
+    // page load, gated on the visitor still being eligible, because a dismissed modal
+    // would otherwise fetch a third-party frame on every page view forever. The form
+    // is now part of the document: no request, no deferral, no gate.
 
     function track(name) {
         try { if (typeof window.gtag === 'function') window.gtag('event', name); } catch (e) {}
@@ -89,16 +83,13 @@ const { locale = 'en', delayMs = 8000 } = Astro.props;
 
     function open() {
         if (root.open) return;
-        // showModal, not the `open` attribute. It is what buys the three things a
-        // hand-rolled dialog cannot have over a CROSS-ORIGIN iframe:
-        //   - Escape works even when focus is inside the beehiiv frame. A keydown
-        //     listener on the parent document never sees those keys, so the old
-        //     handler died the moment the visitor clicked the email field, which
-        //     is the one thing the modal exists to make them do.
-        //   - the page behind becomes inert, so forward-Tab past beehiiv's last
-        //     control can no longer land in the page instead of the dialog.
-        //   - dialog semantics come from the element, so no aria-modal claim on a
-        //     background that is still live.
+        // showModal, not the `open` attribute. It was adopted because a hand-rolled
+        // dialog could not survive a cross-origin iframe: Escape died the moment the
+        // visitor clicked the email field, since a keydown listener on the parent
+        // document never sees keys pressed inside the frame. The frame is gone, but
+        // showModal stays, because what it gives is worth having on its own: UA-level
+        // Escape, an inert background so Tab cannot walk out of the dialog, and dialog
+        // semantics from the element instead of an aria-modal claim over a live page.
         try { root.showModal(); } catch (e) { root.setAttribute('open', ''); }
         track('email_modal_shown');
     }
@@ -145,11 +136,17 @@ const { locale = 'en', delayMs = 8000 } = Astro.props;
 </script>
 
 <style>
-    /* A closed <dialog> is display:none per the UA stylesheet, which would put us
-       straight back into the bug 546b4e1 fixed: a subtree with no layout means
-       beehiiv measures the iframe at 0 and the form is blank for seconds after
-       opening. Keep it laid out and merely invisible instead. showModal() still
-       promotes it to the top layer normally. */
+    /* A closed <dialog> is display:none per the UA stylesheet. This rule overrides
+       that to keep the subtree laid out.
+
+       Its original reason is GONE: a subtree with no layout made beehiiv measure its
+       iframe at 0, leaving the form blank for seconds after opening (546b4e1). There
+       is no iframe and no measuring any more.
+
+       It is kept because the entrance animation below is attached in the open state
+       and this rule is part of how that was made to work, and because removing it
+       changes rendering in a way only a real eye can grade. Worth revisiting, but not
+       inside a change whose job is to delete beehiiv. */
     .submodal:not([open]) {
         visibility: hidden;
         opacity: 0;
@@ -237,7 +234,7 @@ const { locale = 'en', delayMs = 8000 } = Astro.props;
     }
 
     /* The embed carries its own block spacing for in-page use; inside the card
-       that would push the iframe off the bottom edge. */
+       that would push the form off the bottom edge. */
     .submodal__card :global(.newsletter-block) {
         margin: 0;
         padding: 0;
@@ -245,34 +242,17 @@ const { locale = 'en', delayMs = 8000 } = Astro.props;
         background: transparent;
     }
 
-    /* Bound the embed instead of pinning it.
-       beehiiv's embed.js briefly sets an inline `height: 2000px` on its iframe
-       while it measures, then settles to the real height (47px for this form).
-       Left alone, that transient stretches the card to 2220px and throws it off
-       screen. It only bites when the modal opens during the window, which in
-       practice meant ?popup=1 while the delay was 15s, which outlasted the
-       handshake. At 8s that margin is thinner, which is why the fallback-height
-       guard in NewsletterEmbed matters rather than being belt-and-braces.
-
-       The first fix here pinned `height: 80px !important`. That killed the
-       transient but also capped the iframe forever, so a taller state (the
-       confirmation beehiiv swaps in after a successful subscribe) would have
-       been clipped with no way to see it. Trading a preview-only glitch for a
-       broken success screen is the wrong way round.
-
-       So: cap rather than fix. max-height bounds the transient, lets the form
-       size itself, and still allows a taller post-subscribe state. The card caps
-       itself against the viewport and scrolls as the last resort, so no height
-       beehiiv ever chooses can push the modal off screen.
-       Verified live at 47px, 2000px and 420px: all three stay fully on screen. */
+    /* Cap the CARD against the viewport and let it scroll. This is all that survives
+       of a much larger block: beehiiv's embed.js wrote a transient inline
+       `height: 2000px` on its iframe while measuring, which stretched the card to
+       2220px and threw it off screen, and the fix went through pinning the height
+       (which then clipped the taller post-subscribe state) before landing on a cap.
+       A same-origin form has no measuring handshake and no transient, so only the
+       viewport cap is still worth keeping, as a seatbelt on a small screen. */
     .submodal__card {
         max-height: calc(100vh - var(--sp-4) * 2);
         overflow-y: auto;
     }
-    /* The iframe's own bounds live in NewsletterEmbed.astro, so both placements
-       get the same seatbelt. What stays here is modal-specific: cap the CARD
-       against the viewport and let it scroll, so no height beehiiv ever picks
-       can push the modal off screen. */
 
     /* Entrance animation is attached ONLY in the open state.
        The closed modal is visibility:hidden but still rendered (see the [hidden]
