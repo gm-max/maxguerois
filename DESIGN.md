@@ -71,7 +71,8 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 ## Layout
 - **Approach:** Grid-disciplined — strict single column, 620px max-width
 - **Max content width:** 620px
-- **Mobile padding:** 22px horizontal
+- **Mobile padding:** 24px horizontal (`--sp-6`), same as desktop. Was 22px, an off-scale hard-coded value; corrected 2026-08-26
+- **Container top padding is 80px on BOTH breakpoints, and is not free space:** the navbar is `position: fixed` at 56px and `body` has no `padding-top`, so those 80px are 56 of navbar clearance + 24 of breathing room. Reducing them slides content under the navbar
 - **Border radius scale:** sm:8px · md:10px · lg:12px · full:100px
 - **Navbar:** Fixed, 52px height, frosted glass `backdrop-filter: blur(12px)`
 
@@ -107,9 +108,16 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 ### Buttons
 - **Primary:** `background: var(--text); color: var(--bg)` — hover turns accent
 - **Outline:** `border: 1px solid var(--border)` — hover darkens border
-- **Accent:** `background: var(--accent); color: #fff`
+- **Accent:** `background: var(--accent); color: #1a1a1a` — **never `#fff`**: white on `#c4934a` measures 2.76:1 and on `#d4a55e` 2.25:1, both failing WCAG AA. `#1a1a1a` gives 6.31:1 and 7.74:1.
 - **Shape:** `border-radius: var(--radius-full)`, padding 9px 20px
 - **Font:** DM Sans 13px weight 500
+
+### Text Highlight
+- **Style:** `background: var(--accent-light)` + `box-shadow: 0 0 0 3px var(--accent-light)` + `border-radius: 2px`
+- **Purpose:** marks the load-bearing phrase inside a short editorial block, so the block can be scanned instead of read
+- **Rules:** at most 3 per section, never on a full sentence, never inside a heading, never inside body copy longer than one line. The box-shadow is what makes it read as a highlighter stroke rather than a filled label — without it the mark hugs the glyphs too tightly
+- **Colour:** reuses `--accent-light`, no new token. Works unchanged in dark mode
+- **Not to be confused with** the Tag component, which is a bordered pill for metadata
 
 ### Tags
 - **Default:** `bg-subtle` + `border` + `radius-full`, 11px weight 500
@@ -197,3 +205,6 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 | 2026-08-25 | Modal closed with visibility, not display | display:none gives zero layout, so the beehiiv iframe measured 0 and the form took ~4s to appear after opening. |
 | 2026-08-25 | Beehiiv iframe bounded min 47px / max 60vh | beehiiv's handshake was observed landing on 2000px (its no-measurement fallback) and on 0px. Neither is reachable now. |
 | 2026-03-20 | DESIGN.md sync with code | Fixed drift: numbers grid cols, dark mode activation, callout box style. |
+| 2026-08-26 | Accent button text `#1a1a1a`, never `#fff` | Measured: white on the amber failed WCAG AA in BOTH themes (2.76:1 light, 2.25:1 dark). Applies site-wide, every newsletter CTA was affected. |
+| 2026-08-26 | Mobile container padding back on the scale | `22px` horizontal and `100px` bottom were hard-coded off-scale values. Now `--sp-6` and `--sp-20`. Top stays `--sp-20` — it is navbar clearance, not slack. |
+| 2026-08-26 | Text Highlight added to the system | Needed for short editorial blocks that must be scannable. Reuses `--accent-light`, no new token, capped at 3 per section. |
