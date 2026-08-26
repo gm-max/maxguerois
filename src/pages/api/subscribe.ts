@@ -93,7 +93,7 @@ async function alertFirstSendFailure(
 ): Promise<void> {
   try {
     const token = optionalEnv('TELEGRAM_BOT_TOKEN');
-    const chat = optionalEnv('TELEGRAM_CHAT_ID');
+    const chat = optionalEnv('TELEGRAM_ADMIN_CHAT_ID');
     if (!token || !chat) return;
 
     const { count, error } = await supabase
@@ -103,7 +103,7 @@ async function alertFirstSendFailure(
       .is('synced_at', null);
     if (error || (count ?? 0) > 1) return;
 
-    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -116,6 +116,12 @@ async function alertFirstSendFailure(
       }),
       signal: AbortSignal.timeout(TELEGRAM_TIMEOUT_MS),
     });
+    // A bad token or a rate-limited bot answers 401/429, and `fetch` RESOLVES. Without
+    // this check the alert reports success while paging nobody — the exact silent
+    // outage it exists to surface, one layer up.
+    if (!res.ok) {
+      console.error(`telegram alert rejected ${res.status}: ${(await res.text()).slice(0, 200)}`);
+    }
   } catch (e) {
     // Alerting must never be the reason a request fails.
     console.error('telegram alert failed', e instanceof Error ? e.message : String(e));
@@ -139,7 +145,21 @@ function hashIp(ip: string, salt: string): string {
   return createHash('sha256').update(`${salt}:${ip}`).digest('hex').slice(0, 32);
 }
 
+/**
+ * The client IP, from the most trustworthy header available.
+ *
+ * `x-forwarded-for` is a LIST, and its leftmost entry is whatever the caller sent.
+ * Keying the rate limiter off it means an attacker rotates a spoofed first hop and
+ * the 5-per-hour limit never fires: unbounded Supabase writes, unbounded Resend and
+ * Telegram pressure. Vercel sets `x-vercel-forwarded-for` and `x-real-ip` at its own
+ * edge, after stripping what the client claimed, so those are trustworthy here.
+ * The XFF fallback keeps local dev and any non-Vercel host working, and is the only
+ * branch where the old spoofing concern still applies.
+ */
 function clientIp(request: Request): string {
+  const trusted =
+    request.headers.get('x-vercel-forwarded-for') ?? request.headers.get('x-real-ip');
+  if (trusted) return trusted.split(',')[0].trim();
   const fwd = request.headers.get('x-forwarded-for');
   return (fwd ? fwd.split(',')[0] : '').trim() || 'unknown';
 }
@@ -371,6 +391,16 @@ export const POST: APIRoute = async ({ request, url }) => {
         ip_hash: ipHash,
         source: field(raw.source) || 'site',
         unsubscribed_at: null,
+        // Reset the sync state on EVERY fresh signup, not just on insert.
+        //
+        // Without these two, a returning subscriber whose row was already synced
+        // kept its old `synced_at` when the new send failed. The alert's backlog
+        // predicate is `sync_error IS NOT NULL AND synced_at IS NULL`, so that row
+        // was invisible to it — and to any replay job built on the same predicate.
+        // The person got a 200, received nothing, and nothing ever paged. Found by
+        // an outside review; it silently disarmed the alert added the same day.
+        synced_at: null,
+        sync_error: null,
         ...utm,
       },
       { onConflict: 'email' },
@@ -380,8 +410,16 @@ export const POST: APIRoute = async ({ request, url }) => {
     return reply(request, url, 500, { ok: false, error: 'store_failed' });
   }
 
-  const markSync = (patch: { synced_at?: string; sync_error: string | null }) =>
-    supabase.from('mg_subscribers').update(patch).eq('email', email);
+  const markSync = async (patch: {
+    synced_at?: string | null;
+    sync_error: string | null;
+  }) => {
+    const { error } = await supabase.from('mg_subscribers').update(patch).eq('email', email);
+    // A failed status write is the quietest failure in this file: the send state
+    // stops matching reality, and every downstream decision (alerting, replay) reads
+    // the stale value with no way to know.
+    if (error) console.error('mg_subscribers sync-status write failed', error);
+  };
 
   try {
     await pushToResend(email, SITE_ORIGIN);
@@ -391,7 +429,9 @@ export const POST: APIRoute = async ({ request, url }) => {
     // to the partial index, so a replay can pick it up later.
     const msg = e instanceof Error ? e.message : String(e);
     console.error('resend sync failed', msg);
-    await markSync({ sync_error: msg.slice(0, 500) });
+    // Both fields, explicitly: the upsert above already nulled them, but a future
+    // caller of markSync must not have to know that to stay consistent.
+    await markSync({ synced_at: null, sync_error: msg.slice(0, 500) });
     await alertFirstSendFailure(supabase, email, msg);
   }
 

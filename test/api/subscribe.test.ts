@@ -386,7 +386,11 @@ describe('resend sync', () => {
     expect(upsertOf()).toBeTruthy();
     const update = db.calls.find((c) => c.op === 'update')!;
     expect((update.payload as any).sync_error).toContain('422');
-    expect((update.payload as any).synced_at).toBeUndefined();
+    // Was `toBeUndefined()`, which pinned the bug rather than the behaviour: leaving
+    // synced_at untouched let a returning subscriber's failure keep an old timestamp,
+    // so it fell outside the alert's `synced_at IS NULL` predicate and never paged.
+    // The failure path now writes the null explicitly.
+    expect((update.payload as any).synced_at).toBeNull();
   });
 
   it('still returns 200 when Resend times out', async () => {
@@ -416,11 +420,11 @@ const telegramCall = () =>
 describe('alert on an unsent signup', () => {
   beforeEach(() => {
     process.env.TELEGRAM_BOT_TOKEN = 'bot-token';
-    process.env.TELEGRAM_CHAT_ID = '4242';
+    process.env.TELEGRAM_ADMIN_CHAT_ID = '4242';
   });
   afterEach(() => {
     delete process.env.TELEGRAM_BOT_TOKEN;
-    delete process.env.TELEGRAM_CHAT_ID;
+    delete process.env.TELEGRAM_ADMIN_CHAT_ID;
   });
 
   const failSend = () =>
@@ -445,6 +449,28 @@ describe('alert on an unsent signup', () => {
     const call = telegramCall();
     expect(call).toBeDefined();
     expect(JSON.parse((call![1] as any).body).chat_id).toBe('4242');
+  });
+
+  // The test above injects the backlog count, so on its own it would still pass if
+  // the route never made THIS failed signup countable. That was a real bug: the
+  // upsert did not reset `synced_at`, so a returning subscriber's failure kept an
+  // old timestamp, fell outside the `synced_at IS NULL` predicate, and never paged.
+  // These two pin the writes the count is derived from.
+  it('makes the failed signup countable: the upsert clears the sync state', async () => {
+    failSend();
+    await post({ email: 'a@b.co' });
+    const payload = upsertOf()!.payload as Record<string, unknown>;
+    expect(payload.synced_at).toBeNull();
+    expect(payload.sync_error).toBeNull();
+  });
+
+  it('records the failure with a null synced_at, not just an error string', async () => {
+    failSend();
+    await post({ email: 'a@b.co' });
+    const marks = db.calls.filter((c) => c.table === 'mg_subscribers' && c.op === 'update');
+    const last = marks[marks.length - 1].payload as Record<string, unknown>;
+    expect(last.synced_at).toBeNull();
+    expect(String(last.sync_error)).toContain('send-welcome');
   });
 
   it('stays quiet once a backlog already exists', async () => {
@@ -476,6 +502,47 @@ describe('alert on an unsent signup', () => {
     const res = await post({ email: 'a@b.co' });
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
+  });
+});
+
+describe('the client IP the rate limiter keys off', () => {
+  // x-forwarded-for is caller-supplied on its leftmost hop, so keying the limiter
+  // off it lets an attacker rotate spoofed IPs and never hit the 5/hour cap.
+  // Vercel sets these two at its own edge, after stripping what the client claimed.
+  it('prefers x-vercel-forwarded-for over a spoofable x-forwarded-for', async () => {
+    const request = new Request(ENDPOINT, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        'x-forwarded-for': '1.1.1.1',
+        'x-vercel-forwarded-for': '203.0.113.7',
+      },
+      body: JSON.stringify({ email: 'a@b.co' }),
+    });
+    await POST({ request, url: new URL(ENDPOINT) } as never);
+    const spoofed = db.calls.find(
+      (c) => c.table === 'mg_rate_limit_hits' && c.op === 'insert',
+    )!.payload as { ip_hash: string };
+
+    db.reset();
+    const request2 = new Request(ENDPOINT, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        'x-forwarded-for': '9.9.9.9',
+        'x-vercel-forwarded-for': '203.0.113.7',
+      },
+      body: JSON.stringify({ email: 'a@b.co' }),
+    });
+    await POST({ request: request2, url: new URL(ENDPOINT) } as never);
+    const same = db.calls.find(
+      (c) => c.table === 'mg_rate_limit_hits' && c.op === 'insert',
+    )!.payload as { ip_hash: string };
+
+    // Same trusted IP, different spoofed one: the limiter must see one identity.
+    expect(same.ip_hash).toBe(spoofed.ip_hash);
   });
 });
 
