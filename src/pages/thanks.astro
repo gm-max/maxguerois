@@ -58,4 +58,12 @@ const error = code ? (ERRORS[code] ?? ERRORS.store_failed) : null;
     .merci p { font-size: 18px; line-height: 1.6; margin: 0 0 var(--sp-4); }
     .merci-micro { font-size: 14px; color: var(--text-tertiary); }
     .merci-back { margin-top: var(--sp-8); font-size: 15px; }
+    /* The UA default here is blue-and-underlined, which is the one thing on the page
+       that does not belong to this site. */
+    .merci-back a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid var(--accent-mid);
+    }
+    .merci-back a:hover { border-bottom-color: var(--accent); }
 </style>
