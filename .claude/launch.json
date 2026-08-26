@@ -4,7 +4,7 @@
     {
       "name": "gm-max",
       "runtimeExecutable": "bash",
-      "runtimeArgs": ["scripts/dev.sh", "--port", "4321"],
+      "runtimeArgs": ["scripts/with-node.sh", "dev", "--port", "4321"],
       "port": 4321
     }
   ]
