@@ -120,8 +120,34 @@ la vérification CSRF, et les inscriptions échouent en silence ». On est sur l
 supporté.
 
 **Ce que ça ajoute :** `gm-max` est aujourd'hui `output: 'static'`, sans adapter. Il
-faut `@astrojs/vercel` et `export const prerender = false` sur la seule route API. Le
-reste du site reste statique.
+faut `@astrojs/vercel` (la v10, la v11 exige Astro 7) et `export const prerender = false`
+sur la seule route API. Le reste du site reste statique.
+
+### Vérifié sur la preview, 26/08
+
+L'adapter génère un `.vercel/output/config.json` qui ne porte **aucun** header de
+sécurité. La question était donc de savoir si `vercel.json` s'applique encore une fois
+le build passé en Build Output API : sinon, brancher l'adapter retirait en silence la
+CSP et `X-Frame-Options` de tout le site. La doc Vercel ne tranche pas, et son exemple
+`getTransformedRoutes` suggère plutôt l'inverse.
+
+Mesuré sur `maxguerois-git-feat-supabase-capture`, comparé à la production :
+
+| | prod | preview |
+|---|---|---|
+| `content-security-policy` | présent | présent, identique |
+| `x-frame-options` | DENY | DENY |
+| `referrer-policy` | strict-origin-when-cross-origin | idem |
+| `permissions-policy` | camera=(), microphone=(), geolocation=() | idem |
+| `cleanUrls` | actif | actif (`/fr/newsletter` en 200) |
+
+`vercel.json` continue de s'appliquer. Aucune régression.
+
+Route testée sur la preview : email invalide -> 400 `invalid_email` ; honeypot rempli
+-> 200 silencieux. Les deux tables sont restées à 0 ligne, donc ni l'un ni l'autre n'a
+touché la base.
+
+**Pas encore testé :** le chemin nominal, qui demande les variables d'environnement.
 
 ## Prérequis avant implémentation
 
