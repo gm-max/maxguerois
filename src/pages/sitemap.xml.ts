@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content';
 // Articles not in the collection (lucis-chapter) are added explicitly.
 const SITE = 'https://maxguerois.com';
 const LUCIS_DATE = '2026-06-09';
+const PEPTIDES_DATE = '2026-08-26';
 
 export const GET: APIRoute = async () => {
     const experiments = await getCollection('experiments');
@@ -27,7 +28,11 @@ export const GET: APIRoute = async () => {
     // Landing du funnel Instagram. Indexée (D14) : le doublon sémantique avec
     // /fr/newsletter est théorique tant que le blog n'est pas positionné, alors
     // que le trafic organique perdu serait réel.
-    urls.push({ loc: `${SITE}/fr/peptides`, lastmod: newest, priority: '0.9' });
+    // Sa propre date, pas `newest`. La landing heritait de la date du dernier
+    // article, donc elle annoncait un lastmod du 16 juillet alors qu'elle a ete
+    // creee le 26 aout : un mauvais signal de fraicheur sur la seule page qu'on
+    // cherche a faire indexer.
+    urls.push({ loc: `${SITE}/fr/peptides`, lastmod: PEPTIDES_DATE, priority: '0.9' });
     for (const e of fr) urls.push({ loc: `${SITE}/fr/newsletter/${e.data.slug}`, lastmod: e.data.date, priority: '0.7' });
     urls.push({ loc: `${SITE}/fr/newsletter/lucis-chapter`, lastmod: LUCIS_DATE, priority: '0.7' });
 
