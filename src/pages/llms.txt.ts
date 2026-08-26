@@ -22,9 +22,9 @@ const noDash = (s: string) => s.replace(/\s*—\s*/g, ': ').replace(/–/g, '-')
 
 const INTRO = `# Max Guerois
 
-> Max Guerois is a repeat founder based in Paris, writing in the open about health, longevity, and building his next startup. He co-founded Lucis, a preventive health company backed by Y Combinator and General Catalyst. This site publishes his open, self-experiment health protocols in plain language.
+> Max Guerois is a repeat founder based in Paris, writing in the open about peptides, health and longevity. He co-founded Lucis, a preventive health company backed by Y Combinator and General Catalyst. This site publishes his open, self-experiment health protocols in plain language, and a French newsletter about peptides.
 
-Max tracks his own biomarkers and shares what works and what does not: bloodwork, wearables, genome, supplements, training, sleep, and testosterone. Each entry below links to the full article.`;
+Max tracks his own biomarkers and shares what works and what does not: peptides, bloodwork, wearables, genome, supplements, training, sleep, and testosterone. He sells no peptides and takes no vendor commission. Each entry below links to the full article.`;
 
 export const GET: APIRoute = async () => {
     const experiments = await getCollection('experiments');
@@ -47,11 +47,15 @@ ${articleLines}
 
 ## Newsletter hub
 
-- [The newsletter](${SITE}/newsletter): Every article, plus the email signup. Two emails a month.
+- [The newsletter](${SITE}/newsletter): Every article, plus the email signup.
+
+## Peptides, in French
+
+- [Newsletter peptides](${SITE}/fr/peptides): A French weekly newsletter about peptides, sent every Monday. One study of the week and what it does and does not prove, one peptide explained, and one market warning about a vendor or a practice. Written by Max, who tests on himself, sells no peptides and takes no vendor commission.
 
 ## Francais
 
-A French version of every page is available under the /fr/ path, for example ${SITE}/fr/newsletter.
+Most pages have a French version under the /fr/ path, for example ${SITE}/fr/newsletter. The peptides newsletter above is French only and has no English equivalent.
 
 ## About
 
