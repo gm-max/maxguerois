@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "gm-max",
-      "runtimeExecutable": "bash",
-      "runtimeArgs": ["scripts/with-node.sh", "dev", "--port", "4321"],
+      "runtimeExecutable": "/Users/maximeguerois/.nvm/versions/node/v22.22.3/bin/node",
+      "runtimeArgs": ["node_modules/astro/bin/astro.mjs", "dev", "--port", "4321"],
       "port": 4321
     }
   ]
