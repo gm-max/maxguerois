@@ -36,26 +36,29 @@ const C = {
     rule: '#e8e4dd',
 };
 
-export const WELCOME_SUBJECT = 'Bienvenue, voici ce qui vous attend';
+export const WELCOME_SUBJECT = 'Chaque lundi, les peptides sans baratin';
 
 /** Shown in the inbox next to the subject, before anything is opened. */
-export const WELCOME_PREVIEW = "L'actu des peptides décryptée, chaque lundi. Voici ce que vous allez recevoir.";
+export const WELCOME_PREVIEW = "Une étude utile, un peptide passé au crible, et les pièges à éviter.";
 
 const PARAS: string[] = [
-    "Bonjour, et merci pour votre inscription. Moi, c'est Max.",
-    "Je suis entrepreneur. J'ai cofondé Lucis, une startup de santé préventive, après qu'un bilan sanguin m'a montré que je vieillissais plus vite que je n'aurais dû. J'ai quitté l'aventure, et je construis aujourd'hui ma prochaine startup à découvert.",
-    "Ici, je partage un sujet précis : les peptides. Ce que la recherche montre vraiment, ce que les gens en font, et ce que mes propres essais permettent ou non de comprendre.",
+    "Vous vous êtes inscrit pour une raison simple : comprendre les peptides sans jargon, sans promesse magique, et sans y passer vos soirées.",
 ];
 
 const BULLETS: Array<[string, string]> = [
-    ['Une étude de la semaine', 'ce qu’elle prouve, et surtout ce qu’elle ne prouve pas.'],
-    ['Un peptide décrypté', 'ce qu’il fait, pour qui, et ce qu’il coûte réellement.'],
-    ['Une alerte marché', 'un vendeur, un produit ou une pratique à connaître avant d’y toucher.'],
+    ['Une étude expliquée clairement', 'ce qu’elle montre, et ce qu’elle ne montre pas.'],
+    ['Un peptide passé au crible', 'ses effets possibles, pour qui il peut avoir un intérêt, et ce qu’il coûte vraiment.'],
+    ['Un vendeur, un produit ou une pratique à éviter', 'avant d’y mettre un centime.'],
 ];
 
+// The order here is the whole point of the last revision. Someone arriving from
+// Instagram wants three things, in this order: what they get, whether they are being
+// sold to, and only then why this person deserves two minutes. The bio used to come
+// second and made the email about Max before it was about the reader.
 const CLOSING: string[] = [
-    "Pas de jargon, pas de promesse magique, et je ne vends aucun peptide. Quand je ne sais pas, je le dis.",
-    "Le premier numéro arrive lundi. Si vous voulez réagir, répondez simplement à cet email : je lis tout.",
+    "Je ne vends aucun peptide. Quand je ne sais pas, je vous le dis. Quand une étude ne permet pas de conclure, je vous le dis aussi.",
+    "Moi, c'est Max. J'ai fondé le leader européen de la santé préventive à partir des prises de sang. Cette newsletter me sert à partager ce que je trouve, ce que je teste, et ce qui ne tient pas la route.",
+    "Premier numéro lundi. Si vous avez une question, répondez à ce mail. Je lis tout.",
 ];
 
 function escapeHtml(s: string): string {
@@ -70,7 +73,7 @@ export function welcomeText(unsubscribeUrl: string): string {
     return [
         ...PARAS,
         '',
-        'Chaque lundi, vous recevez :',
+        'Chaque lundi, un mail court avec trois choses :',
         ...BULLETS.map(([t, d]) => `- ${t} : ${d}`),
         '',
         ...CLOSING,
@@ -133,7 +136,7 @@ export function welcomeHtml(unsubscribeUrl: string): string {
         </tr>
         <tr>
           <td style="padding:8px 36px 4px;">
-            <p style="margin:0 0 14px; ${body} font-size:16px; line-height:1.65; color:${C.text};"><strong>Chaque lundi, vous recevez :</strong></p>
+            <p style="margin:0 0 14px; ${body} font-size:16px; line-height:1.65; color:${C.text};"><strong>Chaque lundi, un mail court avec trois choses :</strong></p>
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${bullets}</table>
           </td>
         </tr>
