@@ -421,30 +421,43 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
     .pf-done b { font-weight: 500; }
 
     /* ── Pop-up guide ──
-       Coquille reprise de SubscribeModal : <dialog> natif pour que Escape
-       fonctionne, fermeture par `visibility` et non `display:none`. */
-    .pg[open] { display: block; }
+       Le <dialog> EST la carte. Le voile est ::backdrop, que le navigateur
+       dimensionne au viewport entier, gratuitement.
+
+       Ce que faisait la version precedente, et pourquoi elle etait cassee en
+       production, mesure sur maxguerois.com en 1280x820 :
+
+       1. `.pg[open] { display: block }` etait ecrit AVANT `.pg { display: flex }`.
+          `[open]` a une specificite plus forte, donc `block` gagnait et le
+          centrage n'a jamais rien fait : carte collee a top:28px.
+       2. Le voile etait peint sur le <dialog> lui-meme, avec `::backdrop` mis a
+          `transparent`. Or `inset: 0` n'etire une dimension que si elle vaut
+          `auto` : `width` etait fixe, `height` restait auto, donc le voile
+          s'arretait a la hauteur du contenu. Mesure : 302px sur 820.
+       3. Consequence : 518px de page qui paraissaient normaux, couverts par le
+          ::backdrop invisible du navigateur, donc inertes. On clique, rien ne
+          repond, ni la modale ni la page. Indiscernable de "je ne peux pas la
+          fermer".
+
+       Le centrage se fait maintenant par `inset: 0` + `margin: auto`, qui ne
+       depend d'aucun display et marche donc quoi que fasse l'UA. */
     .pg {
         position: fixed;
         inset: 0;
-        width: 100%;
+        margin: auto;
+        width: min(420px, calc(100% - var(--sp-8)));
         max-width: none;
-        max-height: none;
-        margin: 0;
-        padding: var(--sp-4);
+        height: fit-content;
+        max-height: calc(100dvh - var(--sp-8));
+        padding: 0;
         border: 0;
-        background: rgba(26, 26, 26, 0.45);
-        z-index: 200;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        background: transparent;
+        overflow: visible;
     }
-    .pg::backdrop { background: transparent; }
+    .pg::backdrop { background: rgba(26, 26, 26, 0.45); }
     .pg-card {
         position: relative;
-        width: 100%;
-        max-width: 420px;
-        max-height: calc(100vh - var(--sp-4) * 2);
+        max-height: calc(100dvh - var(--sp-8));
         overflow-y: auto;
         background: var(--bg);
         border: 1px solid var(--border);
@@ -452,6 +465,10 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         padding: var(--sp-6);
         animation: pg-rise var(--duration-base) var(--ease-out);
     }
+    /* Dans une carte de 420px, la rangee en ligne laissait 71px a l'input parce
+       que le bouton est en `nowrap` et prenait 291px. Mesure en production. */
+    .pg .pf-row { flex-direction: column; max-width: none; }
+    .pg .pf-row button { width: 100%; }
     @keyframes pg-rise { from { opacity: 0; transform: translateY(12px); } }
     .pg-close {
         position: absolute;
