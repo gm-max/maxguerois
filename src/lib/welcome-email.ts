@@ -36,10 +36,10 @@ const C = {
     rule: '#e8e4dd',
 };
 
-export const WELCOME_SUBJECT = 'Chaque lundi, les peptides sans baratin';
+export const WELCOME_SUBJECT = 'Chaque lundi, une actu sur les peptides';
 
 /** Shown in the inbox next to the subject, before anything is opened. */
-export const WELCOME_PREVIEW = "Une étude utile, un peptide passé au crible, et les pièges à éviter.";
+export const WELCOME_PREVIEW = "Sans jargon, sans promesse magique, et je ne vends aucun peptide.";
 
 const PARAS: string[] = [
     "Vous vous êtes inscrit pour une raison simple : comprendre les peptides sans jargon, sans promesse magique, et sans y passer vos soirées.",
