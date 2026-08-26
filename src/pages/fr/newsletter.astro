@@ -10,8 +10,8 @@ const archive = allExperiments.filter(e => (e.data as any).locale === 'fr');
 archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 ---
 <Layout
-    title="The long game of staying young, par Max Guerois"
-    description="Je construis ma prochaine startup au grand jour. Santé et longévité pour l'instant : peptides, tracking, entraînement, compléments. Les expériences que je mène sur moi, la version brute. Deux emails par mois."
+    title="Les trouvailles peptides, par Max Guerois"
+    description="L'actu des peptides décryptée, sans jargon ni promesse magique. Ce que je regarde vraiment, ce que les gens font avec ces molécules, et ce que mes propres essais permettent ou non de comprendre."
     ogUrl="https://maxguerois.com/fr/newsletter"
     ogImage="https://maxguerois.com/health-journey/banner-staying-young.jpg"
     extraStyles={["/styles/article.css"]}
@@ -156,39 +156,66 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 <div class="container">
     <section class="hero">
         <div class="nl-meta">La newsletter</div>
-        <h1 class="nl-title">The long game of <em>staying young</em></h1>
-        <p class="nl-lead">J'ai quitté ma précédente startup santé. Je repars de zéro, et je construis ma prochaine au grand jour.</p>
-        <p class="nl-lead">Je partage tout au fur et à mesure, la version brute : les expériences que je mène sur moi, la recherche, ce qui marche et ce qui explose en vol.</p>
-        <p class="nl-lead">Pour l'instant c'est surtout santé et longévité : peptides, tracking, entraînement, et compléments.</p>
+        <h1 class="nl-title">Les trouvailles <em>peptides</em></h1>
+        <p class="nl-lead">L'actu des peptides décryptée, sans jargon ni promesse magique.</p>
+        <p class="nl-lead">Je trie ce qui compte vraiment : les molécules qui sortent, ce qu'elles changent, ce que les gens en font, et ce que mes propres essais permettent ou non de comprendre.</p>
+        <p class="nl-lead">Le sujet, c'est les peptides. Le reste n'entre que si ça aide à les comprendre, à les tester proprement, ou à éviter de raconter n'importe quoi.</p>
 
         <div class="nl-form">
             <NewsletterEmbed locale={locale} minimal />
         </div>
-        <p class="nl-reassure">Rejoins 1 000+ lecteurs. Deux emails par mois, désabonnement à tout moment.</p>
+        <p class="nl-reassure">Rejoignez 1 000+ lecteurs. Un email quand il y a vraiment quelque chose à dire. Désabonnement à tout moment.</p>
 
         <HeroFooter locale={locale} currentPath={Astro.url.pathname} />
     </section>
 
-    <div class="nl-section-label">L'archive</div>
-    <h2 class="nl-section-title">Mes expériences jusqu'ici</h2>
+    <div class="nl-section-label">Pour commencer</div>
+    <h2 class="nl-section-title">Les 4 pages à lire en premier</h2>
 
     <div class="experiments-list">
-        {archive.map((exp, i) => (
-            <a href={`/fr/newsletter/${exp.data.slug}`} class="experiment-item">
-                {exp.data.cover && (
-                    <img class="experiment-cover" src={exp.data.cover} alt={exp.data.title} loading="lazy" />
-                )}
-                <div class="experiment-body">
-                    <div class="experiment-tag-row">
-                        <span class="experiment-tag">{exp.data.category}</span>
-                        {i === 0 && <span class="experiment-tag">Récent</span>}
+        {['retatrutide', 'health-os', 'my-genome', 'supplements'].map((slug, i) => {
+            const exp = archive.find((entry) => entry.data.slug === slug);
+            if (!exp) return null;
+            return (
+                <a href={`/fr/newsletter/${exp.data.slug}`} class="experiment-item">
+                    {exp.data.cover && (
+                        <img class="experiment-cover" src={exp.data.cover} alt={exp.data.title} loading="lazy" />
+                    )}
+                    <div class="experiment-body">
+                        <div class="experiment-tag-row">
+                            <span class="experiment-tag">{exp.data.category}</span>
+                            {i === 0 && <span class="experiment-tag">A lire d'abord</span>}
+                        </div>
+                        <div class="experiment-title">{exp.data.title}</div>
+                        <div class="experiment-desc">{exp.data.tagline}</div>
+                        <span class="experiment-link">Lire &rarr;</span>
                     </div>
-                    <div class="experiment-title">{exp.data.title}</div>
-                    <div class="experiment-desc">{exp.data.tagline}</div>
-                    <span class="experiment-link">Lire &rarr;</span>
-                </div>
-            </a>
-        ))}
+                </a>
+            );
+        })}
+    </div>
+
+    <div class="nl-section-label">Le reste</div>
+    <h2 class="nl-section-title">Archive secondaire</h2>
+
+    <div class="experiments-list">
+        {archive
+            .filter((exp) => !['retatrutide', 'health-os', 'my-genome', 'supplements'].includes(exp.data.slug))
+            .map((exp) => (
+                <a href={`/fr/newsletter/${exp.data.slug}`} class="experiment-item">
+                    {exp.data.cover && (
+                        <img class="experiment-cover" src={exp.data.cover} alt={exp.data.title} loading="lazy" />
+                    )}
+                    <div class="experiment-body">
+                        <div class="experiment-tag-row">
+                            <span class="experiment-tag">{exp.data.category}</span>
+                        </div>
+                        <div class="experiment-title">{exp.data.title}</div>
+                        <div class="experiment-desc">{exp.data.tagline}</div>
+                        <span class="experiment-link">Lire &rarr;</span>
+                    </div>
+                </a>
+            ))}
     </div>
 
     <div class="nl-subscribe">

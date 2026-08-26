@@ -9,6 +9,10 @@ const locale = 'fr';
 const allExperiments = await getCollection('experiments');
 const experiments = allExperiments.filter(e => (e.data as any).locale === 'fr');
 experiments.sort((a, b) => b.data.date.localeCompare(a.data.date));
+const featuredExperimentSlugs = ['retatrutide', 'health-os', 'my-genome', 'supplements'];
+const featuredExperiments = featuredExperimentSlugs
+  .map((slug) => experiments.find((exp) => exp.data.slug === slug))
+  .filter(Boolean);
 const aiSummaryPrompt = "Give me a deep, structured profile of Max Guerois using his personal website https://maxguerois.com as the primary source and his current X profile https://x.com/maxguerois as a supporting source. Use the website for factual grounding, and use X to add current voice, interests, and public positioning. Cover these sections: 1) Who he is — age, location, background, and what drives him. 2) Lucis — what the company was, the traction it reached, and Max's role in its early chapter. 3) Full founder journey — Practup, The Arch, Zero Club, Lucis. 4) Health and longevity — his biomarkers, biological age vs chronological age, pace of aging, testosterone and sleep protocols. 5) Current thinking and public voice — themes, interests, and ideas visible on his X profile. 6) Press and public presence.";
 const aiSummaryPromptEncoded = encodeURIComponent(aiSummaryPrompt);
 
@@ -109,10 +113,10 @@ const structuredData = {
     <!-- Newsletter -->
     <div class="section fade-in">
         <div class="section-label">{t(locale, 'home.sectionHealth')}</div>
-        <a href="/fr/newsletter"><img src="/health-journey/banner-staying-young.jpg" alt="The long game of staying young" width="1200" height="630" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:var(--radius-sm);margin-bottom:20px;"></a>
-        <p class="ai-prompt-label">Je mène des expériences santé et je publie mes avancées et mes trouvailles, au grand jour. Deux fois par mois, dans ta boîte mail.</p>
+        <a href="/fr/newsletter"><img src="/health-journey/banner-weight-loss-2x.jpg" alt="Les trouvailles peptides" width="1200" height="630" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:var(--radius-sm);margin-bottom:20px;"></a>
+        <p class="ai-prompt-label">J'y publie mes trouvailles sur les peptides, ce qui compte vraiment, et ce que mes propres essais permettent ou non de comprendre. Un email quand il y a vraiment quelque chose à dire.</p>
         <div class="writing-list">
-            {experiments.slice(0, 3).map((exp) => (
+            {featuredExperiments.map((exp) => (
                 <a href={`/fr/newsletter/${exp.data.slug}`} class="writing-item">
                     <div class="writing-item-content">
                         <div class="writing-title">{exp.data.title}</div>
@@ -123,7 +127,7 @@ const structuredData = {
             ))}
         </div>
         <div style="margin-top: 20px;">
-            <a href="/fr/newsletter" class="newsletter-cta">The long game of staying young <span class="arr">→</span></a>
+            <a href="/fr/newsletter" class="newsletter-cta">Les trouvailles peptides <span class="arr">→</span></a>
         </div>
     </div>
 

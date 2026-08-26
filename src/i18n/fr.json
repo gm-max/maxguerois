@@ -17,24 +17,24 @@
     "latest": "Récent"
   },
   "newsletter": {
-    "title": "Suis mes expériences santé",
-    "desc": "Les expériences santé que je mène sur moi, publiées en entier, ce qui marche et ce qui rate. Direct dans ta boîte mail. Désabonnement à tout moment."
+    "title": "L'actu peptides",
+    "desc": "L'actu des peptides décryptée, les signaux qui comptent, et mes essais quand ils valent vraiment le détour. Direct dans votre boîte mail. Désabonnement à tout moment."
   },
   "modal": {
     "title": "Avant de partir",
-    "desc": "Je mène des expériences santé sur moi et je publie les résultats en entier, ce qui marche et ce qui rate. Un email quand il y a vraiment quelque chose à envoyer.",
+    "desc": "Je trie l'actu des peptides, j'explique ce qu'on comprend vraiment, et je documente mes essais quand ils apportent quelque chose. Un email quand il y a vraiment quelque chose à envoyer.",
     "close": "Fermer",
     "note": "Pas de spam. Désabonnement à tout moment."
   },
   "home": {
-    "title": "Max Guerois — santé et longévité, au grand jour",
-    "description": "Moi c'est Max, juste un builder, passionné de santé et de longévité. Mon âge biologique est de 19 ans. Je mène des expériences sur moi-même et je publie tout ce que j'apprends, ce qui marche et ce qui rate.",
-    "ogDescription": "Juste un builder, passionné de santé et de longévité. Âge biologique : 19 ans. Je mène des expériences sur moi-même et je publie tout, au grand jour.",
+    "title": "Max Guerois, santé et longévité au grand jour",
+    "description": "Moi, c'est Max, un builder obsédé par la santé et la longévité. Mon âge biologique est de 19 ans. Je documente ce que je teste vraiment, avec une place centrale pour les peptides.",
+    "ogDescription": "Builder, santé, longévité, peptides. Âge biologique : 19 ans. Je publie ce que je teste et ce que j'apprends, au grand jour.",
     "name": "Max (Maxime) Guerois",
-    "headline": "Juste un builder, <em>passionné de santé et de longévité.</em>",
-    "intro": "Moi c'est Max. 29 ans. Mon âge biologique : 19 ans.<br>J'ai cofondé <strong>Lucis</strong>, la plateforme de santé préventive la plus complète en Europe. Aujourd'hui je documente tout ce que je fais sur mon corps. Ce site, c'est le protocole.",
+    "headline": "Un builder <em>obsédé par la santé et la longévité.</em>",
+    "intro": "Moi, c'est Max. 29 ans. Mon âge biologique : 19 ans.<br>J'ai cofondé <strong>Lucis</strong>, une plateforme de santé préventive en Europe. Aujourd'hui, je documente ce que je teste vraiment sur mon corps. Ce site, c'est le protocole.",
     "askAi": "Demande à l'IA",
-    "askAiPrompt": "Mon protocole santé, mon parcours de fondateur, mon obsession pour la longévité : demande ce que tu veux.",
+    "askAiPrompt": "Mon protocole santé, mon parcours de fondateur, mon obsession pour la longévité : demandez ce que vous voulez.",
     "bioAge": "Âge bio",
     "paceOfAging": "Vieillissement, 26% plus lent",
     "restingHeartRate": "Pouls au repos",
@@ -46,29 +46,29 @@
     "lucisDesc": "Health tech, santé préventive. Backée par General Catalyst et Y Combinator. J'ai construit la marque, le positionnement et la traction initiale en Europe.",
     "zeroClubDesc": "50 000+ membres, 20+ pays — la communauté longévité en Europe. Créée pour trouver les gens obsédés par vivre mieux et plus longtemps. Ça a grandi si vite que c'est devenu Lucis.",
     "theArchDesc": "Le point de rencontre des fondateurs, opérateurs et talents Web3 — 20+ pays. J'ai prouvé que je savais créer une communauté à grande échelle. Et puis j'ai compris que la santé, c'était la communauté que je voulais vraiment construire.",
-    "practupDesc": "Appli fitness pour sync tes données de santé et trouver des partenaires d'entraînement — 50 000+ utilisateurs en France. Mon premier instinct : santé et communauté, ça va ensemble.",
+    "practupDesc": "Appli fitness pour sync vos données de santé et trouver des partenaires d'entraînement, 50 000+ utilisateurs en France. Mon premier instinct : santé et communauté, ça va ensemble.",
     "cofounder": "Co-fondateur",
     "founder": "Fondateur"
   },
   "experiments": {
-    "title": "Expériences — Max Guerois",
-    "description": "Mes expériences santé : protocoles, données et biomarqueurs. Sommeil, testostérone, longévité.",
+    "title": "Expériences, Max Guerois",
+    "description": "Mes expériences santé : protocoles, données et biomarqueurs. Peptides, sommeil, testostérone, longévité.",
     "meta": "Expériences Santé",
     "heading": "Mes tests, mes résultats",
-    "intro": "Je teste tout sur moi — sommeil, hormones, biomarqueurs — et je publie les données brutes. Tout est vrai, sourcé, mis à jour régulièrement."
+    "intro": "Je teste tout sur moi, sommeil, hormones, biomarqueurs, peptides, et je publie les données brutes. Tout est vrai, sourcé, mis à jour régulièrement."
   },
   "experimentsMeta": {
     "sleepTitle": "7 conseils pour un sommeil de qualité",
-    "sleepTagline": "3 mois de suivi avec l'Ultrahuman Ring Air. Score de sommeil : de 82 à 100 en 15 jours. 7 changements qui ont vraiment fait la différence.",
+    "sleepTagline": "3 mois de suivi avec l'Ultrahuman Ring Air. Mon score de sommeil est passé de 82 à 100 en 15 jours. 7 changements qui ont eu un vrai effet.",
     "sleepCategory": "Protocole Sommeil",
     "testosteroneTitle": "31 conseils pour corriger une faible testostérone",
-    "testosteroneTagline": "Rien (à part la TRT) augmentera drastiquement tes niveaux. La clé, c'est le mode de vie. 31 actions fondées sur la science — rituel du matin, du soir, alimentation, entraînement et gestion du stress.",
+    "testosteroneTagline": "Rien, à part la TRT, n'augmentera drastiquement vos niveaux. La clé, c'est le mode de vie. 31 leviers appuyés par la littérature, entre routine, alimentation, entraînement et gestion du stress.",
     "testosteroneCategory": "Protocole Masculin",
-    "biomarkersTitle": "Mes biomarqueurs — bilan complet",
-    "biomarkersTagline": "Métabolisme, hormones, composition corporelle, force et âge bio. −9,7 ans vs. mon âge réel. Rythme de vieillissement : 0,74.",
+    "biomarkersTitle": "Mes biomarqueurs, bilan complet",
+    "biomarkersTagline": "Métabolisme, hormones, composition corporelle, force et âge bio. 9,7 ans de moins que mon âge réel. Rythme de vieillissement : 0,74.",
     "biomarkersCategory": "Bilan de Santé",
     "supplementsTitle": "Je prends 11 compléments par jour",
-    "supplementsTagline": "11 compléments liés à mes analyses de sang. Trois systèmes en panne : hormones, thyroïde, inflammation. Stack complet avec doses, horaires et produits.",
+    "supplementsTagline": "11 compléments reliés à mes analyses de sang. Trois systèmes étaient déréglés : hormones, thyroïde, inflammation. La liste complète, avec doses, horaires et produits.",
     "supplementsCategory": "Protocole Compléments"
   }
 }
