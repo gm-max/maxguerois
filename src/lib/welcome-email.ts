@@ -39,7 +39,10 @@ const C = {
 export const WELCOME_SUBJECT = 'Chaque lundi, une actu sur les peptides';
 
 /** Shown in the inbox next to the subject, before anything is opened. */
-export const WELCOME_PREVIEW = "Sans jargon, sans promesse magique, et je ne vends aucun peptide.";
+// Says what is INSIDE, because the subject already says when it arrives. An earlier
+// version put the reassurance here and it repeated the body's opening sentence word
+// for word, two lines below it and visible in the inbox preview.
+export const WELCOME_PREVIEW = "Une étude utile, un peptide passé au crible, et les pièges à éviter.";
 
 const PARAS: string[] = [
     "Vous vous êtes inscrit pour une raison simple : comprendre les peptides sans jargon, sans promesse magique, et sans y passer vos soirées.",
