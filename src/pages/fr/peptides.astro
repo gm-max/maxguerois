@@ -120,7 +120,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
        de le repousser. */
     .pep-hero { margin-top: var(--pep-nav-h); }
     .pep-hero-body { padding: var(--sp-6) var(--sp-6) 0; }
-    @media (min-width: 900px) {
+    @media (min-width: 1280px) {
         /* La grille n'est PAS centree, elle est ancree sur le bord gauche de
            `.container`. Centrer une grille large et centrer une colonne de
            620px ne peuvent pas partager un bord gauche : mesure avant
@@ -139,7 +139,19 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                24px de derive, mesurables. */
             grid-template-columns: calc(var(--content-width) - var(--sp-6) * 2) 1fr;
             gap: var(--sp-12);
-            align-items: center;
+            /* `stretch`, pas `center`. Avec `center`, l'image imposait sa propre
+               hauteur via son aspect-ratio et debordait du bloc texte des deux
+               cotes : mesure a 1440x900, texte 322px, image 483px, donc 80px de
+               debordement en haut ET en bas. La photo flottait au lieu de faire
+               bloc avec le texte, et laissait un vide mort a gauche sous la
+               micro-ligne. */
+            align-items: stretch;
+            /* Plancher sur la RANGEE, pas sur le conteneur. Pose sur
+               `.pep-hero`, les 48px de padding haut le mangeaient et la rangee
+               ne gagnait que 10px : mesure, 332px au lieu des 380 demandes.
+               Le bloc texte seul fait ~322px ; sans ce plancher la photo
+               tombait a sa hauteur et perdait toute presence. */
+            grid-template-rows: minmax(420px, auto);
             padding: var(--sp-12) 0 0
                 calc((100% - var(--content-width)) / 2 + var(--sp-6));
         }
@@ -150,12 +162,20 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
            de 400x500. */
         .pep-hero .pep-hero-img {
             order: 2;
-            aspect-ratio: 4 / 5;
+            /* La hauteur vient de la RANGEE, plus de l'image. C'est ce qui
+               supprime le debordement de 80px mesure en haut et en bas. */
+            aspect-ratio: auto;
+            height: 100%;
+            width: 100%;
+            min-height: 0;
             object-position: 42% 22%;
-            /* Plafond : sans lui, sur un 1920 la colonne restante fait 600px et
-               l'image repasse a 750px de haut, c'est-a-dire le probleme qu'on
-               vient de corriger. */
-            max-width: 420px;
+            /* Plafond de LARGEUR, collee au bord droit. Sans lui, sur un 1920
+               la colonne restante fait 626px et la photo devient un
+               panoramique. `justify-self: end` la garde au bord de l'ecran,
+               donc le vide eventuel tombe ENTRE le texte et elle, jamais
+               apres elle. */
+            max-width: 520px;
+            justify-self: end;
             border-radius: var(--radius-sm) 0 0 var(--radius-sm);
         }
     }
@@ -179,8 +199,28 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         object-position: 38% 40%;
         background: var(--bg-subtle);
     }
-    @media (min-width: 601px) and (max-width: 899px) {
-        .pep-hero-img { aspect-ratio: 2 / 1; }
+    /* Entre 601 et 1279px, la photo reste un bandeau. La composition en deux
+       colonnes n'a la place de respirer qu'au-dela : la colonne image vaut
+       largeur/2 - 334, soit 166px sur un ecran de 1000. Un ruban vertical.
+       Le plafond de hauteur n'est pas cosmetique : en 1000x800 sans lui,
+       l'image faisait 667px et le bouton tombait a y=981, sous le pli. */
+    @media (min-width: 601px) and (max-width: 1279px) {
+        /* Le plafond recadre fort dans la hauteur : sur un 3/2 ramene a 2.9/1,
+           327px de source disparaissent. A 40% en Y, le haut du crane etait
+           coupe. 10% garde le visage entier. */
+        .pep-hero-img {
+            aspect-ratio: 2 / 1;
+            max-height: 340px;
+            object-position: 38% 10%;
+        }
+        /* Le texte du heros doit rester sur le meme axe que les sections en
+           dessous. Sans ca, entre 601 et 1279px il commencait a 24px du bord
+           pendant que `.container` centrait sa colonne de 620px : 190px de
+           derive mesures sur un ecran de 1000. */
+        .pep-hero-body {
+            max-width: var(--content-width);
+            margin: 0 auto;
+        }
     }
 
     .pep { font-size: var(--t-body); }
