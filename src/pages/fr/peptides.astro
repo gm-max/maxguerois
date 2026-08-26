@@ -421,30 +421,48 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
     .pf-done b { font-weight: 500; }
 
     /* ── Pop-up guide ──
-       Coquille reprise de SubscribeModal : <dialog> natif pour que Escape
-       fonctionne, fermeture par `visibility` et non `display:none`. */
-    .pg[open] { display: block; }
+       Le <dialog> EST la carte. Le voile est ::backdrop, que le navigateur
+       dimensionne au viewport entier, gratuitement.
+
+       Ce que faisait la version precedente, et pourquoi elle etait cassee en
+       production, mesure sur maxguerois.com en 1280x820 :
+
+       1. `.pg[open] { display: block }` etait ecrit AVANT `.pg { display: flex }`.
+          `[open]` a une specificite plus forte, donc `block` gagnait et le
+          centrage n'a jamais rien fait : carte collee a top:28px.
+       2. Le voile etait peint sur le <dialog> lui-meme, avec `::backdrop` mis a
+          `transparent`. Or `inset: 0` n'etire une dimension que si elle vaut
+          `auto` : `width` etait fixe, `height` restait auto, donc le voile
+          s'arretait a la hauteur du contenu. Mesure : 302px sur 820.
+       3. Consequence : 518px de page qui paraissaient normaux, couverts par le
+          ::backdrop invisible du navigateur, donc inertes. On clique, rien ne
+          repond, ni la modale ni la page. Indiscernable de "je ne peux pas la
+          fermer".
+
+       Le centrage se fait maintenant par `inset: 0` + `margin: auto`, qui ne
+       depend d'aucun display et marche donc quoi que fasse l'UA. */
     .pg {
         position: fixed;
         inset: 0;
-        width: 100%;
+        margin: auto;
+        width: min(420px, calc(100% - var(--sp-8)));
         max-width: none;
-        max-height: none;
-        margin: 0;
-        padding: var(--sp-4);
+        height: fit-content;
+        max-height: calc(100dvh - var(--sp-8));
+        padding: 0;
         border: 0;
-        background: rgba(26, 26, 26, 0.45);
-        z-index: 200;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        background: transparent;
+        overflow: visible;
     }
-    .pg::backdrop { background: transparent; }
+    .pg::backdrop { background: rgba(26, 26, 26, 0.45); }
+    /* En sombre, le fond du site est #0f0e0c, plus sombre que le rgb(26,26,26)
+       du voile : celui-ci ECLAIRCISSAIT la page au lieu de l'assombrir. Le
+       :global() est necessaire, l'attribut data-theme vit sur <html>, hors de
+       la portee du style scope de ce composant. */
+    :global([data-theme='dark']) .pg::backdrop { background: rgba(0, 0, 0, 0.62); }
     .pg-card {
         position: relative;
-        width: 100%;
-        max-width: 420px;
-        max-height: calc(100vh - var(--sp-4) * 2);
+        max-height: calc(100dvh - var(--sp-8));
         overflow-y: auto;
         background: var(--bg);
         border: 1px solid var(--border);
@@ -452,6 +470,10 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         padding: var(--sp-6);
         animation: pg-rise var(--duration-base) var(--ease-out);
     }
+    /* Dans une carte de 420px, la rangee en ligne laissait 71px a l'input parce
+       que le bouton est en `nowrap` et prenait 291px. Mesure en production. */
+    .pg .pf-row { flex-direction: column; max-width: none; }
+    .pg .pf-row button { width: 100%; }
     @keyframes pg-rise { from { opacity: 0; transform: translateY(12px); } }
     .pg-close {
         position: absolute;
@@ -523,7 +545,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                         />
                         <button type="submit">S'inscrire à la newsletter du lundi</button>
                     </div>
-                    <p class="pf-err" id="pf-hero-err" hidden={!submitError}>{submitError}</p>
+                    <p class="pf-err" role="alert" id="pf-hero-err" hidden={!submitError}>{submitError}</p>
                     <!-- Cadence et preuve vivent ICI et nulle part ailleurs dans
                          le héros : sous le bouton, au moment de l'hésitation,
                          sans rien ajouter au-dessus de l'action. -->
@@ -593,7 +615,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                         />
                         <button type="submit">S'inscrire à la newsletter du lundi</button>
                     </div>
-                    <p class="pf-err" id="pf-mid-err" hidden></p>
+                    <p class="pf-err" role="alert" id="pf-mid-err" hidden></p>
                     <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
                 </form>
             </div>
@@ -639,7 +661,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                     />
                     <button type="submit">S'inscrire à la newsletter du lundi</button>
                 </div>
-                <p class="pf-err" id="pf-end-err" hidden></p>
+                <p class="pf-err" role="alert" id="pf-end-err" hidden></p>
                 <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
             </form>
         </section>
@@ -690,7 +712,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                     />
                     <button type="submit">S'inscrire à la newsletter du lundi</button>
                 </div>
-                <p class="pf-err" id="pf-modal-err" hidden></p>
+                <p class="pf-err" role="alert" id="pf-modal-err" hidden></p>
                 <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
             </form>
         </div>
@@ -716,11 +738,21 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         // exactement ce qu'il venait de faire. Trouve par une revue exterieure.
         var KEY = 'mg_peptides_guide_v1';
         var modalTimer = null;
-        function suppressModal() {
+        // DESARME la pop-up, ne la ferme PAS.
+        //
+        // Elle fermait, et c'etait faux exactement la ou ca comptait : une
+        // inscription DEPUIS la modale affichait le message de succes puis
+        // refermait la modale dans la foulee. Le visiteur voyait la fenetre
+        // disparaitre sans confirmation, et un lecteur d'ecran recevait le focus
+        // sur un contenu masque dans la seconde.
+        //
+        // Fermer n'a d'ailleurs jamais servi ailleurs : quand la modale est
+        // ouverte, `showModal()` rend la page inerte, donc aucun formulaire en
+        // ligne ne peut etre soumis derriere. Le seul cas ou `close()` se
+        // declenchait etait le seul ou il ne fallait pas.
+        function disarmModal() {
             if (modalTimer) { clearTimeout(modalTimer); modalTimer = null; }
             try { localStorage.setItem(KEY, '1'); } catch (e0) {}
-            var d0 = document.getElementById('pep-guide');
-            if (d0 && d0.open) d0.close();
         }
 
         // Un SEUL comportement pour les quatre formulaires (3 en ligne + la
@@ -779,7 +811,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                         done.innerHTML = DONE_HTML;
                         form.parentNode.replaceChild(done, form);
                         done.focus();
-                        suppressModal();
+                        disarmModal();
                     })
                     .catch(function (e2) {
                         // Le champ n'est JAMAIS vidé sur erreur.
@@ -799,7 +831,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         // pour quelqu'un qui n'execute pas de JavaScript, ce qui etait tout le
         // probleme. Il reste juste a ne pas ouvrir la pop-up apres une inscription.
         var params = new URLSearchParams(location.search);
-        if (params.get('ok') === '1') suppressModal();
+        if (params.get('ok') === '1') disarmModal();
 
         // Pop-up : 8 s, une seule fois par visiteur. La clé est écrite à
         // l'affichage et non à la fermeture, sinon quelqu'un qui recharge avant
