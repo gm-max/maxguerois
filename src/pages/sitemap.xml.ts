@@ -24,6 +24,10 @@ export const GET: APIRoute = async () => {
     // French
     urls.push({ loc: `${SITE}/fr`, lastmod: newest, priority: '0.9' });
     urls.push({ loc: `${SITE}/fr/newsletter`, lastmod: newest, priority: '0.8' });
+    // Landing du funnel Instagram. Indexée (D14) : le doublon sémantique avec
+    // /fr/newsletter est théorique tant que le blog n'est pas positionné, alors
+    // que le trafic organique perdu serait réel.
+    urls.push({ loc: `${SITE}/fr/peptides`, lastmod: newest, priority: '0.9' });
     for (const e of fr) urls.push({ loc: `${SITE}/fr/newsletter/${e.data.slug}`, lastmod: e.data.date, priority: '0.7' });
     urls.push({ loc: `${SITE}/fr/newsletter/lucis-chapter`, lastmod: LUCIS_DATE, priority: '0.7' });
 

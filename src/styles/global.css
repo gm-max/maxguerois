@@ -328,7 +328,9 @@ body {
 }
 .newsletter-cta:hover {
     background: var(--accent);
-    color: #fff;
+    /* #1a1a1a, jamais #fff : blanc sur l'ambre = 2,76:1 en clair et 2,25:1
+       en sombre, echec WCAG AA dans les deux themes (DESIGN.md, 2026-08-26). */
+    color: #1a1a1a;
     border-color: var(--accent);
 }
 
@@ -530,7 +532,9 @@ body {
 }
 .btn-accent {
     background: var(--accent);
-    color: #fff;
+    /* #1a1a1a, jamais #fff : blanc sur l'ambre = 2,76:1 en clair et 2,25:1
+       en sombre, echec WCAG AA dans les deux themes (DESIGN.md, 2026-08-26). */
+    color: #1a1a1a;
 }
 .btn-accent:hover {
     opacity: 0.9;
@@ -626,7 +630,12 @@ body {
 
 /* ── Responsive ── */
 @media (max-width: 600px) {
-    .container { padding: var(--sp-20) 22px 100px; }
+    .container { padding: var(--sp-20) var(--sp-6) var(--sp-20); }
+    /* Le padding HAUT reste 80px et n'est pas negociable: la navbar est
+       position:fixed sur 56px et body n'a aucun padding-top, donc ces 80px
+       sont 56 de degagement + 24 de respiration. Les descendre fait passer
+       le contenu SOUS la navbar. Lateral 22 -> 24 et bas 100 -> 80 remettent
+       les deux seules valeurs hors echelle sur l'echelle --sp-*. */
     .header { margin-bottom: var(--sp-16); }
     .header h1 { font-size: 36px; margin-bottom: 20px; }
     .photo { width: 100%; height: 280px; object-position: center 25%; margin-bottom: 28px; }

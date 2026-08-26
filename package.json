@@ -3,13 +3,17 @@
     "dev": "bash scripts/with-node.sh dev",
     "build": "npm run check:csp && bash scripts/with-node.sh build",
     "preview": "bash scripts/with-node.sh preview",
-    "check:csp": "node scripts/check-csp.mjs"
+    "check:csp": "node scripts/check-csp.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "engines": {
     "node": "22.x"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.2",
+    "@astrojs/vercel": "^10.0.8",
+    "@supabase/supabase-js": "^2.112.4",
     "astro": "^6.4.4"
   },
   "optionalDependencies": {
@@ -17,5 +21,8 @@
   },
   "overrides": {
     "esbuild": "^0.28.1"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.11"
   }
 }

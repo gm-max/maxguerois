@@ -26,3 +26,28 @@
 
 ## ~~P3 — DESIGN.md (design system documentation)~~
 **Status:** DONE (2026-03-19). DESIGN.md créé via /design-consultation, enrichi via /plan-design-review avec section Components, Accessibility, Dark Mode, CSS Architecture.
+
+## P4 — Purger `mg_rate_limit_hits` quand la table le justifiera
+**Status:** OPEN (posé le 2026-08-26 par `/plan-eng-review`, différé volontairement).
+
+**Quoi :** la table qui compte les tentatives d'inscription par IP n'est jamais vidée.
+La limite ne regarde que la dernière heure ; tout ce qui est plus ancien est du poids mort.
+
+**Pourquoi c'est différé et pas corrigé :** le calcul dit des années. Une ligne pèse une
+cinquantaine d'octets, le plan gratuit offre 500 Mo, donc il faut de l'ordre de 10 millions
+de tentatives pour que ça pèse. La lecture reste rapide quoi qu'il arrive grâce à
+`mg_rate_limit_hits_ip_created_idx`. Et la correction évidente, supprimer les vieilles
+lignes à chaque inscription, ajoute un aller-retour de base **sur le chemin critique** :
+de l'attente pour chaque visiteur réel, contre un problème lointain. Mauvais échange.
+
+**Déclencheur, pour ne pas s'en remettre à la vigilance :**
+```sql
+select count(*) from public.mg_rate_limit_hits;
+```
+Au-delà de **100 000 lignes**, poser une tâche planifiée Supabase qui efface tout ce qui
+dépasse 24 h. Hors chemin critique, donc sans coût pour les visiteurs.
+
+**Voir aussi :** `public.rate_limit_hits` dans le même projet (ouros.health) a exactement
+le même défaut. La même tâche planifiée peut couvrir les deux.
+
+**Dépend de :** rien.
