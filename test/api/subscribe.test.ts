@@ -18,10 +18,15 @@ type Op = { table: string; op: string; payload?: unknown; options?: unknown };
 const db = {
   calls: [] as Op[],
   rateLimitCount: 0,
+  // The route now runs a SECOND count query, on mg_subscribers, to decide whether a
+  // send failure is the first of an outage. One shared counter would have made the
+  // alert read the rate-limiter's number, so counts are per table.
+  syncErrorCount: 0,
   errors: {} as Record<string, unknown>,
   reset() {
     this.calls = [];
     this.rateLimitCount = 0;
+    this.syncErrorCount = 0;
     this.errors = {};
   },
 };
@@ -53,14 +58,15 @@ vi.mock('@supabase/supabase-js', () => ({
         },
         eq: () => chain,
         gte: () => chain,
+        not: () => chain,
+        is: () => chain,
         then(resolve: (v: unknown) => unknown) {
           const last = db.calls[db.calls.length - 1];
           const error = db.errors[`${last.table}.${last.op}`] ?? null;
-          return Promise.resolve(
-            last.op === 'select'
-              ? { count: db.rateLimitCount, error }
-              : { error },
-          ).then(resolve);
+          if (last.op !== 'select') return Promise.resolve({ error }).then(resolve);
+          const count =
+            last.table === 'mg_rate_limit_hits' ? db.rateLimitCount : db.syncErrorCount;
+          return Promise.resolve({ count, error }).then(resolve);
         },
       };
       return chain;
@@ -397,6 +403,100 @@ describe('resend sync', () => {
   });
 });
 
+const telegramCall = () =>
+  fetchCalls().find(([u]) => u.includes('api.telegram.org'));
+
+/**
+ * The alert exists because the catch above answers 200 to the visitor even when the
+ * send fails. That is deliberate — a Resend outage must never lose a signup — but it
+ * makes a total failure look exactly like a success from the browser. These tests
+ * pin the three things that matter: it fires on the first failure, it stays quiet
+ * afterwards, and it can never itself break a request.
+ */
+describe('alert on an unsent signup', () => {
+  beforeEach(() => {
+    process.env.TELEGRAM_BOT_TOKEN = 'bot-token';
+    process.env.TELEGRAM_CHAT_ID = '4242';
+  });
+  afterEach(() => {
+    delete process.env.TELEGRAM_BOT_TOKEN;
+    delete process.env.TELEGRAM_CHAT_ID;
+  });
+
+  const failSend = () =>
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (u: string) => {
+        if (String(u).includes('api.telegram.org')) {
+          return new Response('{}', { status: 200 });
+        }
+        if (String(u).endsWith('/emails')) {
+          return new Response('domain not verified', { status: 403 });
+        }
+        return new Response(JSON.stringify({ data: {} }), { status: 201 });
+      }),
+    );
+
+  it('pages on the first unsent signup', async () => {
+    failSend();
+    db.syncErrorCount = 1;
+    const res = await post({ email: 'a@b.co' });
+    expect(res.status).toBe(200);
+    const call = telegramCall();
+    expect(call).toBeDefined();
+    expect(JSON.parse((call![1] as any).body).chat_id).toBe('4242');
+  });
+
+  it('stays quiet once a backlog already exists', async () => {
+    failSend();
+    db.syncErrorCount = 7;
+    await post({ email: 'a@b.co' });
+    expect(telegramCall()).toBeUndefined();
+  });
+
+  it('does nothing when the credentials are absent', async () => {
+    delete process.env.TELEGRAM_BOT_TOKEN;
+    failSend();
+    db.syncErrorCount = 1;
+    const res = await post({ email: 'a@b.co' });
+    expect(res.status).toBe(200);
+    expect(telegramCall()).toBeUndefined();
+  });
+
+  it('still answers 200 when the alert itself throws', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (u: string) => {
+        if (String(u).includes('api.telegram.org')) throw new Error('telegram down');
+        if (String(u).endsWith('/emails')) return new Response('nope', { status: 403 });
+        return new Response(JSON.stringify({ data: {} }), { status: 201 });
+      }),
+    );
+    db.syncErrorCount = 1;
+    const res = await post({ email: 'a@b.co' });
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true });
+  });
+});
+
+describe('the welcome email', () => {
+  it('carries the one-click unsubscribe headers Gmail and Yahoo require', async () => {
+    await post({ email: 'a@b.co' });
+    const body = bodyOf(welcomeCall());
+    expect(body.headers['List-Unsubscribe']).toMatch(/^<https:\/\/maxguerois\.com\/api\/unsubscribe\?/);
+    expect(body.headers['List-Unsubscribe-Post']).toBe('List-Unsubscribe=One-Click');
+  });
+
+  // The regression: the link was built from url.origin, so an email sent by a Vercel
+  // preview carried an unsubscribe URL on a hostname that dies with the deployment.
+  it('builds the unsubscribe link on the canonical host, not the request host', async () => {
+    await post({ email: 'a@b.co' }, { endpoint: 'https://maxguerois-git-x.vercel.app/api/subscribe' });
+    const body = bodyOf(welcomeCall());
+    expect(body.text).toContain('https://maxguerois.com/api/unsubscribe');
+    expect(body.text).not.toContain('vercel.app');
+  });
+});
+
 describe('missing configuration', () => {
   it('does not pretend to succeed when an env var is absent', async () => {
     delete process.env.RESEND_API_KEY;
@@ -427,6 +527,26 @@ describe('reply', () => {
       { json: false, accept: 'text/html', endpoint: `${ENDPOINT}?lang=en` },
     );
     expect(res.headers.get('location')).toBe(`${ORIGIN}/newsletter?ok=1`);
+  });
+
+  // The Instagram funnel landing. Without its RETURN_PATHS key a no-JS signup from
+  // /fr/peptides bounced to the blog archive: a different page, no confirmation, and
+  // the visitor left wondering whether it had worked.
+  it('honours the fr-peptides key', async () => {
+    const res = await post(
+      { email: 'a@b.co' },
+      { json: false, accept: 'text/html', endpoint: `${ENDPOINT}?lang=fr-peptides` },
+    );
+    expect(res.status).toBe(303);
+    expect(res.headers.get('location')).toBe(`${ORIGIN}/fr/peptides?ok=1`);
+  });
+
+  it('carries the error code back to fr-peptides too', async () => {
+    const res = await post(
+      { email: 'nope' },
+      { json: false, accept: 'text/html', endpoint: `${ENDPOINT}?lang=fr-peptides` },
+    );
+    expect(res.headers.get('location')).toBe(`${ORIGIN}/fr/peptides?error=invalid_email`);
   });
 
   it('carries the error code back on a rejected submission', async () => {

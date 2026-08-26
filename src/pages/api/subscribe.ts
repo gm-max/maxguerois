@@ -28,17 +28,98 @@ const MAX_FIELD = 200;
 const RETURN_PATHS: Record<string, string> = {
   fr: '/fr/newsletter',
   en: '/newsletter',
+  // The Instagram funnel landing. Without this key a no-JS signup from
+  // /fr/peptides lands back on the blog archive, which is not where the
+  // visitor was and does not carry the confirmation.
+  'fr-peptides': '/fr/peptides',
 };
 const DEFAULT_LANG = 'fr';
 
 // Deliberately loose. The job is to reject typos and obvious junk, not to
-// adjudicate RFC 5322. beehiiv is the real validator downstream.
+// adjudicate RFC 5322. Resend validates for real downstream; a bad address there
+// costs a bounce, not a lost signup, because Supabase already holds the row.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 function env(name: string): string {
   const v = import.meta.env[name] ?? process.env[name];
   if (!v) throw new Error(`missing env ${name}`);
   return v;
+}
+
+/**
+ * Same lookup, but absence is a valid answer.
+ *
+ * Used only by the alerting path, which runs INSIDE the catch that handles a send
+ * failure. `env()` throwing there would lose the `sync_error` write that makes a
+ * later replay possible, so a missing alerting credential must degrade to silence,
+ * never to a second exception.
+ */
+function optionalEnv(name: string): string | undefined {
+  const v = import.meta.env[name] ?? process.env[name];
+  return v ? String(v) : undefined;
+}
+
+/**
+ * The canonical host, not the machine that served the request.
+ *
+ * `url.origin` is whatever answered the POST. On a Vercel preview that is an
+ * ephemeral `*.vercel.app` that disappears in days — and the unsubscribe link built
+ * from it goes out in a REAL inbox, on a legal obligation, already dead. Astro fills
+ * `SITE` from `site:` in astro.config.mjs, which is known at build time and correct
+ * everywhere.
+ */
+const SITE_ORIGIN = optionalEnv('SITE') ?? 'https://maxguerois.com';
+
+const TELEGRAM_TIMEOUT_MS = 3000;
+
+/**
+ * Page on the FIRST unsent signup of an outage. Never throws.
+ *
+ * The catch at the call site answers 200 to the visitor even when Resend fails, so a
+ * provider outage can never lose a signup. That is the right trade, and its price is
+ * a failure mode that LOOKS like success: the visitor reads "le guide arrive" and
+ * nothing ever comes. Before this function, nothing surfaced it.
+ *
+ * Flood guard without a timer and without guessing at columns we don't own: count
+ * the rows still waiting to sync (`sync_error` set, `synced_at` null). If this row is
+ * the only one, it is the first failure of the outage and it pages. Every later
+ * failure in the same outage sees a count above 1 and stays quiet. Draining the
+ * backlog resets the counter, so the NEXT outage pages again.
+ */
+async function alertFirstSendFailure(
+  supabase: ReturnType<typeof createClient>,
+  email: string,
+  reason: string,
+): Promise<void> {
+  try {
+    const token = optionalEnv('TELEGRAM_BOT_TOKEN');
+    const chat = optionalEnv('TELEGRAM_CHAT_ID');
+    if (!token || !chat) return;
+
+    const { count, error } = await supabase
+      .from('mg_subscribers')
+      .select('email', { count: 'exact', head: true })
+      .not('sync_error', 'is', null)
+      .is('synced_at', null);
+    if (error || (count ?? 0) > 1) return;
+
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chat,
+        text:
+          `maxguerois.com — une inscription n'a pas ete envoyee.\n\n` +
+          `Email enregistre dans Supabase, envoi Resend en echec.\n` +
+          `Raison : ${reason.slice(0, 200)}\n\n` +
+          `Le visiteur a vu "c'est fait" et ne recevra rien tant que ce n'est pas corrige.`,
+      }),
+      signal: AbortSignal.timeout(TELEGRAM_TIMEOUT_MS),
+    });
+  } catch (e) {
+    // Alerting must never be the reason a request fails.
+    console.error('telegram alert failed', e instanceof Error ? e.message : String(e));
+  }
 }
 
 /**
@@ -166,6 +247,15 @@ async function pushToResend(email: string, origin: string): Promise<void> {
         from: RESEND_FROM,
         to: [email],
         subject: RESEND_WELCOME_SUBJECT,
+        // Gmail and Yahoo have required these of bulk senders since Feb 2024. An
+        // in-body link alone is not enough: without the pair, the mail client shows
+        // no unsubscribe affordance, people press "spam" instead, and the domain's
+        // reputation goes with it. One-Click is honest here because /api/unsubscribe
+        // exports POST as well as GET.
+        headers: {
+          'List-Unsubscribe': `<${unsubscribeUrl}>`,
+          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        },
         text:
           `Merci pour votre inscription. Le guide peptides arrive très vite.\n\n` +
           `Vous pouvez vous désabonner à tout moment : ${unsubscribeUrl}`,
@@ -294,7 +384,7 @@ export const POST: APIRoute = async ({ request, url }) => {
     supabase.from('mg_subscribers').update(patch).eq('email', email);
 
   try {
-    await pushToResend(email, url.origin);
+    await pushToResend(email, SITE_ORIGIN);
     await markSync({ synced_at: new Date().toISOString(), sync_error: null });
   } catch (e) {
     // Never fails the signup. sync_error + a NULL synced_at leave the row visible
@@ -302,6 +392,7 @@ export const POST: APIRoute = async ({ request, url }) => {
     const msg = e instanceof Error ? e.message : String(e);
     console.error('resend sync failed', msg);
     await markSync({ sync_error: msg.slice(0, 500) });
+    await alertFirstSendFailure(supabase, email, msg);
   }
 
   return reply(request, url, 200, { ok: true });
