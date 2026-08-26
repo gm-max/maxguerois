@@ -1,7 +1,7 @@
 ---
 title: Landing dédiée /fr/peptides pour le funnel Instagram
 date: 2026-08-26
-status: approved, not implemented
+status: implemented, not launched
 branch: feat/supabase-capture
 ---
 
@@ -77,6 +77,8 @@ d'entrée, Zero Club sort, et les meetups ne méritent pas une section. La page 
 | **44** | **Lignes d'articles aérées** : titre, utilité, date, chacun sur sa ligne | la date collée à l'utilité rendait la ligne illisible |
 | **45** | **La sortie de beehiiv est traitée par un autre agent** | hors périmètre de ce plan, mais crée un risque de collision, voir la section dédiée |
 | **46** | **Un 3ᵉ formulaire, sous la section newsletter** | tranché le 26/08. Pic d'intention : le lecteur vient de lire les 3 choses qu'il recevra. Aucune autre réorganisation |
+| **48** | **Héros en deux colonnes au-dessus de 900 px**, ancré sur la colonne du site | tranché le 26/08. En pleine largeur, la hauteur de l'image suit la LARGEUR du viewport : 720 px et 88 % du premier écran sur 1280 |
+| **49** | **Cadence et preuve fondues dans la micro-ligne du héros** | « Un email chaque lundi. Rejoignez 1 000 lecteurs. » Le premier écran n'avait aucune preuve, et ne disait pas que c'était un email |
 | **47** | **Padding mobile corrigé et appliqué** : `22px` → `--sp-6`, `100px` → `--sp-20`. Le haut reste 80px | tranché ET livré le 26/08. Les 80px du haut sont du dégagement de navbar, pas du vide |
 
 ## Structure retenue
@@ -572,89 +574,243 @@ seul son contenu est remplacé, sa mécanique est gardée.
 
 ## Implementation Tasks
 
-- [ ] **T1 (P1, human: ~30min / CC: —)** — infra — Vérifier `maxguerois.com` dans Resend
-  - Surfacé par : un seul domaine vérifié sur le compte, `ouroslab.co`, interdit par D13
-  - Vérifier : statut `verified`, et un email de test reçu hors spam
-- [ ] **T2 (P1, human: ~3h / CC: ~25min)** — page — Créer `/fr/peptides`, sept blocs, authored à 390px
-  - Surfacé par : D16, D22, D23, D24, D29, D31. **Ne PAS passer `hideFooter`** (D30), et ne pas importer `HeroFooter`
-  - Fichiers : `src/pages/fr/peptides.astro`
-  - Vérifier : maquette v3 et page rendue superposables à 390, 375, 768, 1280
-- [ ] ~~**T3** — api — Remplacer `pushToBeehiiv` par Resend~~ **porté par l'autre agent (D45)**
-  - Surfacé par : D19. Garder l'`await` + timeout, la cicatrice ouros-reddit-scam
-  - Fichiers : `src/pages/api/subscribe.ts`
-  - Vérifier : Supabase écrit même quand Resend échoue, `sync_error` renseigné
-- [ ] **T4 (P1, human: ~5min / CC: ~2min)** — api — Ajouter `/fr/peptides` dans `RETURN_PATHS` — **à coordonner avec l'autre agent**
-  - Surfacé par : le chemin sans JS renvoie aujourd'hui sur `/fr/newsletter`
-  - Fichiers : `src/pages/api/subscribe.ts`
-  - Vérifier : JS désactivé, soumettre, atterrir sur `/fr/peptides?ok=1`
-- [ ] **T5 (P1, human: ~1h45 / CC: ~18min)** — formulaire — Les huit états d'interaction
-  - Surfacé par : Pass 2, états 3/10. S'appliquent aux **3 formulaires en ligne** (D46) ET à la pop-up, donc 4 instances. Un composant unique, pas quatre copies
-  - Fichiers : `src/pages/fr/peptides.astro`
-  - Vérifier : chaque ligne du tableau États, JS désactivé compris
-- [ ] ~~**T6** — légal — Construire le désabonnement~~ **porté par l'autre agent (D45)**, mais reste bloquant pour l'envoi
-  - Surfacé par : D19, beehiiv le fournissait, Resend non. Obligation légale
-  - Fichiers : nouvelle route + `mg_subscribers.unsubscribed_at`
-  - Vérifier : un clic depuis un email réel repasse la ligne en `unsubscribed_at`
-- [ ] **T7 (P1, human: ~45min / CC: ~10min)** — pop-up — Recontenir `SubscribeModal` sur le guide
-  - Surfacé par : D25 + D32. Garder la mécanique (`<dialog>`, Escape, 8 secondes, une fois par visiteur, `visibility`), remplacer l'iframe beehiiv par le `<form>` natif, **sans couverture de guide**
-  - Fichiers : `src/components/SubscribeModal.astro`
-  - Vérifier : Escape ferme, une seule apparition, aucun décalage à l'ouverture
-- [ ] **T8 (P1, human: ~10min / CC: ~2min)** — a11y — Bouton accent en `#1a1a1a`, **tout le site** (D41)
-  - Surfacé par : `#fff` sur `#c4934a` = 2,76:1 et sur `#d4a55e` = 2,25:1
-  - `DESIGN.md` **déjà mis à jour** le 26/08. Reste le CSS
-  - Fichiers : `src/styles/global.css`
-  - Vérifier : ≥ 4,5:1 en clair ET en sombre, sur tous les CTA du site
-- [ ] **T9 (P2, human: ~20min / CC: ~5min)** — typo — Verrouiller l'échelle typo
-  - Surfacé par : D28, la v2 étalait douze tailles. L'encadré revient au corps 14 de la charte
-  - Fichiers : `src/pages/fr/peptides.astro`
-  - Vérifier : aucune valeur en dur, toutes les tailles passent par les variables du tableau
-- [ ] **T10 (P2, human: ~20min / CC: ~5min)** — mobile — Attributs du champ email
-  - Surfacé par : `inputmode`, `autocomplete`, `autocapitalize`, et `font-size: 16px`
-  - Vérifier : sur iPhone réel, aucun zoom au focus, aucune majuscule forcée
-- [ ] **T11 (P2, human: ~20min / CC: ~5min)** — meta — Titres et descriptions différenciés
-  - Surfacé par : D14
-  - Fichiers : `src/pages/fr/peptides.astro`, `src/pages/sitemap.xml.ts`
-- [ ] **T12 (P2, human: ~1h / CC: ~10min)** — envoi — Synchro Supabase → audience Resend
-  - Surfacé par : D19, l'audience se reconstruit avant chaque lundi
-  - Fichiers : `scripts/`
-- [ ] **T13 (P2, human: ~10min / CC: ~3min)** — copy — Tous les nombres en chiffres
-  - Surfacé par : D27, inversée le 26/08. 2 ans, 2021, 12 peptides, 6 signaux, 11 compléments, 1 000
-  - Vérifier : aucun nombre écrit en toutes lettres
-- [ ] **T15 (P2, human: ~30min / CC: ~10min)** — page — Sortir l'image du héros de `.container`
-  - Surfacé par : l'audit des paddings. Dans `.container` elle hérite de 22px de gouttière et cesse d'être un bandeau
-  - Fichiers : `src/pages/fr/peptides.astro`
-  - Vérifier : l'image touche les deux bords à 375px comme à 1280px
-- [x] ~~**T16** — design system — Aligner le padding mobile sur l'échelle~~ **fait le 26/08**, vérifié en navigateur à 375px sur 2 gabarits, build vert
-- [ ] **T17 (P3, human: ~30min / CC: ~10min)** — dette — Supprimer le doublon `src/styles/global.css`
-  - Surfacé par : les deux copies ont divergé, `public/` est la servie, `.ai-icon--square` n'a jamais été livrée
-  - **Touche tout le site.** À faire quand le repo est calme
-- [ ] **T14 (P3, human: ~2h / CC: —)** — asset — Guide : le PDF
-  - Surfacé par : D4 et D25 rendent le guide bloquant. **Plus besoin de couverture** : ni la page ni la pop-up n'en affichent (D32)
-  - Fichiers : `public/`
+### Livré le 26/08
 
-## Les trois formulaires (D46)
+- [x] **T2** — `src/pages/fr/peptides.astro`, sept blocs, authored à 390px
+- [x] **T4** — `RETURN_PATHS['fr-peptides'] = '/fr/peptides'`, les formulaires postent `?lang=fr-peptides`
+- [x] **T5** — les huit états d'interaction, **un seul comportement** pour les 4 formulaires
+- [x] **T7** — pop-up guide, `<dialog>` natif, 8 s, une fois par visiteur, sans image
+- [x] **T8** — bouton accent en `#1a1a1a` dans `global.css` (les 2 copies), tout le site
+- [x] **T9** — échelle typo verrouillée, aucune taille en dur dans la page
+- [x] **T10** — `inputmode`, `autocomplete`, `autocapitalize`, `spellcheck`, corps ≥ 16px
+- [x] **T11** — `<title>` et description différenciés, entrée sitemap priorité 0.9
+- [x] **T15** — l'image sort de `.container`, pleine largeur mesurée à 375 et 1280
+- [x] **T16** — padding mobile remis sur l'échelle
 
-| Emplacement | Pour qui | Distance du précédent |
+### Deux bugs trouvés en construisant, pas dans le plan
+
+**1. L'image se rendait en 375×733 au lieu de 375×250.** Les attributs
+`width="1100" height="733"` sont des dimensions présentationnelles : avec
+`width: 100%` la boîte avait deux dimensions définies, donc `aspect-ratio` était
+ignoré. **Le formulaire tombait à y=1099 sur un viewport de 812**, c'est-à-dire sous
+la ligne de flottaison, ce que toute la conception de la page cherche à éviter.
+Corrigé par `height: auto`, les attributs restent pour réserver la place.
+
+**2. La navbar coupait la tête du sujet.** L'image démarrait à y=0 et la barre fixe
+recouvre les 56 premiers pixels. Corrigé par `margin-top: var(--pep-nav-h)`, une
+variable locale qui recopie `nav.css:12` avec le commentaire qui dit pourquoi.
+
+Aucun des deux n'était visible dans la maquette HTML : ils n'existent que dans le
+vrai gabarit, avec la vraie navbar et les vrais attributs d'image. C'est l'argument
+pour vérifier dans le navigateur plutôt que dans un fichier de démonstration.
+
+### Vérifié dans le navigateur, 26/08
+
+| Contrôle | 375 px | Desktop |
 |---|---|---|
-| Héros | celui qui arrive déjà convaincu par le DM Instagram | — |
-| Sous la newsletter | pic d'intention : il vient de lire les 3 items du lundi | 2 sections |
-| Clôture, bloc guide | rattrapage, avec l'incitation guide | 2 sections |
+| image | 375 px pleine largeur, 3/2, 250 px de haut | colonne droite, 4/5, 306×383, bord à bord à droite |
+| formulaire au-dessus de la flottaison | **oui**, bouton à y=672 sur 812 | **oui**, micro-ligne à y=456 sur 820 |
+| recouvrement navbar | aucun, image à y=56 | aucun |
+| gouttière | 24 px | 24 px |
+| alignement héros / sections | dérive 0 | dérive 0 |
+| débordement horizontal | non | non |
+| bouton accent | `rgb(26,26,26)` sur `rgb(196,147,74)` | idem |
+| corps de l'input | 16 px, pas de zoom iOS | idem |
+| formulaires | 4, un seul comportement | idem |
+| footer | footer du site présent, `hero-dock` absent | idem |
+| iframes beehiiv | **0** | 0 |
+| email invalide | message + `aria-invalid` + `aria-describedby` | idem |
+| correction de l'email | message effacé, `aria-invalid` retiré | idem |
 
-**Les trois portent le même libellé** — « S'inscrire à la newsletter du lundi » — et la
-même micro-ligne. La pop-up aussi. Un libellé qui change d'un formulaire à l'autre est
-ce qui fait douter le visiteur au moment de cliquer.
+`npm run build` vert, garde CSP comprise. `npm test` : 55 tests passent.
 
-**Le lien entre les deux offres n'est dit qu'une seule fois**, en clôture : « Il arrive
-dans le premier email. » C'est la correction demandée par Codex, et elle tient même
-avec trois formulaires.
+### Le héros, revu le 26/08 après mesure
 
-**Le formulaire de la newsletter est isolé** par un filet 1px et 48 px de marge haute.
-Sans cette séparation, la liste 1-2-3 et le formulaire se collent, et la section donne
-l'impression de se répéter au lieu d'enchaîner.
+**Le défaut.** Sur mobile le héros allait bien : image 250 px, bouton à y=672 sur 812.
+Sur desktop il était cassé. L'image est pleine largeur, donc sa hauteur suit la
+**largeur** du viewport : 250 px sur un téléphone, **720 px sur un 1280**, soit 88 %
+du premier écran, et le bouton à y=1091, c'est-à-dire **271 px sous la ligne de
+flottaison**. Un visiteur sur portable voyait un canapé et rien d'autre. Plus l'écran
+est large, pire c'est. La maquette ne pouvait pas le montrer, elle était mobile.
 
-**Réserve conservée au dossier.** Trois formulaires en ligne sur une page mobile
-restent trois. Le garde-fou est le libellé unique et l'espacement de deux sections ;
-si la page s'allonge un jour, c'est le premier endroit où regarder.
+**La correction (D48).** Au-dessus de 900 px, le héros passe en deux colonnes : texte
+et formulaire à gauche, photo verticale 4/5 à droite, filant jusqu'au bord droit.
+
+**Et un second défaut, trouvé en corrigeant le premier.** La grille centrée et la
+colonne de 620 px centrée ne peuvent pas partager un bord gauche : **230 px de dérive
+mesurés** entre le texte du héros et le label de la première section. Deux systèmes
+d'alignement sur une même page se voient immédiatement. La grille est donc **ancrée**
+sur le bord de `.container`, et sa colonne de texte reprend la largeur de *contenu*
+(620 moins les deux paddings), pas la largeur de boîte — sans ce détail il restait
+24 px de dérive.
+
+| | avant | après |
+|---|---|---|
+| hauteur image, 1280 | 720 px | 383 px |
+| part du premier écran | 88 % | 47 % |
+| bas du formulaire, 1280 | y=1091, **sous le pli** | y=456, au-dessus |
+| dérive d'alignement | 230 px | **0** |
+| mobile 375 | image 250, bouton y=672 | inchangé |
+
+**La preuve entre dans le premier écran (D49).** La micro-ligne du héros devient
+« Un email chaque lundi. Rejoignez 1 000 lecteurs. Gratuit, désinscription en un
+clic. » Elle règle deux manques d'un coup : le premier écran n'offrait aucune raison
+de croire, et ne disait nulle part qu'il s'agissait d'un email hebdomadaire — « chaque
+lundi » ne vivait que dans le libellé du bouton. Les deux autres formulaires gardent
+la micro-ligne courte : la cadence est déjà expliquée juste au-dessus d'eux.
+
+## Revue d'ingénierie, 26/08
+
+Première passe eng sur ce plan. Neuf trouvailles, sept corrigées, deux déjà connues.
+
+### Les deux P1
+
+**Une inscription qui n'envoie rien affichait quand même « C'est fait ».**
+`subscribe.ts` attrape l'échec Resend, écrit `sync_error`, et répond 200. Le design
+est juste — une panne Resend ne doit jamais perdre une inscription — mais **rien ne
+prévenait**. Et comme le domaine est `not_started`, l'échec n'était pas
+hypothétique : il se serait produit à chaque inscription dès la mise en ligne. Tout
+le monde aurait lu « le guide arrive » et personne n'aurait rien reçu, en silence.
+
+Corrigé (D50-B) : alerte Telegram sur la **première** inscription non envoyée.
+Garde anti-déluge sans minuterie et sans deviner de colonne : on compte les lignes
+encore en attente (`sync_error` posé, `synced_at` nul). Si celle-ci est la seule,
+c'est le début de la panne, ça sonne. Les suivantes voient un compte supérieur à 1 et
+se taisent. Vider le retard remet le compteur à zéro, donc la panne suivante sonnera.
+L'alerte ne peut jamais faire échouer une requête : credentials absents ou Telegram
+en panne, elle dégrade en silence.
+
+**Le lien de désinscription était construit sur `url.origin`.**
+Sur une preview Vercel, chaque email partait avec un lien vers un `*.vercel.app`
+éphémère — mort quelques jours plus tard, dans une vraie boîte mail, sur une
+obligation légale. Corrigé (D51-A) : `SITE_ORIGIN`, tiré de `site:` dans
+`astro.config.mjs`, connu à la compilation et correct partout.
+
+### Les P2 corrigés
+
+- **Aucun en-tête `List-Unsubscribe`.** Gmail et Yahoo l'exigent des expéditeurs en
+  masse depuis février 2024. Sans lui, le client mail n'affiche aucun bouton de
+  désinscription, les gens cliquent « spam » à la place, et la réputation du domaine
+  part avec — sur le seul email qui porte le guide. Ajouté avec
+  `List-Unsubscribe-Post`, ce qui est honnête ici puisque `/api/unsubscribe` exporte
+  bien `POST` en plus de `GET`.
+- **Commentaire périmé** dans `subscribe.ts` : « beehiiv is the real validator
+  downstream », alors que beehiiv n'est plus dans le chemin.
+- **Constante morte** dans `peptides.astro` : `var DONE` déclarée et jamais lue,
+  pendant que la même phrase était écrite en dur à deux endroits. Trois copies d'une
+  chaîne dont deux allaient dériver. Une seule maintenant, `DONE_HTML`.
+- **Le chemin sans JS de la landing n'était couvert par aucun test.** Les 55 tests ne
+  contenaient pas une occurrence de `fr-peptides`.
+
+### Tests : 55 → 63
+
+| Ajouté | Ce que ça épingle |
+|---|---|
+| `fr-peptides` redirige en 303 vers `/fr/peptides?ok=1` | le chemin sans JS de la landing |
+| idem avec `?error=invalid_email` | le retour d'erreur sur la même page |
+| l'alerte sonne sur la première inscription non envoyée | la panne silencieuse |
+| elle se tait quand un retard existe déjà | le déluge |
+| elle ne fait rien sans credentials | déploiement sans Telegram |
+| la requête répond 200 même si l'alerte lève | l'alerte ne casse jamais une inscription |
+| l'email porte les deux en-têtes de désinscription | la délivrabilité |
+| le lien est bâti sur l'hôte canonique, pas celui de la requête | la régression preview |
+
+Le faux client Supabase a été corrigé au passage : il renvoyait `rateLimitCount`
+pour **tout** `select`, donc la nouvelle requête de comptage aurait lu le compteur du
+rate-limiter. Compteurs par table désormais.
+
+### Non corrigé, assumé
+
+- **8 allers-retours réseau séquentiels par inscription** (4 Resend, 4 Supabase). Sur
+  un mobile en 4G, « Une seconde… » peut durer 2 à 3 secondes. Le plan recommandait
+  à l'origine de sortir les étapes 1 à 3 vers un lot pré-diffusion ; l'implémentation
+  les fait en ligne. Ça marche, c'est plus simple, et ça coûte de la latence au
+  moment le plus fragile. À reprendre si le taux d'abandon au formulaire le montre.
+- **Doublon `src/styles/global.css` / `public/styles/global.css`**, déjà ouvert.
+
+### Deux variables d'environnement de plus
+
+`TELEGRAM_BOT_TOKEN` et `TELEGRAM_ADMIN_CHAT_ID`. **Optionnelles** : sans elles la page
+fonctionne, elle est simplement muette en cas de panne d'envoi. À poser dans Vercel.
+
+### Seconde passe eng, voix extérieure (Codex), 26/08
+
+`codex exec` en lecture seule sur le code réel, pas sur le plan. Six trouvailles,
+**toutes réelles**, dont une qui désarmait l'alerte ajoutée une heure plus tôt.
+
+**[P1] Le réinscrit gardait un `synced_at` périmé, donc son échec était invisible.**
+L'upsert ne remettait pas l'état de synchro à zéro :
+
+```
+  .upsert({ email, ip_hash, source, unsubscribed_at: null, ...utm })
+```
+
+Un abonné déjà synchronisé qui se réinscrit et dont l'envoi échoue conservait son
+ancien `synced_at`. Or la garde de l'alerte compte
+`sync_error IS NOT NULL AND synced_at IS NULL` : **cette ligne tombait hors du
+prédicat.** Pas d'alerte, et invisible aussi pour n'importe quel script de rattrapage
+bâti sur la même requête. La personne recevait un 200, ne recevait rien, et rien ne
+sonnait. Corrigé : `synced_at: null, sync_error: null` dans l'upsert, les deux champs
+écrits explicitement dans le catch, et `markSync` journalise désormais l'erreur
+Supabase au lieu de l'ignorer.
+
+**[P2] La pop-up se rouvrait après une inscription réussie.** Le minuteur de 8 s était
+planifié au chargement et rien ne l'annulait. Quelqu'un qui s'inscrivait à t=3 s se
+faisait redemander à t=8 s exactement ce qu'il venait de faire. Corrigé par un
+`suppressModal()` partagé. Vérifié dans le navigateur : à t=10 s, modale fermée,
+message de succès intact.
+
+**[P2] Le rate-limiter se fiait à `x-forwarded-for`.** Sa valeur de gauche est fournie
+par l'appelant : un attaquant fait tourner des IP falsifiées et la limite de 5/heure
+ne se déclenche jamais. Corrigé : `x-vercel-forwarded-for` puis `x-real-ip`, posés
+par l'edge Vercel après nettoyage, avec repli sur XFF pour le dev local.
+
+**[P2] L'alerte Telegram ne vérifiait pas `res.ok`.** Un jeton invalide répond 401 et
+`fetch` **résout**. L'alerte se croyait envoyée en ne prévenant personne : la panne
+silencieuse qu'elle existe pour éviter, un étage plus haut.
+
+**[P3] Un test épinglait la maquette plutôt que le comportement.** Il injectait
+`db.syncErrorCount = 1` au lieu de le dériver de ce que la route écrit, donc il serait
+passé **avec** le bug P1. Et un test plus ancien assertait
+`expect(synced_at).toBeUndefined()`, c'est-à-dire qu'il épinglait le bug lui-même.
+Les deux sont corrigés et trois tests dérivés ajoutés.
+
+**[P2] Le visiteur sans JavaScript ne voyait aucune confirmation.**
+Le correctif proposé par Codex — rendre l'état côté serveur — **ne s'appliquait pas** :
+la page était statique, donc construite une fois au déploiement et aveugle aux
+paramètres d'URL. Le défaut était réel, son remède non.
+
+Tranché en D52-B : `/fr/peptides` passe en `prerender = false`. C'est la **seconde**
+route à la demande d'un site dont le plan en annonçait une seule, et c'est assumé.
+Mitigation : `Cache-Control: s-maxage=300, stale-while-revalidate=86400`. Vercel
+indexe son cache edge sur l'URL complète, donc la page nue et chaque variante `?ok=1`
+sont mises en cache séparément, et aucune n'est personnalisée.
+
+Vérifié sur les quatre états :
+
+| URL | confirmation rendue | formulaire |
+|---|---|---|
+| `/fr/peptides` | non | oui, erreur masquée |
+| `?ok=1` | **oui, côté serveur** | remplacé |
+| `?error=invalid_email` | non | oui, « Cet email n'a pas l'air valide. » |
+| `?error=` inconnu | non | oui, message générique |
+
+`/fr/peptides` ne figure plus dans la sortie prérendue. Tests 63 → 66, build vert.
+
+### Reste à faire
+
+- [ ] **R0 — Poser `TELEGRAM_BOT_TOKEN` et `TELEGRAM_ADMIN_CHAT_ID` dans Vercel.** Sans
+  elles, la panne d'envoi redevient silencieuse
+- [x] ~~**R1 — DNS Resend pour `maxguerois.com`**~~ **fait le 26/08 : statut `verified`, `Sending: enabled`, région eu-west-1.** Le domaine peut envoyer
+- [ ] **R2 — Lien ManyChat vers `/fr/peptides`.** Max s'en occupe
+- [ ] **R3 — Écrire le premier numéro.** Sans lui la promesse du lundi n'est pas tenable
+- [ ] **R4 — Le PDF du guide.** Promis à 3 endroits, n'existe pas. Décision du 26/08 :
+  on lance sans, il suivra
+- [ ] **R5 — Sortir beehiiv du reste du site.** `NewsletterEmbed`, `SubscribeModal` et
+  les 2 `preconnect` de `Layout` le chargent encore. Sans effet sur cette page, mais
+  ses erreurs `attribution.js` polluent la console de tout le site
+- [ ] **R6 — Supprimer le doublon `src/styles/global.css`.** Les deux copies ont
+  déjà divergé une fois
 
 ## Le padding du conteneur, corrigé le 26/08
 
@@ -799,9 +955,9 @@ que demandé, et signalé.
 | Review | Trigger | Why | Runs | Status | Findings |
 |--------|---------|-----|------|--------|----------|
 | CEO Review | `/plan-ceo-review` | Scope & strategy | 0 | — | — |
-| Codex Review | `codex exec` | Independent 2nd opinion | 1 | ISSUES_FOUND | hard rejection n°2, 3 litmus sur 7 en échec, 4 corrections appliquées |
-| Eng Review | `/plan-eng-review` | Architecture & tests (required) | 0 | — | not run on this plan |
-| Design Review | `/plan-design-review` | UI/UX gaps | 9 | ISSUES_FOUND | 7 dimensions sur 7, 4/10 → 9/10, 47 décisions, 5 virages, 1 passe Codex, `DESIGN.md` + `global.css` corrigés et vérifiés en navigateur |
+| Codex Review | `codex exec` | Independent 2nd opinion | 2 | ISSUES_FIXED | passe design (4 corrections) + passe code (6 trouvailles, 6 corrigées) |
+| Eng Review | `/plan-eng-review` | Architecture & tests (required) | 2 | ISSUES_FIXED | 15 trouvailles, 3 P1 corrigées, tests 55 → 66 |
+| Design Review | `/plan-design-review` | UI/UX gaps | 10 | IMPLEMENTED | 7 dimensions sur 7, 4/10 → 9/10, 47 décisions, 5 virages, 1 passe Codex, `DESIGN.md` + `global.css` corrigés et vérifiés en navigateur |
 | DX Review | `/plan-devex-review` | Developer experience gaps | 0 | — | — |
 
 **Scores par passe :**
@@ -816,48 +972,23 @@ que demandé, et signalé.
 | 6 · Responsive et accessibilité | 2/10 | 9/10 |
 | 7 · Décisions non tranchées | — | 42 résolues, 1 différée |
 
-**VERDICT:** NOT CLEARED. La page est design-complete à 9/10, mobile-first, et sa
-structure porte enfin un projet et non un produit. Quatre choses bloquent.
+**VERDICT:** IMPLEMENTED, NOT LAUNCHED. La page existe, elle est construite selon
+le plan, et elle est vérifiée dans le navigateur aux deux breakpoints. Le build et
+les 55 tests passent.
 
-`maxguerois.com` n'existe pas dans Resend : le seul domaine vérifié du compte est
-`ouroslab.co`, dont D13 interdit l'usage. Le désabonnement, que beehiiv fournissait
-avec son embed, est à construire et c'est une obligation légale. beehiiv reste branché
-sur le reste du site via `NewsletterEmbed` et les deux `preconnect` du `Layout`, donc
-le site aura deux fournisseurs tant que ce n'est pas tranché. Et le bouton accent
-échoue WCAG AA dans les deux modes.
+`maxguerois.com` est passé `verified` dans Resend le 26/08, donc le domaine peut
+envoyer : le blocage principal est levé. Restent le lien ManyChat, qui envoie toujours
+le trafic Instagram sur l'archive, et le premier numéro.
 
-L'Eng review n'a toujours pas tourné, alors que le plan ajoute un adapter SSR, une
-route API et un fournisseur d'email à un site jusqu'ici entièrement statique.
+La construction a trouvé deux bugs que la maquette ne pouvait pas montrer, dont un
+qui faisait tomber le formulaire sous la ligne de flottaison. Les deux sont corrigés
+et commentés dans le code.
 
-**Ce que cette passe a fait entrer dans la charte.** Deux décisions quittent ce plan
-pour `DESIGN.md`, où elles s'appliquent à tout le site : le bouton accent passe en
-`#1a1a1a` (le `#fff` échouait AA dans les deux thèmes, sur chaque CTA du site), et le
-surlignage devient le composant Text Highlight, plafonné à 3 par section. Les deux
-sont au Key Decisions Log de `DESIGN.md`, datées du 26/08.
-
-**Ce que la passe Codex a corrigé.** Le premier écran ne nommait le produit nulle
-part : belle photo, marque absente. Un eyebrow « Max Guérois · Newsletter peptides »
-règle la hard rejection sans toucher au titre que vous avez choisi. Et l'ordre des
-sections a bougé : l'offre atterrit désormais avant la vision.
-
-**Ce que la passe 5 a corrigé, et une erreur de ma part.** Le pied de page : mes
-maquettes v2 et v3 dessinaient `HeroFooter` en bloc statique en fin de page. Ce
-composant est un dock `position: fixed` qui s'efface au scroll, et l'utiliser
-supprime le footer réel du site. Corrigé : `/fr/peptides` ne passe rien et hérite du
-footer de `Layout.astro:188`. Zéro ligne de code.
-
-Corrigé aussi : l'encadré revient au corps 14 de la charte, la mission passe de deux
-pavés à 4 phrases espacées de 48 px, la pop-up perd sa couverture, l'état succès
-passe de trois phrases à une, et tous les nombres redeviennent des chiffres.
-
-**Coût assumé de D19, à ne pas oublier :** beehiiv avait été choisi parce que son
-éditeur rendait le lundi tenable. Ce motif disparaît. Écrire le numéro devient plus
-coûteux chaque semaine.
-
-**Les quatre décisions ouvertes de la passe précédente sont tranchées** (26/08) :
-bouton accent corrigé dans `DESIGN.md` pour tout le site, surlignage entré dans la
-charte comme composant Text Highlight, sortie de beehiiv portée par un autre agent, et
-la preuve Lucis reste telle quelle en connaissance de la contrainte.
+L'Eng review a tourné le 26/08 et a sorti deux P1, dont une qui aurait rendu chaque
+inscription silencieusement sans effet le jour du lancement. Les deux sont corrigées
+et couvertes par des tests.
 
 **UNRESOLVED DECISIONS:**
+- La landing est désormais la 2ᵉ route à la demande du site, contre la prémisse « une seule » du plan (D52-B, assumé). À revoir si le TTFB du funnel se dégrade
+- 8 allers-retours réseau séquentiels par inscription : sortir les 3 étapes de contact Resend vers un lot pré-diffusion, ou accepter 2 à 3 secondes d'attente sur mobile
 - Doublon `src/styles/global.css` / `public/styles/global.css` : c'est la copie `public/` qui est servie, les deux ont déjà divergé d'une règle, et rien n'empêche que ça recommence. Supprimer l'une des deux touche tout le site, donc à décider quand le repo est calme

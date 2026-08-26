@@ -328,7 +328,9 @@ body {
 }
 .newsletter-cta:hover {
     background: var(--accent);
-    color: #fff;
+    /* #1a1a1a, jamais #fff : blanc sur l'ambre = 2,76:1 en clair et 2,25:1
+       en sombre, echec WCAG AA dans les deux themes (DESIGN.md, 2026-08-26). */
+    color: #1a1a1a;
     border-color: var(--accent);
 }
 
@@ -530,7 +532,9 @@ body {
 }
 .btn-accent {
     background: var(--accent);
-    color: #fff;
+    /* #1a1a1a, jamais #fff : blanc sur l'ambre = 2,76:1 en clair et 2,25:1
+       en sombre, echec WCAG AA dans les deux themes (DESIGN.md, 2026-08-26). */
+    color: #1a1a1a;
 }
 .btn-accent:hover {
     opacity: 0.9;
