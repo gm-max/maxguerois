@@ -1,9 +1,14 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   integrations: [mdx()],
+  // Still a static site. The adapter exists for exactly one on-demand route,
+  // src/pages/api/subscribe.ts, which opts in with `export const prerender = false`.
+  // Every page keeps prerendering; adding the adapter does not change that.
   output: 'static',
+  adapter: vercel(),
   site: 'https://maxguerois.com',
   // Old article URLs -> new /newsletter/<slug> structure.
   // vercel.json still serves these as true 301s at the edge in production;
