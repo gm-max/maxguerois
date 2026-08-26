@@ -585,7 +585,7 @@ describe('reply', () => {
   it('redirects a no-JS form post back to the French page by default', async () => {
     const res = await post({ email: 'a@b.co' }, { json: false, accept: 'text/html' });
     expect(res.status).toBe(303);
-    expect(res.headers.get('location')).toBe(`${ORIGIN}/fr/newsletter?ok=1`);
+    expect(res.headers.get('location')).toBe(`${ORIGIN}/fr/merci?ok=1`);
   });
 
   it('honours the en key', async () => {
@@ -593,7 +593,7 @@ describe('reply', () => {
       { email: 'a@b.co' },
       { json: false, accept: 'text/html', endpoint: `${ENDPOINT}?lang=en` },
     );
-    expect(res.headers.get('location')).toBe(`${ORIGIN}/newsletter?ok=1`);
+    expect(res.headers.get('location')).toBe(`${ORIGIN}/thanks?ok=1`);
   });
 
   // The Instagram funnel landing. Without its RETURN_PATHS key a no-JS signup from
@@ -619,7 +619,7 @@ describe('reply', () => {
   it('carries the error code back on a rejected submission', async () => {
     const res = await post({ email: 'nope' }, { json: false, accept: 'text/html' });
     expect(res.status).toBe(303);
-    expect(res.headers.get('location')).toBe(`${ORIGIN}/fr/newsletter?error=invalid_email`);
+    expect(res.headers.get('location')).toBe(`${ORIGIN}/fr/merci?error=invalid_email`);
   });
 
   // The regression this guards: reply() built the destination with
@@ -642,6 +642,64 @@ describe('reply', () => {
     );
     const location = new URL(res.headers.get('location')!);
     expect(location.origin).toBe(ORIGIN);
-    expect(location.pathname).toBe('/fr/newsletter');
+    expect(location.pathname).toBe('/fr/merci');
+  });
+});
+
+describe('no-JS return path', () => {
+  // The regression this guards: `fr` and `en` used to return to /fr/newsletter and
+  // /newsletter, which are PRERENDERED and therefore cannot read ?ok=1 at request
+  // time. A visitor without JavaScript was redirected to a page identical to the one
+  // they left, with no confirmation anywhere — so they submitted again. The two
+  // destinations below are the only ones that are `prerender = false`.
+  it.each([
+    ['fr', '/fr/merci'],
+    ['en', '/thanks'],
+  ])('%s returns to an on-demand page that can render the result', async (lang, path) => {
+    const res = await post(
+      { email: 'a@b.co' },
+      { json: false, accept: 'text/html', endpoint: `${ENDPOINT}?lang=${lang}` },
+    );
+    const location = new URL(res.headers.get('location')!);
+    expect(location.pathname).toBe(path);
+    expect(location.searchParams.get('ok')).toBe('1');
+  });
+
+  it('never returns to a prerendered page', async () => {
+    for (const lang of ['fr', 'en', 'fr-peptides', 'unknown', '']) {
+      const res = await post(
+        { email: 'a@b.co' },
+        { json: false, accept: 'text/html', endpoint: `${ENDPOINT}?lang=${lang}` },
+      );
+      const path = new URL(res.headers.get('location')!).pathname;
+      expect(['/fr/merci', '/thanks', '/fr/peptides']).toContain(path);
+    }
+  });
+});
+
+describe('welcome email', () => {
+  // The regression this guards: the placeholder promised "le guide peptides arrive
+  // très vite" while no guide existed. A first impression that opens on an unkept
+  // promise is worse than no email. It goes back in when the guide is real.
+  it('promises nothing that does not exist yet', async () => {
+    await post({ email: 'a@b.co' });
+    const call = (fetch as any).mock.calls.find(([u]: [string]) => u.endsWith('/emails'));
+    const body = JSON.parse(call[1].body);
+    expect(body.html.toLowerCase()).not.toContain('guide');
+    expect(body.text.toLowerCase()).not.toContain('guide');
+  });
+
+  it('carries the postal address a commercial email legally needs', async () => {
+    await post({ email: 'a@b.co' });
+    const body = JSON.parse((fetch as any).mock.calls.find(([u]: [string]) => u.endsWith('/emails'))[1].body);
+    expect(body.html).toContain('Maubeuge');
+    expect(body.text).toContain('Maubeuge');
+  });
+
+  it('carries no em dash, in either part', async () => {
+    await post({ email: 'a@b.co' });
+    const body = JSON.parse((fetch as any).mock.calls.find(([u]: [string]) => u.endsWith('/emails'))[1].body);
+    expect(body.html).not.toContain('\u2014');
+    expect(body.text).not.toContain('\u2014');
   });
 });

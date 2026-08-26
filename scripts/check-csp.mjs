@@ -139,16 +139,6 @@ const INTEGRATIONS = [
     requires: [{ directive: 'connect-src', host: 'region1.google-analytics.com' }],
     fix: "add https://*.google-analytics.com and https://*.analytics.google.com to connect-src",
   },
-  {
-    name: 'beehiiv subscribe form',
-    detect: /subscribe-forms\.beehiiv\.com/,
-    requires: [
-      { directive: 'frame-src', host: 'subscribe-forms.beehiiv.com' },
-      { directive: 'script-src', host: 'subscribe-forms.beehiiv.com' },
-      { directive: 'form-action', host: 'subscribe-forms.beehiiv.com' },
-    ],
-    fix: 'add https://subscribe-forms.beehiiv.com to that directive in vercel.json',
-  },
 ];
 
 function checkIntegrations(csp, files) {
