@@ -455,6 +455,11 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         overflow: visible;
     }
     .pg::backdrop { background: rgba(26, 26, 26, 0.45); }
+    /* En sombre, le fond du site est #0f0e0c, plus sombre que le rgb(26,26,26)
+       du voile : celui-ci ECLAIRCISSAIT la page au lieu de l'assombrir. Le
+       :global() est necessaire, l'attribut data-theme vit sur <html>, hors de
+       la portee du style scope de ce composant. */
+    :global([data-theme='dark']) .pg::backdrop { background: rgba(0, 0, 0, 0.62); }
     .pg-card {
         position: relative;
         max-height: calc(100dvh - var(--sp-8));
@@ -540,7 +545,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                         />
                         <button type="submit">S'inscrire à la newsletter du lundi</button>
                     </div>
-                    <p class="pf-err" id="pf-hero-err" hidden={!submitError}>{submitError}</p>
+                    <p class="pf-err" role="alert" id="pf-hero-err" hidden={!submitError}>{submitError}</p>
                     <!-- Cadence et preuve vivent ICI et nulle part ailleurs dans
                          le héros : sous le bouton, au moment de l'hésitation,
                          sans rien ajouter au-dessus de l'action. -->
@@ -610,7 +615,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                         />
                         <button type="submit">S'inscrire à la newsletter du lundi</button>
                     </div>
-                    <p class="pf-err" id="pf-mid-err" hidden></p>
+                    <p class="pf-err" role="alert" id="pf-mid-err" hidden></p>
                     <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
                 </form>
             </div>
@@ -656,7 +661,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                     />
                     <button type="submit">S'inscrire à la newsletter du lundi</button>
                 </div>
-                <p class="pf-err" id="pf-end-err" hidden></p>
+                <p class="pf-err" role="alert" id="pf-end-err" hidden></p>
                 <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
             </form>
         </section>
@@ -707,7 +712,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                     />
                     <button type="submit">S'inscrire à la newsletter du lundi</button>
                 </div>
-                <p class="pf-err" id="pf-modal-err" hidden></p>
+                <p class="pf-err" role="alert" id="pf-modal-err" hidden></p>
                 <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
             </form>
         </div>
@@ -733,11 +738,21 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         // exactement ce qu'il venait de faire. Trouve par une revue exterieure.
         var KEY = 'mg_peptides_guide_v1';
         var modalTimer = null;
-        function suppressModal() {
+        // DESARME la pop-up, ne la ferme PAS.
+        //
+        // Elle fermait, et c'etait faux exactement la ou ca comptait : une
+        // inscription DEPUIS la modale affichait le message de succes puis
+        // refermait la modale dans la foulee. Le visiteur voyait la fenetre
+        // disparaitre sans confirmation, et un lecteur d'ecran recevait le focus
+        // sur un contenu masque dans la seconde.
+        //
+        // Fermer n'a d'ailleurs jamais servi ailleurs : quand la modale est
+        // ouverte, `showModal()` rend la page inerte, donc aucun formulaire en
+        // ligne ne peut etre soumis derriere. Le seul cas ou `close()` se
+        // declenchait etait le seul ou il ne fallait pas.
+        function disarmModal() {
             if (modalTimer) { clearTimeout(modalTimer); modalTimer = null; }
             try { localStorage.setItem(KEY, '1'); } catch (e0) {}
-            var d0 = document.getElementById('pep-guide');
-            if (d0 && d0.open) d0.close();
         }
 
         // Un SEUL comportement pour les quatre formulaires (3 en ligne + la
@@ -796,7 +811,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                         done.innerHTML = DONE_HTML;
                         form.parentNode.replaceChild(done, form);
                         done.focus();
-                        suppressModal();
+                        disarmModal();
                     })
                     .catch(function (e2) {
                         // Le champ n'est JAMAIS vidé sur erreur.
@@ -816,7 +831,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         // pour quelqu'un qui n'execute pas de JavaScript, ce qui etait tout le
         // probleme. Il reste juste a ne pas ouvrir la pop-up apres une inscription.
         var params = new URLSearchParams(location.search);
-        if (params.get('ok') === '1') suppressModal();
+        if (params.get('ok') === '1') disarmModal();
 
         // Pop-up : 8 s, une seule fois par visiteur. La clé est écrite à
         // l'affichage et non à la fermeture, sinon quelqu'un qui recharge avant
