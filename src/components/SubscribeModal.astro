@@ -15,6 +15,12 @@
  *    means nobody is asked twice. Erring toward showing it less.
  *
  * Preview it any time with ?popup=1, which ignores the flag.
+ *
+ * There is also nothing left to preload. This used to start the beehiiv iframe fetch
+ * at page load, gated on the visitor still being eligible, because a dismissed modal
+ * would otherwise fetch a third-party frame on every page view forever. The form is
+ * part of the document now: no request, no deferral, no gate. That note lives here
+ * rather than in the inline script below, which ships verbatim to every visitor.
  */
 import type { Locale } from '../i18n/utils';
 import { t } from '../i18n/utils';
@@ -64,11 +70,6 @@ const { locale = 'en', delayMs = 8000 } = Astro.props;
     function alreadySeen() {
         try { return localStorage.getItem(STORE_KEY) === '1'; } catch (e) { return false; }
     }
-
-    // Nothing to preload any more. This used to start the beehiiv iframe fetch at
-    // page load, gated on the visitor still being eligible, because a dismissed modal
-    // would otherwise fetch a third-party frame on every page view forever. The form
-    // is now part of the document: no request, no deferral, no gate.
 
     function track(name) {
         try { if (typeof window.gtag === 'function') window.gtag('event', name); } catch (e) {}
