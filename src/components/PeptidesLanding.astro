@@ -806,11 +806,34 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         // Un SEUL comportement pour les quatre formulaires (3 en ligne + la
         // modale). Quatre copies divergeraient, et la première à diverger
         // serait celle de la modale, qu'on ouvre le moins souvent.
+        // Relais vers PostHog. La file est posee par Layout.astro ; ici on ne
+        // fait que l'alimenter, sans jamais supposer qu'elle existe.
+        function track(name, props) {
+            if (window.mgTrack) window.mgTrack(name, props);
+        }
+
+        // Quelqu'un qui s'inscrit DEPUIS la pop-up puis la ferme ne l'a pas
+        // refusee : sans ce drapeau il compterait dans les deux colonnes, et le
+        // taux de refus de la pop-up serait faux vers le haut.
+        var guideConverti = false;
+        var guideCompte = false;
+        function guideRefuse() {
+            if (guideCompte || guideConverti) return;
+            guideCompte = true;
+            track('peptides_guide_dismissed');
+        }
+
         function bind(form) {
             var input = form.querySelector('input[name="email"]');
             var button = form.querySelector('button[type="submit"]');
             var err = form.querySelector('.pf-err');
             var label = button.textContent;
+            // Les quatre formulaires sont identiques a l'oeil ; seule cette
+            // valeur dit LEQUEL convertit. C'est la question qui decide si la
+            // pop-up gagne sa place ou si elle ne fait que deranger.
+            var srcInput = form.querySelector('input[name="source"]');
+            var source = srcInput ? srcInput.value : 'inconnu';
+            var started = false;
 
             function showError(msg) {
                 err.textContent = msg;
@@ -830,10 +853,20 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
             });
             input.addEventListener('input', clearError);
 
+            // Une seule fois : sans ce verrou, chaque frappe compterait comme un
+            // debut de saisie et l'etape « commence » du funnel depasserait
+            // l'etape « arrive ».
+            input.addEventListener('focus', function () {
+                if (started) return;
+                started = true;
+                track('peptides_form_started', { source: source });
+            });
+
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
                 if (!input.checkValidity()) { showError(ERRORS.invalid_email); input.focus(); return; }
                 clearError();
+                track('peptides_form_submitted', { source: source });
                 button.disabled = true;
                 button.textContent = 'Une seconde…';
                 form.setAttribute('aria-busy', 'true');
@@ -859,6 +892,8 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                         done.innerHTML = DONE_HTML;
                         form.parentNode.replaceChild(done, form);
                         done.focus();
+                        track('peptides_subscribed', { source: source });
+                        if (source === 'fr-peptides-modal') guideConverti = true;
                         disarmModal();
                     })
                     .catch(function (e2) {
@@ -866,6 +901,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                         button.disabled = false;
                         button.textContent = label;
                         form.removeAttribute('aria-busy');
+                        track('peptides_form_failed', { source: source, reason: e2.message });
                         showError(ERRORS[e2.message] || ERRORS._);
                     });
             });
@@ -894,13 +930,20 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                     if (!document.body.contains(dlg)) return;
                     try { localStorage.setItem(KEY, '1'); } catch (e4) {}
                     if (typeof dlg.showModal === 'function') dlg.showModal();
+                    // Affichee, pas seulement planifiee : quelqu'un qui part
+                    // avant la 8e seconde ne doit pas compter comme un refus.
+                    track('peptides_guide_shown');
                 }, 8000);
             }
+            // `close` couvre les TROIS sorties — le clic sur le voile, le
+            // bouton, et la touche Echap que <dialog> gere lui-meme. Ecouter les
+            // deux premiers seulement aurait rate le troisieme en silence.
+            dlg.addEventListener('close', guideRefuse);
             dlg.addEventListener('click', function (e5) {
-                if (e5.target === dlg) dlg.close();
+                if (e5.target === dlg) { guideRefuse(); dlg.close(); }
             });
             var closeBtn = dlg.querySelector('[data-pg-close]');
-            if (closeBtn) closeBtn.addEventListener('click', function () { dlg.close(); });
+            if (closeBtn) closeBtn.addEventListener('click', function () { guideRefuse(); dlg.close(); });
         }
     })();
 </script>

@@ -76,7 +76,7 @@ const frUrl = getAbsoluteUrl(frenchPath, 'fr');
 const showEmailModal = emailModal;
 ---
 <!DOCTYPE html>
-<html lang={locale} data-standalone={standalone ? '' : undefined}>
+<html lang={locale} data-standalone={standalone ? '' : undefined} data-analytics-path={gaPagePath ?? undefined}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -175,6 +175,27 @@ const showEmailModal = emailModal;
         // sitemap et le contenu n'en decrivent qu'une. Le taux de conversion du
         // funnel se serait retrouve coupe en deux.
         gtag('config', 'G-DR1W1B2VV5', gaPagePath ? { page_path: gaPagePath } : {});
+    </script>
+
+    <!-- PostHog -->
+    <script is:inline>
+        // File d'attente, posee AVANT tout le reste.
+        //
+        // posthog-js est charge par un module differe : il n'existe pas encore
+        // quand le script en ligne de /peptides s'execute. Sans ce relais, tout
+        // evenement des premieres centaines de millisecondes serait perdu, soit
+        // exactement le debut de session qu'on cherche a mesurer.
+        //
+        // Plafonnee : si la cle est vide ou l'hote inconnu, personne ne vide
+        // jamais la file, et une page laissee ouverte la ferait grossir sans fin.
+        window.__mgq = [];
+        window.mgTrack = function (name, props) {
+            if (window.__mgq.length < 50) window.__mgq.push([name, props]);
+        };
+    </script>
+    <script>
+        import { initAnalytics } from '../lib/analytics';
+        initAnalytics();
     </script>
 
     <!-- Favicons -->
