@@ -7,8 +7,13 @@
  * default template, nothing worth preserving" and rebuilt it on the site's cream and
  * amber palette instead. Reading the actual HTML of the email he received on 2026-03-20
  * shows real decisions in there: a white ground rather than the site's cream, a 670px
- * column rather than the usual 600, 150% line-height, and a 3px near-black rule that is
- * the one strong graphic element. Those are reproduced here.
+ * column rather than the usual 600, and 150% line-height. Those carry the body.
+ *
+ * THE HEADER AND FOOTER ARE THE SITE'S, not beehiiv's, which is what Max asked for
+ * after seeing the first version: the name in the display face with "Newsletter" under
+ * it, and a footer carrying the same three social links, the newsletter link and the
+ * copyright line as maxguerois.com. Their colours are the site's tokens. beehiiv's 3px
+ * near-black rule went with them, replaced by the site's 1px border.
  *
  * ON THE RHYTHM. The copy is deliberately airy. A denser draft was rejected in one line:
  * "le content est trop packed, pas mon style de copy". His own English welcome email is
@@ -32,13 +37,15 @@
 const SITE = 'https://maxguerois.com';
 const ADDRESS = '96 rue de Maubeuge, 75010 Paris, France';
 
-// Lifted from the beehiiv template, not from the site's palette. See ON THE LAYOUT.
+// Body from the beehiiv template Max asked to keep; header, footer and their colours
+// from maxguerois.com, which is what he asked for next.
 const C = {
     bg: '#ffffff',
     text: '#2d2d2d',
-    soft: '#767676',
-    rule: '#030712',
-    link: '#0c4a6e',
+    name: '#1a1a1a',   // site --text
+    soft: '#767676',   // site --text-tertiary
+    rule: '#e8e6e1',   // site --border
+    link: '#c4934a',   // site --accent
 };
 const WIDTH = 670;
 
@@ -95,6 +102,9 @@ export function welcomeHtml(unsubscribeUrl: string): string {
     const url = escapeHtml(unsubscribeUrl);
     // beehiiv's own stack, kept so the mail renders as it did before.
     const font = "font-family: system-ui, Helvetica, Roboto, Calibri, Arial, sans-serif;";
+    // The site's display face. Cormorant Garamond never loads in a mail client, so
+    // Georgia carries it — which is already the fallback the site itself declares.
+    const serif = "font-family: Georgia, 'Times New Roman', serif;";
     // 150% line-height, and the mso- variant because Outlook ignores the CSS one.
     const para = `margin:0 0 20px; ${font} font-size:16px; line-height:150%; mso-line-height-alt:150%; color:${C.text};`;
 
@@ -118,7 +128,14 @@ export function welcomeHtml(unsubscribeUrl: string): string {
       <table role="none" width="${WIDTH}" border="0" cellspacing="0" cellpadding="0" style="width:100%; max-width:${WIDTH}px; table-layout:fixed;">
         <tr>
           <td style="padding:0 0 8px;">
-            <p style="margin:0 0 28px; ${font} font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:${C.soft};">L'actu peptides</p>
+            <!-- The site's own header: the name in the display face, the section label
+                 under it. Cormorant Garamond never loads in a mail client, so Georgia
+                 carries it, which is already the site's declared fallback. -->
+            <p style="margin:0 0 2px; ${serif} font-size:21px; font-weight:600; letter-spacing:-0.01em; line-height:1.2; color:${C.name};">Max Guerois</p>
+            <p style="margin:0 0 22px; ${font} font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:${C.soft};">Newsletter</p>
+            <table role="none" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:28px;">
+              <tr><td style="border-top:1px solid ${C.rule}; font-size:0; line-height:0;">&nbsp;</td></tr>
+            </table>
             ${paras}
             <p style="${para}">Max Guérois<br>
               <a href="${SITE}" style="color:${C.link};">maxguerois.com</a>
@@ -127,11 +144,21 @@ export function welcomeHtml(unsubscribeUrl: string): string {
         </tr>
         <tr>
           <td style="padding:16px 0 0;">
-            <!-- The one strong graphic element of the original template. -->
+            <!-- The site's own footer: same three social links, the newsletter link,
+                 then the copyright line. Its SVG icons do not render in Gmail, so the
+                 icon row becomes text links. Address and unsubscribe sit under it,
+                 where the law needs them. -->
             <table role="none" width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr><td style="border-top:3px solid ${C.rule}; font-size:0; line-height:0;">&nbsp;</td></tr>
+              <tr><td style="border-top:1px solid ${C.rule}; font-size:0; line-height:0;">&nbsp;</td></tr>
             </table>
-            <p style="margin:16px 0 0; ${font} font-size:12px; line-height:150%; color:${C.soft};">
+            <p style="margin:20px 0 10px; ${font} font-size:12px; line-height:150%; color:${C.soft};">
+              <a href="https://linkedin.com/in/maxguerois" style="color:${C.soft}; text-decoration:none;">LinkedIn</a>&nbsp; &middot; &nbsp;<a href="https://x.com/maxguerois" style="color:${C.soft}; text-decoration:none;">X</a>&nbsp; &middot; &nbsp;<a href="https://instagram.com/maxguerois" style="color:${C.soft}; text-decoration:none;">Instagram</a>
+            </p>
+            <p style="margin:0 0 12px; ${font} font-size:12px; line-height:150%;">
+              <a href="${SITE}/fr/newsletter" style="color:${C.link}; text-decoration:none;">Newsletter</a>
+            </p>
+            <p style="margin:0 0 18px; ${font} font-size:11px; letter-spacing:0.03em; color:${C.soft};">&copy; 2026 Max Guerois</p>
+            <p style="margin:0; ${font} font-size:11px; line-height:150%; color:${C.soft};">
               ${escapeHtml(ADDRESS)}<br>
               <a href="${url}" style="color:${C.soft}; text-decoration:underline;">Se désabonner</a>
             </p>

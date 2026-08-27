@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { createClient } from '@supabase/supabase-js';
 import { createHash } from 'node:crypto';
 import { buildUnsubscribeUrl } from './unsubscribe';
-import { WELCOME_SUBJECT, welcomeHtml, welcomeText } from '../../lib/welcome-email';
+import { WELCOME_SUBJECT } from '../../lib/welcome-email';
 
 // The one on-demand route on this site. Everything else prerenders.
 export const prerender = false;
@@ -260,7 +260,17 @@ async function pushToResend(email: string, origin: string): Promise<void> {
     }),
   );
 
-  // 4. Welcome email. Copy and layout live in src/lib/welcome-email.ts.
+  // 4. Welcome email, rendered from a Resend TEMPLATE rather than from HTML in this
+  // file. The copy then lives in Resend's dashboard and Max can edit it without a
+  // deploy, which for a text he revises constantly is the whole point.
+  //
+  // Why not a Resend AUTOMATION, which is the more obvious way to get that: measured
+  // twice, an automation-sent email carries NO List-Unsubscribe. Its step config has
+  // no field for headers, and adding one anyway is accepted by the API and then
+  // silently ignored — the DKIM h= list on both test sends proves the header never
+  // left. POST /emails takes `template` AND `headers` in the same request, so this
+  // keeps the editable copy without giving up the header. The automation still exists,
+  // disabled, and is the right tool the day a delayed follow-up is wanted.
   const unsubscribeUrl = buildUnsubscribeUrl(email, origin);
   await resendOrThrow(
     'send-welcome',
@@ -270,20 +280,22 @@ async function pushToResend(email: string, origin: string): Promise<void> {
         from: RESEND_FROM,
         to: [email],
         subject: WELCOME_SUBJECT,
-        // Gmail and Yahoo have required these of bulk senders since Feb 2024. An
-        // in-body link alone is not enough: without the pair, the mail client shows
-        // no unsubscribe affordance, people press "spam" instead, and the domain's
-        // reputation goes with it. One-Click is honest here because /api/unsubscribe
-        // exports POST as well as GET.
+        template: {
+          id: env('RESEND_WELCOME_TEMPLATE_ID'),
+          variables: { UNSUBSCRIBE_URL: unsubscribeUrl },
+        },
+        // Gmail and Yahoo have required these of bulk senders since Feb 2024. Without
+        // the pair, the mail client shows no unsubscribe affordance, people press
+        // "spam" instead, and the domain's reputation goes with it. One-Click is honest
+        // here because /api/unsubscribe exports POST as well as GET.
         headers: {
           'List-Unsubscribe': `<${unsubscribeUrl}>`,
           'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
         },
-        text: welcomeText(unsubscribeUrl),
-        html: welcomeHtml(unsubscribeUrl),
       }),
     }),
-  );}
+  );
+}
 
 function reply(
   request: Request,
