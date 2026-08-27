@@ -155,12 +155,13 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 - **Motion:** `submodal-fade` `--duration-short`, `submodal-rise` `--duration-base`, both `--ease-out`, disabled under reduced motion
 - **Scrim:** `::backdrop`, never a background painted on the `<dialog>` itself. `inset: 0` only stretches a dimension whose value is `auto`, so a dialog with an explicit width and an auto height covers only its own content. Measured once at 302px of an 820px viewport, with the browser's invisible backdrop still making the rest of the page inert
 - **Dark mode:** the scrim needs its own value. `rgba(15,14,12,.45)` is exactly `--bg` in dark, so it dimmed nothing. Dark uses `rgba(0,0,0,.62)`
-- **Embed:** reuses `NewsletterEmbed` with `minimal`. There is no iframe and nothing to defer since 2026-08-26
+- **Closed state:** `visibility: hidden`. This once mattered because a `display: none` subtree has no layout and the beehiiv iframe measured itself at 0. The iframe is gone, so the constraint is gone with it; the rule stays only because it is also the simpler way to keep the dialog measurable
+- **Embed:** reuses `NewsletterEmbed` with `minimal`, now a native same-origin form. Nothing to defer, because there is no cross-origin document to preload
 - **Scope:** every page except `/404`, which opts out with `emailModal={false}`
 
 ### Article Footer
-- **Structure:** Author line + newsletter CTA (`NewsletterEmbed`, same-origin form)
-- **Newsletter in footer:** Same embed as homepage, provides conversion at peak engagement
+- **Structure:** Author line + newsletter CTA (native `NewsletterEmbed` form)
+- **Newsletter in footer:** Same form as homepage, provides conversion at peak engagement
 
 ## Accessibility
 - **Focus styles:** `:focus-visible` with outline using accent color, 2px offset
@@ -183,14 +184,17 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 - **nav.css:** Navbar only, uses tokens from global.css
 - **Token naming:** Colors `--text`, `--bg`, `--border`, `--accent`. Spacing `--sp-{n}`. Fonts `--font-display`, `--font-body`. Motion `--ease-out`, `--duration-{name}`.
 
-## Newsletter Signup
-Same-origin since 2026-08-26. beehiiv is gone: no iframe, no injected third-party scripts, no height handshake.
-- **Component:** `NewsletterEmbed`, one implementation on 24 call sites. Posts to `/api/subscribe`; Supabase is the source of truth and Resend the send layer
+## Newsletter Form
+Own stack since 2026-08-26. beehiiv is gone: no iframe, no injected third-party scripts, no height handshake. See CLAUDE.md for the full path.
+
+- **Component:** `NewsletterEmbed`, one implementation on 24 call sites. Native same-origin `<form>` (email input + submit) posting to `/api/subscribe`; Supabase is the source of truth and Resend the send layer
 - **Shape:** input and button both `--radius-full`, per Buttons above. A hardcoded 4px shipped briefly and gave the site two different button shapes
-- **Copy:** driven by `newsletter.form.*` in `src/i18n`, never hardcoded in the component
+- **Button ink:** `#1a1a1a` on `--accent`, never `--bg`. Near-white on the amber measures 2.76:1 and fails WCAG AA; dark ink passes in both themes
+- **Copy:** driven by `newsletter.form.*` in `src/i18n`, never hardcoded in the component. Currently "Follow the experiments" / "When I publish a new experiment, it goes to your inbox first."
 - **Errors:** `role="alert"` on the message node, and `rate_limited` shares the generic copy so the response never tells a bot how the limit is tuned
 - **Without JavaScript:** the form posts natively and the route redirects to an on-demand thank-you page. A prerendered page cannot read `?ok=1`, so it could never confirm anything
-- **Placement:** both homepages, both newsletter indexes, and every article footer
+- **No container fallback needed:** the form renders with the page, so there is no third-party widget to reserve height for and no layout shift to prevent
+- **Placement:** both homepages, both newsletter indexes, every article footer, and inside `SubscribeModal`
 
 ## Key Decisions Log
 | Date | Decision | Rationale |
@@ -216,6 +220,8 @@ Same-origin since 2026-08-26. beehiiv is gone: no iframe, no injected third-part
 | 2026-08-25 | Email modal, once per visitor | Site had no interruptive capture. 8s delay, one showing ever, suppressed on /404. |
 | 2026-08-25 | Modal closed with visibility, not display | display:none gives zero layout, so the beehiiv iframe measured 0 and the form took ~4s to appear after opening. |
 | 2026-08-25 | Beehiiv iframe bounded min 47px / max 60vh | beehiiv's handshake was observed landing on 2000px (its no-measurement fallback) and on 0px. Neither is reachable now. |
+| 2026-08-26 | Beehiiv embed replaced by a native same-origin form | The iframe was the root of the whole class: no measurement, no postMessage, no control over the one element the page exists for. Deleting it removed ~100 lines that existed only to compensate for it. |
+| 2026-08-27 | Beehiiv fully out of the site, publication left dormant | Audit found zero beehiiv in code, CSP, env vars, DNS sending records or served HTML. The publication itself still held a live copy of the 88 subscribers, so it was closed to new signups and made private rather than deleted, to keep the pre-migration open and click history readable. |
 | 2026-03-20 | DESIGN.md sync with code | Fixed drift: numbers grid cols, dark mode activation, callout box style. |
 | 2026-08-26 | Accent button text `#1a1a1a`, never `#fff` | Measured: white on the amber failed WCAG AA in BOTH themes (2.76:1 light, 2.25:1 dark). Applies site-wide, every newsletter CTA was affected. |
 | 2026-08-26 | beehiiv removed, signup on our own stack | The iframe is gone with the ~100 lines that existed only to tame it. `NewsletterEmbed` posts to `/api/subscribe`. The Beehiiv section above is replaced by Newsletter Signup. |
