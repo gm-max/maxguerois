@@ -30,9 +30,20 @@ On ne coupe pas GA4 avant que PostHog ait un trimestre de donnees.
 s'inscrivent par elle se seraient inscrits autrement. La tuile mesure le
 derangement, pas le gain. Un test A/B est en attente de volume (TODOS.md).
 
-**Des visites, pas des personnes.** La persistance est en memoire (voir plus
-bas), donc chaque chargement de page compte pour une visite distincte. Les
-tuiles disent « visites » et c'est litteral.
+**Des visites, pas des personnes, et le CALCUL doit suivre.** La persistance est
+en memoire (voir plus bas). Consequence non evidente, mesuree le 2026-08-27 :
+posthog-js ne cree de profil de personne que pour un visiteur IDENTIFIE, donc un
+visiteur anonyme n'en a aucun, et le calcul `dau` ne renvoie pas « une personne
+par chargement » comme on pourrait le croire. Il renvoie **zero**.
+
+Cinq tuiles avaient ete creees en `dau`. Elles ont affiche zero pendant des
+heures pendant que les evenements arrivaient normalement. Discriminant utile :
+rejouer la meme requete en `total` ; si elle rend des donnees, le fautif est le
+calcul et non le filtre.
+
+**Regle : sur ce projet, aucune tuile n'utilise `dau`, `weekly_active` ni
+`monthly_active`.** Ces calculs comptent des personnes, et il n'y en a pas.
+`total`, et on nomme le resultat « visites ».
 
 **A nombre de vues egal, sinon rien.** Comparer les inscriptions brutes de
 quatre formulaires places a quatre profondeurs differentes confond la position
