@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# Cache de build Astro. Sept fichiers y etaient suivis : `npm run build` en
+# regenere CINQ depuis un checkout vide, et reussit SANS les deux autres
+# (data-store.json, settings.json), qui sont de purs caches. Verifie le
+# 2026-08-27 en deplacant le dossier et en rebatissant.
+# Les garder suivis les faisait conflicter a chaque fusion, sans rien apporter.
+.astro/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
