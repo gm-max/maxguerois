@@ -145,13 +145,17 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 - **Card:** max-width 420px, `--bg` on `--border`, radius 10px, `max-height: calc(100vh - var(--sp-4) * 2)` with `overflow-y: auto`
 - **Close:** 44x44 hit area, 26px glyph, `--text-tertiary` to `--text` on hover
 - **Motion:** `submodal-fade` `--duration-short`, `submodal-rise` `--duration-base`, both `--ease-out`, disabled under reduced motion
-- **Closed state:** `visibility: hidden`, NOT `display: none` (a display:none subtree has no layout, so beehiiv measures the iframe at 0 and the form stays blank for seconds after opening)
-- **Embed:** reuses `NewsletterEmbed` with `minimal deferSrc`; the iframe src is set at page load only when the modal is still due
+- **Closed state:** `visibility: hidden`. This once mattered because a `display: none`
+  subtree has no layout and the beehiiv iframe measured itself at 0. The iframe is gone,
+  so the constraint is gone with it; the rule stays only because it is also the simpler
+  way to keep the dialog measurable.
+- **Embed:** reuses `NewsletterEmbed`, now a native same-origin form. Nothing to defer,
+  because there is no cross-origin document to preload.
 - **Scope:** every page except `/404`, which opts out with `emailModal={false}`
 
 ### Article Footer
-- **Structure:** Author line + newsletter CTA (Beehiiv embed)
-- **Newsletter in footer:** Same embed as homepage, provides conversion at peak engagement
+- **Structure:** Author line + newsletter CTA (native `NewsletterEmbed` form)
+- **Newsletter in footer:** Same form as homepage, provides conversion at peak engagement
 
 ## Accessibility
 - **Focus styles:** `:focus-visible` with outline using accent color, 2px offset
@@ -174,11 +178,17 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 - **nav.css:** Navbar only, uses tokens from global.css
 - **Token naming:** Colors `--text`, `--bg`, `--border`, `--accent`. Spacing `--sp-{n}`. Fonts `--font-display`, `--font-body`. Motion `--ease-out`, `--duration-{name}`.
 
-## Beehiiv Newsletter Integration
-- **Format:** Inline embed form (email input + submit button), not redirect link
+## Newsletter Form
+Own stack since 2026-08-26. The beehiiv embed is gone; see CLAUDE.md for the full path.
+
+- **Format:** Native same-origin `<form>` (email input + submit), posting to `/api/subscribe`
 - **Copy:** "Follow the experiments" / "When I publish a new experiment, it goes to your inbox first."
-- **Container fallback:** `min-height: 80px` to prevent layout shift if widget takes time to load
-- **Placement:** Bottom of homepage, bottom of /experiments page, **bottom of every article** (article footer CTA)
+- **No container fallback needed:** the form renders with the page, so there is no
+  third-party widget to reserve height for and no layout shift to prevent
+- **Button ink:** `#1a1a1a` on `--accent`, never `--bg`. Near-white on the amber measures
+  2.76:1 and fails WCAG AA; dark ink passes in both themes
+- **Placement:** Bottom of both homepages, both newsletter indexes, **bottom of every
+  article**, and inside `SubscribeModal`
 
 ## Key Decisions Log
 | Date | Decision | Rationale |
@@ -204,6 +214,8 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 | 2026-08-25 | Email modal, once per visitor | Site had no interruptive capture. 8s delay, one showing ever, suppressed on /404. |
 | 2026-08-25 | Modal closed with visibility, not display | display:none gives zero layout, so the beehiiv iframe measured 0 and the form took ~4s to appear after opening. |
 | 2026-08-25 | Beehiiv iframe bounded min 47px / max 60vh | beehiiv's handshake was observed landing on 2000px (its no-measurement fallback) and on 0px. Neither is reachable now. |
+| 2026-08-26 | Beehiiv embed replaced by a native same-origin form | The iframe was the root of the whole class: no measurement, no postMessage, no control over the one element the page exists for. Deleting it removed ~100 lines that existed only to compensate for it. |
+| 2026-08-27 | Beehiiv fully out of the site, publication left dormant | Audit found zero beehiiv in code, CSP, env vars, DNS sending records or served HTML. The publication itself still held a live copy of the 88 subscribers, so it was closed to new signups and made private rather than deleted, to keep the pre-migration open and click history readable. |
 | 2026-03-20 | DESIGN.md sync with code | Fixed drift: numbers grid cols, dark mode activation, callout box style. |
 | 2026-08-26 | Accent button text `#1a1a1a`, never `#fff` | Measured: white on the amber failed WCAG AA in BOTH themes (2.76:1 light, 2.25:1 dark). Applies site-wide, every newsletter CTA was affected. |
 | 2026-08-26 | Mobile container padding back on the scale | `22px` horizontal and `100px` bottom were hard-coded off-scale values. Now `--sp-6` and `--sp-20`. Top stays `--sp-20` — it is navbar clearance, not slack. |
