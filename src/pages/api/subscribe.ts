@@ -41,7 +41,7 @@ const RETURN_PATHS: Record<string, string> = {
   // The Instagram funnel landing. Without this key a no-JS signup from
   // /fr/peptides lands back on the blog archive, which is not where the
   // visitor was and does not carry the confirmation.
-  'fr-peptides': '/fr/peptides',
+  'fr-peptides': '/peptides',
 };
 const DEFAULT_LANG = 'fr';
 

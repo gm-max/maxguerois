@@ -1,0 +1,24 @@
+---
+/**
+ * Rendue a la demande, pas prerendue.
+ *
+ * Le formulaire est un vrai <form> : sans JavaScript, la route enregistre
+ * l'email et redirige ici avec ?ok=1. Une page prerendue ne verrait jamais ce
+ * parametre, elle est construite au deploiement. Le visiteur sans JS
+ * s'inscrivait pour de vrai et retombait sur une page identique a celle qu'il
+ * venait de quitter.
+ *
+ * Le Cache-Control rachete l'essentiel de l'aller-retour serveur : Vercel
+ * indexe son cache edge sur l'URL complete, donc la page nue et chaque variante
+ * ?ok=1 sont mises en cache separement, et aucune n'est personnalisee.
+ */
+import PeptidesLanding from '../components/PeptidesLanding.astro';
+
+export const prerender = false;
+
+Astro.response.headers.set(
+    'Cache-Control',
+    'public, max-age=0, s-maxage=300, stale-while-revalidate=86400',
+);
+---
+<PeptidesLanding />

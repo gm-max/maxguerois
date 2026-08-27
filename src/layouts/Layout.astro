@@ -24,6 +24,18 @@ interface Props {
     emailModal?: boolean;
     hideFooter?: boolean;
     noindex?: boolean;
+    /**
+     * Page hors du miroir FR/EN.
+     *
+     * Le site est un miroir : chaque page anglaise a sa jumelle sous /fr. Deux
+     * mecanismes en dependent, et tous deux se trompent sur une page qui n'a pas
+     * de jumelle : les liens hreflang annoncent une alternative qui n'existe pas,
+     * et le script de redirection de langue renvoie un visiteur au navigateur
+     * francais de /page vers /fr/page. Sur une landing francaise servie a /page,
+     * ce dernier provoque un aller-retour parasite au premier affichage, pour
+     * exactement le public vise.
+     */
+    standalone?: boolean;
 }
 
 const {
@@ -43,6 +55,7 @@ const {
     locale = 'en',
     hideFooter = false,
     noindex = false,
+    standalone = false,
     emailModal = true,
 } = Astro.props;
 
@@ -50,6 +63,9 @@ const {
 const currentPath = Astro.url.pathname;
 const englishPath = getLocalizedPath(currentPath, 'en');
 const frenchPath = getLocalizedPath(currentPath, 'fr');
+// Chemin canonique force pour GA4 sur les pages hors miroir, voir gtag plus bas.
+// `null` partout ailleurs : GA garde alors son comportement par defaut.
+const gaPagePath = standalone && ogUrl ? new URL(ogUrl).pathname : null;
 const enUrl = getAbsoluteUrl(englishPath, 'en');
 const frUrl = getAbsoluteUrl(frenchPath, 'fr');
 
@@ -60,7 +76,7 @@ const frUrl = getAbsoluteUrl(frenchPath, 'fr');
 const showEmailModal = emailModal;
 ---
 <!DOCTYPE html>
-<html lang={locale}>
+<html lang={locale} data-standalone={standalone ? '' : undefined}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,10 +84,16 @@ const showEmailModal = emailModal;
     {description && <meta name="description" content={description}>}
     {noindex && <meta name="robots" content="noindex, follow">}
 
-    <!-- Hreflang — SEO alternate language links -->
+    <!-- Hreflang — SEO alternate language links. Supprimes sur une page
+         standalone : annoncer une alternative qui n'existe pas est un signal
+         faux, pas un signal absent. -->
+    {!standalone && (
+    <>
     <link rel="alternate" hreflang="en" href={enUrl}>
     <link rel="alternate" hreflang="fr" href={frUrl}>
     <link rel="alternate" hreflang="x-default" href={enUrl}>
+    </>
+    )}
 
     <!-- Dark mode — runs before first paint to avoid flash -->
     <script is:inline>
@@ -96,6 +118,8 @@ const showEmailModal = emailModal;
                 if (/bot|crawl|spider|slurp|Googlebot|bingbot|GPTBot|ClaudeBot|PerplexityBot|Google-Extended|facebookexternalhit|embedly/i.test(ua)) return;
                 // Only run on English pages (no /fr/ prefix)
                 if (window.location.pathname.startsWith('/fr')) return;
+                // Pages hors miroir : pas de jumelle a rejoindre.
+                if (document.documentElement.hasAttribute('data-standalone')) return;
                 // Respect stored language preference
                 var pref = localStorage.getItem('lang-preference');
                 if (pref) return;
@@ -142,11 +166,15 @@ const showEmailModal = emailModal;
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DR1W1B2VV5"></script>
-    <script is:inline>
+    <script is:inline define:vars={{ gaPagePath }}>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-DR1W1B2VV5');
+        // Sur une page hors miroir servie a deux URL, GA4 comptait /peptides et
+        // /fr/peptides comme deux pages distinctes, alors que le canonical, le
+        // sitemap et le contenu n'en decrivent qu'une. Le taux de conversion du
+        // funnel se serait retrouve coupe en deux.
+        gtag('config', 'G-DR1W1B2VV5', gaPagePath ? { page_path: gaPagePath } : {});
     </script>
 
     <!-- Favicons -->
@@ -201,6 +229,12 @@ const showEmailModal = emailModal;
                     href={locale === 'fr' ? '/fr/newsletter' : '/newsletter'}
                     class:list={["footer-link", { active: currentPath.replace(/\/$/, '').endsWith('newsletter') }]}
                 >{t(locale, 'nav.newsletter')}</a>
+                {/* Pas de bascule de langue sur une page hors miroir : elle n'a
+                    pas de jumelle. Sur /peptides le lien « EN » pointait sur
+                    /peptides, c'est-a-dire sur lui-meme, tout en promettant
+                    « Switch to English » et en memorisant lang-preference=en. */}
+                {!standalone && (
+                <>
                 <span class="footer-sep" aria-hidden="true"></span>
                 <a
                     href={locale === 'fr' ? getLocalizedPath(currentPath, 'en') : getLocalizedPath(currentPath, 'fr')}
@@ -208,6 +242,8 @@ const showEmailModal = emailModal;
                     aria-label={t(locale, 'nav.langSwitchLabel')}
                     data-lang-switch
                 >{t(locale, 'nav.langSwitch')}</a>
+                </>
+                )}
                 <span class="footer-sep" aria-hidden="true"></span>
                 <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
                     <span id="toggle-icon">☾</span>

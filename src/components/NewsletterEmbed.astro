@@ -71,7 +71,7 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
             />
             <button type="submit">{t(locale, 'newsletter.form.button')}</button>
         </div>
-        <p class="nl-err" id={`${uid}-err`} hidden></p>
+        <p class="nl-err" role="alert" id={`${uid}-err`} hidden></p>
         <p class="nl-micro">{t(locale, 'newsletter.form.micro')}</p>
     </form>
 </div>
@@ -90,7 +90,10 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
                 done: 'Merci, vous êtes inscrit. Le prochain numéro arrive lundi.',
                 err: {
                     invalid_email: 'Cette adresse ne semble pas valide.',
-                    rate_limited: 'Trop de tentatives. Réessayez dans un moment.',
+                    // Meme message que l'erreur serveur, volontairement : dire « trop de
+        // tentatives » donne a un robot un oracle propre pour calibrer sa
+        // cadence. La landing peptides collapse deja les deux.
+        rate_limited: "L'inscription a échoué. Réessayez dans un instant.",
                     store_failed: "L'inscription a échoué. Réessayez dans un instant.",
                     _: "L'inscription a échoué. Réessayez dans un instant.",
                 },
@@ -220,10 +223,19 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
         padding: 12px 14px;
         font-family: var(--font-body);
         font-size: 16px; /* below 16px, iOS Safari zooms the page on focus */
-        color: var(--text-primary);
+        /* `--text-primary` n'existe pas : les tokens sont --text,
+             --text-secondary, --text-tertiary. La declaration etait donc
+             invalide et la couleur retombait sur l'heritage, qui vaut #1a1a1a,
+             soit la bonne valeur par accident. Le jour ou ce champ se retrouve
+             dans un conteneur d'une autre couleur, l'email tape devient gris. */
+          color: var(--text);
         background: var(--bg-subtle);
         border: 1px solid var(--border);
-        border-radius: 4px;
+        /* DESIGN.md : le bouton et le champ sont en `--radius-full`. Le 4px
+             n'etait ni dans l'echelle de rayons (8/10/12/100) ni dans la
+             charte, et donnait deux formes de bouton differentes sur le meme
+             site : carre ici, pilule sur /peptides. */
+          border-radius: var(--radius-full);
     }
 
     .nl-row input[type="email"]:focus-visible {
@@ -246,7 +258,11 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
         color: #1a1a1a;
         background: var(--accent);
         border: 0;
-        border-radius: 4px;
+        /* DESIGN.md : le bouton et le champ sont en `--radius-full`. Le 4px
+             n'etait ni dans l'echelle de rayons (8/10/12/100) ni dans la
+             charte, et donnait deux formes de bouton differentes sur le meme
+             site : carre ici, pilule sur /peptides. */
+          border-radius: var(--radius-full);
         cursor: pointer;
         transition: opacity var(--duration-short) var(--ease-out);
     }
@@ -269,7 +285,12 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
     .nl-done {
         margin: 0;
         font-size: 15px;
-        color: var(--text-primary);
+        /* `--text-primary` n'existe pas : les tokens sont --text,
+             --text-secondary, --text-tertiary. La declaration etait donc
+             invalide et la couleur retombait sur l'heritage, qui vaut #1a1a1a,
+             soit la bonne valeur par accident. Le jour ou ce champ se retrouve
+             dans un conteneur d'une autre couleur, l'email tape devient gris. */
+          color: var(--text);
     }
 
     .nl-done:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
