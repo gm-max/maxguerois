@@ -192,10 +192,30 @@ const showEmailModal = emailModal;
         window.mgTrack = function (name, props) {
             if (window.__mgq.length < 50) window.__mgq.push([name, props]);
         };
+
+        // Liste blanche des motifs d'echec, partagee par les DEUX formulaires du
+        // site (la landing peptides et NewsletterEmbed). Elle vit ici parce que
+        // les deux scripts sont `is:inline` et ne peuvent rien importer : la
+        // seule alternative etait de la copier, et la premiere copie a diverger
+        // aurait fausse un graphique sans que rien ne le signale.
+        //
+        // Un echec de fetch porte un message ecrit par le NAVIGATEUR, different
+        // d'un moteur a l'autre et traduit selon la langue de l'utilisateur.
+        // Sans borne, la propriete accumule une valeur par variante.
+        var MG_CODES = ['invalid_email', 'rate_limited', 'store_failed', 'bad_request'];
+        window.mgReason = function (message) {
+            return MG_CODES.indexOf(message) === -1 ? 'network' : message;
+        };
     </script>
     <script>
         import { initAnalytics } from '../lib/analytics';
-        initAnalytics();
+        initAnalytics().catch(function () {
+            // Bloqueur de pub : eu.i.posthog.com est dans les listes par defaut
+            // d'uBlock et de Brave. L'echec est le cas NORMAL pour une part
+            // reelle des visiteurs, pas une anomalie a signaler. Sans ce catch,
+            // chaque page du site produisait une promesse rejetee non geree.
+            // La file reste le bouchon et se remplit jusqu'a 50, sans effet.
+        });
     </script>
 
     <!-- Favicons -->

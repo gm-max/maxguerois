@@ -9,112 +9,142 @@ Ils ne repondent pas a la meme question, et aucun des deux ne repond a la plus
 importante.
 
 **Le nombre d'inscrits ne vient d'aucun des deux.** Il est exact dans Supabase
-(`mg_subscribers`), avec le champ `source` qui distingue les quatre formulaires
-et l'`utm_source`. Un analytics ne fera jamais mieux qu'une table qui contient
-la verite. Ne jamais citer un chiffre d'inscriptions depuis GA4 ou PostHog.
+(`mg_subscribers`), avec le champ `source` qui distingue les formulaires et
+l'`utm_source`. Un analytics ne fera jamais mieux qu'une table qui contient la
+verite. Ne jamais citer un chiffre d'inscriptions depuis GA4 ou PostHog.
 
 **GA4** (`G-DR1W1B2VV5`, `Layout.astro`) porte l'historique : cinq mois sur les
 articles et l'accueil. C'est sa seule raison de rester.
 
-**PostHog** repond a « ou ils decrochent » : le funnel de `/peptides`, lequel des
-quatre formulaires convertit, et si la pop-up aide ou derange. GA4 y est mauvais
-a ce volume — il agrege et masque les petits nombres, exactement la ou on a
-besoin de les voir.
+**PostHog** repond a « ou ils decrochent » : le funnel de `/peptides`, quel
+formulaire convertit a nombre de vues egal, et si la pop-up derange. GA4 y est
+mauvais a ce volume — il agrege et masque les petits nombres, exactement la ou
+on a besoin de les voir.
 
 On ne coupe pas GA4 avant que PostHog ait un trimestre de donnees.
+
+## Ce que ces chiffres ne disent PAS
+
+**Des comportements, pas des effets.** La pop-up s'affiche a TOUT LE MONDE a la
+8e seconde : il n'existe aucun groupe temoin, donc rien ne dit si les gens qui
+s'inscrivent par elle se seraient inscrits autrement. La tuile mesure le
+derangement, pas le gain. Un test A/B est en attente de volume (TODOS.md).
+
+**Des visites, pas des personnes.** La persistance est en memoire (voir plus
+bas), donc chaque chargement de page compte pour une visite distincte. Les
+tuiles disent « visites » et c'est litteral.
+
+**A nombre de vues egal, sinon rien.** Comparer les inscriptions brutes de
+quatre formulaires places a quatre profondeurs differentes confond la position
+et la qualite : celui du bas en recolte moins surtout parce que moins de gens
+l'atteignent. D'ou `*_form_seen`, le denominateur.
+
+## Rien n'est ecrit chez le visiteur
+
+`persistence: 'memory'` : ni cookie, ni localStorage. Le site n'a **aucune
+banniere de consentement**, et l'audience est francaise.
+
+Le funnel survit parce qu'il tient ENTIEREMENT dans un seul chargement de page :
+arrivee, saisie, envoi, inscription se produisent tous sur `/peptides`.
+
+Ce qu'on perd : reconnaitre un visiteur d'un jour a l'autre. Assume.
+
+Verifie au navigateur le 2026-08-27 : zero cookie `ph_*`, zero cle localStorage
+apres un chargement complet avec PostHog initialise.
 
 ## Le projet est PARTAGE avec ouros.health
 
 Le plan gratuit de PostHog n'autorise qu'**un projet par organisation**. Les
 deux organisations existantes ont deja le leur : Ouros Health -> `ouros.health`,
 Ouros Lab -> `ouroslab.co` (26 000 evenements, actif). Faute d'un projet dedie,
-maxguerois.com ecrit dans celui d'Ouros Health.
+maxguerois.com ecrit dans celui d'Ouros Health (`252123`).
 
-**Consequence, et elle n'a pas d'exception : tout insight de ce projet doit
-filtrer sa provenance, des deux cotes.** Un insight qui oublie le filtre
-melange deux sites et donne un chiffre faux sans que rien ne le signale.
+**Toute tuile de ce projet doit porter `site = maxguerois.com` ET
+`filterTestAccounts: false`.**
 
-- Cote maxguerois.com : `site = maxguerois.com`, propriete posee par
-  `posthog.register()` sur chaque evenement, autocapture comprise.
-- Cote Ouros : `$host` limite aux domaines `ouros.health`.
+L'echec est heureusement BRUYANT. Une tuile creee sans y penser coche
+`filterTestAccounts` par defaut, et le filtre interne du projet exclut
+`maxguerois`, donc elle affiche **zero** ligne. Vide et manifestement faux,
+plutot que silencieusement melange. C'est le seul garde-fou automatique, et il
+protege aussi les tuiles d'Ouros dans l'autre sens.
 
-On filtre sur une propriete explicite plutot que sur `$host` parce qu'il y a
-deux hotes valides (avec et sans `www.`) et que `$host` est absent des
-evenements serveur.
-
-**Pour separer un jour :** creer une troisieme organisation — c'est gratuit,
-seuls les projets supplementaires sont payants — et remplacer la cle. Rien
-d'autre a changer dans le code.
-
-## Activer PostHog
-
-Une seule ligne : `POSTHOG_KEY` dans `src/lib/analytics.ts`. Vide = desactive
-partout, silencieusement.
-
-La cle `phc_...` est **publique** : PostHog la publie dans le HTML de chaque
-page, comme l'identifiant GA4 juste a cote. Elle n'autorise que l'ecriture
-d'evenements. Ce n'est pas un secret, elle a sa place dans le depot.
-
-Instance **UE** (`eu.i.posthog.com`) : les donnees ne quittent pas l'Europe.
+**Sortir du partage n'est PAS un changement de cle.** Les deux tableaux de bord,
+les definitions de proprietes et les reglages du projet vivent dans PostHog, pas
+dans ce depot, et devront etre recrees. Les donnees deja ingerees restent
+derriere. Voir TODOS.md ; la fenetre ou c'est quasi gratuit est maintenant.
 
 ## Les tableaux de bord
 
 - [maxguerois.com — Peptides](https://eu.posthog.com/project/252123/dashboard/918448) :
-  visites et inscriptions, ou ils decrochent, quel formulaire travaille, d'ou ils
-  viennent, et si la pop-up gagne sa place.
+  visites et inscriptions, ou ils decrochent, quel formulaire travaille a nombre
+  de vues egal, d'ou ils viennent, et ce que coute la pop-up.
 - [maxguerois.com — Site](https://eu.posthog.com/project/252123/dashboard/918449) :
-  visiteurs jour par jour, quelles pages tirent, d'ou vient le monde.
-
-Chaque tuile porte `site = maxguerois.com` et `filterTestAccounts: false` — le
-filtre interne du projet EXCLUT maxguerois.com pour proteger les insights
-d'Ouros, donc il faut le desactiver ici et filtrer explicitement. Toute nouvelle
-tuile doit faire les deux.
+  visites, quelles pages tirent, d'ou vient le monde, quel article amene des
+  inscrits.
 
 ## Ce qui est instrumente
 
-Autocapture partout (clics, pages, heatmaps) sans rien toucher aux composants.
-Sur `/peptides`, six evenements nommes :
+Autocapture partout (clics, pages, heatmaps). Puis deux familles d'evenements
+nommes, **volontairement prefixees differemment** : les memes noms melangeraient
+les deux entonnoirs dans les memes tuiles.
 
-| Evenement | Quand | Propriete |
+| Evenement | Quand | Proprietes |
 |---|---|---|
-| `peptides_form_started` | premier focus, une fois par formulaire | `source` |
-| `peptides_form_submitted` | envoi | `source` |
-| `peptides_subscribed` | succes | `source` |
-| `peptides_form_failed` | echec cote visiteur | `source`, `reason` |
-| `peptides_guide_shown` | pop-up reellement affichee | — |
-| `peptides_guide_dismissed` | pop-up fermee sans inscription | — |
+| `peptides_form_seen` / `newsletter_form_seen` | le formulaire entre a l'ecran, une fois | `source` |
+| `peptides_form_started` / `newsletter_form_started` | premier focus, une fois par formulaire | `source` |
+| `peptides_form_submitted` / `newsletter_form_submitted` | envoi | `source` |
+| `peptides_subscribed` / `newsletter_subscribed` | succes | `source` |
+| `peptides_form_failed` / `newsletter_form_failed` | echec cote visiteur | `source`, `reason` |
+| `peptides_guide_shown` | pop-up REELLEMENT affichee (`dlg.open` verifie) | — |
+| `peptides_guide_dismissed` | pop-up fermee sans inscription, une seule fois | — |
 
-`source` vaut `fr-peptides`, `fr-peptides-newsletter`, `fr-peptides-guide` ou
-`fr-peptides-modal`. Les quatre formulaires sont identiques a l'oeil ; c'est la
-seule chose qui dise lequel travaille.
+`peptides_*` vient de `/peptides` et distingue ses quatre formulaires
+(`fr-peptides`, `-newsletter`, `-guide`, `-modal`). `newsletter_*` vient de
+`NewsletterEmbed`, present deux fois par article sur une vingtaine de pages ;
+`$pathname` suffit a ventiler par article.
 
-`peptides_form_failed` n'a pas d'equivalent dans Supabase : un envoi qui echoue
-n'y laisse aucune trace. C'est le seul endroit d'ou l'on saura qu'un visiteur a
-essaye et n'a pas reussi.
+`reason` est borne par une liste blanche (`window.mgReason`, definie dans
+`Layout.astro` parce que les deux scripts sont `is:inline` et ne peuvent rien
+importer). Sans elle, un echec de `fetch` injectait le message du navigateur,
+different d'un moteur a l'autre et traduit selon la langue.
 
-## Trois pieges deja payes
+**Ce que `*_form_failed` ne couvre pas :** l'envoi natif sans JavaScript. Celui-la
+passe par la redirection 303 de `/api/subscribe` et ne declenche aucun
+evenement. L'instrumentation couvre le chemin `fetch`, pas tous les echecs.
+
+## Quatre pieges deja payes
 
 **Le poids.** Un `import` statique de `posthog-js` faisait entrer 257 ko dans le
-bundle de `Layout.astro`, donc dans chaque page du site, telecharges meme cle
-vide : un `return` anticipe n'empeche pas un module d'etre charge. L'import est
-dynamique, apres la verification de la cle.
+bundle de `Layout.astro`, donc dans chaque page, telecharges meme cle vide : un
+`return` anticipe n'empeche pas un module d'etre charge. L'import est dynamique,
+apres la verification. Le chunk reste hors du chemin critique.
+
+**Le rejet non gere.** `eu.i.posthog.com` est dans les listes de blocage par
+defaut d'uBlock et de Brave. Sans `.catch()` sur `initAnalytics()`, chaque page
+produisait une promesse rejetee non geree pour une part reelle des visiteurs.
 
 **Le double comptage.** `/peptides` et `/fr/peptides` servent le meme contenu
-sous deux URL. Sans correction, PostHog les compte comme deux pages et coupe le
-taux de conversion en deux. `Layout.astro` pose `data-analytics-path` sur les
-pages hors miroir ; `analytics.ts` l'utilise pour le `$pageview`. Meme piege,
-meme correction que sur GA4.
+sous deux URL. La correction vit dans `before_send`, le SEUL point de passage de
+tous les evenements : la corriger sur la seule vue de page laissait l'autocapture
+et les heatmaps sur l'URL reelle, donc le jeu de donnees coupe en deux.
+`location.search` y est conserve, sinon `?utm_source=instagram` disparaissait de
+`$current_url`.
 
-**La fermeture de la pop-up.** L'evenement `close` d'un `<dialog>` couvre en
-theorie les trois sorties, Echap compris. Il ne se declenche pas dans tous les
-moteurs — verifie : le navigateur de test ne l'emet pas du tout, meme pour un
-ecouteur pose dans le monde principal. Les trois sorties sont donc branchees
-explicitement, avec un verrou qui empeche le double comptage la ou les trois
-marchent.
+`before_send` porte aussi la marque `site`. Elle etait posee par `register()`
+apres `init()`, ce qui creait une course : la vue de page d'ouverture — la seule
+que TOUT visiteur declenche — pouvait partir avant, donc sans marque, donc
+invisible a tous les filtres.
 
-**Non verifie :** la sortie par la touche Echap, faute d'un moteur emettant
-`close` dans l'environnement de test. A confirmer sur un vrai navigateur une
-fois la cle posee.
+**La pop-up.** L'evenement `close` d'un `<dialog>` couvre en theorie les trois
+sorties, Echap compris. Il ne se declenche pas dans tous les moteurs : verifie au
+navigateur, le moteur de test ne l'emet pas du tout, meme pour un ecouteur pose
+dans le monde principal. Les trois sorties sont branchees explicitement, avec un
+verrou anti-double-comptage et un drapeau qui empeche de compter comme un refus
+quelqu'un qui vient de s'inscrire depuis la pop-up.
+
+Et l'affichage n'etait pas verifie : on comptait juste apres l'appel a
+`showModal()`, donc un affichage fantome sur tout moteur qui ne l'implemente pas.
+Seul `dlg.open` prouve qu'elle est ouverte.
 
 ## Ce qui n'envoie rien
 

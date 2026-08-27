@@ -835,6 +835,24 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
             var source = srcInput ? srcInput.value : 'inconnu';
             var started = false;
 
+            // Combien de gens ont VU ce formulaire, pas seulement combien l'ont
+            // rempli. Sans ce denominateur, le formulaire du bas de page parait
+            // mauvais alors qu'il est seulement plus bas : moins de monde
+            // l'atteint. Trouve par une revue exterieure.
+            if (typeof IntersectionObserver === 'function') {
+                var vu = false;
+                var io = new IntersectionObserver(function (entries) {
+                    if (vu || !entries[0].isIntersecting) return;
+                    vu = true;
+                    io.disconnect();
+                    track('peptides_form_seen', { source: source });
+                }, { threshold: 0.5 });
+                // Le formulaire de la pop-up est dans un <dialog> ferme, donc
+                // sans layout : il n'intersecte rien tant qu'elle ne s'ouvre pas.
+                // C'est exactement le comportement voulu.
+                io.observe(form);
+            }
+
             function showError(msg) {
                 err.textContent = msg;
                 err.hidden = false;
@@ -901,7 +919,10 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                         button.disabled = false;
                         button.textContent = label;
                         form.removeAttribute('aria-busy');
-                        track('peptides_form_failed', { source: source, reason: e2.message });
+                        track('peptides_form_failed', {
+                            source: source,
+                            reason: window.mgReason ? window.mgReason(e2.message) : 'network'
+                        });
                         showError(ERRORS[e2.message] || ERRORS._);
                     });
             });
@@ -929,10 +950,20 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                     modalTimer = null;
                     if (!document.body.contains(dlg)) return;
                     try { localStorage.setItem(KEY, '1'); } catch (e4) {}
-                    if (typeof dlg.showModal === 'function') dlg.showModal();
-                    // Affichee, pas seulement planifiee : quelqu'un qui part
-                    // avant la 8e seconde ne doit pas compter comme un refus.
-                    track('peptides_guide_shown');
+                    if (typeof dlg.showModal !== 'function') return;
+                    try {
+                        dlg.showModal();
+                    } catch (e6) {
+                        // showModal() leve si le dialogue est deja ouvert.
+                        // Rien affiche, donc rien a compter.
+                        return;
+                    }
+                    // `dlg.open` est la SEULE preuve qu'il est reellement
+                    // ouvert. Compter juste apres l'appel comptait des
+                    // affichages fantomes sur les navigateurs sans showModal,
+                    // qui gonflaient le denominateur du taux de refus. Trouve
+                    // par une revue exterieure.
+                    if (dlg.open) track('peptides_guide_shown');
                 }, 8000);
             }
             // `close` couvre les TROIS sorties — le clic sur le voile, le
