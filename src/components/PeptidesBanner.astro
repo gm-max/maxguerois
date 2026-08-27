@@ -123,9 +123,18 @@ const { as: Title = 'h2' } = Astro.props;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: clamp(12px, 1.6vw, 22px);
+        /* Paliers DISCRETS et non `clamp`, pour l'espacement.
+           Une echelle discrete et une interpolation fluide sont incompatibles :
+           `clamp(12px, 1.6vw, 24px)` calcule 23,04px a 1440 parce que le terme
+           fluide passe SOUS le plafond, et toute largeur intermediaire tombe
+           entre deux pas. Mesure faite. Le brief plafonnait d'ailleurs a 22px,
+           valeur que le journal de DESIGN.md a retiree du site le 2026-08-26
+           comme hors echelle.
+           La TAILLE DU TITRE reste fluide plus bas : la typographie n'est pas
+           sur cette echelle-la, et du type fluide est un choix normal. */
+        gap: var(--sp-3);
         text-align: center;
-        padding: 0 clamp(24px, 4vw, 64px);
+        padding: 0 var(--sp-6);
     }
 
     .nlb-title {
@@ -144,12 +153,17 @@ const { as: Title = 'h2' } = Astro.props;
     /* Meme blanc que le titre : l'italique porte l'accent, pas la couleur. */
     .nlb-title em { font-style: italic; color: #faf9f7; }
 
+    @media (min-width: 601px) {
+        .nlb-body { gap: var(--sp-6); padding: 0 var(--sp-12); }
+    }
+
     .nlb-rule { width: 56px; height: 1px; background: rgba(250, 249, 247, 0.42); }
 
     .nlb-by {
         font-family: var(--font-body);
         font-weight: 400;
-        font-size: clamp(14px, 1.2vw, 17px);
+        /* 16px est un pas reel de la gamme ; 17px n'en etait pas un. */
+        font-size: var(--t-body);
         line-height: 1.6;
         color: rgba(250, 249, 247, 0.86);
         margin: 0;

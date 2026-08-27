@@ -259,7 +259,14 @@ import PeptidesBanner from './PeptidesBanner.astro';
     /* La bande vit hors du `.container`, donc elle porte elle-meme sa gouttiere
        laterale : sans elle le bandeau toucherait les bords de l'ecran en
        mobile, ce que ses coins arrondis rendraient bancal. */
-    .pep-band { margin: var(--sp-16) auto 0; padding: 0 var(--sp-6); }
+    /* Le bloc newsletter ouvrait a 184px quand toute la page ouvre a 80 :
+       le padding bas du container precedent s'ADDITIONNAIT au padding haut de
+       la bande. Le container d'avant se termine donc a ras, et la bande porte
+       seule l'ecart de section, a la meme valeur que `.pep-section`. */
+    .pep-container--flush { padding-bottom: 0; }
+    .pep-band-head { padding-top: var(--sp-16); padding-bottom: 0; }
+    @media (min-width: 601px) { .pep-band-head { padding-top: var(--sp-20); } }
+    .pep-band { margin: var(--sp-3) auto 0; padding: 0 var(--sp-6); }
     @media (min-width: 601px) { .pep-section { margin-top: var(--sp-20); } }
 
     /* Selecteur a DEUX classes, volontairement. En une seule (0,1,0) il
@@ -373,7 +380,6 @@ import PeptidesBanner from './PeptidesBanner.astro';
        alors que les deux sections voisines etaient correctes. C'est ce que
        l'auteur voyait comme « pas la meme police ». Tout passe desormais par
        une classe explicite. */
-    .pep-mission h2 { margin-bottom: var(--sp-6); }
 
     /* Source 736x920, portrait 4:5. Bornee par la LARGEUR et jamais par la
        hauteur : en width:100% sur un ecran de 375 (327px de colonne) elle
@@ -699,7 +705,7 @@ import PeptidesBanner from './PeptidesBanner.astro';
         </div>
     </section>
 
-    <div class="container" style="padding-top: 0;">
+    <div class="container pep-container--flush" style="padding-top: 0;">
         <!-- 2 · POURQUOI MOI -->
         <section class="pep-section">
             <p class="pep-label">Pourquoi moi</p>
@@ -728,6 +734,15 @@ import PeptidesBanner from './PeptidesBanner.astro';
          sont coherentes qu'en pleine largeur. Dans la colonne, 5.9vw vaut 85px
          sur un ecran de 1440 pour une boite de 572x252, soit trois lignes de
          89px dans 252px de haut. -->
+    <!-- Le libelle OUVRE la section, comme dans « Pourquoi moi » et « Ma
+         mission ». Il porte un vrai `.container` et non une largeur recopiee :
+         `.container` est en border-box avec 620px PADDING COMPRIS, donc toute
+         imitation a 620px + margin auto se serait calee 24px trop a gauche des
+         libelles voisins. -->
+    <div class="container pep-band-head">
+        <p class="pep-label">La newsletter</p>
+    </div>
+
     <div class="pep-band">
         <PeptidesBanner />
     </div>

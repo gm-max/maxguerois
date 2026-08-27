@@ -66,7 +66,7 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 - **Scale (px):** 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 80 · 120
 - **CSS Tokens:** `--sp-1: 4px` · `--sp-2: 8px` · `--sp-3: 12px` · `--sp-4: 16px` · `--sp-6: 24px` · `--sp-8: 32px` · `--sp-12: 48px` · `--sp-16: 64px` · `--sp-20: 80px` · `--sp-30: 120px`
 - **Section gap:** 80px (`--sp-20`) between major sections
-- **Container padding:** 80px top/bottom, 24px (`--sp-6`) horizontal
+- **Container padding:** 80px top, **120px bottom** (`--sp-30`), 24px (`--sp-6`) horizontal. Measured 2026-08-27; this line previously said "80px top/bottom", which is wrong and cost a wrong diagnosis during a spacing audit
 
 ## Layout
 - **Approach:** Grid-disciplined — strict single column, 620px max-width
