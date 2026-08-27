@@ -92,10 +92,6 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
     .pep {
         --t-h1: 38px;
         --t-h2: 24px;
-        /* Accroche : la phrase qui porte l'idee, entre le titre et le corps.
-           Jeton dedie plutot qu'un emprunt a --t-h2, qui la ferait
-           concurrencer le titre de section. */
-        --t-lead: 20px;
         --t-item: 16px;
         --t-body: 16px;   /* jamais < 16px : Safari iOS zoome sur tout input en dessous */
         --t-cal: 14px;
@@ -106,7 +102,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
            a y=0 passe sous la barre. Ici elle y perdait la tete du sujet. */
         --pep-nav-h: 56px;
     }
-    @media (min-width: 601px) { .pep { --t-h1: 52px; --t-lead: 22px; } }
+    @media (min-width: 601px) { .pep { --t-h1: 52px; } }
 
     /* ── HÉROS ──
        Mobile : photo en bandeau pleine largeur, texte dessous.
@@ -397,24 +393,6 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
     }
     @media (min-width: 601px) { .pep-mission-img { max-width: 300px; } }
 
-    /* L'accroche porte l'idee de toute la section, donc elle est en noir
-       plein et plus grosse que le corps. Police de CORPS malgre la taille :
-       a 20px on est encore sous le seuil de 20,9px ou la police de titre
-       repasse au-dessus du corps en hauteur d'x. */
-    .pep-lead {
-        font-family: var(--font-body);
-        font-size: var(--t-lead);
-        font-weight: 500;
-        line-height: 1.4;
-        color: var(--text);
-        margin: 0 0 var(--sp-4);
-    }
-    .pep-lead-sub {
-        font-size: var(--t-body);
-        line-height: 1.7;
-        color: var(--text-secondary);
-        margin: 0 0 var(--sp-8);
-    }
 
     /* ── Cartes du modele de medecine ──
        CLASSE NOUVELLE, assumee : aucun composant existant ne tient trois blocs
@@ -820,8 +798,10 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                 decoding="async"
             />
 
-            <p class="pep-lead">Les peptides sont une évolution majeure pour la biologie humaine.</p>
-            <p class="pep-lead-sub">
+            <p class="pep-line">
+                Les peptides sont <span class="mark">une évolution majeure pour la biologie humaine</span>.
+            </p>
+            <p class="pep-dim">
                 Mais ils doivent s'utiliser dans un nouveau modèle de médecine :
                 préventif, personnalisé, et piloté par l'individu.
             </p>
