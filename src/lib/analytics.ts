@@ -12,11 +12,23 @@
  * HTML de chaque page, exactement comme l'identifiant GA4 juste a cote. Elle
  * n'autorise que l'ECRITURE d'evenements, jamais la lecture.
  *
- * Vide = analytics desactivee, silencieusement et partout. C'est l'etat par
- * defaut tant que le projet PostHog n'existe pas, et c'est voulu : mieux vaut
- * zero evenement qu'un flux qui part dans le projet d'un autre produit.
+ * Vide = analytics desactivee, silencieusement et partout.
+ *
+ * ATTENTION — ce projet est PARTAGE avec ouros.health. Le plan gratuit de
+ * PostHog n'autorise qu'un projet par organisation, et les deux organisations
+ * existantes ont deja le leur (Ouros Health -> ouros.health, Ouros Lab ->
+ * ouroslab.co). Faute d'un projet dedie, maxguerois.com ecrit dans celui
+ * d'Ouros Health.
+ *
+ * Consequence : TOUT insight de ce projet doit filtrer sa provenance, des deux
+ * cotes. Un insight qui oublie le filtre melange deux sites et le chiffre est
+ * faux sans que rien ne le signale. Voir SITE_PROPERTY plus bas.
+ *
+ * Pour separer plus tard : creer une troisieme organisation (c'est gratuit,
+ * seuls les projets supplementaires sont payants) et remplacer cette cle. Rien
+ * d'autre a changer dans le code.
  */
-export const POSTHOG_KEY = '';
+export const POSTHOG_KEY = 'phc_pcCeJf3P9FPTNjfKCKwQJXFAbxowHVdhkQ9EMYWpNc2p';
 
 /** Instance UE. Les donnees ne quittent pas l'Europe. */
 export const POSTHOG_HOST = 'https://eu.i.posthog.com';
@@ -31,6 +43,17 @@ export const POSTHOG_HOST = 'https://eu.i.posthog.com';
  * fois.
  */
 const ANALYTICS_HOSTS = ['maxguerois.com', 'www.maxguerois.com'];
+
+/**
+ * Marque posee sur CHAQUE evenement, autocapture et pageviews compris.
+ *
+ * On aurait pu filtrer sur `$host`, que PostHog remplit tout seul. Deux raisons
+ * de ne pas le faire : il y a deux hotes valides (avec et sans `www.`), et il
+ * est absent des evenements envoyes cote serveur. Une propriete explicite ne
+ * depend ni du domaine ni du transport, et survivra a un changement de nom de
+ * domaine.
+ */
+const SITE_PROPERTY = { site: 'maxguerois.com' };
 
 type Props = Record<string, unknown>;
 
@@ -76,6 +99,11 @@ export async function initAnalytics(): Promise<void> {
         autocapture: true,
         persistence: 'localStorage+cookie',
     });
+
+    // Pose AVANT la premiere capture, sinon le pageview d'ouverture — le seul
+    // que tout visiteur declenche — partirait sans la marque et echapperait a
+    // tous les filtres.
+    posthog.register(SITE_PROPERTY);
 
     // /peptides et /fr/peptides servent le MEME contenu sous deux URL. Sans
     // cette correction, PostHog les compte comme deux pages et coupe le taux de
