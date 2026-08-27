@@ -73,6 +73,7 @@ const fmtDate = (iso: string) =>
     new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 
 const HERO = '/health-journey/max-peptides-hero.jpg';
+import PeptidesBanner from './PeptidesBanner.astro';
 ---
 <Layout
     title="Newsletter peptides — Max Guerois"
@@ -254,6 +255,11 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
     }
 
     .pep-section { margin-top: var(--sp-16); }
+
+    /* La bande vit hors du `.container`, donc elle porte elle-meme sa gouttiere
+       laterale : sans elle le bandeau toucherait les bords de l'ecran en
+       mobile, ce que ses coins arrondis rendraient bancal. */
+    .pep-band { margin: var(--sp-16) auto 0; padding: 0 var(--sp-6); }
     @media (min-width: 601px) { .pep-section { margin-top: var(--sp-20); } }
 
     /* Selecteur a DEUX classes, volontairement. En une seule (0,1,0) il
@@ -715,13 +721,27 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                 Y compris ceux qui n'ont rien donné.
             </p>
         </section>
+    </div>
 
+    <!-- Le bandeau sort du `.container` de 620px, VOLONTAIREMENT. Son titre est
+         calibre en `5.9vw` et sa boite plafonnee a 1500px : ces deux valeurs ne
+         sont coherentes qu'en pleine largeur. Dans la colonne, 5.9vw vaut 85px
+         sur un ecran de 1440 pour une boite de 572x252, soit trois lignes de
+         89px dans 252px de haut. -->
+    <div class="pep-band">
+        <PeptidesBanner />
+    </div>
+
+    <div class="container" style="padding-top: 0;">
         <!-- 3 · LA NEWSLETTER. Avant la mission : l'offre atterrit avant la
-             vision, sur du trafic froid (passe Codex du 26/08). -->
+             vision, sur du trafic froid (passe Codex du 26/08).
+             Le label et le h2 de section ont ete RETIRES : le bandeau juste
+             au-dessus porte le meme titre, en plus fort. Les garder aurait
+             repete « La newsletter peptides » trois fois de suite. « chaque
+             lundi » a ete recupere dans la phrase d'introduction, c'est la
+             seule information que le bandeau ne porte pas. -->
         <section class="pep-section">
-            <p class="pep-label">La newsletter</p>
-            <h2>La newsletter peptides, chaque lundi.</h2>
-            <p class="pep-text">Un seul sujet par email. Celui qui compte cette semaine-là :</p>
+            <p class="pep-text">Un seul sujet par email, chaque lundi. Celui qui compte cette semaine-là :</p>
             <!-- Un seul de ces 4 formats par lundi, jamais les 4 : la liste
                  numerotee promettait un sommaire, ces lignes proposent un menu.
                  Une promesse intenable se paie au premier numero. -->

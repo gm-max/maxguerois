@@ -123,6 +123,14 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 - **Default:** `bg-subtle` + `border` + `radius-full`, 11px weight 500
 - **Accent:** `accent-light` bg + `accent-mid` border + accent text
 
+### Newsletter Banner
+- **Where:** `src/components/PeptidesBanner.astro`, mounted full-bleed on `/peptides` above the newsletter section
+- **Box:** `max-width: 1500px`, `aspect-ratio: 1500/660`, `radius-lg`, dark fallback `#0f0e0c`. Under 720px it switches to `4/3` so the title keeps its height when width runs out
+- **Layers:** image, gradient scrim, centred content, all `position: absolute; inset: 0`
+- **Dark:** the block stays dark in BOTH themes; only the border changes. Its whites are hard-coded `#faf9f7`, not tokens, because they are text-on-dark-image colours and must not follow the theme
+- **Full-bleed is load-bearing:** the title is sized in `vw` and the box caps at 1500px. Inside the 620px column those two are incoherent (85px text in a 572px box). Never nest it in `.container`
+- **Images are pre-generated,** not `astro:assets`. `/peptides` is `prerender = false`, so Astro defers to an `/_image` endpoint absent from this project's Vercel output, and the browser would fall back to the 2.1MB source. Variants live in `public/health-journey/nl-peptides-banner-{720,1080,1500}.{avif,webp}` plus a JPEG fallback
+
 ### Callout Box
 - **Style:** border + `radius-lg`, no background fill
 - **Label:** 12px uppercase tertiary
