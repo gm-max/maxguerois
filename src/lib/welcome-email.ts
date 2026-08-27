@@ -35,7 +35,10 @@
  */
 
 const SITE = 'https://maxguerois.com';
-const CONTACT = 'bonjour@maxguerois.com';
+// The site's contact address, the one on the homepage and in security.txt. NOT the
+// newsletter's sender address (bonjour@), which is where a reply to this mail lands.
+// Two addresses on purpose: reply to the issue, or write fresh.
+const CONTACT = 'hi@maxguerois.com';
 const ADDRESS = '96 rue de Maubeuge, 75010 Paris, France';
 
 // Body from the beehiiv template Max asked to keep; header, footer and their colours
