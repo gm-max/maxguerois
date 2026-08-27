@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { welcomeHtml, welcomeText } from '../../src/lib/welcome-email.ts';
+import { welcomeHtml, welcomeText, WELCOME_SUBJECT } from '../../src/lib/welcome-email.ts';
 
 /**
  * Tests for the site's one server route.
@@ -558,6 +558,47 @@ describe('the welcome email', () => {
 
   // The regression: the link was built from url.origin, so an email sent by a Vercel
   // preview carried an unsubscribe URL on a hostname that dies with the deployment.
+  /**
+   * The envelope, which nothing guarded until now. The subject and the sender both
+   * changed under a green suite, because every existing test asserted the BODY of the
+   * mail and none asserted who it came from or what the inbox would show.
+   */
+  it('comes from hi@, the address that actually reaches him', async () => {
+    await post({ email: 'a@b.co' });
+    // Not bonjour@. That address was invented during the D16 swap and never checked
+    // against Cloudflare Email Routing, so a reply to a mail that says "répondez à ce
+    // mail. Je lis tout." may have had nowhere to land. hi@ is the address the site
+    // publishes on its homepage and in security.txt. Asserted literally, on purpose:
+    // changing the sender is a routing decision, and it should have to be deliberate.
+    expect(bodyOf(welcomeCall()).from).toBe('Max Guérois <hi@maxguerois.com>');
+  });
+
+  it('sends from the verified domain, with a display name', async () => {
+    await post({ email: 'a@b.co' });
+    const from = bodyOf(welcomeCall()).from;
+    // Resend verified maxguerois.com, not any other domain. A sender outside it is
+    // rejected at send time, which surfaces as a silent unsent welcome in production.
+    expect(from).toMatch(/<[^@>]+@maxguerois\.com>$/);
+    // A bare address in the From line reads as machine-sent and costs deliverability.
+    expect(from).toMatch(/^\S.*\s</);
+  });
+
+  it('sends the authored subject, so the route and the copy cannot drift apart', async () => {
+    await post({ email: 'a@b.co' });
+    // Deliberately NOT a literal string. Pinning the words here would break the suite
+    // on every copy edit and teach the next person to update the assertion without
+    // reading it. What must hold is that the route sends what welcome-email.ts says.
+    expect(bodyOf(welcomeCall()).subject).toBe(WELCOME_SUBJECT);
+  });
+
+  it('keeps the subject short enough to survive the inbox', () => {
+    expect(WELCOME_SUBJECT.trim()).toBe(WELCOME_SUBJECT);
+    expect(WELCOME_SUBJECT.length).toBeGreaterThan(0);
+    // Gmail truncates around 70 characters on desktop and well before that on a phone.
+    // A subject that gets cut mid-word is a subject nobody read.
+    expect(WELCOME_SUBJECT.length).toBeLessThanOrEqual(60);
+  });
+
   it('builds the unsubscribe link on the canonical host, not the request host', async () => {
     await post({ email: 'a@b.co' });
     const body = JSON.parse((fetch as any).mock.calls.find(([u]: [string]) => u.endsWith('/emails'))[1].body);
