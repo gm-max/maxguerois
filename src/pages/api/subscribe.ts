@@ -14,7 +14,12 @@ const RESEND_TIMEOUT_MS = 5000;
 // D16: not secret, both public in the sense that anyone receiving mail from this
 // address already sees it. Kept as consts rather than env vars because they aren't
 // deployment config — changing them is a copy decision, not an infra one.
-const RESEND_FROM = 'Max Guérois <bonjour@maxguerois.com>';
+// hi@, not bonjour@. bonjour@ was invented during the D16 swap and never checked
+// against Cloudflare Email Routing, so a reply to the welcome mail may have had
+// nowhere to land, while the mail itself says "répondez à ce mail. Je lis tout."
+// hi@ is the address the site publishes on the homepage and in security.txt, so it
+// is known to reach him. One address, and the promise in the copy is now true.
+const RESEND_FROM = 'Max Guérois <hi@maxguerois.com>';
 
 
 const MAX_EMAIL = 254;

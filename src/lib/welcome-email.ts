@@ -56,11 +56,12 @@ const C = {
 };
 const WIDTH = 670;
 
-export const WELCOME_SUBJECT = 'Chaque lundi, une actu sur les peptides';
+export const WELCOME_SUBJECT = 'Bienvenue dans la communauté.';
 
 /** Shown in the inbox next to the subject, before anything is opened. */
-// Says what is INSIDE, because the subject already says when it arrives.
-export const WELCOME_PREVIEW = "Une étude utile, un peptide passé au crible, et les pièges à éviter.";
+// The subject welcomes; the preview says what the welcome is FOR. Neither repeats the
+// other, which is the whole job of the pair.
+export const WELCOME_PREVIEW = "Comprendre les peptides chaque lundi.";
 
 /**
  * One entry per paragraph. Short on purpose: the blank space between them is part of
