@@ -71,8 +71,12 @@ const { as: Title = 'h2' } = Astro.props;
         position: relative;
         overflow: hidden;
         width: 100%;
-        max-width: 1500px;
-        margin: 0 auto;
+        /* `container-type: inline-size` fait du bandeau son propre referentiel :
+           les unites `cqw` plus bas mesurent SA largeur, pas celle de la
+           fenetre. C'est ce qui permet de le remettre dans la colonne sans
+           casser le titre. En `vw`, un titre calibre pour 1500px de large
+           rendait 85px dans une boite de 572px. */
+        container-type: inline-size;
         aspect-ratio: 1500 / 660;
         border-radius: var(--radius-lg);
         /* Repli sous l'image, le temps qu'elle arrive. Valeur du brief, qui est
@@ -84,9 +88,10 @@ const { as: Title = 'h2' } = Astro.props;
        change, sinon elle disparait sur le fond sombre. */
     :global([data-theme='dark']) .nlb { border-color: rgba(250, 249, 247, 0.10); }
 
-    /* Sous 720px, le format large rendrait le titre illisible : 4/3 lui redonne
-       de la hauteur au moment ou la largeur manque. */
-    @media (max-width: 719px) { .nlb { aspect-ratio: 4 / 3; } }
+    /* Sous 601px la colonne se resserre et la bande deviendrait une fente :
+       3/2 lui redonne de la hauteur au moment ou la largeur manque. Le 4/3
+       precedent visait une bande pleine largeur, il est trop haut ici. */
+    @media (max-width: 600px) { .nlb { aspect-ratio: 3 / 2; } }
 
     /* `<picture>` est un element a part entiere qui s'intercale entre .nlb et
        l'img : sans lui dans cette liste, l'image sortait du positionnement
@@ -134,13 +139,16 @@ const { as: Title = 'h2' } = Astro.props;
            sur cette echelle-la, et du type fluide est un choix normal. */
         gap: var(--sp-3);
         text-align: center;
-        padding: 0 var(--sp-6);
+        padding: 0 var(--sp-4);
     }
 
     .nlb-title {
         font-family: var(--font-display);
         font-weight: 500;
-        font-size: clamp(32px, 5.9vw, 88px);
+        /* `cqw` et non `vw` : la taille suit la largeur du BANDEAU. En `vw` le
+           titre ignorait sa propre boite et debordait des qu'on le remettait
+           dans la colonne. */
+        font-size: clamp(26px, 9cqw, 52px);
         line-height: 1.05;
         letter-spacing: -0.01em;
         /* Blanc du brief, en dur : c'est la couleur du texte SUR une image
@@ -154,7 +162,7 @@ const { as: Title = 'h2' } = Astro.props;
     .nlb-title em { font-style: italic; color: #faf9f7; }
 
     @media (min-width: 601px) {
-        .nlb-body { gap: var(--sp-6); padding: 0 var(--sp-12); }
+        .nlb-body { gap: var(--sp-4); padding: 0 var(--sp-8); }
     }
 
     .nlb-rule { width: 56px; height: 1px; background: rgba(250, 249, 247, 0.42); }
@@ -163,7 +171,7 @@ const { as: Title = 'h2' } = Astro.props;
         font-family: var(--font-body);
         font-weight: 400;
         /* 16px est un pas reel de la gamme ; 17px n'en etait pas un. */
-        font-size: var(--t-body);
+        font-size: var(--t-micro);
         line-height: 1.6;
         color: rgba(250, 249, 247, 0.86);
         margin: 0;

@@ -256,17 +256,13 @@ import PeptidesBanner from './PeptidesBanner.astro';
 
     .pep-section { margin-top: var(--sp-16); }
 
-    /* La bande vit hors du `.container`, donc elle porte elle-meme sa gouttiere
-       laterale : sans elle le bandeau toucherait les bords de l'ecran en
-       mobile, ce que ses coins arrondis rendraient bancal. */
-    /* Le bloc newsletter ouvrait a 184px quand toute la page ouvre a 80 :
-       le padding bas du container precedent s'ADDITIONNAIT au padding haut de
-       la bande. Le container d'avant se termine donc a ras, et la bande porte
-       seule l'ecart de section, a la meme valeur que `.pep-section`. */
-    .pep-container--flush { padding-bottom: 0; }
-    .pep-band-head { padding-top: var(--sp-16); padding-bottom: 0; }
-    @media (min-width: 601px) { .pep-band-head { padding-top: var(--sp-20); } }
-    .pep-band { margin: var(--sp-3) auto 0; padding: 0 var(--sp-6); }
+    /* `:global` obligatoire, pas un raccourci. Astro scope les styles PAR
+       composant : sans lui, ce selecteur devient `.pep-section[cid-parent] >
+       .nlb[cid-parent]`, or `.nlb` appartient au composant bandeau et porte un
+       AUTRE identifiant. La regle ne matchait rien et l'ecart mesurait 0.
+       La marge vit ici et non dans le bandeau : un composant ne doit pas
+       decider de ce qui l'entoure. */
+    .pep-section > :global(.nlb) { margin-bottom: var(--sp-6); }
     @media (min-width: 601px) { .pep-section { margin-top: var(--sp-20); } }
 
     /* Selecteur a DEUX classes, volontairement. En une seule (0,1,0) il
@@ -698,14 +694,14 @@ import PeptidesBanner from './PeptidesBanner.astro';
                     <!-- Cadence et preuve vivent ICI et nulle part ailleurs dans
                          le héros : sous le bouton, au moment de l'hésitation,
                          sans rien ajouter au-dessus de l'action. -->
-                    <p class="pf-micro">Un email chaque lundi. Rejoignez 1 000 lecteurs. Gratuit, désinscription en un clic.</p>
+                    <p class="pf-micro">Rejoignez 1 000 lecteurs. Désinscription à tout moment.</p>
                 </form>
                 )}
             </div>
         </div>
     </section>
 
-    <div class="container pep-container--flush" style="padding-top: 0;">
+    <div class="container" style="padding-top: 0;">
         <!-- 2 · POURQUOI MOI -->
         <section class="pep-section">
             <p class="pep-label">Pourquoi moi</p>
@@ -727,35 +723,23 @@ import PeptidesBanner from './PeptidesBanner.astro';
                 Y compris ceux qui n'ont rien donné.
             </p>
         </section>
-    </div>
 
-    <!-- Le bandeau sort du `.container` de 620px, VOLONTAIREMENT. Son titre est
-         calibre en `5.9vw` et sa boite plafonnee a 1500px : ces deux valeurs ne
-         sont coherentes qu'en pleine largeur. Dans la colonne, 5.9vw vaut 85px
-         sur un ecran de 1440 pour une boite de 572x252, soit trois lignes de
-         89px dans 252px de haut. -->
-    <!-- Le libelle OUVRE la section, comme dans « Pourquoi moi » et « Ma
-         mission ». Il porte un vrai `.container` et non une largeur recopiee :
-         `.container` est en border-box avec 620px PADDING COMPRIS, donc toute
-         imitation a 620px + margin auto se serait calee 24px trop a gauche des
-         libelles voisins. -->
-    <div class="container pep-band-head">
-        <p class="pep-label">La newsletter</p>
-    </div>
-
-    <div class="pep-band">
-        <PeptidesBanner />
-    </div>
-
-    <div class="container" style="padding-top: 0;">
         <!-- 3 · LA NEWSLETTER. Avant la mission : l'offre atterrit avant la
              vision, sur du trafic froid (passe Codex du 26/08).
-             Le label et le h2 de section ont ete RETIRES : le bandeau juste
-             au-dessus porte le meme titre, en plus fort. Les garder aurait
-             repete « La newsletter peptides » trois fois de suite. « chaque
-             lundi » a ete recupere dans la phrase d'introduction, c'est la
-             seule information que le bandeau ne porte pas. -->
+             Le h2 de section a ete RETIRE : le bandeau porte le meme titre, en
+             plus fort. Le garder aurait repete « La newsletter peptides » deux
+             fois de suite. « chaque lundi » a ete recupere dans la phrase
+             d'introduction, c'est la seule information que le bandeau ne porte
+             pas.
+             Le bandeau vit DANS la colonne, comme tout le reste. Il en est
+             sorti un temps parce que son brief le calibrait en `vw` pour du
+             plein ecran ; c'etait dimensionner pour le brief et non pour la
+             page, dont toute l'identite est une colonne de 620px. Une bande de
+             1500px y etait un corps etranger. Le titre se calibre desormais sur
+             le CONTENEUR, pas sur la fenetre. -->
         <section class="pep-section">
+            <p class="pep-label">La newsletter</p>
+            <PeptidesBanner />
             <p class="pep-text">Un seul sujet par email, chaque lundi. Celui qui compte cette semaine-là :</p>
             <!-- Un seul de ces 4 formats par lundi, jamais les 4 : la liste
                  numerotee promettait un sommaire, ces lignes proposent un menu.
