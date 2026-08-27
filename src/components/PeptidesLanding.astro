@@ -92,6 +92,10 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
     .pep {
         --t-h1: 38px;
         --t-h2: 24px;
+        /* Accroche : la phrase qui porte l'idee, entre le titre et le corps.
+           Jeton dedie plutot qu'un emprunt a --t-h2, qui la ferait
+           concurrencer le titre de section. */
+        --t-lead: 20px;
         --t-item: 16px;
         --t-body: 16px;   /* jamais < 16px : Safari iOS zoome sur tout input en dessous */
         --t-cal: 14px;
@@ -102,7 +106,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
            a y=0 passe sous la barre. Ici elle y perdait la tete du sujet. */
         --pep-nav-h: 56px;
     }
-    @media (min-width: 601px) { .pep { --t-h1: 52px; } }
+    @media (min-width: 601px) { .pep { --t-h1: 52px; --t-lead: 22px; } }
 
     /* ── HÉROS ──
        Mobile : photo en bandeau pleine largeur, texte dessous.
@@ -393,7 +397,19 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
     }
     @media (min-width: 601px) { .pep-mission-img { max-width: 300px; } }
 
-    .pep-mission-lead {
+    /* L'accroche porte l'idee de toute la section, donc elle est en noir
+       plein et plus grosse que le corps. Police de CORPS malgre la taille :
+       a 20px on est encore sous le seuil de 20,9px ou la police de titre
+       repasse au-dessus du corps en hauteur d'x. */
+    .pep-lead {
+        font-family: var(--font-body);
+        font-size: var(--t-lead);
+        font-weight: 500;
+        line-height: 1.4;
+        color: var(--text);
+        margin: 0 0 var(--sp-4);
+    }
+    .pep-lead-sub {
         font-size: var(--t-body);
         line-height: 1.7;
         color: var(--text-secondary);
@@ -421,6 +437,10 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         border-radius: var(--radius-lg);
         padding: var(--sp-4);
     }
+    /* La categorie reutilise .pep-label : meme role de micro-label, donc meme
+       traitement. Seule la marge se resserre dans une carte, comme le fait
+       deja .pep-callout. */
+    .pep-card .pep-label { margin-bottom: var(--sp-2); }
     /* Police de corps, meme raison que .pep-row-t : sous 20,9px la police de
        titre rend plus petit que le corps. */
     .pep-card-t {
@@ -442,20 +462,20 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
        secondaire juste dessous, puis 48px de vide avant la suivante. C'est ce
        vide qui repond au « trop packed » : sans lui les lignes se lisent comme
        un seul pave. */
-    .pep-mission-line {
+    .pep-line {
         font-size: var(--t-body);
         line-height: 1.55;
         color: var(--text);
         margin: 0 0 var(--sp-2);
     }
-    .pep-mission-dim {
+    .pep-dim {
         font-size: var(--t-body);
         line-height: 1.6;
         color: var(--text-secondary);
         margin: 0 0 var(--sp-12);
     }
-    .pep-mission-line:last-child,
-    .pep-mission-dim:last-child { margin-bottom: 0; }
+    .pep-line:last-child,
+    .pep-dim:last-child { margin-bottom: 0; }
     /* Text Highlight — composant DESIGN.md, réutilise --accent-light. */
     .mark {
         background: var(--accent-light);
@@ -700,23 +720,22 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         <section class="pep-section">
             <p class="pep-label">Pourquoi moi</p>
             <h2>Entrepreneur, et je teste sur ma santé first.</h2>
-            <div class="pep-rows">
-                <div class="pep-row">
-                    <span class="pep-row-t">Entrepreneur depuis 2021</span>
-                    <span class="pep-row-d">
-                        La dernière, dans la santé : j'ai cofondé le leader européen du test sanguin.
-                        Des milliers de personnes y ont enfin compris leurs analyses, avec des médecins
-                        et de la tech.
-                    </span>
-                </div>
-                <div class="pep-row">
-                    <span class="pep-row-t">Je teste sur ma santé, first</span>
-                    <span class="pep-row-d">
-                        2 ans que je publie mes analyses, mes protocoles et mes résultats en public.
-                        Y compris ceux qui n'ont rien donné.
-                    </span>
-                </div>
-            </div>
+            <!-- Meme systeme que « Ma mission » : affirmation en noir plein,
+                 justification en secondaire juste dessous, et le VIDE comme
+                 seul separateur. Les filets faisaient lire deux entrees de
+                 tableau la ou il y a deux idees. -->
+            <p class="pep-line">Entrepreneur depuis 2021</p>
+            <p class="pep-dim">
+                La dernière, dans la santé : j'ai cofondé le leader européen du test sanguin.
+                Des milliers de personnes y ont enfin compris leurs analyses, avec des médecins
+                et de la tech.
+            </p>
+
+            <p class="pep-line">Je teste sur ma santé, first</p>
+            <p class="pep-dim">
+                2 ans que je publie mes analyses, mes protocoles et mes résultats en public.
+                Y compris ceux qui n'ont rien donné.
+            </p>
         </section>
 
         <!-- 3 · LA NEWSLETTER. Avant la mission : l'offre atterrit avant la
@@ -801,50 +820,52 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                 decoding="async"
             />
 
-            <p class="pep-mission-lead">
-                Les peptides sont une évolution majeure pour la biologie humaine.
+            <p class="pep-lead">Les peptides sont une évolution majeure pour la biologie humaine.</p>
+            <p class="pep-lead-sub">
                 Mais ils doivent s'utiliser dans un nouveau modèle de médecine :
                 préventif, personnalisé, et piloté par l'individu.
             </p>
 
             <div class="pep-cards">
                 <div class="pep-card">
+                    <p class="pep-label">Préventif</p>
                     <p class="pep-card-t">Agir proactivement</p>
                     <p class="pep-card-d">
-                        Car la société n'a aucun intérêt à financer la longévité
-                        et des bienfaits qui ne se voient que dans dix ans.
+                        Le système médical actuel n'a aucun intérêt à financer la
+                        longévité et des bénéfices qui ne se voient qu'à long terme.
                     </p>
                 </div>
                 <div class="pep-card">
-                    <p class="pep-card-t">Personnaliser</p>
+                    <p class="pep-label">Personnalisé</p>
+                    <p class="pep-card-t">Traiter l'individu</p>
                     <p class="pep-card-d">
-                        Car chacun a un mode de vie et une biologie différents.
-                        Ce qui marche sur moi ne marche pas forcément sur vous.
+                        Chacun a un mode de vie, des objectifs et une biologie
+                        différents. Ça dépasse une personne ou un protocole.
                     </p>
                 </div>
                 <div class="pep-card">
-                    <p class="pep-card-t">Décider soi-même</p>
+                    <p class="pep-label">Piloté par l'individu</p>
+                    <p class="pep-card-t">Let them cook</p>
                     <p class="pep-card-d">
-                        Pour prendre soin de sa propre santé, au lieu d'attendre
-                        que quelqu'un décide à votre place.
+                        Chacun devrait avoir le contrôle de son propre corps.
                     </p>
                 </div>
             </div>
 
-            <p class="pep-mission-line">
+            <p class="pep-line">
                 Je remets <span class="mark">la vérité sur ce qui est du bullshit</span> et ce qui ne l'est pas.
             </p>
-            <p class="pep-mission-dim">En me basant sur la science et les revues de littérature.</p>
+            <p class="pep-dim">En me basant sur la science et les revues de littérature.</p>
 
-            <p class="pep-mission-line">
+            <p class="pep-line">
                 J'utilise <span class="mark">des mots simples</span> pour expliquer des concepts poussés.
             </p>
-            <p class="pep-mission-dim">Compréhensibles par n'importe qui, sans aucun bagage scientifique.</p>
+            <p class="pep-dim">Compréhensibles par n'importe qui, sans aucun bagage scientifique.</p>
 
-            <p class="pep-mission-line">Et je partage tout à ma communauté, librement.</p>
-            <p class="pep-mission-dim">Pour qu'elle prenne des décisions éclairées sur sa santé.</p>
+            <p class="pep-line">Et je partage tout à ma communauté, librement.</p>
+            <p class="pep-dim">Pour qu'elle prenne des décisions éclairées sur sa santé.</p>
 
-            <p class="pep-mission-line">On est déjà plus de 1 000, et le mouvement ne fait que grandir.</p>
+            <p class="pep-line">On est déjà plus de 1 000, et le mouvement ne fait que grandir.</p>
         </section>
 
         <!-- 5 · LE GUIDE, EN CLÔTURE. Le lien entre les deux offres n'est dit
