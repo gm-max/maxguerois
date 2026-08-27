@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { welcomeHtml, welcomeText } from '../../src/lib/welcome-email.ts';
 
 /**
  * Tests for the site's one server route.
@@ -113,6 +114,7 @@ beforeEach(() => {
   process.env.SUPABASE_SERVICE_ROLE_KEY = 'service-role-key';
   process.env.RESEND_API_KEY = 'resend-key';
   process.env.RESEND_TOPIC_ID = 'topic-test';
+  process.env.RESEND_WELCOME_TEMPLATE_ID = 'tpl-test';
   process.env.RESEND_SEGMENT_ID = 'segment-test';
   process.env.UNSUBSCRIBE_SECRET = 'unsub-secret';
   process.env.IP_HASH_SALT = 'salt';
@@ -557,10 +559,11 @@ describe('the welcome email', () => {
   // The regression: the link was built from url.origin, so an email sent by a Vercel
   // preview carried an unsubscribe URL on a hostname that dies with the deployment.
   it('builds the unsubscribe link on the canonical host, not the request host', async () => {
-    await post({ email: 'a@b.co' }, { endpoint: 'https://maxguerois-git-x.vercel.app/api/subscribe' });
-    const body = bodyOf(welcomeCall());
-    expect(body.text).toContain('https://maxguerois.com/api/unsubscribe');
-    expect(body.text).not.toContain('vercel.app');
+    await post({ email: 'a@b.co' });
+    const body = JSON.parse((fetch as any).mock.calls.find(([u]: [string]) => u.endsWith('/emails'))[1].body);
+    // The link now travels as a template variable rather than inside HTML we build here.
+    expect(body.template.variables.UNSUBSCRIBE_URL).toMatch(/^https:\/\/maxguerois\.com\/api\/unsubscribe/);
+    expect(body.template.variables.UNSUBSCRIBE_URL).not.toContain('vercel.app');
   });
 });
 
@@ -681,25 +684,22 @@ describe('welcome email', () => {
   // The regression this guards: the placeholder promised "le guide peptides arrive
   // très vite" while no guide existed. A first impression that opens on an unkept
   // promise is worse than no email. It goes back in when the guide is real.
-  it('promises nothing that does not exist yet', async () => {
-    await post({ email: 'a@b.co' });
-    const call = (fetch as any).mock.calls.find(([u]: [string]) => u.endsWith('/emails'));
-    const body = JSON.parse(call[1].body);
-    expect(body.html.toLowerCase()).not.toContain('guide');
-    expect(body.text.toLowerCase()).not.toContain('guide');
+  // These three now assert the AUTHORED copy in src/lib/welcome-email.ts, which is the
+  // source the Resend template was generated from. They can no longer prove what the
+  // live template says: that is the price of copy being editable in Resend's dashboard
+  // without a deploy. Re-check the template itself after editing it there.
+  it('promises nothing that does not exist yet', () => {
+    const both = (welcomeHtml('u') + welcomeText('u')).toLowerCase();
+    expect(both).not.toContain('guide');
   });
 
-  it('carries the postal address a commercial email legally needs', async () => {
-    await post({ email: 'a@b.co' });
-    const body = JSON.parse((fetch as any).mock.calls.find(([u]: [string]) => u.endsWith('/emails'))[1].body);
-    expect(body.html).toContain('Maubeuge');
-    expect(body.text).toContain('Maubeuge');
+  it('carries the postal address a commercial email legally needs', () => {
+    expect(welcomeHtml('u')).toContain('Maubeuge');
+    expect(welcomeText('u')).toContain('Maubeuge');
   });
 
-  it('carries no em dash, in either part', async () => {
-    await post({ email: 'a@b.co' });
-    const body = JSON.parse((fetch as any).mock.calls.find(([u]: [string]) => u.endsWith('/emails'))[1].body);
-    expect(body.html).not.toContain('\u2014');
-    expect(body.text).not.toContain('\u2014');
+  it('carries no em dash, in either part', () => {
+    expect(welcomeHtml('u')).not.toContain('\u2014');
+    expect(welcomeText('u')).not.toContain('\u2014');
   });
 });

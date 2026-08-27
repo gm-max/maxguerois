@@ -2,66 +2,80 @@
  * The welcome email. Copy lives here, not in the route, so it can be edited without
  * touching request handling and so it can be tested on its own.
  *
- * It replaces a placeholder that promised "le guide peptides arrive très vite" while
- * no guide existed. Promising something that is not ready is how a first impression
- * becomes a broken one, so the guide is not mentioned at all: it goes in once it is
- * real.
+ * ON THE LAYOUT. This reproduces the beehiiv template Max was using, because he asked
+ * for it twice and he was right: an earlier version of this file dismissed it as "their
+ * default template, nothing worth preserving" and rebuilt it on the site's cream and
+ * amber palette instead. Reading the actual HTML of the email he received on 2026-03-20
+ * shows real decisions in there: a white ground rather than the site's cream, a 670px
+ * column rather than the usual 600, and 150% line-height. Those carry the body.
  *
- * ON THE DESIGN. The beehiiv original this succeeds was their default template:
- * Arial, a 520px column, dark grey on white, no custom button. Nothing there was
- * worth preserving, so this is built on the site's own palette instead, which is only
- * possible now that we own the sending.
+ * THE HEADER AND FOOTER ARE THE SITE'S, not beehiiv's, which is what Max asked for
+ * after seeing the first version: the name in the display face with "Newsletter" under
+ * it, and a footer carrying the same three social links, the newsletter link and the
+ * copyright line as maxguerois.com. Their colours are the site's tokens. beehiiv's 3px
+ * near-black rule went with them, replaced by the site's 1px border.
  *
- * ON THE FORMAT. Table-based layout and fully inline styles are not old-fashioned
- * here, they are the only thing that survives Outlook and Gmail: <style> blocks are
- * stripped, flexbox and grid do not render, and a web font never loads. Georgia and
- * the system sans stack approximate the site's Cormorant/DM Sans pairing with fonts
- * that are actually present on the reader's machine.
+ * ON THE RHYTHM. The copy is deliberately airy. A denser draft was rejected in one line:
+ * "le content est trop packed, pas mon style de copy". His own English welcome email is
+ * the reference, and it runs on one-to-two-sentence paragraphs with a lot of white
+ * between them. The bullet list is gone with the density: every bullet carried three
+ * ideas, so the list compressed the text instead of opening it.
  *
- * ON THE FOOTER. The postal address is not decoration. A commercial email without a
- * physical sender address breaks both CAN-SPAM and the French rules, and its absence
- * also reads as spam to filters. It matches what beehiiv had on file.
+ * ON THE FORMAT. Table layout and fully inline styles are the only thing that survives
+ * Outlook and Gmail: <style> blocks get stripped, flex and grid do not render, and a web
+ * font never loads.
+ *
+ * ON THE FOOTER. The postal address is not decoration. A commercial email with no
+ * physical sender address breaks CAN-SPAM and the French rules, and its absence also
+ * reads as spam to filters. Two subscribers replied to the beehiiv welcome saying they
+ * had found it in their spam folder.
+ *
+ * NOT MENTIONED ON PURPOSE: the peptides guide. It does not exist yet. A first
+ * impression that opens on an unkept promise is worse than no email.
  */
 
 const SITE = 'https://maxguerois.com';
 const ADDRESS = '96 rue de Maubeuge, 75010 Paris, France';
 
-// Site tokens, hard-coded because an email cannot read CSS variables.
+// Body from the beehiiv template Max asked to keep; header, footer and their colours
+// from maxguerois.com, which is what he asked for next.
 const C = {
-    bg: '#faf9f7',
-    card: '#ffffff',
-    text: '#2a2a2a',
-    soft: '#767676',
-    accent: '#c4934a',
-    rule: '#e8e4dd',
+    bg: '#ffffff',
+    text: '#2d2d2d',
+    name: '#1a1a1a',   // site --text
+    soft: '#767676',   // site --text-tertiary
+    rule: '#e8e6e1',   // site --border
+    link: '#c4934a',   // site --accent
 };
+const WIDTH = 670;
 
 export const WELCOME_SUBJECT = 'Chaque lundi, une actu sur les peptides';
 
 /** Shown in the inbox next to the subject, before anything is opened. */
-// Says what is INSIDE, because the subject already says when it arrives. An earlier
-// version put the reassurance here and it repeated the body's opening sentence word
-// for word, two lines below it and visible in the inbox preview.
+// Says what is INSIDE, because the subject already says when it arrives.
 export const WELCOME_PREVIEW = "Une étude utile, un peptide passé au crible, et les pièges à éviter.";
 
+/**
+ * One entry per paragraph. Short on purpose: the blank space between them is part of
+ * the writing, not a gap to be filled.
+ */
 const PARAS: string[] = [
-    "Vous vous êtes inscrit pour une raison simple : comprendre les peptides sans jargon, sans promesse magique, et sans y passer vos soirées.",
-];
-
-const BULLETS: Array<[string, string]> = [
-    ['Une étude expliquée clairement', 'ce qu’elle montre, et ce qu’elle ne montre pas.'],
-    ['Un peptide passé au crible', 'ses effets possibles, pour qui il peut avoir un intérêt, et ce qu’il coûte vraiment.'],
-    ['Un vendeur, un produit ou une pratique à éviter', 'avant d’y mettre un centime.'],
-];
-
-// The order here is the whole point of the last revision. Someone arriving from
-// Instagram wants three things, in this order: what they get, whether they are being
-// sold to, and only then why this person deserves two minutes. The bio used to come
-// second and made the email about Max before it was about the reader.
-const CLOSING: string[] = [
-    "Je ne vends aucun peptide. Quand je ne sais pas, je vous le dis. Quand une étude ne permet pas de conclure, je vous le dis aussi.",
-    "Moi, c'est Max. J'ai fondé le leader européen de la santé préventive à partir des prises de sang. Cette newsletter me sert à partager ce que je trouve, ce que je teste, et ce qui ne tient pas la route.",
-    "Premier numéro lundi. Si vous avez une question, répondez à ce mail. Je lis tout.",
+    "Vous vous êtes inscrit pour une raison simple.",
+    "Comprendre les peptides sans jargon. Sans promesse magique. Sans y passer vos soirées.",
+    "Chaque lundi, vous recevrez un mail court.",
+    "J'y décrypte une étude utile. Je vous dis ce qu'elle montre. Et ce qu'elle ne permet pas de dire.",
+    "Je passe aussi un peptide au crible.",
+    "Ce qu'on peut en attendre. Pour qui il peut avoir un intérêt. Et ce qu'il coûte vraiment.",
+    "J'ajoute un piège à éviter.",
+    "Un vendeur, un produit, ou une pratique qui ne vaut pas votre argent.",
+    "Je ne vends aucun peptide.",
+    "Quand je ne sais pas, je vous le dis. Quand une étude ne permet pas de conclure, je vous le dis aussi.",
+    "Moi, c'est Max.",
+    "J'ai fondé le leader européen de la santé préventive à partir des prises de sang.",
+    "Aujourd'hui, je construis ma prochaine startup.",
+    "Cette newsletter me sert à partager ce que je trouve. Ce que je teste. Et ce qui ne tient pas la route.",
+    "Premier numéro lundi.",
+    "Si vous avez une question, répondez à ce mail. Je lis tout.",
 ];
 
 function escapeHtml(s: string): string {
@@ -76,43 +90,25 @@ export function welcomeText(unsubscribeUrl: string): string {
     return [
         ...PARAS,
         '',
-        'Chaque lundi, un mail court avec trois choses :',
-        ...BULLETS.map(([t, d]) => `- ${t} : ${d}`),
-        '',
-        ...CLOSING,
-        '',
         'Max Guérois',
         SITE,
         '',
         ADDRESS,
         `Se désabonner : ${unsubscribeUrl}`,
-    ].join('\n');
+    ].join('\n\n');
 }
 
 export function welcomeHtml(unsubscribeUrl: string): string {
     const url = escapeHtml(unsubscribeUrl);
-    const body = 'font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Helvetica, Arial, sans-serif;';
+    // beehiiv's own stack, kept so the mail renders as it did before.
+    const font = "font-family: system-ui, Helvetica, Roboto, Calibri, Arial, sans-serif;";
+    // The site's display face. Cormorant Garamond never loads in a mail client, so
+    // Georgia carries it — which is already the fallback the site itself declares.
     const serif = "font-family: Georgia, 'Times New Roman', serif;";
+    // 150% line-height, and the mso- variant because Outlook ignores the CSS one.
+    const para = `margin:0 0 20px; ${font} font-size:16px; line-height:150%; mso-line-height-alt:150%; color:${C.text};`;
 
-    const paras = PARAS.map(
-        (p) =>
-            `<p style="margin:0 0 18px; ${body} font-size:16px; line-height:1.65; color:${C.text};">${escapeHtml(p)}</p>`,
-    ).join('');
-
-    const bullets = BULLETS.map(
-        ([title, desc]) => `
-          <tr>
-            <td style="padding:0 0 14px; ${body} font-size:16px; line-height:1.6; color:${C.text};">
-              <span style="color:${C.accent}; font-weight:600;">${escapeHtml(title)}</span>
-              <span style="color:${C.soft};"> : ${escapeHtml(desc)}</span>
-            </td>
-          </tr>`,
-    ).join('');
-
-    const closing = CLOSING.map(
-        (p) =>
-            `<p style="margin:0 0 18px; ${body} font-size:16px; line-height:1.65; color:${C.text};">${escapeHtml(p)}</p>`,
-    ).join('');
+    const paras = PARAS.map((p) => `<p style="${para}">${escapeHtml(p)}</p>`).join('\n            ');
 
     return `<!DOCTYPE html>
 <html lang="fr">
@@ -122,41 +118,47 @@ export function welcomeHtml(unsubscribeUrl: string): string {
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>${escapeHtml(WELCOME_SUBJECT)}</title>
 </head>
-<body style="margin:0; padding:0; background-color:${C.bg};">
-<!-- Preheader: shown beside the subject in the inbox. Hidden in the body itself,
-     otherwise it reads as a duplicated first line. -->
+<body style="margin:0 auto; padding:0; word-wrap:normal; word-spacing:normal; background-color:${C.bg};">
+<!-- Preheader: shown beside the subject in the inbox, hidden in the body itself so it
+     does not read as a duplicated first line. -->
 <div style="display:none; max-height:0; overflow:hidden; opacity:0;">${escapeHtml(WELCOME_PREVIEW)}</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${C.bg};">
+<table role="none" width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="background-color:${C.bg};">
   <tr>
     <td align="center" style="padding:32px 16px;">
-      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%; max-width:600px; background-color:${C.card}; border:1px solid ${C.rule};">
+      <table role="none" width="${WIDTH}" border="0" cellspacing="0" cellpadding="0" style="width:100%; max-width:${WIDTH}px; table-layout:fixed;">
         <tr>
-          <td style="padding:36px 36px 8px;">
-            <p style="margin:0 0 4px; ${body} font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:${C.soft};">L'actu peptides</p>
-            <h1 style="margin:0 0 24px; ${serif} font-size:30px; font-weight:400; line-height:1.25; color:${C.text};">Bienvenue.</h1>
+          <td style="padding:0 0 8px;">
+            <!-- The site's own header: the name in the display face, the section label
+                 under it. Cormorant Garamond never loads in a mail client, so Georgia
+                 carries it, which is already the site's declared fallback. -->
+            <p style="margin:0 0 2px; ${serif} font-size:21px; font-weight:600; letter-spacing:-0.01em; line-height:1.2; color:${C.name};">Max Guerois</p>
+            <p style="margin:0 0 22px; ${font} font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:${C.soft};">Newsletter</p>
+            <table role="none" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:28px;">
+              <tr><td style="border-top:1px solid ${C.rule}; font-size:0; line-height:0;">&nbsp;</td></tr>
+            </table>
             ${paras}
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:8px 36px 4px;">
-            <p style="margin:0 0 14px; ${body} font-size:16px; line-height:1.65; color:${C.text};"><strong>Chaque lundi, un mail court avec trois choses :</strong></p>
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${bullets}</table>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:18px 36px 0;">
-            ${closing}
-            <p style="margin:24px 0 0; ${body} font-size:16px; line-height:1.65; color:${C.text};">Max Guérois<br>
-              <a href="${SITE}" style="color:${C.accent}; text-decoration:none;">maxguerois.com</a>
+            <p style="${para}">Max Guérois<br>
+              <a href="${SITE}" style="color:${C.link};">maxguerois.com</a>
             </p>
           </td>
         </tr>
         <tr>
-          <td style="padding:28px 36px 32px;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <td style="padding:16px 0 0;">
+            <!-- The site's own footer: same three social links, the newsletter link,
+                 then the copyright line. Its SVG icons do not render in Gmail, so the
+                 icon row becomes text links. Address and unsubscribe sit under it,
+                 where the law needs them. -->
+            <table role="none" width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr><td style="border-top:1px solid ${C.rule}; font-size:0; line-height:0;">&nbsp;</td></tr>
             </table>
-            <p style="margin:16px 0 0; ${body} font-size:12px; line-height:1.6; color:${C.soft};">
+            <p style="margin:20px 0 10px; ${font} font-size:12px; line-height:150%; color:${C.soft};">
+              <a href="https://linkedin.com/in/maxguerois" style="color:${C.soft}; text-decoration:none;">LinkedIn</a>&nbsp; &middot; &nbsp;<a href="https://x.com/maxguerois" style="color:${C.soft}; text-decoration:none;">X</a>&nbsp; &middot; &nbsp;<a href="https://instagram.com/maxguerois" style="color:${C.soft}; text-decoration:none;">Instagram</a>
+            </p>
+            <p style="margin:0 0 12px; ${font} font-size:12px; line-height:150%;">
+              <a href="${SITE}/fr/newsletter" style="color:${C.link}; text-decoration:none;">Newsletter</a>
+            </p>
+            <p style="margin:0 0 18px; ${font} font-size:11px; letter-spacing:0.03em; color:${C.soft};">&copy; 2026 Max Guerois</p>
+            <p style="margin:0; ${font} font-size:11px; line-height:150%; color:${C.soft};">
               ${escapeHtml(ADDRESS)}<br>
               <a href="${url}" style="color:${C.soft}; text-decoration:underline;">Se désabonner</a>
             </p>
