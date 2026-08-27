@@ -225,7 +225,9 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         font-family: var(--font-body);
         font-size: var(--t-label);
         font-weight: 500;
-        letter-spacing: 0.08em;
+        /* 0,06em : valeur unique des labels (DESIGN.md). La page en portait
+           trois, 0,08 / 0,06 / 0,04, pour un seul et meme role. */
+        letter-spacing: 0.06em;
         text-transform: uppercase;
         color: var(--text-tertiary);
         margin: 0 0 var(--sp-3);
@@ -254,7 +256,12 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
     .pep-section { margin-top: var(--sp-16); }
     @media (min-width: 601px) { .pep-section { margin-top: var(--sp-20); } }
 
-    .pep-label {
+    /* Selecteur a DEUX classes, volontairement. En une seule (0,1,0) il
+       perdait contre toute regle de section du type `.pep-x p` (0,1,1). C'est
+       ce qui rendait le label « Ma mission » en 16px noir plein au lieu de
+       12px tertiaire. La cause racine est retiree, cette specificite immunise
+       contre la prochaine. */
+    .pep .pep-label {
         font-family: var(--font-body);
         font-size: var(--t-label);
         font-weight: 500;
@@ -263,9 +270,13 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         color: var(--text-tertiary);
         margin: 0 0 var(--sp-3);
     }
+    /* Graisse 500 et non 400. A 24px, Cormorant 400 a des futs plus fins que
+       DM Sans 400 : le h2 ne gagnait que 15% de hauteur d'x sur le corps et
+       lisait comme une premiere phrase, pas comme un titre. Le poids 500 est
+       deja charge par Layout.astro, aucune requete de fonte en plus. */
     .pep h2 {
         font-family: var(--font-display);
-        font-weight: 400;
+        font-weight: 500;
         font-size: var(--t-h2);
         line-height: 1.2;
         margin: 0 0 var(--sp-4);
@@ -290,12 +301,26 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
     }
     a.pep-row { padding: var(--sp-6) 0; }
     a.pep-row:hover .pep-row-t { color: var(--accent); }
+
+    /* Le formulaire qui suit porte DEJA son propre filet superieur. Sans cette
+       regle, la derniere ligne fermait avec le sien : deux traits separes par
+       48px de vide, pour une seule separation. L'ancienne liste numerotee
+       n'avait pas de filet de cloture, d'ou l'apparition du doublon.
+       Classe explicite plutot qu'un `:has(+ .pep-inline)` : le selecteur malin
+       marcherait, mais celui qui lira ce fichier dans six mois verra la classe
+       dans le HTML, pas une condition cachee dans la feuille. */
+    .pep-rows--menu .pep-row:last-child { border-bottom: 0; }
+    /* Police de CORPS, pas de titre. Cormorant a une hauteur d'x de 0,386 em
+       contre 0,504 pour DM Sans : a 16px il rendait 6,18px de hauteur d'x,
+       soit MOINS que les 6,55px de .pep-row-d en 13px. Le titre etait
+       optiquement plus petit que sa propre description. La police de titre ne
+       repasse au-dessus du corps qu'a partir de 20,9px. */
     .pep-row-t {
         display: block;
-        font-family: var(--font-display);
+        font-family: var(--font-body);
         font-weight: 500;
         font-size: var(--t-item);
-        line-height: 1.4;
+        line-height: 1.5;
         color: var(--text);
         transition: color var(--duration-short) var(--ease-out);
     }
@@ -335,43 +360,108 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         color: var(--text-secondary);
     }
 
-    /* ── Mission : une idée par ligne, 48px entre chacune. ── */
-    .pep-mission p {
-        margin: 0 0 var(--sp-12);
+    /* ── Mission ──
+       Aucun selecteur d'element nu ici. `.pep-mission p` (specificite 0,1,1)
+       battait `.pep-label` (0,1,0) : le label de CETTE section se rendait en
+       16px quasi noir avec 48px de marge basse, au lieu de 12px tertiaire,
+       alors que les deux sections voisines etaient correctes. C'est ce que
+       l'auteur voyait comme « pas la meme police ». Tout passe desormais par
+       une classe explicite. */
+    .pep-mission h2 { margin-bottom: var(--sp-6); }
+
+    /* Source 736x920, portrait 4:5. Bornee par la LARGEUR et jamais par la
+       hauteur : en width:100% sur un ecran de 375 (327px de colonne) elle
+       ferait 409px de haut et pousserait les trois cartes hors de l'ecran.
+       Le plafond la tient a 300px de haut en mobile, 375px en desktop.
+       `height: auto` n'est pas decoratif : les attributs width/height de la
+       balise sont des hauteurs presentationnelles, donc avec une largeur CSS
+       la boite aurait DEUX dimensions definies, `aspect-ratio` serait ignore
+       et l'image se rendrait a 920px de haut. Meme piege que .pep-hero-img.
+       Alignee a gauche : la colonne est en fer a gauche, une image centree y
+       flotte. */
+    .pep-mission-img {
+        display: block;
+        width: 100%;
+        max-width: 240px;
+        height: auto;
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+        object-position: 50% 30%;
+        border-radius: var(--radius-md);
+        background: var(--bg-subtle);
+        margin: 0 0 var(--sp-8);
+    }
+    @media (min-width: 601px) { .pep-mission-img { max-width: 300px; } }
+
+    .pep-mission-lead {
+        font-size: var(--t-body);
+        line-height: 1.7;
+        color: var(--text-secondary);
+        margin: 0 0 var(--sp-8);
+    }
+
+    /* ── Cartes du modele de medecine ──
+       CLASSE NOUVELLE, assumee : aucun composant existant ne tient trois blocs
+       cote a cote. Elle n'invente rien visuellement, elle reprend la Callout
+       Box de DESIGN.md (bordure, radius-lg, aucun remplissage) et le couple
+       titre display / corps micro secondaire des lignes `.pep-row`.
+       Une seule colonne en mobile : trois cartes de 100px de large seraient
+       illisibles avant 601px. */
+    .pep-cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--sp-3);
+        margin: 0 0 var(--sp-16);
+    }
+    @media (min-width: 601px) {
+        .pep-cards { grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
+    }
+    .pep-card {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: var(--sp-4);
+    }
+    /* Police de corps, meme raison que .pep-row-t : sous 20,9px la police de
+       titre rend plus petit que le corps. */
+    .pep-card-t {
+        font-family: var(--font-body);
+        font-weight: 500;
+        font-size: var(--t-item);
+        line-height: 1.3;
+        color: var(--text);
+        margin: 0 0 var(--sp-2);
+    }
+    .pep-card-d {
+        font-size: var(--t-micro);
+        line-height: 1.6;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    /* Une idee par ligne : l'affirmation en pleine force, sa justification en
+       secondaire juste dessous, puis 48px de vide avant la suivante. C'est ce
+       vide qui repond au « trop packed » : sans lui les lignes se lisent comme
+       un seul pave. */
+    .pep-mission-line {
         font-size: var(--t-body);
         line-height: 1.55;
         color: var(--text);
+        margin: 0 0 var(--sp-2);
     }
-    .pep-mission p:last-child { margin-bottom: 0; }
-    .pep-mission .dim { color: var(--text-secondary); }
+    .pep-mission-dim {
+        font-size: var(--t-body);
+        line-height: 1.6;
+        color: var(--text-secondary);
+        margin: 0 0 var(--sp-12);
+    }
+    .pep-mission-line:last-child,
+    .pep-mission-dim:last-child { margin-bottom: 0; }
     /* Text Highlight — composant DESIGN.md, réutilise --accent-light. */
     .mark {
         background: var(--accent-light);
         box-shadow: 0 0 0 3px var(--accent-light);
         border-radius: 2px;
     }
-
-    /* ── Liste 1-2-3 ── */
-    .pep-what { list-style: none; counter-reset: w; margin: var(--sp-6) 0 0; padding: 0; }
-    .pep-what li {
-        counter-increment: w;
-        position: relative;
-        padding: 0 0 var(--sp-6) var(--sp-8);
-        font-size: var(--t-body);
-        color: var(--text-secondary);
-        line-height: 1.6;
-    }
-    .pep-what li::before {
-        content: counter(w);
-        position: absolute;
-        left: 0;
-        top: -1px;
-        font-family: var(--font-display);
-        font-size: var(--t-h2);
-        font-weight: 300;
-        color: var(--accent);
-    }
-    .pep-what b { font-weight: 500; color: var(--text); }
 
     .pep-close { border-top: 1px solid var(--border); padding-top: var(--sp-12); }
     /* Le formulaire du pic d'intention, isolé de la liste 1-2-3. Sans ce filet
@@ -384,7 +474,8 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         font-family: var(--font-body);
         font-size: var(--t-label);
         font-weight: 500;
-        letter-spacing: 0.04em;
+        /* Aligne sur .pep-label : meme role de micro-label, meme traitement. */
+        letter-spacing: 0.06em;
         text-transform: uppercase;
         color: var(--text-tertiary);
         margin: 0 0 var(--sp-2);
@@ -613,8 +704,9 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                 <div class="pep-row">
                     <span class="pep-row-t">Entrepreneur depuis 2021</span>
                     <span class="pep-row-d">
-                        La dernière, dans la santé : <a href="https://lucis.life" target="_blank" rel="noopener">Lucis</a>,
-                        que j'ai cofondée. J'ai aidé des milliers de personnes, en collaboration avec des médecins.
+                        La dernière, dans la santé : j'ai cofondé le leader européen du test sanguin.
+                        Des milliers de personnes y ont enfin compris leurs analyses, avec des médecins
+                        et de la tech.
                     </span>
                 </div>
                 <div class="pep-row">
@@ -625,10 +717,6 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                     </span>
                 </div>
             </div>
-            <div class="pep-callout">
-                <p class="pep-label">À savoir</p>
-                <p>Je ne vends aucun peptide. Aucun partenariat vendeur, aucun code promo, aucune commission.</p>
-            </div>
         </section>
 
         <!-- 3 · LA NEWSLETTER. Avant la mission : l'offre atterrit avant la
@@ -636,11 +724,28 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
         <section class="pep-section">
             <p class="pep-label">La newsletter</p>
             <h2>La newsletter peptides, chaque lundi.</h2>
-            <ol class="pep-what">
-                <li><b>Une étude de la semaine.</b> Ce qu'elle prouve, et ce qu'elle ne prouve pas.</li>
-                <li><b>Un peptide décrypté.</b> Ce qu'il fait, pour qui, ce qu'il coûte.</li>
-                <li><b>Une alerte marché.</b> Un vendeur ou une pratique à connaître avant de commander.</li>
-            </ol>
+            <p class="pep-text">Un seul sujet par email. Celui qui compte cette semaine-là :</p>
+            <!-- Un seul de ces 4 formats par lundi, jamais les 4 : la liste
+                 numerotee promettait un sommaire, ces lignes proposent un menu.
+                 Une promesse intenable se paie au premier numero. -->
+            <div class="pep-rows pep-rows--menu">
+                <div class="pep-row">
+                    <span class="pep-row-t">Une étude décryptée</span>
+                    <span class="pep-row-d">Ce qu'elle prouve, ce qu'elle ne prouve pas, en français normal.</span>
+                </div>
+                <div class="pep-row">
+                    <span class="pep-row-t">Un peptide décrypté</span>
+                    <span class="pep-row-d">Ce qu'il fait, pour qui, ce qu'il coûte.</span>
+                </div>
+                <div class="pep-row">
+                    <span class="pep-row-t">Un guide pour l'utiliser safely</span>
+                    <span class="pep-row-d">Les doses, la durée, ce qu'il faut surveiller.</span>
+                </div>
+                <div class="pep-row">
+                    <span class="pep-row-t">Les prochains événements</span>
+                    <span class="pep-row-d">Où et quand on se voit, et comment s'inscrire.</span>
+                </div>
+            </div>
 
             <div class="pep-inline">
                 <form class="pf" data-subscribe method="POST" action="/api/subscribe?lang=fr-peptides">
@@ -667,18 +772,79 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                     <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
                 </form>
             </div>
+
+            <!-- Le disclaimer atterrit APRES la demande d'email, pas avant.
+                 Place dans « Pourquoi moi » il arrivait alors que personne
+                 n'avait encore rien a decider ; ici il repond a la question que
+                 le visiteur se pose au moment exact ou il hesite a s'inscrire :
+                 qu'est-ce que ce type a a y gagner. -->
+            <div class="pep-callout">
+                <p class="pep-label">À savoir</p>
+                <p>Je ne vends aucun peptide. Aucun partenariat vendeur, aucun code promo, aucune commission.</p>
+            </div>
         </section>
 
-        <!-- 4 · MA MISSION -->
+        <!-- 4 · MA MISSION. Aucun selecteur d'element nu dans sa feuille :
+             `.pep-mission p` battait `.pep-label` en specificite et rendait le
+             label de CETTE section en 16px quasi noir, d'ou la rupture typo. -->
         <section class="pep-section pep-mission">
             <p class="pep-label">Ma mission</p>
-            <h2 style="margin-bottom: var(--sp-12);">Cartographier les peptides.</h2>
-            <p><span class="mark">Molécule par molécule.</span></p>
-            <p class="dim">Je publie au fur et à mesure, sans attendre d'avoir la réponse complète.</p>
-            <p><span class="mark">Et je ne veux pas le faire seul.</span></p>
-            <p class="dim">
-                On est 1 000 à explorer en même temps. On se retrouvera aussi <span class="mark">en vrai</span>.
+            <h2>Permettre à n'importe qui de comprendre ce que sont les peptides.</h2>
+
+            <img
+                class="pep-mission-img"
+                src="/health-journey/mission-peptides.jpg"
+                alt="Des mains en blouse de laboratoire pesant une poudre au-dessus d'une balance de précision, entourées de béchers et d'une feuille de pesées."
+                width="736"
+                height="920"
+                loading="lazy"
+                decoding="async"
+            />
+
+            <p class="pep-mission-lead">
+                Les peptides sont une évolution majeure pour la biologie humaine.
+                Mais ils doivent s'utiliser dans un nouveau modèle de médecine :
+                préventif, personnalisé, et piloté par l'individu.
             </p>
+
+            <div class="pep-cards">
+                <div class="pep-card">
+                    <p class="pep-card-t">Agir proactivement</p>
+                    <p class="pep-card-d">
+                        Car la société n'a aucun intérêt à financer la longévité
+                        et des bienfaits qui ne se voient que dans dix ans.
+                    </p>
+                </div>
+                <div class="pep-card">
+                    <p class="pep-card-t">Personnaliser</p>
+                    <p class="pep-card-d">
+                        Car chacun a un mode de vie et une biologie différents.
+                        Ce qui marche sur moi ne marche pas forcément sur vous.
+                    </p>
+                </div>
+                <div class="pep-card">
+                    <p class="pep-card-t">Décider soi-même</p>
+                    <p class="pep-card-d">
+                        Pour prendre soin de sa propre santé, au lieu d'attendre
+                        que quelqu'un décide à votre place.
+                    </p>
+                </div>
+            </div>
+
+            <p class="pep-mission-line">
+                Je remets <span class="mark">la vérité sur ce qui est du bullshit</span> et ce qui ne l'est pas.
+            </p>
+            <p class="pep-mission-dim">En me basant sur la science et les revues de littérature.</p>
+
+            <p class="pep-mission-line">
+                J'utilise <span class="mark">des mots simples</span> pour expliquer des concepts poussés.
+            </p>
+            <p class="pep-mission-dim">Compréhensibles par n'importe qui, sans aucun bagage scientifique.</p>
+
+            <p class="pep-mission-line">Et je partage tout à ma communauté, librement.</p>
+            <p class="pep-mission-dim">Pour qu'elle prenne des décisions éclairées sur sa santé.</p>
+
+            <p class="pep-mission-line">On est déjà plus de 1 000, et le mouvement ne fait que grandir.</p>
         </section>
 
         <!-- 5 · LE GUIDE, EN CLÔTURE. Le lien entre les deux offres n'est dit
