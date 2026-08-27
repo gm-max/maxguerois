@@ -32,7 +32,7 @@ export const GET: APIRoute = async () => {
     // article, donc elle annoncait un lastmod du 16 juillet alors qu'elle a ete
     // creee le 26 aout : un mauvais signal de fraicheur sur la seule page qu'on
     // cherche a faire indexer.
-    urls.push({ loc: `${SITE}/fr/peptides`, lastmod: PEPTIDES_DATE, priority: '0.9' });
+    urls.push({ loc: `${SITE}/peptides`, lastmod: PEPTIDES_DATE, priority: '0.9' });
     for (const e of fr) urls.push({ loc: `${SITE}/fr/newsletter/${e.data.slug}`, lastmod: e.data.date, priority: '0.7' });
     urls.push({ loc: `${SITE}/fr/newsletter/lucis-chapter`, lastmod: LUCIS_DATE, priority: '0.7' });
 

@@ -605,7 +605,7 @@ describe('reply', () => {
       { json: false, accept: 'text/html', endpoint: `${ENDPOINT}?lang=fr-peptides` },
     );
     expect(res.status).toBe(303);
-    expect(res.headers.get('location')).toBe(`${ORIGIN}/fr/peptides?ok=1`);
+    expect(res.headers.get('location')).toBe(`${ORIGIN}/peptides?ok=1`);
   });
 
   it('carries the error code back to fr-peptides too', async () => {
@@ -613,7 +613,7 @@ describe('reply', () => {
       { email: 'nope' },
       { json: false, accept: 'text/html', endpoint: `${ENDPOINT}?lang=fr-peptides` },
     );
-    expect(res.headers.get('location')).toBe(`${ORIGIN}/fr/peptides?error=invalid_email`);
+    expect(res.headers.get('location')).toBe(`${ORIGIN}/peptides?error=invalid_email`);
   });
 
   it('carries the error code back on a rejected submission', async () => {
@@ -672,7 +672,10 @@ describe('no-JS return path', () => {
         { json: false, accept: 'text/html', endpoint: `${ENDPOINT}?lang=${lang}` },
       );
       const path = new URL(res.headers.get('location')!).pathname;
-      expect(['/fr/merci', '/thanks', '/fr/peptides']).toContain(path);
+      // /peptides et non /fr/peptides : la landing a quitte le miroir FR le
+      // 27/08. Elle reste rendue a la demande, donc elle satisfait toujours
+      // l'invariant que ce test protege.
+      expect(['/fr/merci', '/thanks', '/peptides']).toContain(path);
     }
   });
 });

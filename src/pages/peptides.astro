@@ -17,7 +17,7 @@
  * 3. La photo sort de `.container`, sinon elle hérite de 24px de gouttière et
  *    cesse d'être un bandeau (audit padding du 26/08).
  */
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 /**
@@ -83,11 +83,13 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
 <Layout
     title="Newsletter peptides — Max Guerois"
     description="Chaque lundi : ce qui est prouvé sur les peptides, ce qui ne l'est pas, et ce que le marché raconte à côté. Par Max Guerois, entrepreneur, qui teste sur sa propre santé."
-    ogUrl="https://maxguerois.com/fr/peptides"
+    ogUrl="https://maxguerois.com/peptides"
     ogImage={`https://maxguerois.com${HERO}`}
     ogImageAlt="Max Guerois"
     locale={locale}
     emailModal={false}
+    standalone
+
 >
 
 <style>
@@ -395,8 +397,11 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
     }
     .pf-row { display: flex; flex-direction: column; gap: var(--sp-2); }
     @media (min-width: 601px) {
-        .pf-row { flex-direction: row; max-width: 480px; }
-        .pf-row input { flex: 1; min-width: 0; }
+        /* 560 et non 480 : avec le libelle raccourci le bouton fait ~215px, il
+           reste donc ~337px au champ. L'email est ce qu'on demande, il doit etre
+           l'element le plus large de la rangee. Avant : champ 181, bouton 291. */
+        .pf-row { flex-direction: row; max-width: 560px; }
+        .pf-row input { flex: 1 1 auto; min-width: 0; }
     }
     .pf-row input {
         width: 100%;
@@ -414,6 +419,10 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
     .pf-row input[aria-invalid='true'] { border-color: var(--accent); }
     .pf-row button {
         height: 48px;
+        /* Le bouton ne se comprime pas : son libelle est en `nowrap`, le
+           reduire le ferait deborder de sa propre boite. C'est le CHAMP qui
+           absorbe la variation de largeur. */
+        flex-shrink: 0;
         padding: 0 22px;
         font-family: var(--font-body);
         font-size: var(--t-body);
@@ -514,6 +523,11 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
        que le bouton est en `nowrap` et prenait 291px. Mesure en production. */
     .pg .pf-row { flex-direction: column; max-width: none; }
     .pg .pf-row button { width: 100%; }
+    /* En colonne, la main axis est la HAUTEUR. La regle desktop `flex: 1 1 auto`
+       s'applique encore ici et donne au champ une base de 0 : mesure, 23px de
+       haut contre 48 pour le bouton. `flex: 0 0 48px` le rend non flexible sur
+       cet axe, quelle que soit la regle heritee. */
+    .pg .pf-row input { flex: 0 0 48px; }
     @keyframes pg-rise { from { opacity: 0; transform: translateY(12px); } }
     .pg-close {
         position: absolute;
@@ -583,7 +597,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                             placeholder="votre@email.com"
                             aria-describedby="pf-hero-err"
                         />
-                        <button type="submit">S'inscrire à la newsletter du lundi</button>
+                        <button type="submit">S'inscrire à la newsletter</button>
                     </div>
                     <p class="pf-err" role="alert" id="pf-hero-err" hidden={!submitError}>{submitError}</p>
                     <!-- Cadence et preuve vivent ICI et nulle part ailleurs dans
@@ -653,7 +667,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                             placeholder="votre@email.com"
                             aria-describedby="pf-mid-err"
                         />
-                        <button type="submit">S'inscrire à la newsletter du lundi</button>
+                        <button type="submit">S'inscrire à la newsletter</button>
                     </div>
                     <p class="pf-err" role="alert" id="pf-mid-err" hidden></p>
                     <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
@@ -699,7 +713,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                         placeholder="votre@email.com"
                         aria-describedby="pf-end-err"
                     />
-                    <button type="submit">S'inscrire à la newsletter du lundi</button>
+                    <button type="submit">S'inscrire à la newsletter</button>
                 </div>
                 <p class="pf-err" role="alert" id="pf-end-err" hidden></p>
                 <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
@@ -750,7 +764,7 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
                         placeholder="votre@email.com"
                         aria-describedby="pf-modal-err"
                     />
-                    <button type="submit">S'inscrire à la newsletter du lundi</button>
+                    <button type="submit">S'inscrire à la newsletter</button>
                 </div>
                 <p class="pf-err" role="alert" id="pf-modal-err" hidden></p>
                 <p class="pf-micro">Gratuit. Désinscription en un clic.</p>

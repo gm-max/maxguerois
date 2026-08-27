@@ -4,37 +4,147 @@
   "framework": null,
   "cleanUrls": true,
   "redirects": [
-    { "source": "/:path*", "has": [{ "type": "host", "value": "www.maxguerois.com" }], "destination": "https://maxguerois.com/:path*", "permanent": true },
-    { "source": "/health-os", "destination": "/newsletter/health-os", "permanent": true },
-    { "source": "/my-genome", "destination": "/newsletter/my-genome", "permanent": true },
-    { "source": "/lucis-chapter", "destination": "/newsletter/lucis-chapter", "permanent": true },
-    { "source": "/experiments/sleep", "destination": "/newsletter/sleep", "permanent": true },
-    { "source": "/experiments/testosterone", "destination": "/newsletter/testosterone", "permanent": true },
-    { "source": "/experiments/supplements", "destination": "/newsletter/supplements", "permanent": true },
-    { "source": "/experiments/max-biomarkers", "destination": "/newsletter/max-biomarkers", "permanent": true },
-    { "source": "/sleep", "destination": "/newsletter/sleep", "permanent": true },
-    { "source": "/testosterone", "destination": "/newsletter/testosterone", "permanent": true },
-    { "source": "/supplements", "destination": "/newsletter/supplements", "permanent": true },
-    { "source": "/max-biomarkers", "destination": "/newsletter/max-biomarkers", "permanent": true },
-    { "source": "/experiments", "destination": "/newsletter", "permanent": true },
-    { "source": "/fr/health-os", "destination": "/fr/newsletter/health-os", "permanent": true },
-    { "source": "/fr/my-genome", "destination": "/fr/newsletter/my-genome", "permanent": true },
-    { "source": "/fr/lucis-chapter", "destination": "/fr/newsletter/lucis-chapter", "permanent": true },
-    { "source": "/fr/experiments/sleep", "destination": "/fr/newsletter/sleep", "permanent": true },
-    { "source": "/fr/experiments/testosterone", "destination": "/fr/newsletter/testosterone", "permanent": true },
-    { "source": "/fr/experiments/supplements", "destination": "/fr/newsletter/supplements", "permanent": true },
-    { "source": "/fr/experiments/max-biomarkers", "destination": "/fr/newsletter/max-biomarkers", "permanent": true },
-    { "source": "/fr/experiments", "destination": "/fr/newsletter", "permanent": true }
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.maxguerois.com"
+        }
+      ],
+      "destination": "https://maxguerois.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/fr/peptides",
+      "destination": "/peptides",
+      "permanent": true
+    },
+    {
+      "source": "/health-os",
+      "destination": "/newsletter/health-os",
+      "permanent": true
+    },
+    {
+      "source": "/my-genome",
+      "destination": "/newsletter/my-genome",
+      "permanent": true
+    },
+    {
+      "source": "/lucis-chapter",
+      "destination": "/newsletter/lucis-chapter",
+      "permanent": true
+    },
+    {
+      "source": "/experiments/sleep",
+      "destination": "/newsletter/sleep",
+      "permanent": true
+    },
+    {
+      "source": "/experiments/testosterone",
+      "destination": "/newsletter/testosterone",
+      "permanent": true
+    },
+    {
+      "source": "/experiments/supplements",
+      "destination": "/newsletter/supplements",
+      "permanent": true
+    },
+    {
+      "source": "/experiments/max-biomarkers",
+      "destination": "/newsletter/max-biomarkers",
+      "permanent": true
+    },
+    {
+      "source": "/sleep",
+      "destination": "/newsletter/sleep",
+      "permanent": true
+    },
+    {
+      "source": "/testosterone",
+      "destination": "/newsletter/testosterone",
+      "permanent": true
+    },
+    {
+      "source": "/supplements",
+      "destination": "/newsletter/supplements",
+      "permanent": true
+    },
+    {
+      "source": "/max-biomarkers",
+      "destination": "/newsletter/max-biomarkers",
+      "permanent": true
+    },
+    {
+      "source": "/experiments",
+      "destination": "/newsletter",
+      "permanent": true
+    },
+    {
+      "source": "/fr/health-os",
+      "destination": "/fr/newsletter/health-os",
+      "permanent": true
+    },
+    {
+      "source": "/fr/my-genome",
+      "destination": "/fr/newsletter/my-genome",
+      "permanent": true
+    },
+    {
+      "source": "/fr/lucis-chapter",
+      "destination": "/fr/newsletter/lucis-chapter",
+      "permanent": true
+    },
+    {
+      "source": "/fr/experiments/sleep",
+      "destination": "/fr/newsletter/sleep",
+      "permanent": true
+    },
+    {
+      "source": "/fr/experiments/testosterone",
+      "destination": "/fr/newsletter/testosterone",
+      "permanent": true
+    },
+    {
+      "source": "/fr/experiments/supplements",
+      "destination": "/fr/newsletter/supplements",
+      "permanent": true
+    },
+    {
+      "source": "/fr/experiments/max-biomarkers",
+      "destination": "/fr/newsletter/max-biomarkers",
+      "permanent": true
+    },
+    {
+      "source": "/fr/experiments",
+      "destination": "/fr/newsletter",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://platform.twitter.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google.com https://*.gstatic.com; frame-src 'none'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; object-src 'none'; base-uri 'self'; form-action 'self';" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://platform.twitter.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google.com https://*.gstatic.com; frame-src 'none'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; object-src 'none'; base-uri 'self'; form-action 'self';"
+        }
       ]
     }
   ]

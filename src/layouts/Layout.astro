@@ -24,6 +24,18 @@ interface Props {
     emailModal?: boolean;
     hideFooter?: boolean;
     noindex?: boolean;
+    /**
+     * Page hors du miroir FR/EN.
+     *
+     * Le site est un miroir : chaque page anglaise a sa jumelle sous /fr. Deux
+     * mecanismes en dependent, et tous deux se trompent sur une page qui n'a pas
+     * de jumelle : les liens hreflang annoncent une alternative qui n'existe pas,
+     * et le script de redirection de langue renvoie un visiteur au navigateur
+     * francais de /page vers /fr/page. Sur une landing francaise servie a /page,
+     * ce dernier provoque un aller-retour parasite au premier affichage, pour
+     * exactement le public vise.
+     */
+    standalone?: boolean;
 }
 
 const {
@@ -43,6 +55,7 @@ const {
     locale = 'en',
     hideFooter = false,
     noindex = false,
+    standalone = false,
     emailModal = true,
 } = Astro.props;
 
@@ -60,7 +73,7 @@ const frUrl = getAbsoluteUrl(frenchPath, 'fr');
 const showEmailModal = emailModal;
 ---
 <!DOCTYPE html>
-<html lang={locale}>
+<html lang={locale} data-standalone={standalone ? '' : undefined}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,10 +81,16 @@ const showEmailModal = emailModal;
     {description && <meta name="description" content={description}>}
     {noindex && <meta name="robots" content="noindex, follow">}
 
-    <!-- Hreflang — SEO alternate language links -->
+    <!-- Hreflang — SEO alternate language links. Supprimes sur une page
+         standalone : annoncer une alternative qui n'existe pas est un signal
+         faux, pas un signal absent. -->
+    {!standalone && (
+    <>
     <link rel="alternate" hreflang="en" href={enUrl}>
     <link rel="alternate" hreflang="fr" href={frUrl}>
     <link rel="alternate" hreflang="x-default" href={enUrl}>
+    </>
+    )}
 
     <!-- Dark mode — runs before first paint to avoid flash -->
     <script is:inline>
@@ -96,6 +115,8 @@ const showEmailModal = emailModal;
                 if (/bot|crawl|spider|slurp|Googlebot|bingbot|GPTBot|ClaudeBot|PerplexityBot|Google-Extended|facebookexternalhit|embedly/i.test(ua)) return;
                 // Only run on English pages (no /fr/ prefix)
                 if (window.location.pathname.startsWith('/fr')) return;
+                // Pages hors miroir : pas de jumelle a rejoindre.
+                if (document.documentElement.hasAttribute('data-standalone')) return;
                 // Respect stored language preference
                 var pref = localStorage.getItem('lang-preference');
                 if (pref) return;

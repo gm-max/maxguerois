@@ -51,7 +51,7 @@ ${articleLines}
 
 ## Peptides, in French
 
-- [Newsletter peptides](${SITE}/fr/peptides): A French weekly newsletter about peptides, sent every Monday. One study of the week and what it does and does not prove, one peptide explained, and one market warning about a vendor or a practice. Written by Max, who tests on himself, sells no peptides and takes no vendor commission.
+- [Newsletter peptides](${SITE}/peptides): A French weekly newsletter about peptides, sent every Monday. One study of the week and what it does and does not prove, one peptide explained, and one market warning about a vendor or a practice. Written by Max, who tests on himself, sells no peptides and takes no vendor commission.
 
 ## Francais
 
