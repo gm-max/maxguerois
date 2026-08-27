@@ -66,7 +66,7 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 - **Scale (px):** 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 80 · 120
 - **CSS Tokens:** `--sp-1: 4px` · `--sp-2: 8px` · `--sp-3: 12px` · `--sp-4: 16px` · `--sp-6: 24px` · `--sp-8: 32px` · `--sp-12: 48px` · `--sp-16: 64px` · `--sp-20: 80px` · `--sp-30: 120px`
 - **Section gap:** 80px (`--sp-20`) between major sections
-- **Container padding:** 80px top/bottom, 24px (`--sp-6`) horizontal
+- **Container padding:** 80px top, **120px bottom** (`--sp-30`), 24px (`--sp-6`) horizontal. Measured 2026-08-27; this line previously said "80px top/bottom", which is wrong and cost a wrong diagnosis during a spacing audit
 
 ## Layout
 - **Approach:** Grid-disciplined — strict single column, 620px max-width
@@ -122,6 +122,14 @@ Warm dark (`#0f0e0c`) not cold dark (`#111111`). Keeps the editorial warmth at n
 ### Tags
 - **Default:** `bg-subtle` + `border` + `radius-full`, 11px weight 500
 - **Accent:** `accent-light` bg + `accent-mid` border + accent text
+
+### Newsletter Banner
+- **Where:** `src/components/PeptidesBanner.astro`, mounted full-bleed on `/peptides` above the newsletter section
+- **Box:** `max-width: 1500px`, `aspect-ratio: 1500/660`, `radius-lg`, dark fallback `#0f0e0c`. Under 720px it switches to `4/3` so the title keeps its height when width runs out
+- **Layers:** image, gradient scrim, centred content, all `position: absolute; inset: 0`
+- **Dark:** the block stays dark in BOTH themes; only the border changes. Its whites are hard-coded `#faf9f7`, not tokens, because they are text-on-dark-image colours and must not follow the theme
+- **Full-bleed is load-bearing:** the title is sized in `vw` and the box caps at 1500px. Inside the 620px column those two are incoherent (85px text in a 572px box). Never nest it in `.container`
+- **Images are pre-generated,** not `astro:assets`. `/peptides` is `prerender = false`, so Astro defers to an `/_image` endpoint absent from this project's Vercel output, and the browser would fall back to the 2.1MB source. Variants live in `public/health-journey/nl-peptides-banner-{720,1080,1500}.{avif,webp}` plus a JPEG fallback
 
 ### Callout Box
 - **Style:** border + `radius-lg`, no background fill

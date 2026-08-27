@@ -121,6 +121,43 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
             var copy = COPY[lang];
             var label = button.textContent;
 
+            // Mesure. Les evenements sont prefixes `newsletter_` et NON
+            // `peptides_` : les memes noms melangeraient les deux entonnoirs
+            // dans les tuiles existantes de la landing.
+            //
+            // `$pathname` est pose par PostHog sur chaque evenement, donc la
+            // ventilation par article sort de ces evenements sans propriete
+            // supplementaire.
+            var srcInput = form.querySelector('input[name="source"]');
+            var source = srcInput ? srcInput.value : 'inconnu';
+            var started = false;
+            function track(name, props) {
+                if (window.mgTrack) window.mgTrack(name, props);
+            }
+
+            // Vu, pas seulement rempli. Deux formulaires par article, milieu et
+            // pied : sans ce denominateur celui du pied parait mauvais alors
+            // qu'il est seulement plus bas.
+            if (typeof IntersectionObserver === 'function') {
+                var vu = false;
+                var io = new IntersectionObserver(function (entries) {
+                    if (vu || !entries[0].isIntersecting) return;
+                    vu = true;
+                    io.disconnect();
+                    track('newsletter_form_seen', { source: source });
+                }, { threshold: 0.5 });
+                io.observe(form);
+            }
+
+            // Une seule fois : sans ce verrou, chaque retour du focus dans le
+            // champ compterait comme un nouveau debut de saisie, et l'etape
+            // « commence » depasserait l'etape « vu ».
+            input.addEventListener('focus', function () {
+                if (started) return;
+                started = true;
+                track('newsletter_form_started', { source: source });
+            });
+
             function showError(msg) {
                 err.textContent = msg;
                 err.hidden = false;
@@ -147,6 +184,7 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
                     return;
                 }
                 clearError();
+                track('newsletter_form_submitted', { source: source });
                 button.disabled = true;
                 button.textContent = copy.busy;
                 form.setAttribute('aria-busy', 'true');
@@ -173,6 +211,7 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
                         done.textContent = copy.done;
                         form.parentNode.replaceChild(done, form);
                         done.focus();
+                        track('newsletter_subscribed', { source: source });
                         // Someone who just subscribed must never be shown the popup
                         // asking them to subscribe.
                         try { localStorage.setItem('mg_email_modal_v1', '1'); } catch (e3) {}
@@ -184,6 +223,10 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
                         button.disabled = false;
                         button.textContent = label;
                         form.removeAttribute('aria-busy');
+                        track('newsletter_form_failed', {
+                            source: source,
+                            reason: window.mgReason ? window.mgReason(e2.message) : 'network'
+                        });
                         showError(copy.err[e2.message] || copy.err._);
                     });
             });

@@ -1,0 +1,171 @@
+---
+/**
+ * Bandeau de la newsletter peptides.
+ *
+ * Trois couches empilees : l'image, un voile degrade, le contenu. Le bloc reste
+ * SOMBRE dans les deux themes ; seule la bordure change, parce qu'un fond clair
+ * derriere une image sombre laisse un halo sur les bords arrondis.
+ *
+ * PLEINE LARGEUR, volontairement. Le brief calibre le titre en `5.9vw` et
+ * plafonne la boite a 1500px : ces deux valeurs ne sont coherentes qu'en pleine
+ * largeur. Dans la colonne de 620px du site, 5.9vw vaut 85px sur un ecran de
+ * 1440 pour une boite de 572px de large et 252px de haut, soit trois lignes de
+ * 89px dans 252px. Le composant est donc pose HORS du `.container`.
+ */
+interface Props {
+    /** `h2` par defaut : la page porte deja un `h1` dans son heros. */
+    as?: 'h1' | 'h2';
+}
+const { as: Title = 'h2' } = Astro.props;
+---
+
+<div class="nlb">
+    {/*
+      Variantes PRE-GENEREES, pas `<Picture>` d'astro:assets.
+      Cette page est en `prerender = false`, donc Astro n'optimise pas a la
+      construction : il differe a un endpoint `/_image` qui n'existe pas dans la
+      sortie Vercel de ce projet. Verifie : le build n'emettait que le PNG
+      source de 2,1 Mo, et c'est lui que le navigateur aurait telecharge sur la
+      page de conversion.
+      Les fichiers sont donc generes une fois avec sharp (66 Ko en AVIF a
+      1500px, 81 Ko en WebP, contre une cible de 250 Ko) et servis tels quels,
+      exactement comme les autres images du site dans public/health-journey.
+      `alt` vide : decorative. Le titre juste au-dessus dit deja tout, un
+      lecteur d'ecran n'a rien a gagner a une description du decor.
+    */}
+    <picture>
+        <source
+            type="image/avif"
+            srcset="/health-journey/nl-peptides-banner-720.avif 720w,
+                    /health-journey/nl-peptides-banner-1080.avif 1080w,
+                    /health-journey/nl-peptides-banner-1500.avif 1500w"
+            sizes="(min-width: 1548px) 1500px, calc(100vw - 48px)"
+        />
+        <source
+            type="image/webp"
+            srcset="/health-journey/nl-peptides-banner-720.webp 720w,
+                    /health-journey/nl-peptides-banner-1080.webp 1080w,
+                    /health-journey/nl-peptides-banner-1500.webp 1500w"
+            sizes="(min-width: 1548px) 1500px, calc(100vw - 48px)"
+        />
+        <img
+            class="nlb-img"
+            src="/health-journey/nl-peptides-banner-1500.jpg"
+            alt=""
+            width="1500"
+            height="1000"
+            loading="eager"
+            fetchpriority="high"
+        />
+    </picture>
+    <div class="nlb-scrim"></div>
+    <div class="nlb-body">
+        <Title class="nlb-title">La Newsletter <em>Peptides</em></Title>
+        <div class="nlb-rule"></div>
+        <p class="nlb-by">by @maxguerois</p>
+    </div>
+</div>
+
+<style>
+    .nlb {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        max-width: 1500px;
+        margin: 0 auto;
+        aspect-ratio: 1500 / 660;
+        border-radius: var(--radius-lg);
+        /* Repli sous l'image, le temps qu'elle arrive. Valeur du brief, qui est
+           aussi celle du fond sombre du site. */
+        background: #0f0e0c;
+        border: 1px solid var(--border);
+    }
+    /* Le bloc reste sombre en theme clair comme en sombre : seule la bordure
+       change, sinon elle disparait sur le fond sombre. */
+    :global([data-theme='dark']) .nlb { border-color: rgba(250, 249, 247, 0.10); }
+
+    /* Sous 720px, le format large rendrait le titre illisible : 4/3 lui redonne
+       de la hauteur au moment ou la largeur manque. */
+    @media (max-width: 719px) { .nlb { aspect-ratio: 4 / 3; } }
+
+    /* `<picture>` est un element a part entiere qui s'intercale entre .nlb et
+       l'img : sans lui dans cette liste, l'image sortait du positionnement
+       absolu et revenait dans le flux. */
+    .nlb picture,
+    .nlb-scrim,
+    .nlb-body { position: absolute; inset: 0; }
+
+    /* `object-position` a 72% : le cadrage privilegie le bas de la source, la
+       ou le sol et les coussins se lisent. Ne pas y toucher, c'est un choix de
+       cadrage et non un reglage. */
+    /* `display: block` n'est pas cosmetique : une image en `inline` s'assoit sur
+       la ligne de base et laisse quelques pixels sous elle, que `overflow:
+       hidden` masque mais qui font depasser le contenu de la boite. */
+    .nlb-img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 72%;
+    }
+
+    .nlb-scrim {
+        background: linear-gradient(
+            180deg,
+            rgba(15, 14, 12, 0.34) 0%,
+            rgba(15, 14, 12, 0.10) 38%,
+            rgba(15, 14, 12, 0.42) 100%
+        );
+    }
+
+    .nlb-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        /* Paliers DISCRETS et non `clamp`, pour l'espacement.
+           Une echelle discrete et une interpolation fluide sont incompatibles :
+           `clamp(12px, 1.6vw, 24px)` calcule 23,04px a 1440 parce que le terme
+           fluide passe SOUS le plafond, et toute largeur intermediaire tombe
+           entre deux pas. Mesure faite. Le brief plafonnait d'ailleurs a 22px,
+           valeur que le journal de DESIGN.md a retiree du site le 2026-08-26
+           comme hors echelle.
+           La TAILLE DU TITRE reste fluide plus bas : la typographie n'est pas
+           sur cette echelle-la, et du type fluide est un choix normal. */
+        gap: var(--sp-3);
+        text-align: center;
+        padding: 0 var(--sp-6);
+    }
+
+    .nlb-title {
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: clamp(32px, 5.9vw, 88px);
+        line-height: 1.05;
+        letter-spacing: -0.01em;
+        /* Blanc du brief, en dur : c'est la couleur du texte SUR une image
+           sombre, pas la couleur de texte du theme. Un jeton bougerait avec le
+           theme alors que ce bloc reste sombre dans les deux. */
+        color: #faf9f7;
+        text-wrap: balance;
+        margin: 0;
+    }
+    /* Meme blanc que le titre : l'italique porte l'accent, pas la couleur. */
+    .nlb-title em { font-style: italic; color: #faf9f7; }
+
+    @media (min-width: 601px) {
+        .nlb-body { gap: var(--sp-6); padding: 0 var(--sp-12); }
+    }
+
+    .nlb-rule { width: 56px; height: 1px; background: rgba(250, 249, 247, 0.42); }
+
+    .nlb-by {
+        font-family: var(--font-body);
+        font-weight: 400;
+        /* 16px est un pas reel de la gamme ; 17px n'en etait pas un. */
+        font-size: var(--t-body);
+        line-height: 1.6;
+        color: rgba(250, 249, 247, 0.86);
+        margin: 0;
+    }
+</style>

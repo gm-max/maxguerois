@@ -51,3 +51,49 @@ dépasse 24 h. Hors chemin critique, donc sans coût pour les visiteurs.
 le même défaut. La même tâche planifiée peut couvrir les deux.
 
 **Dépend de :** rien.
+
+## P5 — Test A/B de la pop-up guide (en attente de volume)
+**Statut :** capture le 2026-08-27 lors de `/plan-eng-review` sur `feat/posthog`.
+**Declencheur chiffre :** quand `/peptides` depasse ~2 000 visites par mois, soit
+une fois le trafic Instagram installe. Avant ce seuil, un test sur un taux de
+conversion de quelques pour cent ne conclura pas avant des mois.
+
+**Le probleme :** la tuile « La pop-up gagne-t-elle sa place » compare affichages
+et refus, mais la pop-up apparait a TOUT LE MONDE a la 8e seconde. Sans groupe
+temoin, on mesure le derangement, jamais l'effet : rien ne dit si les gens qui
+s'inscrivent par elle se seraient inscrits autrement.
+
+**Ce qu'il faut faire :** un feature flag PostHog qui n'affiche la pop-up qu'a une
+visite sur deux, puis comparer les inscriptions TOTALES (tous formulaires
+confondus) entre les deux groupes — pas seulement celles venues de la pop-up.
+
+**Detail qui compte :** la persistance PostHog est en memoire, donc la
+randomisation se fera par VISITE et non par personne. C'est la bonne unite pour
+la question posee.
+
+**Ou :** la pop-up est dans `src/components/PeptidesLanding.astro`, minuteur de
+8 s, une fois par visiteur via `localStorage` `mg_peptides_guide_v1`.
+
+## P6 — Sortir maxguerois.com du projet PostHog partage
+**Statut :** capture le 2026-08-27. Constate par une revue Codex.
+**A faire tot plutot que tard :** la migration est quasi gratuite tant que le
+projet ne contient presque aucune donnee maxguerois. Elle se paie en donnees
+abandonnees a mesure que l'historique s'accumule.
+
+**Le probleme :** le plan gratuit de PostHog n'autorise qu'un projet par
+organisation, et les deux organisations existantes ont deja le leur. Donc
+maxguerois.com ecrit dans le projet d'Ouros Health (`252123`), et chaque tuile
+des deux cotes doit porter un filtre de provenance.
+
+**Ce qu'il faut faire :** creer une TROISIEME organisation PostHog. C'est gratuit,
+seuls les projets supplementaires sont payants — c'est la confusion qui a mene au
+partage.
+
+**Ce n'est PAS un simple changement de cle**, contrairement a ce que la premiere
+version de `docs/analytics.md` affirmait. A recreer dans le nouveau projet :
+- les deux tableaux de bord (`918448` Peptides, 5 tuiles ; `918449` Site, 4 tuiles)
+- les definitions de proprietes et le rejeu de session
+- puis remettre `test_account_filters` d'Ouros a sa valeur d'origine
+  (`localhost|127.0.0.1|vercel.app`, sans `|maxguerois`)
+
+**Cote depot :** une seule ligne, `POSTHOG_KEY` dans `src/lib/analytics.ts`.
