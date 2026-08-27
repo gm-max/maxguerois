@@ -67,7 +67,22 @@ public/                         ← static assets (images, favicons)
 GA4 ID: `G-DR1W1B2VV5` — defined once in Layout.astro
 
 ## Newsletter
-Beehiiv embed — placed at bottom of homepage, /experiments page, and every article footer.
+Own stack since 2026-08-26. beehiiv is gone: no embed, no iframe, no beehiiv host in the CSP.
+
+- **Capture:** `NewsletterEmbed.astro`, a native same-origin `<form>` posting to
+  `/api/subscribe` (the site's only non-prerendered route). Placed at the bottom of both
+  homepages, both newsletter indexes, every article footer, and inside `SubscribeModal`.
+- **Source of truth:** Supabase `mg_subscribers`. A signup is never lost to a send failure;
+  the route records `sync_error` and still answers 200.
+- **Sending:** Resend. The welcome email's HTML is authored in `src/lib/welcome-email.ts`,
+  then published to Resend template `e9a1310c` — the route sends by template ID, so editing
+  the file alone changes nothing until the template is republished. The SUBJECT, by contrast,
+  lives in the code and does need a deploy.
+- **Sender:** `hi@maxguerois.com`. Not `bonjour@`, which is not routed by Cloudflare Email
+  Routing (a probe to it bounced on 2026-08-27) while the mail invites people to reply.
+- **Unsubscribe:** `/api/unsubscribe`, HMAC-signed links, plus the `List-Unsubscribe` pair
+  Gmail and Yahoo require of bulk senders.
+- **Tests:** `test/api/subscribe.test.ts`, 76 tests, `npm test`.
 
 ## Adding a new article
 1. Create `src/content/experiments/new-slug.json` with schema fields (title, tagline, category, date, slug, ogImage). `slug` is the bare name (e.g. `sleep`), no folder prefix.
@@ -79,7 +94,8 @@ Beehiiv embed — placed at bottom of homepage, /experiments page, and every art
 - HTTP headers: `vercel.json` sets CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
 - CSP `img-src` includes `https://*.gstatic.com` for Google favicon redirects used by the homepage “Ask AI” icons.
 - **External images:** `npm run build` runs `scripts/check-csp-img-src.mjs`, which fails if any `<img src="https://...">` in `src/**/*.astro` uses a host not listed in `img-src`. Prefer assets under `public/` to avoid widening CSP. GitHub Actions runs the same `npm run build` on PRs and `main`.
-- Beehiiv iframe: sandboxed with `allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation` (subscribe flows may open popups or navigate the top window after submit)
+- No third-party frames: the newsletter form is same-origin, so the CSP carries
+  `frame-src 'none'` and `form-action 'self'`. Do not widen either to re-admit an embed.
 - Security contact: `public/.well-known/security.txt`
 
 ## Prompt/LLM changes
