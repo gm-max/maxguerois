@@ -116,66 +116,16 @@ import PeptidesBanner from './PeptidesBanner.astro';
        l'écran est large, pire c'est. Des colonnes bornent le problème au lieu
        de le repousser. */
     .pep-hero { margin-top: var(--pep-nav-h); }
+    /* Le texte et la photo se suivent desormais : il leur faut une respiration
+       que la disposition en colonnes rendait inutile. */
+    .pep-hero-img { margin-top: var(--sp-8); }
     .pep-hero-body { padding: var(--sp-6) var(--sp-6) 0; }
-    @media (min-width: 1280px) {
-        /* La grille n'est PAS centree, elle est ancree sur le bord gauche de
-           `.container`. Centrer une grille large et centrer une colonne de
-           620px ne peuvent pas partager un bord gauche : mesure avant
-           correction, 230px de derive entre le texte du heros et le label de
-           la premiere section. Deux systemes d'alignement sur une meme page se
-           voient immediatement.
-           Ici la colonne de texte fait exactement --content-width et demarre au
-           meme x que tout le reste ; l'image occupe ce qui reste et file
-           jusqu'au bord droit. */
-        .pep-hero {
-            display: grid;
-            /* `.container` est en border-box : sa boite fait --content-width
-               mais son CONTENU commence 24px plus a droite. La colonne de texte
-               reprend donc la largeur de contenu, pas la largeur de boite, et
-               le padding gauche ajoute les memes 24px. Sans ce detail il reste
-               24px de derive, mesurables. */
-            grid-template-columns: calc(var(--content-width) - var(--sp-6) * 2) 1fr;
-            gap: var(--sp-12);
-            /* `stretch`, pas `center`. Avec `center`, l'image imposait sa propre
-               hauteur via son aspect-ratio et debordait du bloc texte des deux
-               cotes : mesure a 1440x900, texte 322px, image 483px, donc 80px de
-               debordement en haut ET en bas. La photo flottait au lieu de faire
-               bloc avec le texte, et laissait un vide mort a gauche sous la
-               micro-ligne. */
-            align-items: stretch;
-            /* Plancher sur la RANGEE, pas sur le conteneur. Pose sur
-               `.pep-hero`, les 48px de padding haut le mangeaient et la rangee
-               ne gagnait que 10px : mesure, 332px au lieu des 380 demandes.
-               Le bloc texte seul fait ~322px ; sans ce plancher la photo
-               tombait a sa hauteur et perdait toute presence. */
-            grid-template-rows: minmax(420px, auto);
-            padding: var(--sp-12) 0 0
-                calc((100% - var(--content-width)) / 2 + var(--sp-6));
-        }
-        .pep-hero-body { order: 1; padding: 0; }
-        /* Selecteur descendant volontaire : la regle de base .pep-hero-img est
-           declaree PLUS BAS dans cette feuille, donc a specificite egale elle
-           gagnerait et le ratio resterait 3/2. Mesure : image 400x267 au lieu
-           de 400x500. */
-        .pep-hero .pep-hero-img {
-            order: 2;
-            /* La hauteur vient de la RANGEE, plus de l'image. C'est ce qui
-               supprime le debordement de 80px mesure en haut et en bas. */
-            aspect-ratio: auto;
-            height: 100%;
-            width: 100%;
-            min-height: 0;
-            object-position: 42% 22%;
-            /* Plafond de LARGEUR, collee au bord droit. Sans lui, sur un 1920
-               la colonne restante fait 626px et la photo devient un
-               panoramique. `justify-self: end` la garde au bord de l'ecran,
-               donc le vide eventuel tombe ENTRE le texte et elle, jamais
-               apres elle. */
-            max-width: 520px;
-            justify-self: end;
-            border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-        }
-    }
+    /* Plus de grille deux colonnes au-dessus de 1280.
+       Elle produisait une boite dont le rapport derivait avec la fenetre, de
+       0,73 a 1,24, sans jamais coincider avec le 1,50 de la photo : mesure,
+       51% de l'image jetee a 1280. Un panneau pleine hauteur qui deborde a
+       droite demande une source portrait, la photo est paysage. Le bandeau la
+       montre entiere. */
 
     /* aspect-ratio + width/height sur la balise : la place est réservée avant
        le chargement, donc aucun décalage de mise en page. */
@@ -201,14 +151,28 @@ import PeptidesBanner from './PeptidesBanner.astro';
        largeur/2 - 334, soit 166px sur un ecran de 1000. Un ruban vertical.
        Le plafond de hauteur n'est pas cosmetique : en 1000x800 sans lui,
        l'image faisait 667px et le bouton tombait a y=981, sous le pli. */
-    @media (min-width: 601px) and (max-width: 1279px) {
-        /* Le plafond recadre fort dans la hauteur : sur un 3/2 ramene a 2.9/1,
-           327px de source disparaissent. A 40% en Y, le haut du crane etait
-           coupe. 10% garde le visage entier. */
+    /* Plus de plafond haut : la regle vaut pour TOUTE largeur au-dessus de
+       601px. Bornee a 1279 elle laissait les grands ecrans retomber sur la
+       regle de base, donc pleine fenetre : un 3/2 sur un 1512 fait 1008px de
+       haut et enterre le formulaire. */
+    @media (min-width: 601px) {
+        /* Le plafond de hauteur precedent ramenait le 3/2 de la source a 2,65
+           mesure a 900px de large : 43% de la photo jetee. Il a disparu avec
+           lui. L'image garde son rapport natif et se cale sur la colonne de
+           texte, comme tout le reste de la page.
+           Elle ne s'etale plus sur toute la fenetre : en pleine largeur sur un
+           1512, un 3/2 ferait 1008px de haut et pousserait tout sous la ligne
+           de flottaison. */
         .pep-hero-img {
-            aspect-ratio: 2 / 1;
-            max-height: 340px;
-            object-position: 38% 10%;
+            /* Largeur de CONTENU et non de boite. `.pep-hero-body` est en
+               border-box a 620px avec 24px de padding, donc son texte commence
+               24px plus a droite : cale sur 620, l'image debordait de 24px a
+               gauche du texte qu'elle accompagne. Meme piege que sur le
+               bandeau. */
+            max-width: calc(var(--content-width) - var(--sp-6) * 2);
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: var(--radius-sm);
         }
         /* Le texte du heros doit rester sur le meme axe que les sections en
            dessous. Sans ca, entre 601 et 1279px il commencait a 24px du bord
@@ -650,15 +614,6 @@ import PeptidesBanner from './PeptidesBanner.astro';
     <!-- 1 · HÉROS. L'image est HORS .container, sinon elle hérite de 24px de
          gouttière et devient une vignette au lieu d'un bandeau. -->
     <section class="pep-hero">
-        <img
-            class="pep-hero-img"
-            src={HERO}
-            alt="Max Guerois, en conversation"
-            width="1100"
-            height="733"
-            fetchpriority="high"
-            decoding="async"
-        />
         <div class="pep-hero-body">
             <p class="pep-eyebrow">Max Guerois · <b>Newsletter peptides</b></p>
             <h1>On explore les peptides <em>ensemble</em>.</h1>
@@ -699,6 +654,15 @@ import PeptidesBanner from './PeptidesBanner.astro';
                 )}
             </div>
         </div>
+        <img
+            class="pep-hero-img"
+            src={HERO}
+            alt="Max Guerois, en conversation"
+            width="1100"
+            height="733"
+            fetchpriority="high"
+            decoding="async"
+        />
     </section>
 
     <div class="container" style="padding-top: 0;">
