@@ -263,57 +263,8 @@ const structuredData = {
     </div>
 </div>
 
-<script is:inline>
-    (function () {
-        function init(slider) {
-            var viewport = slider.querySelector('.js-viewport');
-            var track = slider.querySelector('.js-track');
-            var slides = slider.querySelectorAll('.js-slide');
-            var segs = slider.querySelectorAll('.js-segs button');
-            if (!viewport || !track || !slides.length) return;
-            var n = slides.length, i = 0, timer = null;
-            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            var noAuto = slider.hasAttribute('data-noautoplay');
-            function offset(k) {
-                var maxT = track.scrollWidth - viewport.clientWidth;
-                var t = Math.min(slides[k].offsetLeft, maxT);
-                return t < 0 ? 0 : t;
-            }
-            function go(k) {
-                i = (k + n) % n;
-                track.style.transform = 'translateX(' + (-offset(i)) + 'px)';
-                for (var s = 0; s < segs.length; s++) segs[s].classList.toggle('is-active', s === i);
-            }
-            function start() { if (n > 1 && !reduce && !noAuto && !timer) timer = setInterval(function () { go(i + 1); }, 5500); }
-            function stop() { if (timer) { clearInterval(timer); timer = null; } }
-            for (var s = 0; s < segs.length; s++) {
-                (function (idx) { segs[idx].addEventListener('click', function () { go(idx); stop(); start(); }); })(s);
-            }
-            slider.addEventListener('mouseenter', stop);
-            slider.addEventListener('mouseleave', start);
-            window.addEventListener('resize', function () { go(i); });
-            var dragging = false, startX = 0, base = 0, moved = 0;
-            viewport.addEventListener('pointerdown', function (e) {
-                dragging = true; startX = e.clientX; base = -offset(i); moved = 0;
-                track.style.transition = 'none'; stop();
-                try { viewport.setPointerCapture(e.pointerId); } catch (err) {}
-            });
-            viewport.addEventListener('pointermove', function (e) {
-                if (!dragging) return; moved = e.clientX - startX;
-                track.style.transform = 'translateX(' + (base + moved) + 'px)';
-            });
-            function endDrag() {
-                if (!dragging) return; dragging = false; track.style.transition = '';
-                if (moved < -45) go(i + 1); else if (moved > 45) go(i - 1); else go(i);
-                start();
-            }
-            viewport.addEventListener('pointerup', endDrag);
-            viewport.addEventListener('pointercancel', endDrag);
-            viewport.addEventListener('dragstart', function (e) { e.preventDefault(); });
-            go(0); start();
-        }
-        var sliders = document.querySelectorAll('.js-slider');
-        for (var j = 0; j < sliders.length; j++) init(sliders[j]);
-    })();
+<script>
+    import { initPhotoSliders } from '../../scripts/photo-slider';
+    initPhotoSliders();
 </script>
 </Layout>

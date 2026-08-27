@@ -116,66 +116,16 @@ import PeptidesBanner from './PeptidesBanner.astro';
        l'écran est large, pire c'est. Des colonnes bornent le problème au lieu
        de le repousser. */
     .pep-hero { margin-top: var(--pep-nav-h); }
+    /* Le texte et la photo se suivent desormais : il leur faut une respiration
+       que la disposition en colonnes rendait inutile. */
+    .pep-hero-img { margin-top: var(--sp-8); }
     .pep-hero-body { padding: var(--sp-6) var(--sp-6) 0; }
-    @media (min-width: 1280px) {
-        /* La grille n'est PAS centree, elle est ancree sur le bord gauche de
-           `.container`. Centrer une grille large et centrer une colonne de
-           620px ne peuvent pas partager un bord gauche : mesure avant
-           correction, 230px de derive entre le texte du heros et le label de
-           la premiere section. Deux systemes d'alignement sur une meme page se
-           voient immediatement.
-           Ici la colonne de texte fait exactement --content-width et demarre au
-           meme x que tout le reste ; l'image occupe ce qui reste et file
-           jusqu'au bord droit. */
-        .pep-hero {
-            display: grid;
-            /* `.container` est en border-box : sa boite fait --content-width
-               mais son CONTENU commence 24px plus a droite. La colonne de texte
-               reprend donc la largeur de contenu, pas la largeur de boite, et
-               le padding gauche ajoute les memes 24px. Sans ce detail il reste
-               24px de derive, mesurables. */
-            grid-template-columns: calc(var(--content-width) - var(--sp-6) * 2) 1fr;
-            gap: var(--sp-12);
-            /* `stretch`, pas `center`. Avec `center`, l'image imposait sa propre
-               hauteur via son aspect-ratio et debordait du bloc texte des deux
-               cotes : mesure a 1440x900, texte 322px, image 483px, donc 80px de
-               debordement en haut ET en bas. La photo flottait au lieu de faire
-               bloc avec le texte, et laissait un vide mort a gauche sous la
-               micro-ligne. */
-            align-items: stretch;
-            /* Plancher sur la RANGEE, pas sur le conteneur. Pose sur
-               `.pep-hero`, les 48px de padding haut le mangeaient et la rangee
-               ne gagnait que 10px : mesure, 332px au lieu des 380 demandes.
-               Le bloc texte seul fait ~322px ; sans ce plancher la photo
-               tombait a sa hauteur et perdait toute presence. */
-            grid-template-rows: minmax(420px, auto);
-            padding: var(--sp-12) 0 0
-                calc((100% - var(--content-width)) / 2 + var(--sp-6));
-        }
-        .pep-hero-body { order: 1; padding: 0; }
-        /* Selecteur descendant volontaire : la regle de base .pep-hero-img est
-           declaree PLUS BAS dans cette feuille, donc a specificite egale elle
-           gagnerait et le ratio resterait 3/2. Mesure : image 400x267 au lieu
-           de 400x500. */
-        .pep-hero .pep-hero-img {
-            order: 2;
-            /* La hauteur vient de la RANGEE, plus de l'image. C'est ce qui
-               supprime le debordement de 80px mesure en haut et en bas. */
-            aspect-ratio: auto;
-            height: 100%;
-            width: 100%;
-            min-height: 0;
-            object-position: 42% 22%;
-            /* Plafond de LARGEUR, collee au bord droit. Sans lui, sur un 1920
-               la colonne restante fait 626px et la photo devient un
-               panoramique. `justify-self: end` la garde au bord de l'ecran,
-               donc le vide eventuel tombe ENTRE le texte et elle, jamais
-               apres elle. */
-            max-width: 520px;
-            justify-self: end;
-            border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-        }
-    }
+    /* Plus de grille deux colonnes au-dessus de 1280.
+       Elle produisait une boite dont le rapport derivait avec la fenetre, de
+       0,73 a 1,24, sans jamais coincider avec le 1,50 de la photo : mesure,
+       51% de l'image jetee a 1280. Un panneau pleine hauteur qui deborde a
+       droite demande une source portrait, la photo est paysage. Le bandeau la
+       montre entiere. */
 
     /* aspect-ratio + width/height sur la balise : la place est réservée avant
        le chargement, donc aucun décalage de mise en page. */
@@ -201,14 +151,28 @@ import PeptidesBanner from './PeptidesBanner.astro';
        largeur/2 - 334, soit 166px sur un ecran de 1000. Un ruban vertical.
        Le plafond de hauteur n'est pas cosmetique : en 1000x800 sans lui,
        l'image faisait 667px et le bouton tombait a y=981, sous le pli. */
-    @media (min-width: 601px) and (max-width: 1279px) {
-        /* Le plafond recadre fort dans la hauteur : sur un 3/2 ramene a 2.9/1,
-           327px de source disparaissent. A 40% en Y, le haut du crane etait
-           coupe. 10% garde le visage entier. */
+    /* Plus de plafond haut : la regle vaut pour TOUTE largeur au-dessus de
+       601px. Bornee a 1279 elle laissait les grands ecrans retomber sur la
+       regle de base, donc pleine fenetre : un 3/2 sur un 1512 fait 1008px de
+       haut et enterre le formulaire. */
+    @media (min-width: 601px) {
+        /* Le plafond de hauteur precedent ramenait le 3/2 de la source a 2,65
+           mesure a 900px de large : 43% de la photo jetee. Il a disparu avec
+           lui. L'image garde son rapport natif et se cale sur la colonne de
+           texte, comme tout le reste de la page.
+           Elle ne s'etale plus sur toute la fenetre : en pleine largeur sur un
+           1512, un 3/2 ferait 1008px de haut et pousserait tout sous la ligne
+           de flottaison. */
         .pep-hero-img {
-            aspect-ratio: 2 / 1;
-            max-height: 340px;
-            object-position: 38% 10%;
+            /* Largeur de CONTENU et non de boite. `.pep-hero-body` est en
+               border-box a 620px avec 24px de padding, donc son texte commence
+               24px plus a droite : cale sur 620, l'image debordait de 24px a
+               gauche du texte qu'elle accompagne. Meme piege que sur le
+               bandeau. */
+            max-width: calc(var(--content-width) - var(--sp-6) * 2);
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: var(--radius-sm);
         }
         /* Le texte du heros doit rester sur le meme axe que les sections en
            dessous. Sans ca, entre 601 et 1279px il commencait a 24px du bord
@@ -256,17 +220,13 @@ import PeptidesBanner from './PeptidesBanner.astro';
 
     .pep-section { margin-top: var(--sp-16); }
 
-    /* La bande vit hors du `.container`, donc elle porte elle-meme sa gouttiere
-       laterale : sans elle le bandeau toucherait les bords de l'ecran en
-       mobile, ce que ses coins arrondis rendraient bancal. */
-    /* Le bloc newsletter ouvrait a 184px quand toute la page ouvre a 80 :
-       le padding bas du container precedent s'ADDITIONNAIT au padding haut de
-       la bande. Le container d'avant se termine donc a ras, et la bande porte
-       seule l'ecart de section, a la meme valeur que `.pep-section`. */
-    .pep-container--flush { padding-bottom: 0; }
-    .pep-band-head { padding-top: var(--sp-16); padding-bottom: 0; }
-    @media (min-width: 601px) { .pep-band-head { padding-top: var(--sp-20); } }
-    .pep-band { margin: var(--sp-3) auto 0; padding: 0 var(--sp-6); }
+    /* `:global` obligatoire, pas un raccourci. Astro scope les styles PAR
+       composant : sans lui, ce selecteur devient `.pep-section[cid-parent] >
+       .nlb[cid-parent]`, or `.nlb` appartient au composant bandeau et porte un
+       AUTRE identifiant. La regle ne matchait rien et l'ecart mesurait 0.
+       La marge vit ici et non dans le bandeau : un composant ne doit pas
+       decider de ce qui l'entoure. */
+    .pep-section > :global(.nlb) { margin-bottom: var(--sp-6); }
     @media (min-width: 601px) { .pep-section { margin-top: var(--sp-20); } }
 
     /* Selecteur a DEUX classes, volontairement. En une seule (0,1,0) il
@@ -654,15 +614,6 @@ import PeptidesBanner from './PeptidesBanner.astro';
     <!-- 1 · HÉROS. L'image est HORS .container, sinon elle hérite de 24px de
          gouttière et devient une vignette au lieu d'un bandeau. -->
     <section class="pep-hero">
-        <img
-            class="pep-hero-img"
-            src={HERO}
-            alt="Max Guerois, en conversation"
-            width="1100"
-            height="733"
-            fetchpriority="high"
-            decoding="async"
-        />
         <div class="pep-hero-body">
             <p class="pep-eyebrow">Max Guerois · <b>Newsletter peptides</b></p>
             <h1>On explore les peptides <em>ensemble</em>.</h1>
@@ -698,14 +649,23 @@ import PeptidesBanner from './PeptidesBanner.astro';
                     <!-- Cadence et preuve vivent ICI et nulle part ailleurs dans
                          le héros : sous le bouton, au moment de l'hésitation,
                          sans rien ajouter au-dessus de l'action. -->
-                    <p class="pf-micro">Un email chaque lundi. Rejoignez 1 000 lecteurs. Gratuit, désinscription en un clic.</p>
+                    <p class="pf-micro">Rejoignez 1 000 lecteurs. Désinscription à tout moment.</p>
                 </form>
                 )}
             </div>
         </div>
+        <img
+            class="pep-hero-img"
+            src={HERO}
+            alt="Max Guerois, en conversation"
+            width="1100"
+            height="733"
+            fetchpriority="high"
+            decoding="async"
+        />
     </section>
 
-    <div class="container pep-container--flush" style="padding-top: 0;">
+    <div class="container" style="padding-top: 0;">
         <!-- 2 · POURQUOI MOI -->
         <section class="pep-section">
             <p class="pep-label">Pourquoi moi</p>
@@ -727,35 +687,23 @@ import PeptidesBanner from './PeptidesBanner.astro';
                 Y compris ceux qui n'ont rien donné.
             </p>
         </section>
-    </div>
 
-    <!-- Le bandeau sort du `.container` de 620px, VOLONTAIREMENT. Son titre est
-         calibre en `5.9vw` et sa boite plafonnee a 1500px : ces deux valeurs ne
-         sont coherentes qu'en pleine largeur. Dans la colonne, 5.9vw vaut 85px
-         sur un ecran de 1440 pour une boite de 572x252, soit trois lignes de
-         89px dans 252px de haut. -->
-    <!-- Le libelle OUVRE la section, comme dans « Pourquoi moi » et « Ma
-         mission ». Il porte un vrai `.container` et non une largeur recopiee :
-         `.container` est en border-box avec 620px PADDING COMPRIS, donc toute
-         imitation a 620px + margin auto se serait calee 24px trop a gauche des
-         libelles voisins. -->
-    <div class="container pep-band-head">
-        <p class="pep-label">La newsletter</p>
-    </div>
-
-    <div class="pep-band">
-        <PeptidesBanner />
-    </div>
-
-    <div class="container" style="padding-top: 0;">
         <!-- 3 · LA NEWSLETTER. Avant la mission : l'offre atterrit avant la
              vision, sur du trafic froid (passe Codex du 26/08).
-             Le label et le h2 de section ont ete RETIRES : le bandeau juste
-             au-dessus porte le meme titre, en plus fort. Les garder aurait
-             repete « La newsletter peptides » trois fois de suite. « chaque
-             lundi » a ete recupere dans la phrase d'introduction, c'est la
-             seule information que le bandeau ne porte pas. -->
+             Le h2 de section a ete RETIRE : le bandeau porte le meme titre, en
+             plus fort. Le garder aurait repete « La newsletter peptides » deux
+             fois de suite. « chaque lundi » a ete recupere dans la phrase
+             d'introduction, c'est la seule information que le bandeau ne porte
+             pas.
+             Le bandeau vit DANS la colonne, comme tout le reste. Il en est
+             sorti un temps parce que son brief le calibrait en `vw` pour du
+             plein ecran ; c'etait dimensionner pour le brief et non pour la
+             page, dont toute l'identite est une colonne de 620px. Une bande de
+             1500px y etait un corps etranger. Le titre se calibre desormais sur
+             le CONTENEUR, pas sur la fenetre. -->
         <section class="pep-section">
+            <p class="pep-label">La newsletter</p>
+            <PeptidesBanner />
             <p class="pep-text">Un seul sujet par email, chaque lundi. Celui qui compte cette semaine-là :</p>
             <!-- Un seul de ces 4 formats par lundi, jamais les 4 : la liste
                  numerotee promettait un sommaire, ces lignes proposent un menu.
@@ -921,6 +869,36 @@ import PeptidesBanner from './PeptidesBanner.astro';
         {articles.length > 0 && (
             <section class="pep-section">
                 <p class="pep-label">Déjà publié ici</p>
+
+                <!-- Meme UI que le carrousel de l'accueil : memes classes
+                     `photo-*`, donc le CSS vient de global.css sans une ligne
+                     en plus, et `js-slider` est repris tel quel plus bas.
+                     Pour en ajouter une : un `<figure>` de plus ici, et un
+                     bouton de plus dans `.js-segs`. Le script compte les
+                     diapositives lui-meme. -->
+                <div class="photo-slider js-slider">
+                    <div class="photo-viewport js-viewport">
+                        <div class="photo-track js-track">
+                            <figure class="photo-slide js-slide">
+                                <img src="/health-journey/pep-insuline-production.webp"
+                                     alt="Atelier de production d'insuline des annees 1920 : cuves en bois et chaine de conditionnement."
+                                     width="889" height="520" loading="lazy" decoding="async" />
+                            </figure>
+                            <figure class="photo-slide js-slide">
+                                <img src="/health-journey/pep-collage-peptides.webp"
+                                     alt="Collage : dos d'un homme tenant une seringue, entoure de flacons de peptides etiquetes."
+                                     width="520" height="520" loading="lazy" decoding="async" />
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="photo-bar">
+                        <div class="photo-segs js-segs">
+                            <button type="button" class="is-active" aria-label="Image 1"></button>
+                            <button type="button" aria-label="Image 2"></button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="pep-rows">
                     {articles.map((exp) => (
                         <a class="pep-row" href={`/fr/newsletter/${exp.data.slug}`}>
@@ -968,6 +946,13 @@ import PeptidesBanner from './PeptidesBanner.astro';
         </div>
     </dialog>
 </div>
+
+<script>
+    // Meme module que les deux accueils : Astro le hisse et le deduplique, donc
+    // il n'est telecharge qu'une fois quel que soit le nombre de pages.
+    import { initPhotoSliders } from '../scripts/photo-slider';
+    initPhotoSliders();
+</script>
 
 <script is:inline>
     (function () {
