@@ -869,6 +869,36 @@ import PeptidesBanner from './PeptidesBanner.astro';
         {articles.length > 0 && (
             <section class="pep-section">
                 <p class="pep-label">Déjà publié ici</p>
+
+                <!-- Meme UI que le carrousel de l'accueil : memes classes
+                     `photo-*`, donc le CSS vient de global.css sans une ligne
+                     en plus, et `js-slider` est repris tel quel plus bas.
+                     Pour en ajouter une : un `<figure>` de plus ici, et un
+                     bouton de plus dans `.js-segs`. Le script compte les
+                     diapositives lui-meme. -->
+                <div class="photo-slider js-slider">
+                    <div class="photo-viewport js-viewport">
+                        <div class="photo-track js-track">
+                            <figure class="photo-slide js-slide">
+                                <img src="/health-journey/pep-insuline-production.webp"
+                                     alt="Atelier de production d'insuline des annees 1920 : cuves en bois et chaine de conditionnement."
+                                     width="889" height="520" loading="lazy" decoding="async" />
+                            </figure>
+                            <figure class="photo-slide js-slide">
+                                <img src="/health-journey/pep-collage-peptides.webp"
+                                     alt="Collage : dos d'un homme tenant une seringue, entoure de flacons de peptides etiquetes."
+                                     width="520" height="520" loading="lazy" decoding="async" />
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="photo-bar">
+                        <div class="photo-segs js-segs">
+                            <button type="button" class="is-active" aria-label="Image 1"></button>
+                            <button type="button" aria-label="Image 2"></button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="pep-rows">
                     {articles.map((exp) => (
                         <a class="pep-row" href={`/fr/newsletter/${exp.data.slug}`}>
@@ -916,6 +946,13 @@ import PeptidesBanner from './PeptidesBanner.astro';
         </div>
     </dialog>
 </div>
+
+<script>
+    // Meme module que les deux accueils : Astro le hisse et le deduplique, donc
+    // il n'est telecharge qu'une fois quel que soit le nombre de pages.
+    import { initPhotoSliders } from '../scripts/photo-slider';
+    initPhotoSliders();
+</script>
 
 <script is:inline>
     (function () {
