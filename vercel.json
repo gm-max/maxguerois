@@ -16,11 +16,6 @@
       "permanent": true
     },
     {
-      "source": "/fr/peptides",
-      "destination": "/peptides",
-      "permanent": true
-    },
-    {
       "source": "/health-os",
       "destination": "/newsletter/health-os",
       "permanent": true

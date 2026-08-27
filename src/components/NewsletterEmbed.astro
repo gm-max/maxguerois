@@ -71,7 +71,7 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
             />
             <button type="submit">{t(locale, 'newsletter.form.button')}</button>
         </div>
-        <p class="nl-err" id={`${uid}-err`} hidden></p>
+        <p class="nl-err" role="alert" id={`${uid}-err`} hidden></p>
         <p class="nl-micro">{t(locale, 'newsletter.form.micro')}</p>
     </form>
 </div>
@@ -90,7 +90,10 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
                 done: 'Merci, vous êtes inscrit. Le prochain numéro arrive lundi.',
                 err: {
                     invalid_email: 'Cette adresse ne semble pas valide.',
-                    rate_limited: 'Trop de tentatives. Réessayez dans un moment.',
+                    // Meme message que l'erreur serveur, volontairement : dire « trop de
+        // tentatives » donne a un robot un oracle propre pour calibrer sa
+        // cadence. La landing peptides collapse deja les deux.
+        rate_limited: "L'inscription a échoué. Réessayez dans un instant.",
                     store_failed: "L'inscription a échoué. Réessayez dans un instant.",
                     _: "L'inscription a échoué. Réessayez dans un instant.",
                 },

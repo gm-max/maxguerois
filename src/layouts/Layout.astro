@@ -63,6 +63,9 @@ const {
 const currentPath = Astro.url.pathname;
 const englishPath = getLocalizedPath(currentPath, 'en');
 const frenchPath = getLocalizedPath(currentPath, 'fr');
+// Chemin canonique force pour GA4 sur les pages hors miroir, voir gtag plus bas.
+// `null` partout ailleurs : GA garde alors son comportement par defaut.
+const gaPagePath = standalone && ogUrl ? new URL(ogUrl).pathname : null;
 const enUrl = getAbsoluteUrl(englishPath, 'en');
 const frUrl = getAbsoluteUrl(frenchPath, 'fr');
 
@@ -163,11 +166,15 @@ const showEmailModal = emailModal;
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DR1W1B2VV5"></script>
-    <script is:inline>
+    <script is:inline define:vars={{ gaPagePath }}>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-DR1W1B2VV5');
+        // Sur une page hors miroir servie a deux URL, GA4 comptait /peptides et
+        // /fr/peptides comme deux pages distinctes, alors que le canonical, le
+        // sitemap et le contenu n'en decrivent qu'une. Le taux de conversion du
+        // funnel se serait retrouve coupe en deux.
+        gtag('config', 'G-DR1W1B2VV5', gaPagePath ? { page_path: gaPagePath } : {});
     </script>
 
     <!-- Favicons -->
@@ -222,6 +229,12 @@ const showEmailModal = emailModal;
                     href={locale === 'fr' ? '/fr/newsletter' : '/newsletter'}
                     class:list={["footer-link", { active: currentPath.replace(/\/$/, '').endsWith('newsletter') }]}
                 >{t(locale, 'nav.newsletter')}</a>
+                {/* Pas de bascule de langue sur une page hors miroir : elle n'a
+                    pas de jumelle. Sur /peptides le lien « EN » pointait sur
+                    /peptides, c'est-a-dire sur lui-meme, tout en promettant
+                    « Switch to English » et en memorisant lang-preference=en. */}
+                {!standalone && (
+                <>
                 <span class="footer-sep" aria-hidden="true"></span>
                 <a
                     href={locale === 'fr' ? getLocalizedPath(currentPath, 'en') : getLocalizedPath(currentPath, 'fr')}
@@ -229,6 +242,8 @@ const showEmailModal = emailModal;
                     aria-label={t(locale, 'nav.langSwitchLabel')}
                     data-lang-switch
                 >{t(locale, 'nav.langSwitch')}</a>
+                </>
+                )}
                 <span class="footer-sep" aria-hidden="true"></span>
                 <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
                     <span id="toggle-icon">☾</span>

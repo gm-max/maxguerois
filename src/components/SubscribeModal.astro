@@ -176,6 +176,12 @@ const { locale = 'en', delayMs = 8000 } = Astro.props;
     .submodal::backdrop {
         background: rgba(15, 14, 12, 0.45);
     }
+    /* En sombre, --bg vaut #0f0e0c, c'est-a-dire EXACTEMENT rgb(15,14,12) : le
+       voile etait la couleur du fond pose sur le fond, donc il n'assombrissait
+       rien. Meme correction que sur la modale de /peptides. */
+    :global([data-theme='dark']) .submodal::backdrop {
+        background: rgba(0, 0, 0, 0.62);
+    }
 
 
 

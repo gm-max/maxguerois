@@ -1,0 +1,22 @@
+---
+/**
+ * /fr/peptides — le MEME contenu que /peptides, pas une redirection.
+ *
+ * L'URL a circule avant le deplacement vers /peptides, donc elle doit rester
+ * vivante. Servie en place plutot que redirigee : une 301 vit dans vercel.json
+ * et ne s'applique qu'en production, donc en local et en preview l'ancienne
+ * adresse renvoyait un 404 que personne ne pouvait tester. Un seul fichier
+ * rend la desynchronisation impossible.
+ *
+ * Le canonical reste /peptides, donc les moteurs voient une seule page.
+ */
+import PeptidesLanding from '../../components/PeptidesLanding.astro';
+
+export const prerender = false;
+
+Astro.response.headers.set(
+    'Cache-Control',
+    'public, max-age=0, s-maxage=300, stale-while-revalidate=86400',
+);
+---
+<PeptidesLanding canonicalPath="/peptides" />
