@@ -14,6 +14,15 @@ const experiments = defineCollection({
   schema: z.object({
     title: z.string(),
     tagline: z.string(),
+    // Titre court affiche sur /peptides. Le `title` sert de repli. Le titre
+    // d'article porte sa promesse complete et fait 70 a 80 signes ; dans une
+    // liste, il ecrase la phrase qui le suit.
+    shortTitle: z.string().optional(),
+    // Phrase courte affichee sur /peptides sous le titre. Le `tagline` sert de
+    // repli. Elle vit ICI et non dans le composant : une table cote code
+    // demandait une modification a chaque publication, ce qui est exactement
+    // ce que la selection automatique des 3 derniers venait de supprimer.
+    takeaway: z.string().optional(),
     category: z.string(),
     date: z.string(),
     slug: z.string(),

@@ -53,21 +53,26 @@ const submitError = submitErrorCode
     : null;
 const DONE_TEXT = "Le guide arrive, pensez aux spams.";
 
-// Les 3 articles montrés en preuve d'écriture. Choisis, pas triés par date :
-// ce sont les seuls dont l'angle sert un lecteur venu pour les peptides.
-const SHOWN = ['retatrutide', 'supplements', 'max-biomarkers'] as const;
+// Les 3 DERNIERS articles, tries par date. La liste etait choisie a la main :
+// elle demandait donc une modification du code a chaque publication, et elle
+// avait deja pris du retard.
+//
+// Une seule categorie est ecartee. Une note de fondateur ne sert pas un lecteur
+// venu pour les peptides, et c'est le seul cas ou trier par date seule se
+// trompe vraiment. Ajouter une categorie ici si le cas se represente.
+const HORS_SUJET = ['Note de fondateur'];
 
-// L'utilité pour le lecteur, pas le résumé de l'article. Un titre seul ne dit
-// pas en quoi l'article aide, c'était la trouvaille du 26/08.
-const USEFULNESS: Record<string, string> = {
-    retatrutide: "Les effets réels d'un peptide de perte de poids, mesurés sur moi.",
-    supplements: 'À quoi sert chacun, un par un.',
-    'max-biomarkers': "Quels tests santé je fais, chez qui, et ce qu'ils m'ont appris.",
-};
+// La phrase affichee sous chaque titre vient du champ `takeaway` de l'article,
+// avec le `tagline` en repli. Elle vit DANS l'article et non ici : une table
+// cote code aurait demande une modification a chaque publication, ce que la
+// selection automatique venait justement de supprimer.
 
 const all = await getCollection('experiments');
-const articles = SHOWN.map((slug) => all.find((e) => e.data.locale === 'fr' && e.data.slug === slug))
-    .filter((e): e is NonNullable<typeof e> => Boolean(e));
+const articles = all
+    .filter((e) => e.data.locale === 'fr' && !HORS_SUJET.includes(e.data.category))
+    // Dates au format ISO, donc l'ordre alphabetique EST l'ordre chronologique.
+    .sort((a, b) => b.data.date.localeCompare(a.data.date))
+    .slice(0, 3);
 
 const fmtDate = (iso: string) =>
     new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -880,6 +885,11 @@ import PeptidesBanner from './PeptidesBanner.astro';
                     <div class="photo-viewport js-viewport">
                         <div class="photo-track js-track">
                             <figure class="photo-slide js-slide">
+                                <img src="/health-journey/pep-cheveux.webp"
+                                     alt="Un homme examine sa calvitie naissante dans le miroir d'une salle de bain."
+                                     width="347" height="520" loading="lazy" decoding="async" />
+                            </figure>
+                            <figure class="photo-slide js-slide">
                                 <img src="/health-journey/pep-insuline-production.webp"
                                      alt="Atelier de production d'insuline des annees 1920 : cuves en bois et chaine de conditionnement."
                                      width="889" height="520" loading="lazy" decoding="async" />
@@ -895,6 +905,7 @@ import PeptidesBanner from './PeptidesBanner.astro';
                         <div class="photo-segs js-segs">
                             <button type="button" class="is-active" aria-label="Image 1"></button>
                             <button type="button" aria-label="Image 2"></button>
+                            <button type="button" aria-label="Image 3"></button>
                         </div>
                     </div>
                 </div>
@@ -902,8 +913,8 @@ import PeptidesBanner from './PeptidesBanner.astro';
                 <div class="pep-rows">
                     {articles.map((exp) => (
                         <a class="pep-row" href={`/fr/newsletter/${exp.data.slug}`}>
-                            <span class="pep-row-t">{exp.data.title}</span>
-                            <span class="pep-row-d">{USEFULNESS[exp.data.slug]}</span>
+                            <span class="pep-row-t">{exp.data.shortTitle ?? exp.data.title}</span>
+                            <span class="pep-row-d">{exp.data.takeaway ?? exp.data.tagline}</span>
                             <span class="pep-row-meta">{exp.data.category} · {fmtDate(exp.data.date)}</span>
                         </a>
                     ))}
