@@ -1,0 +1,125 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+
+const articleStyles = `
+    .article-body a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        transition: color var(--duration-short) ease;
+    }
+    .article-body a:hover { color: var(--text); }
+    .article-body ul {
+        margin: 0 0 20px;
+        padding-left: 22px;
+        color: var(--text-secondary);
+        list-style: disc;
+    }
+    .article-body li {
+        font-size: 16px;
+        line-height: 1.75;
+        margin-bottom: 8px;
+    }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body .note {
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--text-tertiary);
+    }
+`;
+---
+<ArticleLayout
+    title="Peptides and hair: what the science can actually support."
+    description="Regrowth, shedding, GHK-Cu, GLP-1s: what social media says, and what the evidence actually allows you to conclude."
+    ogUrl="https://maxguerois.com/newsletter/peptides-cheveux"
+    ogImage="https://maxguerois.com/health-journey/blog/peptides-cheveux-cover.png"
+    articleStyles={articleStyles}
+>
+
+<div class="container">
+    <a href="/newsletter" class="back">← Back to the newsletter</a>
+
+    <div class="article-meta">August 28, 2026</div>
+    <h1 class="article-title">Peptides and hair: what the science can actually support.</h1>
+    <p class="article-subtitle">Regrowth, shedding, GHK-Cu, GLP-1s: what social media says, and what the evidence actually allows you to conclude.</p>
+
+    <img
+        class="article-img"
+        src="/health-journey/blog/peptides-cheveux-cover.png"
+        alt="Instagram cover for the post Peptides can regrow hair"
+        fetchpriority="high"
+    >
+
+    <div class="article-body">
+        <p>Peptides and hair... yeah. You hear a lot about it.</p>
+        <p>Between regrowth promises and shedding stories, it is hard to know what is real.</p>
+        <p>So what does the science actually say?</p>
+
+        <h2 class="section-heading">Peptides are already in hair products</h2>
+
+        <p>You already see them in mainstream products from brands like <strong>The Ordinary</strong>, <strong>Typology</strong>, or <strong>Aroma-Zone</strong>.</p>
+
+        <p>The names that come up most often:</p>
+        <ul>
+            <li>Acetyl Tetrapeptide-3</li>
+            <li>Biotinoyl Tripeptide-1</li>
+            <li>Copper Tripeptide-1</li>
+        </ul>
+
+        <p>But that is not the same topic at all as an injected peptide, the kind your influencers talk about.</p>
+
+        <h2 class="section-heading">The name that keeps coming up: GHK-Cu</h2>
+
+        <p>On Reddit or TikTok, one name keeps coming back: <strong>GHK-Cu</strong>.</p>
+
+        <p>It is a <strong>copper peptide</strong>. People talk about it for <strong>skin</strong>, <strong>collagen</strong>, and the whole <strong>glow</strong> angle.</p>
+
+        <p>And for hair, many present it as a peptide that <strong>may support growth</strong>.</p>
+
+        <p>On social media, the feedback is often strong: more density, regrowth, baby hairs, thicker-looking hair.</p>
+
+        <p>But on the science side, the evidence is much more modest.</p>
+
+        <h2 class="section-heading">Peptides and hair shedding</h2>
+
+        <p><strong>Myth or reality?</strong></p>
+
+        <p>Under <strong>reta</strong> or other <strong>GLP-1s</strong>, some people report heavier hair shedding.</p>
+
+        <p>But that likely does not come from the peptide directly.</p>
+
+        <p>The real issue is often:</p>
+        <ul>
+            <li>rapid weight loss</li>
+            <li>calorie deficit</li>
+            <li>metabolic stress</li>
+        </ul>
+
+        <p>That can trigger temporary shedding called <strong>telogen effluvium</strong>.</p>
+
+        <h2 class="section-heading">What the science says today</h2>
+
+        <p>On the <strong>regrowth</strong> side: no peptide has shown, on its own, a clear and robust hair regrowth effect.</p>
+
+        <p><strong>Two molecules</strong> have done that: <strong>minoxidil</strong> and <strong>finasteride</strong>. Nothing new has clearly matched that standard since 1997.</p>
+
+        <p>On the <strong>shedding</strong> side: I noticed more shedding than usual while on reta. But I cannot say it was caused by the peptide itself.</p>
+
+        <p><strong>In 2 weeks, 4.2 kg.</strong></p>
+
+        <p>The simplest rule may be this: when it comes to hair, the promises usually move faster than the evidence.</p>
+
+        <p>And when a peptide starts to look like it does everything, that is usually the moment to slow down.</p>
+
+        <p>Until the next edition, take care.</p>
+
+        <div style="margin: var(--sp-12) 0;">
+            <NewsletterEmbed />
+        </div>
+
+        <p class="note">Personal experimentation, not medical advice.</p>
+    </div>
+</div>
+</ArticleLayout>

@@ -1,0 +1,128 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+
+const locale = 'fr';
+
+const articleStyles = `
+    .article-body a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        transition: color var(--duration-short) ease;
+    }
+    .article-body a:hover { color: var(--text); }
+    .article-body ul {
+        margin: 0 0 20px;
+        padding-left: 22px;
+        color: var(--text-secondary);
+        list-style: disc;
+    }
+    .article-body li {
+        font-size: 16px;
+        line-height: 1.75;
+        margin-bottom: 8px;
+    }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body .note {
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--text-tertiary);
+    }
+`;
+---
+<ArticleLayout
+    title="Les peptides et les cheveux : ce que la science permet vraiment de dire."
+    description="Repousse, chute, GHK-Cu, GLP-1 : ce que les réseaux racontent, et ce que la science permet réellement de conclure."
+    ogUrl="https://maxguerois.com/fr/newsletter/peptides-cheveux"
+    ogImage="https://maxguerois.com/health-journey/blog/peptides-cheveux-cover.png"
+    locale={locale}
+    articleStyles={articleStyles}
+>
+
+<div class="container">
+    <a href="/fr/newsletter" class="back">← Retour à la newsletter</a>
+
+    <div class="article-meta">28 août 2026</div>
+    <h1 class="article-title">Les peptides et les cheveux : ce que la science permet vraiment de dire.</h1>
+    <p class="article-subtitle">Repousse, chute, GHK-Cu, GLP-1 : ce que les réseaux racontent, et ce que la science permet réellement de conclure.</p>
+
+    <img
+        class="article-img"
+        src="/health-journey/blog/peptides-cheveux-cover.png"
+        alt="Cover Instagram du post Les peptides peuvent faire repousser les cheveux"
+        fetchpriority="high"
+    >
+
+    <div class="article-body">
+        <p>Les peptides et les cheveux... ah. On en entend beaucoup.</p>
+        <p>Entre les promesses de repousse et les témoignages de chute, difficile de savoir ce qui est réel.</p>
+        <p>Alors, qu'est-ce que raconte la science ?</p>
+
+        <h2 class="section-heading">Dans les cheveux, les peptides sont déjà là</h2>
+
+        <p>On les voit déjà dans des produits grand public, chez <strong>The Ordinary</strong>, <strong>Typology</strong> ou <strong>Aroma-Zone</strong>, par exemple.</p>
+
+        <p>Les noms qui reviennent le plus :</p>
+        <ul>
+            <li>Acetyl Tetrapeptide-3</li>
+            <li>Biotinoyl Tripeptide-1</li>
+            <li>Copper Tripeptide-1</li>
+        </ul>
+
+        <p>Mais ce n'est pas du tout le même sujet qu'un peptide injecté, celui dont vos influenceurs parlent.</p>
+
+        <h2 class="section-heading">Le nom qui revient partout : GHK-Cu</h2>
+
+        <p>Sur Reddit ou TikTok, un nom revient souvent : <strong>GHK-Cu</strong>.</p>
+
+        <p>C'est un <strong>peptide de cuivre</strong>. On en parle pour la <strong>peau</strong>, le <strong>collagène</strong>, le côté <strong>glow</strong>.</p>
+
+        <p>Et sur les cheveux, beaucoup le présentent comme un peptide qui <strong>aide à la pousse</strong>.</p>
+
+        <p>Sur les réseaux, les retours sont souvent très forts : densité, repousse, baby hairs, cheveux plus épais.</p>
+
+        <p>Mais côté science, la preuve reste beaucoup plus modeste.</p>
+
+        <h2 class="section-heading">Les peptides et la chute de cheveux</h2>
+
+        <p><strong>Mythe ou réalité ?</strong></p>
+
+        <p>Sous <strong>reta</strong> ou d'autres <strong>GLP-1</strong>, certains remarquent de fortes chutes de cheveux.</p>
+
+        <p>Mais ça ne viendrait probablement pas du peptide directement.</p>
+
+        <p>Le vrai sujet, c'est souvent :</p>
+        <ul>
+            <li>perte de poids rapide</li>
+            <li>déficit calorique</li>
+            <li>stress métabolique</li>
+        </ul>
+
+        <p>Cela peut déclencher une chute temporaire, appelée <strong>télogène effluvium</strong>.</p>
+
+        <h2 class="section-heading">Ce que dit la science aujourd'hui</h2>
+
+        <p>Côté <strong>repousse</strong> : aucun peptide n'a démontré à lui seul une repousse nette et robuste.</p>
+
+        <p><strong>2 molécules</strong> l'ont prouvé : le <strong>minoxidil</strong> et le <strong>finastéride</strong>. Rien de nouveau depuis 1997.</p>
+
+        <p>Côté <strong>chute</strong> : moi, sous reta, j'ai remarqué une chute plus importante que d'habitude. Mais je ne peux pas dire que c'était provoqué par le peptide.</p>
+
+        <p><strong>En 2 semaines, 4,2 kg.</strong></p>
+
+        <p>La règle la plus simple est peut-être celle-ci : sur les cheveux, les promesses vont souvent plus vite que les preuves.</p>
+
+        <p>Et quand un peptide a l'air de tout faire, c'est souvent le moment de ralentir.</p>
+
+        <p>En attendant la prochaine édition, portez-vous bien.</p>
+
+        <div style="margin: var(--sp-12) 0;">
+            <NewsletterEmbed locale={locale} />
+        </div>
+
+        <p class="note">Expérimentation personnelle, pas un conseil médical.</p>
+    </div>
+</div>
+</ArticleLayout>
