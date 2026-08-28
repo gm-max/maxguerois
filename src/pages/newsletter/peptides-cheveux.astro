@@ -23,6 +23,49 @@ const articleStyles = `
         margin-bottom: 8px;
     }
     .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body .endmatter {
+        margin-top: 56px;
+        padding-top: 28px;
+        border-top: 1px solid var(--border);
+    }
+    .article-body .endmatter-label {
+        font-size: 11px;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin: 0 0 14px;
+    }
+    .article-body .endmatter ul {
+        margin: 0;
+        padding-left: 18px;
+        list-style: none;
+    }
+    .article-body .endmatter li {
+        position: relative;
+        font-size: 13.5px;
+        line-height: 1.6;
+        color: var(--text-tertiary);
+        margin-bottom: 12px;
+    }
+    .article-body .endmatter li::before {
+        content: "";
+        position: absolute;
+        left: -18px;
+        top: 9px;
+        width: 5px;
+        height: 1px;
+        background: var(--text-tertiary);
+    }
+    .article-body .endmatter li:last-child { margin-bottom: 0; }
+    .article-body .disclaimer {
+        margin-top: 24px;
+        padding: 16px 18px;
+        background: var(--bg-subtle);
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        line-height: 1.65;
+        color: var(--text-tertiary);
+    }
     .article-body .note {
         font-size: 14px;
         line-height: 1.6;
@@ -155,7 +198,8 @@ const articleStyles = `
             <NewsletterEmbed />
         </div>
 
-        <h2 class="section-heading">Sources</h2>
+        <div class="endmatter">
+        <p class="endmatter-label">Sources</p>
 
         <ul>
             <li>2025 systematic review on GLP-1s and hair loss, 24 studies included: telogen effluvium is the dominant subtype, and it tracks the magnitude of weight loss. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC13100445/" target="_blank" rel="noopener">PMC13100445</a></li>
@@ -167,7 +211,8 @@ const articleStyles = `
             <li>GHK-Cu review, <em>International Journal of Molecular Sciences</em>: most of the hair data remains <em>in vitro</em> and mechanistic. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6073405/" target="_blank" rel="noopener">PMC6073405</a></li>
         </ul>
 
-        <p class="note">Personal experimentation, not medical advice. Retatrutide and GHK-Cu are not approved medicines in Europe. Talk to a doctor.</p>
+        <p class="disclaimer">Personal experimentation, not medical advice. Retatrutide and GHK-Cu are not approved medicines in Europe. Talk to a doctor.</p>
+        </div>
     </div>
 </div>
 </ArticleLayout>
