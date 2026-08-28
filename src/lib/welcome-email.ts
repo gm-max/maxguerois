@@ -61,7 +61,7 @@ export const WELCOME_SUBJECT = 'Bienvenue dans la communauté.';
 /** Shown in the inbox next to the subject, before anything is opened. */
 // The subject welcomes; the preview says what the welcome is FOR. Neither repeats the
 // other, which is the whole job of the pair.
-export const WELCOME_PREVIEW = "Comprendre les peptides chaque lundi.";
+export const WELCOME_PREVIEW = 'Comprendre les peptides, sans jargon.';
 
 /**
  * One entry per paragraph. Short on purpose: the blank space between them is part of
@@ -77,7 +77,7 @@ type Para = { text: string; hl?: true };
 const PARAS: Para[] = [
     { text: "Vous vous êtes inscrit pour une raison simple." },
     { text: "Comprendre les peptides sans jargon. Sans promesse magique. Sans y passer vos soirées." },
-    { text: "Chaque lundi, vous recevrez un mail court.", hl: true },
+    { text: "Vous recevrez un mail court quand il y a quelque chose qui vaut le détour.", hl: true },
     { text: "J'y décrypte une étude utile. Je vous dis ce qu'elle montre. Et ce qu'elle ne permet pas de dire." },
     { text: "Je passe aussi un peptide au crible." },
     { text: "Ce qu'on peut en attendre. Pour qui il peut avoir un intérêt. Et ce qu'il coûte vraiment." },
@@ -89,7 +89,7 @@ const PARAS: Para[] = [
     { text: "J'ai fondé le leader européen de la santé préventive à partir des prises de sang." },
     { text: "Aujourd'hui, je construis ma prochaine startup." },
     { text: "Cette newsletter me sert à partager ce que je trouve. Ce que je teste. Et ce qui ne tient pas la route." },
-    { text: "Premier numéro lundi.", hl: true },
+    { text: "Premier numéro bientôt.", hl: true },
     { text: "Si vous avez une question, répondez à ce mail. Je lis tout." },
 ];
 

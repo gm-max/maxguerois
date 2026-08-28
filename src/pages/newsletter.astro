@@ -9,8 +9,8 @@ const archive = allExperiments.filter(e => !e.data.locale || e.data.locale === '
 archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 ---
 <Layout
-    title="The long game of staying young, by Max Guerois"
-    description="Health and longevity, in the open: peptides, tracking, training, supplements. The experiments I run on myself, the unfiltered version. Two emails a month."
+    title="The peptide newsletter, by Max Guerois"
+    description="Peptides, explained without jargon. What the literature supports, what social media exaggerates, and what my own experiments can and cannot tell me."
     ogUrl="https://maxguerois.com/newsletter"
     ogImage="https://maxguerois.com/health-journey/banner-staying-young.jpg"
     extraStyles={["/styles/article.css"]}
@@ -58,12 +58,6 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         font-style: italic;
         color: var(--accent);
     }
-    .nl-reassure {
-        font-family: var(--font-body);
-        font-size: 13px;
-        color: var(--text-tertiary);
-        margin: var(--sp-3) 0 0;
-    }
     .nl-meta {
         font-family: var(--font-body);
         font-size: 12px;
@@ -96,6 +90,13 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         line-height: 1.15;
         color: var(--text);
         margin: 0 0 var(--sp-6);
+    }
+    .nl-section-intro {
+        font-size: 15px;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        max-width: 620px;
+        margin: 0 0 var(--sp-8);
     }
     .experiments-list { display: flex; flex-direction: column; gap: var(--sp-6); }
     .nl-subscribe { margin-top: var(--sp-16); }
@@ -158,24 +159,23 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 <div class="container">
     <section class="hero">
         <div class="nl-meta">The newsletter</div>
-        <h1 class="nl-title">The long game of <em>staying young</em></h1>
-        <p class="nl-lead">I left my previous health startup. Now I'm starting from scratch, building my next venture in the open.</p>
-        <p class="nl-lead">I share it as it happens, the unfiltered version: the experiments I run on myself, the research, what works and what blows up.</p>
-        <p class="nl-lead">Right now that's mostly health and longevity: peptides, tracking, training, and supplements.</p>
+        <h1 class="nl-title">The newsletter <em>on peptides</em></h1>
+        <p class="nl-lead">I write about peptides with one rule: start from the evidence, then look at what social media turned them into.</p>
+        <p class="nl-lead">Some molecules have a real place. Others live mostly on anecdotes, shortcuts, and promises.<br>Join 1,000+ readers.</p>
 
         <div class="nl-form">
             <NewsletterEmbed minimal />
         </div>
-        <p class="nl-reassure">Join 1,000+ readers. Two emails a month, unsubscribe anytime.</p>
 
         <HeroFooter currentPath={Astro.url.pathname} />
     </section>
 
-    <div class="nl-section-label">The archive</div>
-    <h2 class="nl-section-title">The experiments so far</h2>
+    <div class="nl-section-label">Archive</div>
+    <h2 class="nl-section-title">The articles</h2>
+    <p class="nl-section-intro">Mechanisms, use cases, limits, weak signals: the articles published so far on peptides and the topics around them.</p>
 
     <div class="experiments-list">
-        {archive.map((exp, i) => (
+        {archive.map((exp) => (
             <a href={`/newsletter/${exp.data.slug}`} class="experiment-item">
                 {exp.data.cover && (
                     <img class="experiment-cover" src={exp.data.cover} alt={exp.data.title} loading="lazy" />
@@ -183,7 +183,6 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
                 <div class="experiment-body">
                     <div class="experiment-tag-row">
                         <span class="experiment-tag">{exp.data.category}</span>
-                        {i === 0 && <span class="experiment-tag">Latest</span>}
                     </div>
                     <div class="experiment-title">{exp.data.title}</div>
                     <div class="experiment-desc">{exp.data.tagline}</div>
