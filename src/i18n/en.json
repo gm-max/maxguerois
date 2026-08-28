@@ -17,15 +17,15 @@
     "latest": "Latest"
   },
   "newsletter": {
-    "title": "Follow the experiments",
-    "desc": "The health experiments I run on myself, published in full, the wins and the misses. Straight to your inbox. Unsubscribe anytime.",
+    "title": "The peptide newsletter",
+    "desc": "News, guides, and science on peptides, without jargon, straight to your inbox.",
     "form": {
       "label": "Your email",
       "placeholder": "you@email.com",
       "button": "Subscribe",
       "busy": "One moment...",
       "micro": "Free. One-click unsubscribe.",
-      "done": "Thanks, you're subscribed. The next issue lands Monday.",
+      "done": "Thanks, you're subscribed. I'll send the next issue when it's worth your attention.",
       "err": {
         "invalid_email": "That address doesn't look right.",
         "rate_limited": "Too many attempts. Try again in a moment.",
@@ -36,7 +36,7 @@
   },
   "modal": {
     "title": "Before you go",
-    "desc": "I run health experiments on myself and publish the full results, the wins and the misses. One email when there is something worth sending.",
+    "desc": "I track peptide news, explain what the science actually says, and document what is worth paying attention to. One email when there is something worth sending.",
     "close": "Close",
     "note": "No spam. Unsubscribe anytime."
   },
