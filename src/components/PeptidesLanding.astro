@@ -913,7 +913,7 @@ import PeptidesBanner from './PeptidesBanner.astro';
                 <div class="pep-rows">
                     {articles.map((exp) => (
                         <a class="pep-row" href={`/fr/newsletter/${exp.data.slug}`}>
-                            <span class="pep-row-t">{exp.data.title}</span>
+                            <span class="pep-row-t">{exp.data.shortTitle ?? exp.data.title}</span>
                             <span class="pep-row-d">{exp.data.takeaway ?? exp.data.tagline}</span>
                             <span class="pep-row-meta">{exp.data.category} · {fmtDate(exp.data.date)}</span>
                         </a>
