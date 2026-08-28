@@ -62,19 +62,10 @@ const DONE_TEXT = "Le guide arrive, pensez aux spams.";
 // trompe vraiment. Ajouter une categorie ici si le cas se represente.
 const HORS_SUJET = ['Note de fondateur'];
 
-// L'utilite pour le lecteur, pas le resume de l'article. Un titre seul ne dit
-// pas en quoi l'article aide, c'etait la trouvaille du 26/08.
-//
-// Depuis que la selection est automatique, cette table n'est plus qu'une
-// SURCHARGE : un article qui arrive tout seul n'a pas de ligne ecrite a la
-// main, donc le `tagline` de la collection sert de repli. Sans lui la
-// description sortirait vide, et personne ne s'en apercevrait avant de voir la
-// page. N'ecrire une entree ici que lorsque le tagline ne parle pas a un
-// lecteur venu pour les peptides.
-const USEFULNESS: Record<string, string> = {
-    // « Le retatrutide dans mes donnees » ne dit pas que c'est un peptide.
-    retatrutide: "Les effets réels d'un peptide de perte de poids, mesurés sur moi.",
-};
+// La phrase affichee sous chaque titre vient du champ `takeaway` de l'article,
+// avec le `tagline` en repli. Elle vit DANS l'article et non ici : une table
+// cote code aurait demande une modification a chaque publication, ce que la
+// selection automatique venait justement de supprimer.
 
 const all = await getCollection('experiments');
 const articles = all
@@ -923,7 +914,7 @@ import PeptidesBanner from './PeptidesBanner.astro';
                     {articles.map((exp) => (
                         <a class="pep-row" href={`/fr/newsletter/${exp.data.slug}`}>
                             <span class="pep-row-t">{exp.data.title}</span>
-                            <span class="pep-row-d">{USEFULNESS[exp.data.slug] ?? exp.data.tagline}</span>
+                            <span class="pep-row-d">{exp.data.takeaway ?? exp.data.tagline}</span>
                             <span class="pep-row-meta">{exp.data.category} · {fmtDate(exp.data.date)}</span>
                         </a>
                     ))}

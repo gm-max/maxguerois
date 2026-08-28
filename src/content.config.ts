@@ -14,6 +14,11 @@ const experiments = defineCollection({
   schema: z.object({
     title: z.string(),
     tagline: z.string(),
+    // Phrase courte affichee sur /peptides sous le titre. Le `tagline` sert de
+    // repli. Elle vit ICI et non dans le composant : une table cote code
+    // demandait une modification a chaque publication, ce qui est exactement
+    // ce que la selection automatique des 3 derniers venait de supprimer.
+    takeaway: z.string().optional(),
     category: z.string(),
     date: z.string(),
     slug: z.string(),
