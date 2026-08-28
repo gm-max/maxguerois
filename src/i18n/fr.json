@@ -18,7 +18,7 @@
   },
   "newsletter": {
     "title": "Newsletter peptides",
-    "desc": "L'actu des peptides décryptée, les signaux qui comptent, et mes essais quand ils valent vraiment le détour. Direct dans votre boîte mail. Désabonnement à tout moment.",
+    "desc": "L'actualité, les guides et la science des peptides, sans jargon, dans votre boîte mail.",
     "form": {
       "label": "Votre email",
       "placeholder": "votre@email.com",
