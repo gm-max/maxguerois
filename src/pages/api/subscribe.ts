@@ -153,25 +153,31 @@ async function sendTelegram(text: string): Promise<void> {
 /**
  * Tell Max, in real time, that someone just subscribed.
  *
- * Fires on EVERY stored signup, including one whose Resend push failed: the row is in
- * Supabase either way, so the person is subscribed either way, and hiding the ones
- * that failed would make a broken day look quiet rather than broken.
+ * ONE LINE, ALWAYS THE SAME LINE. Max asked for exactly this and the uniformity is
+ * the decision, not an oversight: the message does NOT say whether the welcome email
+ * actually left. Do not "improve" it by appending a status.
  *
- * It says "inscription", not "nouvelle personne", and the wording is load-bearing. The
- * upsert updates on conflict, so an existing subscriber resubmitting the form lands
- * here too. Telling them apart costs a query whose count collides with the outage
- * alert's in the test harness, and the daily card already carries the real total. A
- * message that overclaims is worse than one that is merely narrower.
+ * What that costs, so the next reader can weigh it rather than rediscover it: during
+ * a Resend outage these lines keep scrolling by looking perfectly healthy while nobody
+ * receives anything. Only the FIRST failure of an outage pages, via
+ * alertFirstSendFailure; failures 2..N live in mg_subscribers.sync_error and nowhere
+ * else. Max accepted that on 2026-08-29 in exchange for a line he can read at a glance.
+ *
+ * It fires on every stored signup, including one whose Resend push failed, because the
+ * row is in Supabase either way and the person is therefore subscribed either way.
+ *
+ * It says "nouveau subscriber" even for someone resubscribing: the upsert updates on
+ * conflict, so a returning subscriber lands here too. Telling them apart costs a query
+ * whose count collides with the outage alert's in the test harness, and the daily card
+ * already carries the real total.
+ *
+ * The destination needs no configuring. TELEGRAM_BOT_TOKEN here is byte-identical to
+ * max-ai's `ouros-lab` agent bot, and TELEGRAM_ADMIN_CHAT_ID to its chat: verified by
+ * fingerprint on 2026-08-29. This already posts to the Ouros Lab channel, from
+ * @ouros_lab_bot, the same place the morning card lands.
  */
-async function notifySignup(email: string, source: string, syncFailed: boolean): Promise<void> {
-  await sendTelegram(
-    `maxguerois.com — inscription newsletter\n\n` +
-      `${email}\n` +
-      `Source : ${source}\n` +
-      (syncFailed
-        ? `\nEnvoi Resend EN ECHEC : la personne est enregistree mais n'a rien recu.`
-        : `\nEmail de bienvenue envoye.`),
-  );
+async function notifySignup(email: string): Promise<void> {
+  await sendTelegram(`1 nouveau subscriber à la newsletter de Max : ${email}`);
 }
 
 /**
@@ -472,12 +478,10 @@ export const POST: APIRoute = async ({ request, url }) => {
     if (error) console.error('mg_subscribers sync-status write failed', error);
   };
 
-  let syncFailed = false;
   try {
     await pushToResend(email, SITE_ORIGIN);
     await markSync({ synced_at: new Date().toISOString(), sync_error: null });
   } catch (e) {
-    syncFailed = true;
     // Never fails the signup. sync_error + a NULL synced_at leave the row visible
     // to the partial index, so a replay can pick it up later.
     const msg = e instanceof Error ? e.message : String(e);
@@ -488,10 +492,10 @@ export const POST: APIRoute = async ({ request, url }) => {
     await alertFirstSendFailure(supabase, email, msg);
   }
 
-  // After the sync, so the message can say whether the person actually received
-  // anything. Awaited, like every third-party call in this file, and unable to throw,
-  // so a Telegram outage can never cost a signup.
-  await notifySignup(email, field(raw.source) || 'site', syncFailed);
+  // After the sync rather than before, so a Telegram outage can never delay the
+  // welcome email. Awaited, like every third-party call in this file, and unable to
+  // throw, so it can never cost a signup either.
+  await notifySignup(email);
 
   return reply(request, url, 200, { ok: true });
 };
