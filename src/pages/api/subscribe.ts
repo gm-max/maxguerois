@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { createClient } from '@supabase/supabase-js';
 import { createHash } from 'node:crypto';
 import { buildUnsubscribeUrl } from './unsubscribe';
+import { sendTelegram } from '../../lib/telegram';
 import { WELCOME_SUBJECT } from '../../lib/welcome-email';
 
 // The one on-demand route on this site. Everything else prerenders.
@@ -80,7 +81,6 @@ function optionalEnv(name: string): string | undefined {
  */
 const SITE_ORIGIN = optionalEnv('SITE') ?? 'https://maxguerois.com';
 
-const TELEGRAM_TIMEOUT_MS = 3000;
 
 /**
  * Page on the FIRST unsent signup of an outage. Never throws.
@@ -121,34 +121,6 @@ async function alertFirstSendFailure(
   }
 }
 
-/**
- * Post one line to the admin chat. NEVER throws, and never fails a request.
- *
- * Awaited by every caller, deliberately. Astro has no equivalent to `after()`, and an
- * unawaited call is killed by the serverless teardown: in ouros-reddit-scam that cost
- * 5 audience adds out of 20 and 13 welcome emails out of 20, at random.
- */
-async function sendTelegram(text: string): Promise<void> {
-  const token = optionalEnv('TELEGRAM_BOT_TOKEN');
-  const chat = optionalEnv('TELEGRAM_ADMIN_CHAT_ID');
-  if (!token || !chat) return;
-  try {
-    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: chat, text }),
-      signal: AbortSignal.timeout(TELEGRAM_TIMEOUT_MS),
-    });
-    // A bad token or a rate-limited bot answers 401/429, and `fetch` RESOLVES. Without
-    // this check the send reports success while reaching nobody — the exact silent
-    // outage it exists to surface, one layer up.
-    if (!res.ok) {
-      console.error(`telegram send rejected ${res.status}: ${(await res.text()).slice(0, 200)}`);
-    }
-  } catch (e) {
-    console.error('telegram send failed', e instanceof Error ? e.message : String(e));
-  }
-}
 
 /**
  * Tell Max, in real time, that someone just subscribed.
