@@ -166,7 +166,7 @@ async function sendTelegram(text: string): Promise<void> {
  * It fires on every stored signup, including one whose Resend push failed, because the
  * row is in Supabase either way and the person is therefore subscribed either way.
  *
- * It says "nouveau subscriber" even for someone resubscribing: the upsert updates on
+ * It says "new subscriber" even for someone resubscribing: the upsert updates on
  * conflict, so a returning subscriber lands here too. Telling them apart costs a query
  * whose count collides with the outage alert's in the test harness, and the daily card
  * already carries the real total.
@@ -177,7 +177,7 @@ async function sendTelegram(text: string): Promise<void> {
  * @ouros_lab_bot, the same place the morning card lands.
  */
 async function notifySignup(email: string): Promise<void> {
-  await sendTelegram(`1 nouveau subscriber à la newsletter de Max : ${email}`);
+  await sendTelegram(`1 new subscriber to Max's newsletter: ${email}`);
 }
 
 /**
