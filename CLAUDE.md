@@ -82,7 +82,14 @@ Own stack since 2026-08-26. beehiiv is gone: no embed, no iframe, no beehiiv hos
   Routing (a probe to it bounced on 2026-08-27) while the mail invites people to reply.
 - **Unsubscribe:** `/api/unsubscribe`, HMAC-signed links, plus the `List-Unsubscribe` pair
   Gmail and Yahoo require of bulk senders.
-- **Tests:** `test/api/subscribe.test.ts`, 76 tests, `npm test`.
+- **Telegram:** every signup posts one line to the admin chat, from `src/lib/telegram.ts`.
+  Both credentials also live in max-ai's creds file on the VPS, and that duplication is
+  how the production token silently drifted to an invalid value on 2026-08-29, dropping
+  every notification AND every send-failure alert for hours. `/api/health` now reports
+  whether the channel actually works, and the VPS health check reads it every 3 hours
+  with its OWN Telegram credentials. Never move that watcher into this repo: its value
+  is that it does not share the failure.
+- **Tests:** `test/api/`, `npm test`.
 
 ## Adding a new article
 1. Create `src/content/experiments/new-slug.json` with schema fields (title, tagline, category, date, slug, ogImage). `slug` is the bare name (e.g. `sleep`), no folder prefix.
