@@ -409,8 +409,24 @@ describe('resend sync', () => {
   });
 });
 
+// Two different messages now reach the same endpoint: the outage alert and the
+// per-signup notification. A helper that matched "any telegram call" made the alert
+// tests pass for the wrong reason the moment the notification shipped, so they match
+// on the message itself.
+const telegramTexts = () =>
+  fetchCalls()
+    .filter(([u]) => u.includes('api.telegram.org'))
+    .map(([, init]) => JSON.parse((init as any).body));
+
 const telegramCall = () =>
-  fetchCalls().find(([u]) => u.includes('api.telegram.org'));
+  fetchCalls().find(
+    ([u, init]) =>
+      u.includes('api.telegram.org') &&
+      JSON.parse((init as any).body).text.includes("n'a pas ete envoyee"),
+  );
+
+const signupCall = () =>
+  telegramTexts().find((b) => b.text.includes('inscription newsletter'));
 
 /**
  * The alert exists because the catch above answers 200 to the visitor even when the
@@ -489,6 +505,52 @@ describe('alert on an unsent signup', () => {
     const res = await post({ email: 'a@b.co' });
     expect(res.status).toBe(200);
     expect(telegramCall()).toBeUndefined();
+  });
+
+  it('notifies on a signup that worked', async () => {
+    await post({ email: 'a@b.co', source: 'fr-peptides' });
+    const body = signupCall();
+    expect(body).toBeDefined();
+    expect(body.chat_id).toBe('4242');
+    expect(body.text).toContain('a@b.co');
+    expect(body.text).toContain('fr-peptides');
+    expect(body.text).toContain('Email de bienvenue envoye');
+  });
+
+  // The row is in Supabase either way, so the person IS subscribed either way.
+  // Suppressing the ones that failed would make a broken day look like a quiet one.
+  it('notifies on a signup whose send failed, and says so', async () => {
+    failSend();
+    db.syncErrorCount = 7; // backlog: the outage alert stays quiet, this must not
+    await post({ email: 'a@b.co' });
+    const body = signupCall();
+    expect(body).toBeDefined();
+    expect(body.text).toContain('EN ECHEC');
+  });
+
+  it('never notifies for a submission that was not stored', async () => {
+    db.errors['mg_subscribers.upsert'] = { message: 'db down' };
+    const res = await post({ email: 'a@b.co' });
+    expect(res.status).toBe(500);
+    expect(signupCall()).toBeUndefined();
+  });
+
+  it('stays silent for a honeypot hit, which never became a subscriber', async () => {
+    const res = await post({ email: 'a@b.co', website: 'http://spam' });
+    expect(res.status).toBe(200);
+    expect(signupCall()).toBeUndefined();
+  });
+
+  it('still answers 200 when the signup notification throws', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (u: string) => {
+        if (String(u).includes('api.telegram.org')) throw new Error('telegram down');
+        return new Response(JSON.stringify({ data: {} }), { status: 201 });
+      }),
+    );
+    const res = await post({ email: 'a@b.co' });
+    expect(res.status).toBe(200);
   });
 
   it('still answers 200 when the alert itself throws', async () => {
