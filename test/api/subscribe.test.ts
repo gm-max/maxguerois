@@ -426,7 +426,7 @@ const telegramCall = () =>
   );
 
 const signupCall = () =>
-  telegramTexts().find((b) => b.text.includes('nouveau subscriber'));
+  telegramTexts().find((b) => b.text.includes('new subscriber'));
 
 /**
  * The alert exists because the catch above answers 200 to the visitor even when the
@@ -512,7 +512,7 @@ describe('alert on an unsent signup', () => {
     const body = signupCall();
     expect(body).toBeDefined();
     expect(body.chat_id).toBe('4242');
-    expect(body.text).toBe('1 nouveau subscriber à la newsletter de Max : a@b.co');
+    expect(body.text).toBe("1 new subscriber to Max's newsletter: a@b.co");
   });
 
   // The uniformity is the decision, not an oversight. Max chose on 2026-08-29 to read
@@ -524,7 +524,7 @@ describe('alert on an unsent signup', () => {
     failSend();
     db.syncErrorCount = 7; // backlog: the outage alert stays quiet, this must not
     await post({ email: 'a@b.co' });
-    expect(signupCall()?.text).toBe('1 nouveau subscriber à la newsletter de Max : a@b.co');
+    expect(signupCall()?.text).toBe("1 new subscriber to Max's newsletter: a@b.co");
   });
 
   it('never notifies for a submission that was not stored', async () => {
