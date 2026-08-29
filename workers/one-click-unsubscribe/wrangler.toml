@@ -1,0 +1,10 @@
+# Deploys the shape adapter that makes RFC 8058 one-click unsubscribe reach Vercel.
+# See src/index.js for why this exists and why it holds no secrets.
+name = "mg-one-click-unsubscribe"
+main = "src/index.js"
+compatibility_date = "2026-08-29"
+
+# Only this path. Everything else on the domain keeps Vercel's CSRF protection.
+[[routes]]
+pattern = "maxguerois.com/api/unsubscribe"
+zone_name = "maxguerois.com"

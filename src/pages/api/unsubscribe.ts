@@ -128,8 +128,19 @@ export const POST: APIRoute = async ({ request, url }) => {
     return page(400, 'Erreur', '<p>Requête invalide.</p>');
   }
 
-  const email = (typeof raw.email === 'string' ? raw.email : '').trim().slice(0, MAX_EMAIL);
-  const sig = (typeof raw.sig === 'string' ? raw.sig : '').trim();
+  // BODY FIRST, THEN THE QUERY STRING. The confirmation page posts these in the body,
+  // but a one-click unsubscribe does not: RFC 8058 says the mail client POSTs to the
+  // URI from the List-Unsubscribe header exactly as written, with `List-Unsubscribe=
+  // One-Click` as the ONLY body field. Our link carries email and sig in the query, so
+  // a body-only read saw two empty strings and answered 400 to every real one-click.
+  // Measured in production on 2026-08-29 with a valid signature.
+  const qs = url.searchParams;
+  const field = (name: string) => {
+    const fromBody = typeof raw[name] === 'string' ? (raw[name] as string) : '';
+    return (fromBody || qs.get(name) || '').trim();
+  };
+  const email = field('email').slice(0, MAX_EMAIL);
+  const sig = field('sig');
   const wantsJson = (request.headers.get('accept') ?? '').includes('application/json');
 
   if (!validSignature(email, sig)) {

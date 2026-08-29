@@ -9,7 +9,7 @@ import { createHmac } from 'node:crypto';
  * the builder chain method-by-method.
  */
 
-type Op = { table: string; op: string; payload?: unknown };
+type Op = { table: string; op: string; payload?: unknown; filters?: [string, unknown][] };
 
 const db = {
   calls: [] as Op[],
@@ -31,7 +31,15 @@ vi.mock('@supabase/supabase-js', () => ({
           record('update', payload);
           return chain;
         },
-        eq: () => chain,
+        // RECORD the filter, don't just swallow it. The email lives in `.eq()`, not
+        // in the update payload, so a fake that dropped these arguments made every
+        // assertion about WHICH row was touched vacuously true. A test that cannot
+        // fail is worse than no test: it reads as coverage.
+        eq(column: string, value: unknown) {
+          const last = db.calls[db.calls.length - 1];
+          if (last) (last.filters ??= []).push([column, value]);
+          return chain;
+        },
         then(resolve: (v: unknown) => unknown) {
           const last = db.calls[db.calls.length - 1];
           const error = db.errors[`${last.table}.${last.op}`] ?? null;
@@ -89,6 +97,24 @@ afterEach(() => {
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
 });
+
+
+/**
+ * A one-click unsubscribe, shaped exactly as RFC 8058 says a mail client sends it:
+ * POST to the URI from the List-Unsubscribe header, with email and sig in the QUERY,
+ * `application/x-www-form-urlencoded`, and one body field that carries no identity.
+ */
+function oneClickReq(email: string, sig: string) {
+  const url = new URL('/api/unsubscribe', ORIGIN);
+  url.searchParams.set('email', email);
+  url.searchParams.set('sig', sig);
+  const request = new Request(url, {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    body: 'List-Unsubscribe=One-Click',
+  });
+  return POST({ request, url } as never);
+}
 
 describe('signing', () => {
   it('buildUnsubscribeUrl embeds an email and a signature that verifies', () => {
@@ -154,6 +180,47 @@ describe('POST — performs the unsubscribe', () => {
     const update = db.calls.find((c) => c.op === 'update')!;
     expect(update.table).toBe('mg_subscribers');
     expect((update.payload as any).unsubscribed_at).toBeTruthy();
+  });
+
+
+  /**
+   * THE SHAPE THAT ACTUALLY ARRIVES FROM GMAIL.
+   *
+   * Every welcome email advertises `List-Unsubscribe-Post: List-Unsubscribe=One-Click`.
+   * The tests over in subscribe.test.ts pin that the two headers are PRESENT; nothing
+   * pinned that this endpoint honours them, so a body-only read of email and sig
+   * shipped green and answered 400 to every real one-click. Measured in production on
+   * 2026-08-29 with a valid signature.
+   */
+  it('honours a one-click POST, which carries its identity in the query string', async () => {
+    const res = await oneClickReq('a@b.co', sigFor('a@b.co'));
+    expect(res.status).toBe(200);
+    const update = db.calls.find((c) => c.op === 'update')!;
+    expect(update.table).toBe('mg_subscribers');
+    expect((update.payload as any).unsubscribed_at).toBeTruthy();
+  });
+
+  it('still refuses a forged signature when it arrives in the query string', async () => {
+    const res = await oneClickReq('a@b.co', 'forged');
+    expect(res.status).not.toBe(200);
+    expect(db.calls).toEqual([]);
+  });
+
+  // The query is a FALLBACK, not an override: the confirmation page posts a body, and
+  // a crafted query must never be able to redirect that write to another address.
+  it('lets the body win over the query string', async () => {
+    const url = new URL('/api/unsubscribe', ORIGIN);
+    url.searchParams.set('email', 'victim@b.co');
+    url.searchParams.set('sig', sigFor('victim@b.co'));
+    const request = new Request(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify({ email: 'a@b.co', sig: sigFor('a@b.co') }),
+    });
+    const res = await POST({ request, url } as never);
+    expect(res.status).toBe(200);
+    const update = db.calls.find((c) => c.op === 'update')!;
+    expect(update.filters).toContainEqual(['email', 'a@b.co']);
   });
 
   it('opts the contact out on the TOPIC, never the global unsubscribed flag', async () => {
