@@ -13,10 +13,22 @@ Needs a Cloudflare token with `Workers Scripts: Edit` on the `maxguerois.com` zo
 The DNS-edit token in `~/.config/cloudflare/` is not enough; it answers
 `Authentication error` on the Workers API.
 
+Run it through `npx`, NOT as a bare `wrangler`. There is a global wrangler on this
+machine, but it lives under nvm's node v20.11.1 while the shell's default node is
+v20.19.1, and nvm keeps each version's global bin separate. `wrangler deploy` therefore
+answers `zsh: command not found` even though wrangler is installed. `npx` sidesteps the
+whole question.
+
 ```
-cd workers/one-click-unsubscribe
-wrangler login          # or: export CLOUDFLARE_API_TOKEN=<token with Workers Scripts:Edit>
-wrangler deploy
+cd ~/claude_code/gm-max/workers/one-click-unsubscribe
+npx --yes wrangler@4 login      # opens a browser; or export CLOUDFLARE_API_TOKEN=<Workers Scripts:Edit>
+npx --yes wrangler@4 deploy
+```
+
+Dry-run first if you want to see what would ship without touching the zone:
+
+```
+npx --yes wrangler@4 deploy --dry-run
 ```
 
 ## Verify it worked
