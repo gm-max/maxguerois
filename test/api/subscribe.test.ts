@@ -426,7 +426,7 @@ const telegramCall = () =>
   );
 
 const signupCall = () =>
-  telegramTexts().find((b) => b.text.includes('inscription newsletter'));
+  telegramTexts().find((b) => b.text.includes('nouveau subscriber'));
 
 /**
  * The alert exists because the catch above answers 200 to the visitor even when the
@@ -507,25 +507,24 @@ describe('alert on an unsent signup', () => {
     expect(telegramCall()).toBeUndefined();
   });
 
-  it('notifies on a signup that worked', async () => {
+  it('notifies with one line carrying the address', async () => {
     await post({ email: 'a@b.co', source: 'fr-peptides' });
     const body = signupCall();
     expect(body).toBeDefined();
     expect(body.chat_id).toBe('4242');
-    expect(body.text).toContain('a@b.co');
-    expect(body.text).toContain('fr-peptides');
-    expect(body.text).toContain('Email de bienvenue envoye');
+    expect(body.text).toBe('1 nouveau subscriber à la newsletter de Max : a@b.co');
   });
 
-  // The row is in Supabase either way, so the person IS subscribed either way.
-  // Suppressing the ones that failed would make a broken day look like a quiet one.
-  it('notifies on a signup whose send failed, and says so', async () => {
+  // The uniformity is the decision, not an oversight. Max chose on 2026-08-29 to read
+  // one identical line at a glance, knowing that during a Resend outage these keep
+  // scrolling by looking healthy while nobody receives anything. This test exists so
+  // that a future reader who thinks appending a status is an obvious improvement has
+  // to delete an assertion that says otherwise, rather than quietly changing copy.
+  it('sends the SAME line when the welcome email failed, on purpose', async () => {
     failSend();
     db.syncErrorCount = 7; // backlog: the outage alert stays quiet, this must not
     await post({ email: 'a@b.co' });
-    const body = signupCall();
-    expect(body).toBeDefined();
-    expect(body.text).toContain('EN ECHEC');
+    expect(signupCall()?.text).toBe('1 nouveau subscriber à la newsletter de Max : a@b.co');
   });
 
   it('never notifies for a submission that was not stored', async () => {
