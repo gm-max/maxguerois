@@ -102,10 +102,6 @@ async function alertFirstSendFailure(
   reason: string,
 ): Promise<void> {
   try {
-    const token = optionalEnv('TELEGRAM_BOT_TOKEN');
-    const chat = optionalEnv('TELEGRAM_ADMIN_CHAT_ID');
-    if (!token || !chat) return;
-
     const { count, error } = await supabase
       .from('mg_subscribers')
       .select('email', { count: 'exact', head: true })
@@ -113,29 +109,69 @@ async function alertFirstSendFailure(
       .is('synced_at', null);
     if (error || (count ?? 0) > 1) return;
 
-    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: chat,
-        text:
-          `maxguerois.com — une inscription n'a pas ete envoyee.\n\n` +
-          `Email enregistre dans Supabase, envoi Resend en echec.\n` +
-          `Raison : ${reason.slice(0, 200)}\n\n` +
-          `Le visiteur a vu "c'est fait" et ne recevra rien tant que ce n'est pas corrige.`,
-      }),
-      signal: AbortSignal.timeout(TELEGRAM_TIMEOUT_MS),
-    });
-    // A bad token or a rate-limited bot answers 401/429, and `fetch` RESOLVES. Without
-    // this check the alert reports success while paging nobody — the exact silent
-    // outage it exists to surface, one layer up.
-    if (!res.ok) {
-      console.error(`telegram alert rejected ${res.status}: ${(await res.text()).slice(0, 200)}`);
-    }
+    await sendTelegram(
+      `maxguerois.com — une inscription n'a pas ete envoyee.\n\n` +
+        `Email enregistre dans Supabase, envoi Resend en echec.\n` +
+        `Raison : ${reason.slice(0, 200)}\n\n` +
+        `Le visiteur a vu "c'est fait" et ne recevra rien tant que ce n'est pas corrige.`,
+    );
   } catch (e) {
     // Alerting must never be the reason a request fails.
     console.error('telegram alert failed', e instanceof Error ? e.message : String(e));
   }
+}
+
+/**
+ * Post one line to the admin chat. NEVER throws, and never fails a request.
+ *
+ * Awaited by every caller, deliberately. Astro has no equivalent to `after()`, and an
+ * unawaited call is killed by the serverless teardown: in ouros-reddit-scam that cost
+ * 5 audience adds out of 20 and 13 welcome emails out of 20, at random.
+ */
+async function sendTelegram(text: string): Promise<void> {
+  const token = optionalEnv('TELEGRAM_BOT_TOKEN');
+  const chat = optionalEnv('TELEGRAM_ADMIN_CHAT_ID');
+  if (!token || !chat) return;
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chat, text }),
+      signal: AbortSignal.timeout(TELEGRAM_TIMEOUT_MS),
+    });
+    // A bad token or a rate-limited bot answers 401/429, and `fetch` RESOLVES. Without
+    // this check the send reports success while reaching nobody — the exact silent
+    // outage it exists to surface, one layer up.
+    if (!res.ok) {
+      console.error(`telegram send rejected ${res.status}: ${(await res.text()).slice(0, 200)}`);
+    }
+  } catch (e) {
+    console.error('telegram send failed', e instanceof Error ? e.message : String(e));
+  }
+}
+
+/**
+ * Tell Max, in real time, that someone just subscribed.
+ *
+ * Fires on EVERY stored signup, including one whose Resend push failed: the row is in
+ * Supabase either way, so the person is subscribed either way, and hiding the ones
+ * that failed would make a broken day look quiet rather than broken.
+ *
+ * It says "inscription", not "nouvelle personne", and the wording is load-bearing. The
+ * upsert updates on conflict, so an existing subscriber resubmitting the form lands
+ * here too. Telling them apart costs a query whose count collides with the outage
+ * alert's in the test harness, and the daily card already carries the real total. A
+ * message that overclaims is worse than one that is merely narrower.
+ */
+async function notifySignup(email: string, source: string, syncFailed: boolean): Promise<void> {
+  await sendTelegram(
+    `maxguerois.com — inscription newsletter\n\n` +
+      `${email}\n` +
+      `Source : ${source}\n` +
+      (syncFailed
+        ? `\nEnvoi Resend EN ECHEC : la personne est enregistree mais n'a rien recu.`
+        : `\nEmail de bienvenue envoye.`),
+  );
 }
 
 /**
@@ -436,10 +472,12 @@ export const POST: APIRoute = async ({ request, url }) => {
     if (error) console.error('mg_subscribers sync-status write failed', error);
   };
 
+  let syncFailed = false;
   try {
     await pushToResend(email, SITE_ORIGIN);
     await markSync({ synced_at: new Date().toISOString(), sync_error: null });
   } catch (e) {
+    syncFailed = true;
     // Never fails the signup. sync_error + a NULL synced_at leave the row visible
     // to the partial index, so a replay can pick it up later.
     const msg = e instanceof Error ? e.message : String(e);
@@ -449,6 +487,11 @@ export const POST: APIRoute = async ({ request, url }) => {
     await markSync({ synced_at: null, sync_error: msg.slice(0, 500) });
     await alertFirstSendFailure(supabase, email, msg);
   }
+
+  // After the sync, so the message can say whether the person actually received
+  // anything. Awaited, like every third-party call in this file, and unable to throw,
+  // so a Telegram outage can never cost a signup.
+  await notifySignup(email, field(raw.source) || 'site', syncFailed);
 
   return reply(request, url, 200, { ok: true });
 };
