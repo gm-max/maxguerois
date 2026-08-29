@@ -4,7 +4,15 @@ name = "mg-one-click-unsubscribe"
 main = "src/index.js"
 compatibility_date = "2026-08-29"
 
-# Only this path. Everything else on the domain keeps Vercel's CSRF protection.
+# The trailing * is LOAD-BEARING, and its absence cost a deploy that looked green and
+# did nothing. Cloudflare matches a route pattern against the FULL URL, query string
+# included, so `…/api/unsubscribe` matched only the bare path. Every real one-click
+# carries ?email=…&sig=…, so the worker was never invoked and Vercel kept answering
+# 403. Measured on 2026-08-29: same POST without a query string reached the worker,
+# with one did not.
+#
+# Still narrow: the prefix pins the path, so nothing else on the domain loses Vercel's
+# CSRF protection.
 [[routes]]
-pattern = "maxguerois.com/api/unsubscribe"
+pattern = "maxguerois.com/api/unsubscribe*"
 zone_name = "maxguerois.com"
