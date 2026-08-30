@@ -1,0 +1,194 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+
+const locale = 'fr';
+
+const articleStyles = `
+    .article-body a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        transition: color var(--duration-short) ease;
+    }
+    .article-body a:hover { color: var(--text); }
+    .article-body ul {
+        margin: 0 0 20px;
+        padding-left: 22px;
+        color: var(--text-secondary);
+        list-style: disc;
+    }
+    .article-body li {
+        font-size: 16px;
+        line-height: 1.75;
+        margin-bottom: 8px;
+    }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body .endmatter {
+        margin-top: 56px;
+        padding-top: 28px;
+        border-top: 1px solid var(--border);
+    }
+    .article-body .endmatter-label {
+        font-size: 11px;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin: 0 0 14px;
+    }
+    .article-body .endmatter ul {
+        margin: 0;
+        padding-left: 18px;
+        list-style: none;
+    }
+    .article-body .endmatter li {
+        position: relative;
+        font-size: 13.5px;
+        line-height: 1.6;
+        color: var(--text-tertiary);
+        margin-bottom: 12px;
+    }
+    .article-body .endmatter li::before {
+        content: "";
+        position: absolute;
+        left: -18px;
+        top: 9px;
+        width: 5px;
+        height: 1px;
+        background: var(--text-tertiary);
+    }
+    .article-body .endmatter li:last-child { margin-bottom: 0; }
+    .article-body .disclaimer {
+        margin-top: 24px;
+        padding: 16px 18px;
+        background: var(--bg-subtle);
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        line-height: 1.65;
+        color: var(--text-tertiary);
+    }
+    .article-body .note {
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--text-tertiary);
+    }
+`;
+---
+<ArticleLayout
+    title="Pourquoi j'ai arrêté le rétatrutide après deux semaines."
+    description="4,2 kg en deux semaines, de l'énergie, et des données qui partaient dans le mauvais sens."
+    ogUrl="https://maxguerois.com/fr/newsletter/arreter-le-reta"
+    ogImage="https://maxguerois.com/health-journey/blog/arreter-reta-cover.jpg"
+    locale={locale}
+    articleStyles={articleStyles}
+>
+
+<div class="container">
+    <a href="/fr/newsletter" class="back">← Retour à la newsletter</a>
+
+    <div class="article-meta">30 août 2026</div>
+    <h1 class="article-title">Pourquoi j'ai arrêté le rétatrutide après deux semaines.</h1>
+    <p class="article-subtitle">4,2 kg en deux semaines, de l'énergie, et des données qui partaient dans le mauvais sens.</p>
+
+    <img
+        class="article-img"
+        src="/health-journey/blog/arreter-reta-cover.jpg"
+        alt="Max Guerois à l'entraînement, disque de fonte à la main"
+        fetchpriority="high"
+    >
+
+    <div class="article-body">
+        <p>J'ai perdu <strong>4,2 kg en deux semaines</strong> sous rétatrutide. Puis j'ai arrêté.</p>
+
+        <p>Pas à cause du prix. Pas parce que je n'ai pas tenu. Parce que mes données partaient dans le mauvais sens.</p>
+
+        <h2 class="section-heading">Ce qui a marché, et il faut le dire</h2>
+
+        <p>Quand le rétatrutide agit, on le sent vite.</p>
+        <ul>
+            <li>moins de <em>food noise</em>, ce bruit de fond permanent autour de la nourriture</li>
+            <li>une perte de poids très rapide</li>
+        </ul>
+
+        <p>Et chez moi, quelque chose que je n'attendais pas : <strong>plus de focus</strong>. Probablement parce que j'avais moins de crashs de glycémie dans la journée.</p>
+
+        <p>Côté entraînement, j'avais de l'énergie. Je mangeais moins, mais je mangeais. Le récit catastrophe qu'on lit partout — l'épuisement, la fonte, l'incapacité à s'entraîner — je ne l'ai pas vécu.</p>
+
+        <h2 class="section-heading">Le signal dont on parle peu : le cœur</h2>
+
+        <p>Dans l'essai de phase 2 publié au <em>New England Journal of Medicine</em>, le rétatrutide augmente le <strong>rythme cardiaque au repos</strong>, et cette hausse dépend de la dose. Aux doses de 8 et 12 mg par semaine, elle est de l'ordre de <strong>5 à 7 battements par minute</strong>.</p>
+
+        <p>Deux nuances honnêtes, que le carrousel n'a pas la place de porter.</p>
+
+        <p>D'abord, cette hausse <strong>culmine à la 24<sup>e</sup> semaine puis redescend</strong> aux semaines 36 et 48. Elle n'est pas indéfinie. Ensuite, dans cet essai, elle <strong>n'a été associée à aucun événement cardiovasculaire</strong>.</p>
+
+        <p>Pour situer : le tirzépatide monte d'environ 1 à 3 bpm, le sémaglutide de 1 à 4. Le rétatrutide fait davantage. C'est le prix d'un triple agoniste.</p>
+
+        <img
+            class="article-img"
+            src="/health-journey/blog/arreter-reta-heartrate.jpg"
+            alt="Graphique de rythme cardiaque au repos sur 30 jours"
+            loading="lazy"
+        >
+
+        <p><strong>Bryan Johnson a arrêté son microdosage de tirzépatide pour la même raison.</strong> Après trois semaines : rythme cardiaque au repos en hausse de 3 bpm, variabilité cardiaque en baisse de 7, qualité de sommeil en baisse de 10 %. L'homme le plus obsessionnel de la longévité s'arrête sur des chiffres, pas sur une sensation.</p>
+
+        <h2 class="section-heading">Le deuxième effet : le muscle</h2>
+
+        <p>Dans les études sur les GLP-1, une partie du poids perdu n'est pas de la graisse mais de la <strong>masse maigre</strong>. Donc du muscle.</p>
+
+        <p>Les estimations varient selon les molécules et les protocoles, mais la fourchette qui revient est large et sérieuse : <strong>entre un quart et 40 % du poids perdu</strong>. Les essais STEP 1 et SUSTAIN 8 sur le sémaglutide montent à 39-40 %. D'autres méta-analyses, toutes molécules confondues, tournent autour de 25 %.</p>
+
+        <p>Un mot sur ce qu'on ne peut pas mesurer soi-même. Les balances connectées grand public <strong>déduisent</strong> la composition corporelle par bioimpédance, elles ne la mesurent pas. Elles sont fiables sur le poids total, pas assez sur la composition pour remplacer un DEXA. Donc personne, moi compris, ne peut dire « j'ai perdu tant de muscle » avec une balance.</p>
+
+        <h2 class="section-heading">4 priorités si vous utilisez le reta</h2>
+
+        <ul>
+            <li>une approche très <strong>data-driven</strong> : montre ou bracelet pour suivre l'évolution de vos données dans le temps</li>
+            <li>au moins <strong>1,2 g de protéines par kilo et par jour</strong></li>
+            <li><strong>2 à 4 séances de force</strong> par semaine</li>
+            <li>un vrai sommeil : régulier, calme, sans café tard</li>
+        </ul>
+
+        <img
+            class="article-img"
+            src="/health-journey/blog/arreter-reta-breakfast.jpg"
+            alt="Assiette de petit-déjeuner : fruits rouges, oléagineux, avocat"
+            loading="lazy"
+        >
+
+        <h2 class="section-heading">Arrêter n'est pas un échec</h2>
+
+        <p>C'est la partie que personne ne poste, et c'est pourtant la plus documentée.</p>
+
+        <p>Une enquête nationale américaine publiée en août 2026 a interrogé 440 personnes ayant arrêté un GLP-1. <strong>54,6 % avaient arrêté dans les six mois. 79,7 % dans l'année.</strong></p>
+
+        <p>Les raisons, dans l'ordre : le <strong>coût</strong> (36,1 %), les <strong>effets secondaires</strong> (33,3 %), l'<strong>absence de couverture</strong> (28,2 %), et l'<strong>objectif de poids atteint</strong> (26,1 %).</p>
+
+        <p>Une précision, parce qu'elle compte : cette enquête est américaine. Le coût et l'assurance, qui pèsent le plus lourd là-bas, ne se transposent pas tels quels en France.</p>
+
+        <p>Un résultat mérite qu'on s'y arrête. Les personnes qui se fournissaient en <strong>pharmacie de préparation ou sur internet</strong> arrêtaient bien plus souvent parce qu'elles jugeaient le produit <strong>inefficace</strong> : 17,5 % contre 6,6 % pour celles qui passaient par une pharmacie classique. Et 14,4 % s'étaient procuré leur produit auprès d'un ami ou d'un proche.</p>
+
+        <p>Tout le monde parle de la reprise de poids après l'arrêt. Statistiquement, le vrai sujet est ailleurs : la majorité des gens arrêtent, vite, et personne ne les prépare à ça.</p>
+
+        <p>Moi, j'ai arrêté au bout de deux semaines parce que mes chiffres se dégradaient. Ce n'est pas dans les quatre premières raisons du classement. C'est peut-être le seul avantage réel de mesurer : on décide sur autre chose qu'une impression.</p>
+
+        <p>En attendant la prochaine édition, portez-vous bien.</p>
+
+        <div style="margin: var(--sp-12) 0;">
+            <NewsletterEmbed locale={locale} />
+        </div>
+
+        <div class="endmatter">
+        <p class="endmatter-label">Sources</p>
+            <ul>
+            <li>Jastreboff et al., <em>New England Journal of Medicine</em>, 2023 : essai de phase 2 du rétatrutide, hausse dose-dépendante du rythme cardiaque au repos, pic à la semaine 24 puis déclin. <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2301972" target="_blank" rel="noopener">NEJMoa2301972</a></li>
+            <li>DiStefano et al., <em>Journal of Managed Care &amp; Specialty Pharmacy</em>, août 2026 : enquête nationale sur l'arrêt des GLP-1, 440 personnes. <a href="https://pubmed.ncbi.nlm.nih.gov/42504813/" target="_blank" rel="noopener">PMID 42504813</a></li>
+            <li>Smart scales et composition corporelle : fiables sur le poids, insuffisantes sur la composition. <em>JMIR mHealth</em>, 2021. <a href="https://mhealth.jmir.org/2021/4/e22487/citations" target="_blank" rel="noopener">DOI 10.2196/22487</a></li>
+        </ul>
+        <p class="disclaimer">Expérimentation personnelle, pas un conseil médical. Le rétatrutide n'est pas un médicament approuvé en Europe. Parlez-en à un médecin.</p>
+        </div>
+    </div>
+</div>
+</ArticleLayout>

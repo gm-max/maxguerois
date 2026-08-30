@@ -1,0 +1,193 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+
+
+
+const articleStyles = `
+    .article-body a {
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        transition: color var(--duration-short) ease;
+    }
+    .article-body a:hover { color: var(--text); }
+    .article-body ul {
+        margin: 0 0 20px;
+        padding-left: 22px;
+        color: var(--text-secondary);
+        list-style: disc;
+    }
+    .article-body li {
+        font-size: 16px;
+        line-height: 1.75;
+        margin-bottom: 8px;
+    }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body .endmatter {
+        margin-top: 56px;
+        padding-top: 28px;
+        border-top: 1px solid var(--border);
+    }
+    .article-body .endmatter-label {
+        font-size: 11px;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin: 0 0 14px;
+    }
+    .article-body .endmatter ul {
+        margin: 0;
+        padding-left: 18px;
+        list-style: none;
+    }
+    .article-body .endmatter li {
+        position: relative;
+        font-size: 13.5px;
+        line-height: 1.6;
+        color: var(--text-tertiary);
+        margin-bottom: 12px;
+    }
+    .article-body .endmatter li::before {
+        content: "";
+        position: absolute;
+        left: -18px;
+        top: 9px;
+        width: 5px;
+        height: 1px;
+        background: var(--text-tertiary);
+    }
+    .article-body .endmatter li:last-child { margin-bottom: 0; }
+    .article-body .disclaimer {
+        margin-top: 24px;
+        padding: 16px 18px;
+        background: var(--bg-subtle);
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        line-height: 1.65;
+        color: var(--text-tertiary);
+    }
+    .article-body .note {
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--text-tertiary);
+    }
+`;
+---
+<ArticleLayout
+    title="Why I stopped retatrutide after two weeks."
+    description="4.2 kg in two weeks, plenty of energy, and data heading the wrong way."
+    ogUrl="https://maxguerois.com/newsletter/arreter-le-reta"
+    ogImage="https://maxguerois.com/health-journey/blog/arreter-reta-cover.jpg"
+    articleStyles={articleStyles}
+>
+
+<div class="container">
+    <a href="/newsletter" class="back">← Back to the newsletter</a>
+
+    <div class="article-meta">30 August 2026</div>
+    <h1 class="article-title">Why I stopped retatrutide after two weeks.</h1>
+    <p class="article-subtitle">4.2 kg in two weeks, plenty of energy, and data heading the wrong way.</p>
+
+    <img
+        class="article-img"
+        src="/health-journey/blog/arreter-reta-cover.jpg"
+        alt="Max Guerois training, holding a weight plate"
+        fetchpriority="high"
+    >
+
+    <div class="article-body">
+        <p>I lost <strong>4.2 kg in two weeks</strong> on retatrutide. Then I stopped.</p>
+
+        <p>Not because of the cost. Not because I could not stick with it. Because my data was heading the wrong way.</p>
+
+        <h2 class="section-heading">What worked, and it should be said</h2>
+
+        <p>When retatrutide works, you feel it fast.</p>
+        <ul>
+            <li>less <em>food noise</em>, that constant background hum about eating</li>
+            <li>very fast weight loss</li>
+        </ul>
+
+        <p>And for me, something I did not expect: <strong>more focus</strong>. Probably because I had fewer blood-sugar crashes during the day.</p>
+
+        <p>In training, I had energy. I ate less, but I ate. The disaster story you read everywhere, exhaustion and wasting away and being unable to train, I did not live it.</p>
+
+        <h2 class="section-heading">The signal nobody talks about: the heart</h2>
+
+        <p>In the phase 2 trial published in the <em>New England Journal of Medicine</em>, retatrutide raises <strong>resting heart rate</strong>, and the rise is dose-dependent. At 8 mg and 12 mg weekly it runs around <strong>5 to 7 beats per minute</strong>.</p>
+
+        <p>Two honest caveats the carousel had no room for.</p>
+
+        <p>First, the rise <strong>peaks at week 24 and then declines</strong> at weeks 36 and 48. It is not open-ended. Second, in that trial it was <strong>not associated with any cardiovascular event</strong>.</p>
+
+        <p>For scale: tirzepatide raises it by roughly 1 to 3 bpm, semaglutide 1 to 4. Retatrutide does more. That is the price of a triple agonist.</p>
+
+        <img
+            class="article-img"
+            src="/health-journey/blog/arreter-reta-heartrate.jpg"
+            alt="A 30-day resting heart rate chart"
+            loading="lazy"
+        >
+
+        <p><strong>Bryan Johnson stopped his tirzepatide microdosing for the same reason.</strong> After three weeks: resting heart rate up 3 bpm, heart rate variability down 7, sleep quality down 10%. The most obsessive man in longevity stops on numbers, not on a feeling.</p>
+
+        <h2 class="section-heading">The second effect: muscle</h2>
+
+        <p>In GLP-1 studies, part of the weight lost is not fat but <strong>lean mass</strong>. So muscle.</p>
+
+        <p>Estimates vary by molecule and protocol, but the range that keeps coming back is wide and serious: <strong>between a quarter and 40% of the weight lost</strong>. The STEP 1 and SUSTAIN 8 semaglutide trials reach 39-40%. Other meta-analyses, across molecules, land around 25%.</p>
+
+        <p>A word on what you cannot measure yourself. Consumer smart scales <strong>infer</strong> body composition through bioimpedance, they do not measure it. They are reliable on total weight, not reliable enough on composition to replace a DEXA. So nobody, me included, can claim a muscle-loss figure from a scale.</p>
+
+        <h2 class="section-heading">4 priorities if you use reta</h2>
+
+        <ul>
+            <li>a genuinely <strong>data-driven</strong> approach: a watch or a band to track how your numbers move over time</li>
+            <li>at least <strong>1.2 g of protein per kilo per day</strong></li>
+            <li><strong>2 to 4 strength sessions</strong> a week</li>
+            <li>real sleep: regular, calm, no coffee late</li>
+        </ul>
+
+        <img
+            class="article-img"
+            src="/health-journey/blog/arreter-reta-breakfast.jpg"
+            alt="A breakfast plate: berries, nuts, avocado"
+            loading="lazy"
+        >
+
+        <h2 class="section-heading">Stopping is not a failure</h2>
+
+        <p>This is the part nobody posts, and it is the best documented.</p>
+
+        <p>A US national survey published in August 2026 asked 440 people who had stopped a GLP-1. <strong>54.6% had stopped within six months. 79.7% within a year.</strong></p>
+
+        <p>The reasons, in order: <strong>cost</strong> (36.1%), <strong>side effects</strong> (33.3%), <strong>no insurance coverage</strong> (28.2%), and <strong>reaching a weight goal</strong> (26.1%).</p>
+
+        <p>One qualifier, because it matters: this survey is American. Cost and insurance, which weigh heaviest there, do not transfer as-is to Europe.</p>
+
+        <p>One result deserves a pause. People sourcing from a <strong>compounding pharmacy or an internet seller</strong> stopped far more often because they judged the product <strong>ineffective</strong>: 17.5% against 6.6% for those using a regular pharmacy. And 14.4% had got their medicine from a friend or a relative.</p>
+
+        <p>Everyone talks about regaining weight after stopping. Statistically the real subject is elsewhere: most people stop, fast, and nobody prepares them for it.</p>
+
+        <p>I stopped after two weeks because my numbers were getting worse. That is not among the top four reasons on the list. It may be the one real benefit of measuring: you decide on something other than an impression.</p>
+
+        <p>Until the next edition, take care.</p>
+
+        <div style="margin: var(--sp-12) 0;">
+            <NewsletterEmbed />
+        </div>
+
+        <div class="endmatter">
+        <p class="endmatter-label">Sources</p>
+            <ul>
+            <li>Jastreboff et al., <em>New England Journal of Medicine</em>, 2023 : retatrutide phase 2 trial, dose-dependent rise in resting heart rate, peaking at week 24 then declining. <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2301972" target="_blank" rel="noopener">NEJMoa2301972</a></li>
+            <li>DiStefano et al., <em>Journal of Managed Care &amp; Specialty Pharmacy</em>, août 2026 : national survey on GLP-1 discontinuation, 440 respondents. <a href="https://pubmed.ncbi.nlm.nih.gov/42504813/" target="_blank" rel="noopener">PMID 42504813</a></li>
+            <li>Smart scales and body composition: reliable on weight, not on composition. <em>JMIR mHealth</em>, 2021. <a href="https://mhealth.jmir.org/2021/4/e22487/citations" target="_blank" rel="noopener">DOI 10.2196/22487</a></li>
+        </ul>
+        <p class="disclaimer">Personal experimentation, not medical advice. Retatrutide is not an approved medicine in Europe. Talk to a doctor.</p>
+        </div>
+    </div>
+</div>
+</ArticleLayout>
