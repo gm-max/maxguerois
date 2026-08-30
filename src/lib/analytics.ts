@@ -137,8 +137,19 @@ export async function initAnalytics(): Promise<void> {
 
     posthog.init(POSTHOG_KEY, {
         api_host: POSTHOG_HOST,
-        // Ni cookie ni localStorage : rien n'est ecrit chez le visiteur, donc
-        // rien a faire consentir, et le site n'a aucune banniere. L'entonnoir de
+        // PostHog n'ecrit ni cookie ni localStorage. Il tient sa part du marche.
+        //
+        // MAIS LE SITE, LUI, ECRIT DES COOKIES. Ce commentaire a longtemps dit
+        // « rien n'est ecrit chez le visiteur, donc rien a faire consentir, et
+        // le site n'a aucune banniere ». La derniere partie etait vraie et les
+        // deux premieres fausses : GA4 tourne juste a cote, sans condition, et
+        // pose _ga et _ga_DR1W1B2VV5 des la premiere visite. Mesure le 30/08.
+        //
+        // Le choix sans-cookie ci-dessous n'achete donc RIEN aujourd'hui: on en
+        // paie le prix, l'impossibilite de reconnaitre un visiteur d'un jour a
+        // l'autre, sans en toucher le benefice. Il ne redeviendra utile que le
+        // jour ou GA4 sera coupe. Ne pas lire ce bloc comme une preuve que le
+        // site est sans cookie. L'entonnoir de
         // /peptides survit parce qu'il tient ENTIEREMENT dans un seul
         // chargement de page. Ce qu'on perd : reconnaitre un visiteur d'un jour
         // a l'autre, donc les tuiles comptent des VISITES, pas des personnes.
