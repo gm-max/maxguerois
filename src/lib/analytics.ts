@@ -33,7 +33,24 @@
 export const POSTHOG_KEY = 'phc_pcCeJf3P9FPTNjfKCKwQJXFAbxowHVdhkQ9EMYWpNc2p';
 
 /** Instance UE. Les donnees ne quittent pas l'Europe. */
-export const POSTHOG_HOST = 'https://eu.i.posthog.com';
+// Servi depuis notre propre sous-domaine, pas depuis eu.i.posthog.com. Le worker
+// de workers/posthog-proxy relaie /static/ et /array/ vers eu-assets.i.posthog.com
+// et tout le reste vers eu.i.posthog.com.
+//
+// POURQUOI: mesure du 30/08 sur les 28-29 aout, a fenetre egale, PostHog ne voyait
+// que 25% des vues de page que GA4 voyait. Les deux hotes posthog sont dans les
+// listes par defaut d'uBlock et de Brave, donc trois visiteurs sur quatre
+// n'arrivaient jamais. Un sous-domaine premiere partie les en sort.
+//
+// LE NOM EST PART DU CORRECTIF. La doc PostHog dit d'eviter analytics, tracking,
+// telemetry, posthog ET ph, parce que les listes matchent aussi sur ces mots. La
+// premiere proposition etait ph.maxguerois.com, qui aurait ete bloque exactement
+// comme l'hote qu'il remplacait. Une lettre neutre n'offre rien a matcher.
+export const POSTHOG_HOST = 'https://e.maxguerois.com';
+
+// L'interface reste chez PostHog: sans ca, les liens "voir dans PostHog" et la
+// toolbar pointeraient vers notre proxy, qui ne sert pas d'interface.
+export const POSTHOG_UI_HOST = 'https://eu.posthog.com';
 
 /**
  * Hotes qui envoient des evenements. Tout le reste — localhost, les previews
@@ -137,6 +154,7 @@ export async function initAnalytics(): Promise<void> {
 
     posthog.init(POSTHOG_KEY, {
         api_host: POSTHOG_HOST,
+        ui_host: POSTHOG_UI_HOST,
         // PostHog n'ecrit ni cookie ni localStorage. Il tient sa part du marche.
         //
         // MAIS LE SITE, LUI, ECRIT DES COOKIES. Ce commentaire a longtemps dit

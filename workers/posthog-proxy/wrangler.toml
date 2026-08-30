@@ -1,0 +1,14 @@
+# Serves PostHog from a first-party subdomain so ad blockers stop eating three
+# visitors in four. See src/index.js for the measurement that motivated it.
+name = "mg-posthog-proxy"
+main = "src/index.js"
+compatibility_date = "2026-08-30"
+compatibility_flags = ["nodejs_compat"]
+
+# The trailing * is LOAD-BEARING. A route pattern is matched against the FULL
+# URL, query string included, so a pattern without it matches only the bare
+# path. That exact omission made the one-click-unsubscribe worker deploy green
+# and do nothing on 2026-08-29. Every PostHog call carries a query string.
+[[routes]]
+pattern = "e.maxguerois.com/*"
+zone_name = "maxguerois.com"
