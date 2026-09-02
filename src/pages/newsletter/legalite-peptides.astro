@@ -1,0 +1,75 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+
+const articleStyles = `
+    .article-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body .endmatter { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .article-body .endmatter-label { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--text-tertiary); margin: 0 0 14px; }
+    .article-body .endmatter ol { margin: 0; padding-left: 22px; }
+    .article-body .endmatter li { font-size: 13.5px; line-height: 1.6; color: var(--text-tertiary); margin-bottom: 12px; padding-left: 4px; }
+    .article-body .endmatter li::marker { color: var(--accent); font-weight: 600; }
+    .article-body .citation { font-size: .72em; vertical-align: super; margin-left: 2px; white-space: nowrap; }
+    .article-body .citation a { text-decoration: none; font-weight: 600; }
+    .article-body .disclaimer { margin-top: 24px; padding: 16px 18px; background: var(--bg-subtle); border-radius: var(--radius-md); font-size: 13px; line-height: 1.65; color: var(--text-tertiary); }
+`;
+---
+<ArticleLayout
+    title="Are peptides legal in France? Not all of them are illegal."
+    description="What distinguishes prescription peptides from research products sold online."
+    ogUrl="https://maxguerois.com/newsletter/legalite-peptides"
+    ogImage="https://maxguerois.com/health-journey/blog/legalite-peptides-cover.png"
+    articleStyles={articleStyles}
+>
+<div class="container">
+    <a href="/newsletter" class="back">← Back to the newsletter</a>
+    <div class="article-meta">September 2, 2026</div>
+    <h1 class="article-title">Are peptides legal in France?</h1>
+    <p class="article-subtitle">Not all of them are illegal. Let me explain.</p>
+    <img class="article-img" src="/health-journey/blog/legalite-peptides-cover.png" alt="Visual about peptide legality in France" fetchpriority="high">
+
+    <div class="article-body">
+        <h2 class="section-heading">You need to distinguish 2 types of peptides</h2>
+        <p><strong>1. Those on prescription.</strong></p>
+        <p>GLP-1s such as <strong>Mounjaro</strong> and <strong>Ozempic</strong> are peptides. Authorised, prescribed, dispensed through pharmacies.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p>Ozempic has been marketed in France since <strong>2019</strong>. Mounjaro since <strong>2024</strong>.</p>
+        <p>For obesity, Mounjaro is reimbursed from a <strong>BMI of 35</strong> after nutrition follow-up has failed.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p><strong>So, what about other peptides sold online?</strong></p>
+
+        <h2 class="section-heading">Are reta, BPC-157 and GHK-Cu legal?</h2>
+        <p>Promoted by influencers, they are sold as <strong>research products</strong>.</p>
+        <p>Research use only = "for research use only".</p>
+        <p>On July 22, the <strong>ANSM</strong>, the French medicines regulator, warned: "Peptides sold online: do not use them, they may be dangerous."<sup class="citation"><a href="#source-2">[2]</a></sup></p>
+        <p>And this is where it gets confusing: being sold online does not mean being authorised.</p>
+
+        <h2 class="section-heading">Not authorised, but still distributed?</h2>
+        <p>This is not a legal vacuum. Sellers shelter behind the research label to distance themselves from responsibility.<sup class="citation"><a href="#source-5">[5]</a></sup></p>
+        <p>In plain English, research use only is a commercial argument that leaves <strong>you solely responsible</strong>.</p>
+        <p>And the risks are real when no regulator is checking: no guarantee of the product's identity, concentration or sterility.</p>
+        <p><strong>This is what is called the grey market.</strong></p>
+        <p>But what does that mean for someone buying it?</p>
+
+        <h2 class="section-heading">Does buying on the grey market mean prison?</h2>
+        <p>For most people, no.</p>
+        <p>Customs may seize your package.<sup class="citation"><a href="#source-3">[3]</a></sup></p>
+        <p>But some molecules are prohibited to <strong>possess</strong>. <strong>TB-500</strong>, <strong>MOTS-c</strong>, <strong>CJC-1295</strong> and <strong>ipamorelin</strong> are on that list. Without a medical justification, possessing them carries up to <strong>1 year</strong> and a <strong>EUR 3,750</strong> fine.<sup class="citation"><a href="#source-4">[4]</a></sup></p>
+        <p>And if you <strong>sell</strong> it?</p>
+        <p>Selling a medicine without authorisation carries up to <strong>5 years</strong> and a <strong>EUR 375,000</strong> fine.<sup class="citation"><a href="#source-5">[5]</a></sup></p>
+
+        <div style="margin: var(--sp-12) 0;"><NewsletterEmbed /></div>
+
+        <div class="endmatter">
+            <p class="endmatter-label">Sources</p>
+            <ol>
+                <li id="source-1">French public medicines database: <a href="https://base-donnees-publique.medicaments.gouv.fr/medicament/65111938/extrait" target="_blank" rel="noopener">Mounjaro</a>, <a href="https://base-donnees-publique.medicaments.gouv.fr/medicament/63052569/extrait" target="_blank" rel="noopener">reimbursement terms</a> and <a href="https://base-donnees-publique.medicaments.gouv.fr/medicament/63210923/extrait" target="_blank" rel="noopener">Ozempic</a>.</li>
+                <li id="source-2">ANSM, <a href="https://ansm.sante.fr/actualites/peptides-vendus-en-ligne-ne-les-utilisez-pas-ils-peuvent-etre-dangereux" target="_blank" rel="noopener">"Peptides" sold online: do not use them, they may be dangerous</a>, July 22, 2026.</li>
+                <li id="source-3">French Customs, <a href="https://www.douane.gouv.fr/fiche/le-transport-de-medicaments-en-france-par-des-particuliers" target="_blank" rel="noopener">medicines carried by private individuals</a>.</li>
+                <li id="source-4">French Sports Code, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053723413" target="_blank" rel="noopener">order of March 18, 2026</a> and <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043414447" target="_blank" rel="noopener">Article L232-26</a>.</li>
+                <li id="source-5">French Public Health Code, <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000028351994" target="_blank" rel="noopener">Article L5421-2</a>.</li>
+            </ol>
+            <p class="disclaimer">General information, not individual legal advice or medical advice.</p>
+        </div>
+    </div>
+</div>
+</ArticleLayout>

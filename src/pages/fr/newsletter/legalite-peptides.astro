@@ -1,0 +1,77 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+
+const locale = 'fr';
+const articleStyles = `
+    .article-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body .endmatter { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .article-body .endmatter-label { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--text-tertiary); margin: 0 0 14px; }
+    .article-body .endmatter ol { margin: 0; padding-left: 22px; }
+    .article-body .endmatter li { font-size: 13.5px; line-height: 1.6; color: var(--text-tertiary); margin-bottom: 12px; padding-left: 4px; }
+    .article-body .endmatter li::marker { color: var(--accent); font-weight: 600; }
+    .article-body .citation { font-size: .72em; vertical-align: super; margin-left: 2px; white-space: nowrap; }
+    .article-body .citation a { text-decoration: none; font-weight: 600; }
+    .article-body .disclaimer { margin-top: 24px; padding: 16px 18px; background: var(--bg-subtle); border-radius: var(--radius-md); font-size: 13px; line-height: 1.65; color: var(--text-tertiary); }
+`;
+---
+<ArticleLayout
+    title="Les peptides sont-ils illégaux en France ? Pas tous."
+    description="Ce qui distingue les peptides sous ordonnance des produits de recherche vendus en ligne."
+    ogUrl="https://maxguerois.com/fr/newsletter/legalite-peptides"
+    ogImage="https://maxguerois.com/health-journey/blog/legalite-peptides-cover.png"
+    locale={locale}
+    articleStyles={articleStyles}
+>
+<div class="container">
+    <a href="/fr/newsletter" class="back">← Retour à la newsletter</a>
+    <div class="article-meta">2 septembre 2026</div>
+    <h1 class="article-title">Les peptides sont-ils illégaux en France ?</h1>
+    <p class="article-subtitle">Pas tous. Je vous explique.</p>
+    <img class="article-img" src="/health-journey/blog/legalite-peptides-cover.png" alt="Visuel sur la légalité des peptides en France" fetchpriority="high">
+
+    <div class="article-body">
+        <h2 class="section-heading">Il faut distinguer 2 types de peptides</h2>
+        <p><strong>1. Ceux sous ordonnance.</strong></p>
+        <p>Les GLP-1 comme <strong>Mounjaro</strong> ou <strong>Ozempic</strong> sont des peptides. Autorisés, prescrits, délivrés en pharmacie.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p>Ozempic est commercialisé en France depuis <strong>2019</strong>. Mounjaro depuis <strong>2024</strong>.</p>
+        <p>Pour l'obésité, Mounjaro est remboursé à partir d'un <strong>IMC de 35</strong>, après échec du suivi nutritionnel.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p><strong>Alors, qu'en est-il des autres peptides vendus en ligne ?</strong></p>
+
+        <h2 class="section-heading">Reta, BPC-157, GHK-Cu, sont-ils légaux ?</h2>
+        <p>Plébiscités par les influenceurs, ils sont vendus comme <strong>produits de recherche</strong>.</p>
+        <p>Research use only = « à usage de recherche seulement ».</p>
+        <p>Le 22 juillet, l'<strong>ANSM</strong>, le régulateur français du médicament, a alerté : « Peptides vendus en ligne : ne les utilisez pas, ils peuvent être dangereux. »<sup class="citation"><a href="#source-2">[2]</a></sup></p>
+        <p>Et c'est là que ça se complique : être vendu en ligne ne veut pas dire être autorisé.</p>
+
+        <h2 class="section-heading">Pas autorisés, mais distribués quand même ?</h2>
+        <p>Ce n'est pas un vide juridique. Les vendeurs s'abritent derrière l'étiquette recherche pour se dédouaner.<sup class="citation"><a href="#source-5">[5]</a></sup></p>
+        <p>En clair, research use only est un argument commercial qui vous rend <strong>seul responsable</strong>.</p>
+        <p>Et les risques sont réels quand aucun régulateur ne contrôle : aucune garantie sur l'identité du produit, sa concentration ou sa stérilité.</p>
+        <p><strong>C'est ce qu'on appelle le marché gris.</strong></p>
+        <p>Mais concrètement, qu'est-ce que ça change pour quelqu'un qui achète ?</p>
+
+        <h2 class="section-heading">Acheter sur le marché gris = prison ?</h2>
+        <p>Pour la plupart, non.</p>
+        <p>La douane peut saisir votre colis.<sup class="citation"><a href="#source-3">[3]</a></sup></p>
+        <p>Mais certains sont interdits à la <strong>détention</strong>. Le <strong>TB-500</strong>, le <strong>MOTS-c</strong>, le <strong>CJC-1295</strong> et l'<strong>ipamoréline</strong> figurent sur cette liste. Sans justification médicale, leur détention expose à <strong>1 an</strong> et <strong>3 750 EUR</strong>.<sup class="citation"><a href="#source-4">[4]</a></sup></p>
+        <p>Et si vous le <strong>vendez</strong> ?</p>
+        <p>Vendre un médicament sans autorisation expose jusqu'à <strong>5 ans</strong> et <strong>375 000 EUR</strong>.<sup class="citation"><a href="#source-5">[5]</a></sup></p>
+
+        <div style="margin: var(--sp-12) 0;"><NewsletterEmbed locale={locale} /></div>
+
+        <div class="endmatter">
+            <p class="endmatter-label">Sources</p>
+            <ol>
+                <li id="source-1">Base de données publique des médicaments : <a href="https://base-donnees-publique.medicaments.gouv.fr/medicament/65111938/extrait" target="_blank" rel="noopener">Mounjaro</a>, <a href="https://base-donnees-publique.medicaments.gouv.fr/medicament/63052569/extrait" target="_blank" rel="noopener">conditions de remboursement</a> et <a href="https://base-donnees-publique.medicaments.gouv.fr/medicament/63210923/extrait" target="_blank" rel="noopener">Ozempic</a>.</li>
+                <li id="source-2">ANSM, <a href="https://ansm.sante.fr/actualites/peptides-vendus-en-ligne-ne-les-utilisez-pas-ils-peuvent-etre-dangereux" target="_blank" rel="noopener">« Peptides » vendus en ligne : ne les utilisez pas, ils peuvent être dangereux</a>, 22 juillet 2026.</li>
+                <li id="source-3">Douane française, <a href="https://www.douane.gouv.fr/fiche/le-transport-de-medicaments-en-france-par-des-particuliers" target="_blank" rel="noopener">transport de médicaments par des particuliers</a>.</li>
+                <li id="source-4">Code du sport, <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053723413" target="_blank" rel="noopener">arrêté du 18 mars 2026</a> et <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000043414447" target="_blank" rel="noopener">article L232-26</a>.</li>
+                <li id="source-5">Code de la santé publique, <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000028351994" target="_blank" rel="noopener">article L5421-2</a>.</li>
+            </ol>
+            <p class="disclaimer">Information générale, pas un avis juridique individuel ni un conseil médical.</p>
+        </div>
+    </div>
+</div>
+</ArticleLayout>

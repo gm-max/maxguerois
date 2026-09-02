@@ -97,6 +97,11 @@ Own stack since 2026-08-26. beehiiv is gone: no embed, no iframe, no beehiiv hos
 3. It appears automatically on the homepage + /newsletter via `getCollection()`, linked as `/newsletter/<slug>`
 4. If the article previously lived at an old URL, add a 301 in `vercel.json` `redirects` and a `<url>` entry in `public/sitemap.xml`
 
+## Citations
+- Every factual health, science, legal, statistical, or regulatory claim in an article needs an inline numeric citation, for example `[1]`, immediately after the claim.
+- The endmatter must use a matching numbered `Sources` list. Never leave sources as an unnumbered list or as a source dump disconnected from the copy.
+- Keep the French and English mirrors on the same source numbering. Do not infer a legal claim: link the primary official source.
+
 ## Security
 - HTTP headers: `vercel.json` sets CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
 - CSP `img-src` includes `https://*.gstatic.com` for Google favicon redirects used by the homepage “Ask AI” icons.
