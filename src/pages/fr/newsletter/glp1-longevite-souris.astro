@@ -1,0 +1,103 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+
+const locale = 'fr';
+const articleStyles = `
+    .article-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body .endmatter { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .article-body .endmatter-label { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--text-tertiary); margin: 0 0 14px; }
+    .article-body .endmatter ol { margin: 0; padding-left: 22px; }
+    .article-body .endmatter li { font-size: 13.5px; line-height: 1.6; color: var(--text-tertiary); margin-bottom: 12px; padding-left: 4px; }
+    .article-body .endmatter li::marker { color: var(--accent); font-weight: 600; }
+    .article-body .citation { font-size: .72em; vertical-align: super; margin-left: 2px; white-space: nowrap; }
+    .article-body .citation a { text-decoration: none; font-weight: 600; }
+    .article-body ul { margin: 0 0 20px; padding-left: 20px; }
+    .article-body li { font-size: 16px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 10px; }
+    .article-body li strong { color: var(--text); font-weight: 600; }
+    .article-body li::marker { color: var(--accent); }
+    .article-body .disclaimer { margin-top: 24px; padding: 16px 18px; background: var(--bg-subtle); border-radius: var(--radius-md); font-size: 13px; line-height: 1.65; color: var(--text-tertiary); }
+`;
+---
+<ArticleLayout
+    title="Ozempic a fait vivre des souris 92 jours de plus"
+    description="Une étude Nature du 2 septembre 2026 sur le sémaglutide et le vieillissement. Le chiffre, la comparaison avec un régime, et ce qui reste à prouver."
+    ogUrl="https://maxguerois.com/fr/newsletter/glp1-longevite-souris"
+    ogImage="https://maxguerois.com/health-journey/blog/glp1-longevite-souris-cover.png"
+    locale={locale}
+    articleStyles={articleStyles}
+>
+<div class="container">
+    <a href="/fr/newsletter" class="back">← Retour à la newsletter</a>
+    <div class="article-meta">6 septembre 2026</div>
+    <h1 class="article-title">Ozempic a fait vivre des souris 92 jours de plus</h1>
+    <p class="article-subtitle">Ce que dit l'étude, et ce qu'elle ne dit pas.</p>
+    <img class="article-img" src="/health-journey/blog/glp1-longevite-souris-cover.png" alt="Un stylo d'Ozempic tenu au-dessus d'une souris blanche" fetchpriority="high">
+
+    <div class="article-body">
+        <p>Le 2 septembre, <strong>Nature</strong> a publié une étude qui a fait le tour des réseaux en 48 heures.</p>
+        <p>Des souris traitées au sémaglutide, la molécule d'Ozempic et de Wegovy, ont vécu plus longtemps que des souris non traitées.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p>C'est le premier signal de ce type pour une molécule qui est déjà en pharmacie.</p>
+
+        <h2 class="section-heading">Le protocole</h2>
+        <p>Des souris femelles en bonne santé, âgées de <strong>20 mois</strong>.</p>
+        <p>C'est tard. L'équivalent d'un humain d'une soixantaine d'années.</p>
+        <p>Injection quotidienne de sémaglutide, jusqu'à la fin de leur vie.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+
+        <h2 class="section-heading">Le résultat</h2>
+        <p>Durée de vie médiane : <strong>834 jours</strong> contre <strong>742</strong>.</p>
+        <p>Soit 92 jours, ou <strong>12 %</strong>.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p>Le détail qui rend le chiffre solide : les causes de décès sont les mêmes dans les deux groupes.</p>
+        <p>Le sémaglutide n'a pas supprimé une maladie en particulier. Il a repoussé la mort sur plusieurs fronts à la fois.</p>
+        <p>C'est le profil d'un ralentissement général du vieillissement, pas d'un traitement ciblé.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+
+        <h2 class="section-heading">Les bénéfices</h2>
+        <p>Elles n'ont pas seulement vécu plus longtemps. Elles ont mieux vieilli.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <ul>
+            <li>Plus de mouvement et plus d'exploration. Une souris âgée reste collée aux murs, celles-ci retournaient au centre.</li>
+            <li>Meilleure mémoire spatiale.</li>
+            <li>Meilleure coordination, plus de force, plus d'endurance.</li>
+            <li>Meilleure gestion du glucose.</li>
+            <li>Une perte de poids qui vient de la graisse : le pourcentage de masse maigre a augmenté, pas baissé.</li>
+        </ul>
+        <p>Elles étaient plus légères, donc avantagées sur les tests physiques. Les auteurs l'ont anticipé : après ajustement sur le poids, l'avantage tient.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p>Elles ont aussi réduit leur alimentation de 24 % d'elles-mêmes. Comparées à des souris mises au même niveau calorique, elles font jeu égal sur la force et l'endurance, et <strong>mieux</strong> sur l'exploration, la mémoire et le glucose.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p>L'effet ne se réduit donc pas au fait de manger moins. Et il s'obtient sans la faim permanente d'un régime strict.<sup class="citation"><a href="#source-3">[3]</a></sup></p>
+
+        <h2 class="section-heading">Ce n'est pas un signal isolé</h2>
+        <p>L'étude arrive après plusieurs années de résultats qui vont dans le même sens. Tous portent sur un traitement GLP-1.</p>
+        <ul>
+            <li><strong>SELECT</strong> : 20 % d'événements cardiovasculaires majeurs en moins, chez des personnes en surpoids sans diabète. Sémaglutide 2,4 mg par semaine, le dosage de Wegovy.<sup class="citation"><a href="#source-4">[4]</a></sup></li>
+            <li><strong>FLOW</strong> : moins d'atteintes rénales et moins de mortalité chez des diabétiques de type 2. Sémaglutide 1 mg par semaine, le dosage d'Ozempic.<sup class="citation"><a href="#source-5">[5]</a></sup></li>
+            <li>Et des essais en cours sur le foie et sur Alzheimer, toujours avec du sémaglutide.<sup class="citation"><a href="#source-1">[1]</a></sup></li>
+        </ul>
+        <p>À chaque fois, le bénéfice dépasse ce que la perte de poids seule expliquerait.</p>
+        <p>Une molécule qui améliore autant de systèmes à la fois, c'est à ça que ressemblerait un traitement qui agit sur le vieillissement plutôt que sur ses conséquences.</p>
+
+        <h2 class="section-heading">Ce qu'on ne sait pas encore</h2>
+        <p>Ce sont des souris. Uniquement des femelles.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p>Le mécanisme de l'effet supplémentaire n'est pas identifié.<sup class="citation"><a href="#source-2">[2]</a></sup></p>
+        <p>Et rien n'est démontré chez l'humain sur la longévité. Les essais commencent, il faudra des années.<sup class="citation"><a href="#source-2">[2]</a></sup></p>
+
+        <h2 class="section-heading">Ce que j'en retiens</h2>
+        <p>« Ozempic fait vivre plus longtemps » va trop vite. Mais l'inverse serait aussi faux.</p>
+        <p>C'est la première fois qu'une molécule déjà prescrite à des millions de personnes reproduit, chez un mammifère, ce que seule la privation de nourriture savait faire.</p>
+        <p>Je crois de plus en plus qu'on tient là une classe de molécules qui dépasse largement la perte de poids. GLP-1 ou ce qui viendra après.</p>
+
+        <div style="margin: var(--sp-12) 0;"><NewsletterEmbed locale={locale} /></div>
+
+        <div class="endmatter">
+            <p class="endmatter-label">Sources</p>
+            <ol>
+                <li id="source-1">Feng, Y. et al., <a href="https://www.nature.com/articles/s41586-026-10940-7" target="_blank" rel="noopener">Late-life semaglutide treatment slows ageing and extends lifespan in female mice</a>, <em>Nature</em>, 2 septembre 2026.</li>
+                <li id="source-2">Lenharo, M., <a href="https://www.nature.com/articles/d41586-026-02757-1" target="_blank" rel="noopener">Can GLP-1 drugs slow ageing? Mouse study shows promise</a>, <em>Nature News</em>, 2 septembre 2026.</li>
+                <li id="source-3">Fontana, L., Partridge, L. &amp; Longo, V. D., <a href="https://pubmed.ncbi.nlm.nih.gov/20395504/" target="_blank" rel="noopener">Extending healthy life span: from yeast to humans</a>, <em>Science</em>, 2010.</li>
+                <li id="source-4">Lincoff, A. M. et al., <a href="https://pubmed.ncbi.nlm.nih.gov/37952131/" target="_blank" rel="noopener">Semaglutide and cardiovascular outcomes in obesity without diabetes</a> (essai SELECT), <em>New England Journal of Medicine</em>, 2023.</li>
+                <li id="source-5">Perkovic, V. et al., <a href="https://pubmed.ncbi.nlm.nih.gov/38785209/" target="_blank" rel="noopener">Effects of semaglutide on chronic kidney disease in patients with type 2 diabetes</a> (essai FLOW), <em>New England Journal of Medicine</em>, 2024.</li>
+            </ol>
+            <p class="disclaimer">Information générale, pas un conseil médical. Cette étude porte sur des souris et ne justifie aucune décision de traitement.</p>
+        </div>
+    </div>
+</div>
+</ArticleLayout>

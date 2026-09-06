@@ -102,6 +102,34 @@ Own stack since 2026-08-26. beehiiv is gone: no embed, no iframe, no beehiiv hos
 - The endmatter must use a matching numbered `Sources` list. Never leave sources as an unnumbered list or as a source dump disconnected from the copy.
 - Keep the French and English mirrors on the same source numbering. Do not infer a legal claim: link the primary official source.
 
+## Newsletter broadcast (Resend) — format maison
+
+Le broadcast reprend l'article, il ne le résume pas autrement. Mêmes sections, même ordre,
+même longueur. Ce qui suit est obligatoire, à appliquer sans qu'on ait à le redemander.
+
+- **Citations numérotées, comme sur le site.** Chaque affirmation factuelle porte un appel
+  `[1]` en exposant, lié directement à l'URL de la source (il n'y a pas d'ancre interne dans
+  un email). La liste `Sources` en pied reprend la même numérotation, préfixée `[1]`, `[2]`.
+  La numérotation est identique à celle de l'article.
+- **Gras sémantique.** Les chiffres, les noms d'essais, les molécules et la phrase-clé de
+  chaque section passent en `<strong>`. Un email se lit en diagonale ; le gras est le seul
+  repère de lecture.
+- **Nommer la molécule et le dosage.** Quand on cite un essai clinique, préciser entre
+  parenthèses la molécule et la dose, et le nom commercial correspondant. Exemple :
+  « sémaglutide 2,4 mg par semaine, le dosage de Wegovy ».
+- **Listes à puces en tableau, jamais en `<ul>`.** Une ligne par puce, `<td width="18">` pour
+  le bullet en `#c4934a`, `<td>` pour le texte. Les `<ul>` ne se rendent pas pareil d'un
+  client à l'autre.
+- **Signature en deux lignes**, toujours la même :
+  « En attendant la prochaine découverte, portez-vous bien. » puis « Max Guerois ».
+- **P.S. Instagram** juste après la signature, dans un encart `#faf8f4` :
+  « Au fait, je me lance sur Instagram. Vous pouvez me suivre ici : @maxguerois »,
+  lié à https://www.instagram.com/maxguerois/
+- **Ordre du pied de page**, non négociable : signature, P.S., filet noir, lien vers
+  l'article, sources numérotées, puis le disclaimer dans son propre bloc gris.
+- **Expéditeur** `Max Guerois <hi@maxguerois.com>`, segment « maxguerois.com — L'actu peptides ».
+- Un broadcast programmé n'est plus éditable dans Resend. Tout relire avant de programmer.
+
 ## Security
 - HTTP headers: `vercel.json` sets CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
 - CSP `img-src` includes `https://*.gstatic.com` for Google favicon redirects used by the homepage “Ask AI” icons.
