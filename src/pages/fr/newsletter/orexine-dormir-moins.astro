@@ -1,0 +1,93 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+
+const locale = 'fr';
+const articleStyles = `
+    .article-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body .endmatter { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .article-body .endmatter-label { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--text-tertiary); margin: 0 0 14px; }
+    .article-body .endmatter ol { margin: 0; padding-left: 22px; }
+    .article-body .endmatter li { font-size: 13.5px; line-height: 1.6; color: var(--text-tertiary); margin-bottom: 12px; padding-left: 4px; }
+    .article-body .endmatter li::marker { color: var(--accent); font-weight: 600; }
+    .article-body .citation { font-size: .72em; vertical-align: super; margin-left: 2px; white-space: nowrap; }
+    .article-body .citation a { text-decoration: none; font-weight: 600; }
+    .article-body ul { margin: 0 0 20px; padding-left: 20px; }
+    .article-body li { font-size: 16px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 10px; }
+    .article-body li strong { color: var(--text); font-weight: 600; }
+    .article-body li::marker { color: var(--accent); }
+    .article-body .disclaimer { margin-top: 24px; padding: 16px 18px; background: var(--bg-subtle); border-radius: var(--radius-md); font-size: 13px; line-height: 1.65; color: var(--text-tertiary); }
+`;
+---
+<ArticleLayout
+    title="Et si un médicament permettait de dormir 4 h de moins ?"
+    description="Le prix Lasker 2026 récompense la découverte de l'orexine. Un 1er médicament, 6,3 milliards de Lilly, et une hypothèse : un GLP-1 du sommeil."
+    ogUrl="https://maxguerois.com/fr/newsletter/orexine-dormir-moins"
+    ogImage="https://maxguerois.com/health-journey/blog/orexine-dormir-moins-cover.jpg"
+    locale={locale}
+    articleStyles={articleStyles}
+>
+<div class="container">
+    <a href="/fr/newsletter" class="back">← Retour à la newsletter</a>
+    <div class="article-meta">14 septembre 2026</div>
+    <h1 class="article-title">Et si un médicament permettait de dormir 4 h de moins ?</h1>
+    <p class="article-subtitle">Une piste venue de la narcolepsie.</p>
+    <img class="article-img" src="/health-journey/blog/orexine-dormir-moins-cover.jpg" alt="Un homme réveillé à l’aube face aux toits de Paris" fetchpriority="high">
+
+    <div class="article-body">
+        <p>Le 9 septembre, un Français a reçu le prix qui annonce souvent un Nobel.</p>
+        <p>Sa découverte vient de donner un médicament. Et elle pose une question plus large : <strong>peut-on réduire notre besoin de sommeil ?</strong></p>
+
+        <h2 class="section-heading">Un Français primé pour avoir trouvé la cause de la narcolepsie</h2>
+        <figure style="margin: 8px 0 28px;">
+            <img src="/health-journey/blog/orexine-dormir-moins-mignot.jpg" alt="Emmanuel Mignot" style="width:100%; height:auto; display:block; border-radius: var(--radius-md);" loading="lazy">
+            <figcaption style="margin-top:10px; font-size:13px; line-height:1.6; color:var(--text-tertiary);">Emmanuel Mignot, chercheur à Stanford.</figcaption>
+        </figure>
+        <p><strong>Emmanuel Mignot</strong>, chercheur à Stanford, partage le <strong>prix Lasker 2026</strong> avec le Japonais Masashi Yanagisawa.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p>La narcolepsie, c'est cette maladie où l'on s'endort d'un coup, en pleine journée.</p>
+        <p>En 1999, Mignot remonte la piste chez des chiens narcoleptiques. Yanagisawa, lui, venait de découvrir une molécule du cerveau : l'<strong>orexine</strong>. Les 2 pistes se rejoignent. Chez l'humain, la narcolepsie de type 1 vient d'un manque d'orexine.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p><strong>27 ans plus tard</strong>, cette découverte a donné le 1er médicament qui traite la cause. L'oveporexton, de Takeda, imite l'orexine. Il a été approuvé aux États-Unis en <strong>août 2026</strong>.<sup class="citation"><a href="#source-2">[2]</a></sup></p>
+
+        <h2 class="section-heading">L'orexine, c'est quoi ?</h2>
+        <p>C'est le neuropeptide qui vous tient éveillé.</p>
+        <p>Quand il manque, le cerveau bascule dans le sommeil sans prévenir.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p>Mais l'inverse existe. Certaines personnes portent une mutation du gène <strong>DEC2</strong>, qui freine moins la production d'orexine. Elles dorment <strong>4 à 6 h</strong> par nuit, et ça leur suffit.<sup class="citation"><a href="#source-3">[3]</a></sup></p>
+        <p>Quand on reproduit cette mutation chez la souris, elle produit plus d'orexine et dort moins.<sup class="citation"><a href="#source-3">[3]</a></sup></p>
+        <p>Trump dit dormir 4 h, son médecin parle de 4 à 5 h.<sup class="citation"><a href="#source-4">[4]</a></sup> Macron est connu pour dormir très peu.<sup class="citation"><a href="#source-5">[5]</a></sup> Ils font peut-être partie de ces <strong>« short sleepers »</strong>. Rien ne le prouve, mais la question se pose.</p>
+
+        <h2 class="section-heading">Lilly mise 6,3 milliards sur l'orexine</h2>
+        <figure style="margin: 8px 0 28px;">
+            <img src="/health-journey/blog/orexine-dormir-moins-lilly.jpg" alt="Siège de Lilly" style="width:100%; height:auto; display:block; border-radius: var(--radius-md);" loading="lazy">
+            <figcaption style="margin-top:10px; font-size:13px; line-height:1.6; color:var(--text-tertiary);">Siège de Lilly.</figcaption>
+        </figure>
+        <p>Lilly, c'est le labo américain derrière Mounjaro, l'un des GLP-1 les plus vendus.</p>
+        <p>En 2026, il rachète <strong>Centessa</strong>, une biotech qui développe des molécules activant le récepteur de l'orexine : <strong>6,3 milliards de dollars</strong> d'emblée, jusqu'à 7,8 milliards au total.<sup class="citation"><a href="#source-6">[6]</a></sup></p>
+        <p>Sur le papier, c'est pour traiter la narcolepsie et d'autres troubles où l'on dort trop.<sup class="citation"><a href="#source-6">[6]</a></sup></p>
+        <p><strong>Mais 6 milliards pour une maladie rare ? Le marché visé est ailleurs.</strong></p>
+
+        <h2 class="section-heading">Un GLP-1 du sommeil ?</h2>
+        <p>Le GLP-1 est né pour le diabète, puis l'obésité. Aujourd'hui, <strong>1 adulte américain sur 8</strong> en prend, soit environ 30 millions de personnes, parfois sans pathologie.<sup class="citation"><a href="#source-7">[7]</a></sup></p>
+        <p>Maintenant, imaginez la même trajectoire pour une molécule qui fait passer vos nuits de 8 h à 4 h.</p>
+        <p>De 20 à 80 ans, vous gagneriez <strong>10 ans de vie éveillée</strong>.</p>
+        <p>Reste à prouver l'essentiel. Ces molécules gardent éveillé, mais personne n'a montré que 4 h récupèrent autant que 8.</p>
+        <p><strong>Le pari est lancé.</strong></p>
+
+        <div style="margin: var(--sp-12) 0;"><NewsletterEmbed locale={locale} /></div>
+
+        <div class="endmatter">
+            <p class="endmatter-label">Sources</p>
+            <ol>
+                <li id="source-1">Lasker Foundation, <a href="https://laskerfoundation.org/winners/orexin-a-brain-peptide-that-maintains-wakefulness/" target="_blank" rel="noopener">Orexin, a brain peptide that maintains wakefulness</a>, prix Albert Lasker de recherche médicale fondamentale, 2026.</li>
+                <li id="source-2">Takeda, <a href="https://www.takeda.com/newsroom/newsreleases/2026/orzeyful-approved-narcolepsy/" target="_blank" rel="noopener">FDA Approves ORZEYFUL for Adults With Narcolepsy Type 1</a>, communiqué, 5 août 2026.</li>
+                <li id="source-3">Hirano, A. et al., <a href="https://pubmed.ncbi.nlm.nih.gov/29531056/" target="_blank" rel="noopener">DEC2 modulates orexin expression and regulates sleep</a>, <em>PNAS</em>, 2018.</li>
+                <li id="source-4">Global News, <a href="https://globalnews.ca/news/3970379/donald-trump-sleep-hours-night/" target="_blank" rel="noopener">Donald Trump sleeps 4-5 hours each night</a>, janvier 2018.</li>
+                <li id="source-5">Le JDD, <a href="https://www.lejdd.fr/Politique/emmanuel-macron-un-president-qui-dort-peu-3455996" target="_blank" rel="noopener">Emmanuel Macron, un président qui dort peu</a>.</li>
+                <li id="source-6">Eli Lilly, <a href="https://investor.lilly.com/news-releases/news-release-details/lilly-acquire-centessa-pharmaceuticals-advance-treatments-sleep" target="_blank" rel="noopener">Lilly to acquire Centessa Pharmaceuticals to advance treatments for sleep-wake disorders</a>, communiqué, 31 mars 2026.</li>
+                <li id="source-7">KFF, <a href="https://www.kff.org/public-opinion/poll-1-in-8-adults-say-they-are-currently-taking-a-glp-1-drug-for-weight-loss-diabetes-or-another-condition-even-as-half-say-the-drugs-are-difficult-to-afford/" target="_blank" rel="noopener">Poll: 1 in 8 adults say they are currently taking a GLP-1 drug</a>, novembre 2025.</li>
+            </ol>
+            <p class="disclaimer">Information générale, pas un conseil médical. Les molécules qui réduiraient le besoin de sommeil chez des personnes en bonne santé n'existent pas à ce jour.</p>
+        </div>
+    </div>
+</div>
+</ArticleLayout>

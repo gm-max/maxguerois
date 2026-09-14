@@ -1,0 +1,91 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+
+const articleStyles = `
+    .article-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body .endmatter { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .article-body .endmatter-label { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--text-tertiary); margin: 0 0 14px; }
+    .article-body .endmatter ol { margin: 0; padding-left: 22px; }
+    .article-body .endmatter li { font-size: 13.5px; line-height: 1.6; color: var(--text-tertiary); margin-bottom: 12px; padding-left: 4px; }
+    .article-body .endmatter li::marker { color: var(--accent); font-weight: 600; }
+    .article-body .citation { font-size: .72em; vertical-align: super; margin-left: 2px; white-space: nowrap; }
+    .article-body .citation a { text-decoration: none; font-weight: 600; }
+    .article-body ul { margin: 0 0 20px; padding-left: 20px; }
+    .article-body li { font-size: 16px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 10px; }
+    .article-body li strong { color: var(--text); font-weight: 600; }
+    .article-body li::marker { color: var(--accent); }
+    .article-body .disclaimer { margin-top: 24px; padding: 16px 18px; background: var(--bg-subtle); border-radius: var(--radius-md); font-size: 13px; line-height: 1.65; color: var(--text-tertiary); }
+`;
+---
+<ArticleLayout
+    title="What if a drug let you sleep 4 hours less?"
+    description="The 2026 Lasker Award honors the discovery of orexin. A 1st drug, Lilly's $6.3 billion bet, and a hypothesis: a GLP-1 for sleep."
+    ogUrl="https://maxguerois.com/newsletter/orexine-dormir-moins"
+    ogImage="https://maxguerois.com/health-journey/blog/orexine-dormir-moins-cover.jpg"
+    articleStyles={articleStyles}
+>
+<div class="container">
+    <a href="/newsletter" class="back">← Back to the newsletter</a>
+    <div class="article-meta">September 14, 2026</div>
+    <h1 class="article-title">What if a drug let you sleep 4 hours less?</h1>
+    <p class="article-subtitle">A lead that starts with narcolepsy.</p>
+    <img class="article-img" src="/health-journey/blog/orexine-dormir-moins-cover.jpg" alt="A man awake at dawn looking over Paris rooftops" fetchpriority="high">
+
+    <div class="article-body">
+        <p>On September 9, a French scientist received the prize that often comes before a Nobel.</p>
+        <p>His discovery just produced a drug. And it raises a bigger question: <strong>can we reduce how much sleep we need?</strong></p>
+
+        <h2 class="section-heading">A French scientist honored for finding the cause of narcolepsy</h2>
+        <figure style="margin: 8px 0 28px;">
+            <img src="/health-journey/blog/orexine-dormir-moins-mignot.jpg" alt="Emmanuel Mignot" style="width:100%; height:auto; display:block; border-radius: var(--radius-md);" loading="lazy">
+            <figcaption style="margin-top:10px; font-size:13px; line-height:1.6; color:var(--text-tertiary);">Emmanuel Mignot, researcher at Stanford.</figcaption>
+        </figure>
+        <p><strong>Emmanuel Mignot</strong>, a researcher at Stanford, shares the <strong>2026 Lasker Award</strong> with Masashi Yanagisawa from Japan.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p>Narcolepsy is the disease where you fall asleep suddenly, in the middle of the day.</p>
+        <p>In 1999, Mignot traced it in narcoleptic dogs. Yanagisawa had just discovered a brain molecule: <strong>orexin</strong>. The 2 leads met. In humans, type 1 narcolepsy comes from a lack of orexin.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p><strong>27 years later</strong>, that discovery produced the 1st drug that treats the cause. Takeda's oveporexton mimics orexin. It was approved in the US in <strong>August 2026</strong>.<sup class="citation"><a href="#source-2">[2]</a></sup></p>
+
+        <h2 class="section-heading">What is orexin?</h2>
+        <p>It is the neuropeptide that keeps you awake.</p>
+        <p>When it is missing, the brain slips into sleep without warning.<sup class="citation"><a href="#source-1">[1]</a></sup></p>
+        <p>But the opposite exists. Some people carry a mutation in the <strong>DEC2</strong> gene that puts less of a brake on orexin production. They sleep <strong>4 to 6 hours</strong> a night, and it is enough.<sup class="citation"><a href="#source-3">[3]</a></sup></p>
+        <p>When that mutation is reproduced in mice, they make more orexin and sleep less.<sup class="citation"><a href="#source-3">[3]</a></sup></p>
+        <p>Trump says he sleeps 4 hours; his physician said 4 to 5.<sup class="citation"><a href="#source-4">[4]</a></sup> Macron is known for sleeping very little.<sup class="citation"><a href="#source-5">[5]</a></sup> They may be <strong>"short sleepers"</strong>. Nothing proves it, but the question is fair.</p>
+
+        <h2 class="section-heading">Lilly bets $6.3 billion on orexin</h2>
+        <figure style="margin: 8px 0 28px;">
+            <img src="/health-journey/blog/orexine-dormir-moins-lilly.jpg" alt="Lilly headquarters" style="width:100%; height:auto; display:block; border-radius: var(--radius-md);" loading="lazy">
+            <figcaption style="margin-top:10px; font-size:13px; line-height:1.6; color:var(--text-tertiary);">Lilly headquarters.</figcaption>
+        </figure>
+        <p>Lilly is the US drugmaker behind Mounjaro, one of the best-selling GLP-1s.</p>
+        <p>In 2026 it bought <strong>Centessa</strong>, a biotech developing molecules that activate the orexin receptor: <strong>$6.3 billion</strong> upfront, up to $7.8 billion in total.<sup class="citation"><a href="#source-6">[6]</a></sup></p>
+        <p>On paper, it is about treating narcolepsy and other disorders of excessive sleepiness.<sup class="citation"><a href="#source-6">[6]</a></sup></p>
+        <p><strong>But $6 billion for a rare disease? The real market is elsewhere.</strong></p>
+
+        <h2 class="section-heading">A GLP-1 for sleep?</h2>
+        <p>GLP-1s started with diabetes, then obesity. Today <strong>1 in 8 US adults</strong> takes one, about 30 million people, sometimes with no disease at all.<sup class="citation"><a href="#source-7">[7]</a></sup></p>
+        <p>Now imagine the same path for a molecule that takes your nights from 8 hours to 4.</p>
+        <p>From age 20 to 80, you would gain <strong>10 years of waking life</strong>.</p>
+        <p>The key part is still unproven. These molecules keep people awake, but no one has shown that 4 hours restore as much as 8.</p>
+        <p><strong>The bet is on.</strong></p>
+
+        <div style="margin: var(--sp-12) 0;"><NewsletterEmbed /></div>
+
+        <div class="endmatter">
+            <p class="endmatter-label">Sources</p>
+            <ol>
+                <li id="source-1">Lasker Foundation, <a href="https://laskerfoundation.org/winners/orexin-a-brain-peptide-that-maintains-wakefulness/" target="_blank" rel="noopener">Orexin, a brain peptide that maintains wakefulness</a>, Albert Lasker Basic Medical Research Award, 2026.</li>
+                <li id="source-2">Takeda, <a href="https://www.takeda.com/newsroom/newsreleases/2026/orzeyful-approved-narcolepsy/" target="_blank" rel="noopener">FDA Approves ORZEYFUL for Adults With Narcolepsy Type 1</a>, press release, August 5, 2026.</li>
+                <li id="source-3">Hirano, A. et al., <a href="https://pubmed.ncbi.nlm.nih.gov/29531056/" target="_blank" rel="noopener">DEC2 modulates orexin expression and regulates sleep</a>, <em>PNAS</em>, 2018.</li>
+                <li id="source-4">Global News, <a href="https://globalnews.ca/news/3970379/donald-trump-sleep-hours-night/" target="_blank" rel="noopener">Donald Trump sleeps 4-5 hours each night</a>, January 2018.</li>
+                <li id="source-5">Le JDD, <a href="https://www.lejdd.fr/Politique/emmanuel-macron-un-president-qui-dort-peu-3455996" target="_blank" rel="noopener">Emmanuel Macron, un président qui dort peu</a> (in French).</li>
+                <li id="source-6">Eli Lilly, <a href="https://investor.lilly.com/news-releases/news-release-details/lilly-acquire-centessa-pharmaceuticals-advance-treatments-sleep" target="_blank" rel="noopener">Lilly to acquire Centessa Pharmaceuticals to advance treatments for sleep-wake disorders</a>, press release, March 31, 2026.</li>
+                <li id="source-7">KFF, <a href="https://www.kff.org/public-opinion/poll-1-in-8-adults-say-they-are-currently-taking-a-glp-1-drug-for-weight-loss-diabetes-or-another-condition-even-as-half-say-the-drugs-are-difficult-to-afford/" target="_blank" rel="noopener">Poll: 1 in 8 adults say they are currently taking a GLP-1 drug</a>, November 2025.</li>
+            </ol>
+            <p class="disclaimer">General information, not medical advice. No molecule has been shown to reduce sleep need in healthy people.</p>
+        </div>
+    </div>
+</div>
+</ArticleLayout>
