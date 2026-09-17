@@ -1,0 +1,107 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+
+const locale = 'fr';
+const articleStyles = `
+    .article-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body .endmatter { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .article-body .endmatter-label { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--text-tertiary); margin: 0 0 14px; }
+    .article-body .endmatter ol { margin: 0; padding-left: 22px; }
+    .article-body .endmatter li { font-size: 13.5px; line-height: 1.6; color: var(--text-tertiary); margin-bottom: 12px; padding-left: 4px; }
+    .article-body .endmatter li::marker { color: var(--accent); font-weight: 600; }
+    .article-body .citation { font-size: .72em; vertical-align: super; margin-left: 2px; white-space: nowrap; }
+    .article-body .citation a { text-decoration: none; font-weight: 600; }
+    .article-body ul { margin: 0 0 20px; padding-left: 20px; }
+    .article-body li { font-size: 16px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 10px; }
+    .article-body li strong { color: var(--text); font-weight: 600; }
+    .article-body li::marker { color: var(--accent); }
+    .article-body .disclaimer { margin-top: 24px; padding: 16px 18px; background: var(--bg-subtle); border-radius: var(--radius-md); font-size: 13px; line-height: 1.65; color: var(--text-tertiary); }
+`;
+---
+<ArticleLayout
+    title="Pourquoi les compagnies aériennes adorent Ozempic"
+    description="Compagnies aériennes, alimentation, alcool, vêtements, santé : les 5 industries que les GLP-1 sont en train de changer, chiffres à l'appui."
+    ogUrl="https://maxguerois.com/fr/newsletter/glp1-economie"
+    ogImage="https://maxguerois.com/health-journey/blog/glp1-economie-banniere.jpg"
+    locale={locale}
+    articleStyles={articleStyles}
+>
+<div class="container">
+    <a href="/fr/newsletter" class="back">← Retour à la newsletter</a>
+    <div class="article-meta">17 septembre 2026</div>
+    <h1 class="article-title">Pourquoi les compagnies aériennes adorent Ozempic</h1>
+    <p class="article-subtitle">Les GLP-1 touchent bien plus de secteurs que vous ne le pensez.</p>
+    <img class="article-img" src="/health-journey/blog/glp1-economie-banniere.jpg" alt="Un avion au-dessus d'une piste au coucher du soleil, avec le mot Ozempic" fetchpriority="high">
+
+    <div class="article-body">
+        <p><strong>Les GLP-1 ont un impact sur bien plus d'industries qu'on ne le pensait.</strong></p>
+        <p>Pour rappel, les GLP-1, ce sont les médicaments comme Ozempic, Wegovy ou Mounjaro. Ils coupent l'appétit et font perdre du poids.</p>
+        <p>Le 1er GLP-1 a été autorisé contre le diabète en <strong>2005</strong> aux États-Unis. Ozempic est arrivé en <strong>2017</strong>, puis sa version contre l'obésité, Wegovy, en <strong>2021</strong>.<sup class="citation"><a href="#source-1">[1]</a></sup> Aujourd'hui, certains les prennent même à petites doses, en microdosing, pour la longévité ou l'optimisation, même si les preuves restent limitées.</p>
+        <p>Aux États-Unis, <strong>1 adulte sur 8</strong> est sous GLP-1, soit environ <strong>30 millions de personnes</strong>.<sup class="citation"><a href="#source-2">[2]</a></sup></p>
+        <p>En France, ils sont environ <strong>700 000</strong>, et bientôt plus d'<strong>1 million</strong> selon l'ANSM.<sup class="citation"><a href="#source-3">[3]</a></sup> Et la loi bouge : depuis le <strong>15 juin 2026</strong>, Wegovy et Mounjaro sont remboursés à 65 % pour les obésités sévères.<sup class="citation"><a href="#source-4">[4]</a></sup></p>
+        <p><strong>Les études publiées ces derniers mois le montrent : des industries qu'on n'aurait jamais soupçonnées vont profondément changer dans les prochaines années.</strong></p>
+        <p>Voici les 5 plus touchées.</p>
+
+        <h2 class="section-heading">1. Les compagnies aériennes</h2>
+        <p>Si le poids moyen des passagers baissait de <strong>10 %</strong>, les 4 plus grosses compagnies américaines (American, Delta, Southwest et United) économiseraient jusqu'à <strong>580 millions de dollars</strong> de carburant par an, selon la banque Jefferies.<sup class="citation"><a href="#source-5">[5]</a></sup></p>
+        <p>Un avion plus léger consomme moins. Ça représente environ 1,5 % de leur facture de kérosène.<sup class="citation"><a href="#source-5">[5]</a></sup></p>
+        <figure style="margin: 8px 0 28px;">
+            <a href="https://www.foxbusiness.com/economy/airlines-have-580-million-reasons-like-glp-1-weight-loss-drugs-analysis-finds" target="_blank" rel="noopener"><img src="/health-journey/blog/glp1-economie-presse-fox.jpg" alt="Capture de l'article de Fox Business : Airlines have 580 million reasons to like GLP-1 weight-loss drugs" style="width:100%; height:auto; display:block; border-radius: var(--radius-md); background:#fff;" loading="lazy"></a>
+            <figcaption style="margin-top:10px; font-size:13px; line-height:1.6; color:var(--text-tertiary);">Capture : <a href="https://www.foxbusiness.com/economy/airlines-have-580-million-reasons-like-glp-1-weight-loss-drugs-analysis-finds" target="_blank" rel="noopener">Fox Business</a>, 19 janvier 2026.</figcaption>
+        </figure>
+
+        <h2 class="section-heading">2. L'alimentation</h2>
+        <p>C'est là que le choc est le plus fort. Dans les 6 mois qui suivent le début du traitement, un foyer dépense <strong>5,3 %</strong> de moins en nourriture.<sup class="citation"><a href="#source-6">[6]</a></sup></p>
+        <ul>
+            <li>Chips et snacks salés : <strong>-11,5 %</strong></li>
+            <li>Viennoiseries et gâteaux : <strong>-8,5 %</strong></li>
+            <li>Sodas : -6,8 %</li>
+            <li>Fast-food et cafés : <strong>-8 %</strong></li>
+        </ul>
+        <figure style="margin: 8px 0 28px;">
+            <a href="https://www.mckinsey.com/featured-insights/week-in-charts/glp1s-bite-into-snack-and-drink-sales" target="_blank" rel="noopener"><img src="/health-journey/blog/glp1-economie-mckinsey-alimentation.jpg" alt="Graphique McKinsey : évolution des dépenses alimentaires 6 mois après le début d'un GLP-1, par catégorie" style="width:100%; height:auto; display:block; border-radius: var(--radius-md); border:1px solid var(--border); background:#fff;" loading="lazy"></a>
+            <figcaption style="margin-top:10px; font-size:13px; line-height:1.6; color:var(--text-tertiary);">Graphique : <a href="https://www.mckinsey.com/featured-insights/week-in-charts/glp1s-bite-into-snack-and-drink-sales" target="_blank" rel="noopener">McKinsey &amp; Company</a>, d'après l'étude de Cornell (Hristakeva et al.).</figcaption>
+        </figure>
+        <p><strong>Fun fact :</strong> McDonald's pourrait perdre jusqu'à <strong>28 millions de visites par an</strong> à cause des GLP-1, soit environ <strong>674 millions de dollars</strong>, selon le cabinet Redburn Atlantic. Son PDG dit suivre le sujet de très près.<sup class="citation"><a href="#source-7">[7]</a></sup></p>
+
+        <h2 class="section-heading">3. L'alcool</h2>
+        <p>Dans une enquête de Morgan Stanley auprès de 300 patients, <strong>62 %</strong> disent boire moins souvent depuis le début du traitement.<sup class="citation"><a href="#source-8">[8]</a></sup></p>
+
+        <h2 class="section-heading">4. Les vêtements</h2>
+        <p>Quand on perd du poids, on refait sa garde-robe. Après 6 à 8 mois de traitement, les dépenses d'habillement grimpent de <strong>9,9 %</strong>, et 73 % des utilisateurs ont changé de taille.<sup class="citation"><a href="#source-9">[9]</a></sup></p>
+
+        <h2 class="section-heading">5. La santé</h2>
+        <ul>
+            <li><strong>La chirurgie de l'obésité recule</strong> : -34 % entre 2022 et 2025 aux États-Unis, pendant que les prescriptions de GLP-1 bondissaient de 140 %.<sup class="citation"><a href="#source-10">[10]</a></sup></li>
+            <li><strong>Les appareils contre l'apnée du sommeil</strong> : Zepbound est devenu en 2024 le 1er médicament autorisé contre l'apnée du sommeil aux États-Unis. À terme, une partie des patients pourrait se passer de leur appareil respiratoire.<sup class="citation"><a href="#source-11">[11]</a></sup></li>
+        </ul>
+
+        <h2 class="section-heading">Une nouvelle ère</h2>
+        <p>On parle beaucoup de l'IA qui transforme notre façon de travailler. Une autre révolution avance en parallèle, plus discrète : celle de la biologie.</p>
+        <p>Pour la 1ère fois, une molécule modifie à grande échelle ce que des millions de personnes ont envie de manger et de boire. On ne se contente plus de soigner le corps : on apprend à régler ses signaux.</p>
+        <p><strong>L'IA change notre façon de penser. Les GLP-1 changent notre façon de vivre. Et on n'en est qu'au début.</strong></p>
+
+        <div style="margin: var(--sp-12) 0;"><NewsletterEmbed locale={locale} /></div>
+
+        <div class="endmatter">
+            <p class="endmatter-label">Sources</p>
+            <ol>
+                <li id="source-1"><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11701480/" target="_blank" rel="noopener"><em>GLP-1 receptor agonists beyond diabetes management</em>, revue scientifique (PMC)</a>.</li>
+                <li id="source-2"><a href="https://www.kff.org/public-opinion/poll-1-in-8-adults-say-they-are-currently-taking-a-glp-1-drug-for-weight-loss-diabetes-or-another-condition-even-as-half-say-the-drugs-are-difficult-to-afford/" target="_blank" rel="noopener">KFF, sondage de novembre 2025 sur l'usage des GLP-1 aux États-Unis</a>.</li>
+                <li id="source-3"><a href="https://www.sante-sur-le-net.com/traitement-diabete-moins-complications-analogues-glp-1/" target="_blank" rel="noopener">Santé sur le Net, chiffres de l'ANSM sur les analogues du GLP-1 en France</a>.</li>
+                <li id="source-4"><a href="https://www.vidal.fr/actualites/37850-obesite-prise-en-charge-de-wegovy-et-mounjaro-a-partir-du-15-juin-2026-sous-conditions.html" target="_blank" rel="noopener">Vidal, prise en charge de Wegovy et Mounjaro à partir du 15 juin 2026</a>.</li>
+                <li id="source-5"><a href="https://www.cnbc.com/2026/01/14/airlines-to-save-on-fuel-as-weight-loss-pills-grow-popular-wall-street-says.html" target="_blank" rel="noopener">CNBC, estimation de la banque Jefferies sur le carburant des compagnies aériennes (janvier 2026)</a>.</li>
+                <li id="source-6"><a href="https://news.cornell.edu/stories/2025/12/ozempic-changing-foods-americans-buy" target="_blank" rel="noopener">Cornell Chronicle, <em>Ozempic is changing the foods Americans buy</em> (Hristakeva et al., <em>Journal of Marketing Research</em>)</a>.</li>
+                <li id="source-7"><a href="https://www.benefitsandpensionsmonitor.com/news/industry-news/glp-1-drugs-take-a-bite-out-of-fast-food-returns/392827" target="_blank" rel="noopener">Benefits and Pensions Monitor, estimation de Redburn Atlantic sur McDonald's</a>.</li>
+                <li id="source-8"><a href="https://www.morganstanley.com/im/en-us/individual-investor/insights/articles/effects-of-increasing-glp-1-use.html" target="_blank" rel="noopener">Morgan Stanley, <em>Next order effects of increasing GLP-1 use</em> (enquête AlphaWise)</a>.</li>
+                <li id="source-9"><a href="https://www.pwc.com/us/en/industries/consumer-markets/library/glp-1-consumer-trends.html" target="_blank" rel="noopener">PwC, <em>GLP-1 consumer trends in food, apparel and wellness</em></a>.</li>
+                <li id="source-10"><a href="https://asmbs.org/news_releases/as-glp-1-use-skyrockets-and-bariatric-surgery-slows-most-obesity-goes-untreated/" target="_blank" rel="noopener">ASMBS, recul de la chirurgie de l'obésité face aux GLP-1</a>.</li>
+                <li id="source-11"><a href="https://www.komodohealth.com/perspectives/fda-glp-1-approval-may-reduce-reliance-on-cpap/" target="_blank" rel="noopener">Komodo Health, 1ère autorisation d'un GLP-1 contre l'apnée du sommeil</a>.</li>
+            </ol>
+            <p class="disclaimer">Information générale, pas un conseil médical.</p>
+        </div>
+    </div>
+</div>
+</ArticleLayout>
