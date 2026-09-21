@@ -17,8 +17,8 @@
     "latest": "Récent"
   },
   "newsletter": {
-    "title": "Newsletter peptides",
-    "desc": "L'actualité, les guides et la science des peptides, sans jargon, dans votre boîte mail.",
+    "title": "La médecine qui arrive",
+    "desc": "Les avancées dans la médecine, décryptées sans jargon, dans votre boîte mail.",
     "form": {
       "label": "Votre email",
       "placeholder": "votre@email.com",

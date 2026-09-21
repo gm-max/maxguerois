@@ -49,9 +49,9 @@ ${articleLines}
 
 - [The newsletter](${SITE}/newsletter): Every article, plus the email signup.
 
-## Peptides, in French
+## Advances in medicine, in French
 
-- [Newsletter peptides](${SITE}/peptides): A French newsletter about peptides. One study worth reading and what it does and does not prove, one peptide explained, and one market warning about a vendor or a practice. Written by Max, who tests on himself, sells no peptides and takes no vendor commission.
+- [La médecine qui arrive](${SITE}/peptides): A French newsletter decoding advances in medicine: GLP-1s, peptides, new molecules. What a study proves and does not prove, the AI and health news with real impact, and occasional meetups. Written by Max, who tests on himself.
 
 ## Francais
 

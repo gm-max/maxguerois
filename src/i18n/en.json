@@ -17,8 +17,8 @@
     "latest": "Latest"
   },
   "newsletter": {
-    "title": "The peptide newsletter",
-    "desc": "News, guides, and science on peptides, without jargon, straight to your inbox.",
+    "title": "What's next in medicine",
+    "desc": "Advances in medicine, decoded without jargon, straight to your inbox.",
     "form": {
       "label": "Your email",
       "placeholder": "you@email.com",
