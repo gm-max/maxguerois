@@ -10,8 +10,8 @@ const archive = allExperiments.filter(e => (e.data as any).locale === 'fr');
 archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 ---
 <Layout
-    title="La newsletter des peptides, par Max Guerois"
-    description="Les peptides, expliqués sans jargon. Ce que la littérature permet de dire, ce que les réseaux exagèrent, et ce que mes propres essais permettent ou non de comprendre."
+    title="La médecine qui arrive, la newsletter de Max Guerois"
+    description="Les avancées dans la médecine, décryptées. GLP-1, peptides, nouvelles molécules : ce qui est prouvé, ce qui ne l'est pas, et ce que ça change pour vous."
     ogUrl="https://maxguerois.com/fr/newsletter"
     ogImage="https://maxguerois.com/health-journey/banner-staying-young.jpg"
     extraStyles={["/styles/article.css"]}
@@ -157,9 +157,9 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 <div class="container">
     <section class="hero">
         <div class="nl-meta">La newsletter</div>
-        <h1 class="nl-title">La newsletter <em>des peptides</em></h1>
-        <p class="nl-lead">J'ecris sur les peptides avec une regle simple : partir des faits, puis regarder ce que les reseaux en ont fait.</p>
-        <p class="nl-lead">Certaines molecules ont une vraie place. D'autres vivent surtout de temoignages, de raccourcis et de promesses. J'essaie de separer les deux.<br>Rejoignez 1 000+ lecteurs.</p>
+        <h1 class="nl-title">La médecine <em>qui arrive</em></h1>
+        <p class="nl-lead">Les avancées dans la médecine, décryptées. Je plonge dans la science, puis je traduis des sujets complexes avec des mots simples.</p>
+        <p class="nl-lead">Certains traitements ont une vraie place. D'autres vivent surtout de témoignages, de raccourcis et de promesses. J'essaie de séparer les deux.<br>Rejoignez 1 000+ lecteurs.</p>
 
         <div class="nl-form">
             <NewsletterEmbed locale={locale} minimal />
@@ -170,7 +170,7 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 
     <div class="nl-section-label">Archive</div>
     <h2 class="nl-section-title">Les articles</h2>
-    <p class="nl-section-intro">Mecanismes, usages, limites, signaux faibles : les articles publies jusqu'ici sur les peptides et les sujets qui gravitent autour.</p>
+    <p class="nl-section-intro">GLP-1, peptides, génome, sommeil : les articles publiés jusqu'ici, du plus récent au plus ancien.</p>
 
     <div class="experiments-list">
         {archive

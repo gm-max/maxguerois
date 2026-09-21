@@ -58,9 +58,9 @@ const DONE_TEXT = "Le guide arrive, pensez aux spams.";
 // avait deja pris du retard.
 //
 // Une seule categorie est ecartee. Une note de fondateur ne sert pas un lecteur
-// venu pour les peptides, et c'est le seul cas ou trier par date seule se
+// venu pour les avancees medicales, et c'est le seul cas ou trier par date seule se
 // trompe vraiment. Ajouter une categorie ici si le cas se represente.
-const HORS_SUJET = ['Note de fondateur'];
+const HORS_SUJET = ['Fondateur'];
 
 // La phrase affichee sous chaque titre vient du champ `takeaway` de l'article,
 // avec le `tagline` en repli. Elle vit DANS l'article et non ici : une table
@@ -81,8 +81,8 @@ const HERO = '/health-journey/max-peptides-hero.jpg';
 import PeptidesBanner from './PeptidesBanner.astro';
 ---
 <Layout
-    title="Newsletter peptides — Max Guerois"
-    description="Chaque lundi : ce qui est prouvé sur les peptides, ce qui ne l'est pas, et ce que le marché raconte à côté. Par Max Guerois, entrepreneur, qui teste sur sa propre santé."
+    title="Les avancées dans la médecine, décryptées — Max Guerois"
+    description="Chaque lundi : GLP-1, peptides, nouvelles molécules. Ce qui est prouvé, ce qui ne l'est pas, et ce que ça change pour vous. Par Max Guerois, entrepreneur, qui teste sur sa propre santé."
     ogUrl={`https://maxguerois.com${canonicalPath}`}
     ogImage={`https://maxguerois.com${HERO}`}
     ogImageAlt="Max Guerois"
@@ -124,7 +124,12 @@ import PeptidesBanner from './PeptidesBanner.astro';
     /* Le texte et la photo se suivent desormais : il leur faut une respiration
        que la disposition en colonnes rendait inutile. */
     .pep-hero-img { margin-top: var(--sp-8); }
-    .pep-hero-body { padding: var(--sp-6) var(--sp-6) 0; }
+    /* 48px au-dessus du titre, 64px au-dela de 600px. Le sur-titre
+       « Max Guerois · Newsletter » a ete retire le 21/09 : il portait a lui
+       seul l'ecart avec la navbar, et sans lui le titre tombait a 24px de la
+       barre, colle. */
+    .pep-hero-body { padding: var(--sp-12) var(--sp-6) 0; }
+    @media (min-width: 601px) { .pep-hero-body { padding-top: var(--sp-16); } }
     /* Plus de grille deux colonnes au-dessus de 1280.
        Elle produisait une boite dont le rapport derivait avec la fenetre, de
        0,73 a 1,24, sans jamais coincider avec le 1,50 de la photo : mesure,
@@ -190,19 +195,6 @@ import PeptidesBanner from './PeptidesBanner.astro';
     }
 
     .pep { font-size: var(--t-body); }
-
-    .pep-eyebrow {
-        font-family: var(--font-body);
-        font-size: var(--t-label);
-        font-weight: 500;
-        /* 0,06em : valeur unique des labels (DESIGN.md). La page en portait
-           trois, 0,08 / 0,06 / 0,04, pour un seul et meme role. */
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--text-tertiary);
-        margin: 0 0 var(--sp-3);
-    }
-    .pep-eyebrow b { color: var(--accent); font-weight: 500; }
 
     .pep h1 {
         font-family: var(--font-display);
@@ -322,22 +314,6 @@ import PeptidesBanner from './PeptidesBanner.astro';
         color: var(--text-tertiary);
     }
 
-    /* ── Callout Box, spec DESIGN.md : bordure, radius-lg, pas de remplissage,
-       label 12 tertiaire, corps 14 secondaire. ── */
-    .pep-callout {
-        border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
-        padding: var(--sp-4) var(--sp-6);
-        margin-top: var(--sp-6);
-    }
-    .pep-callout .pep-label { margin-bottom: var(--sp-2); }
-    .pep-callout p {
-        margin: 0;
-        font-size: var(--t-cal);
-        line-height: 1.6;
-        color: var(--text-secondary);
-    }
-
     /* ── Mission ──
        Aucun selecteur d'element nu ici. `.pep-mission p` (specificite 0,1,1)
        battait `.pep-label` (0,1,0) : le label de CETTE section se rendait en
@@ -393,8 +369,7 @@ import PeptidesBanner from './PeptidesBanner.astro';
         padding: var(--sp-4);
     }
     /* La categorie reutilise .pep-label : meme role de micro-label, donc meme
-       traitement. Seule la marge se resserre dans une carte, comme le fait
-       deja .pep-callout. */
+       traitement. Seule la marge se resserre dans une carte. */
     .pep-card .pep-label { margin-bottom: var(--sp-2); }
     /* Police de corps, meme raison que .pep-row-t : sous 20,9px la police de
        titre rend plus petit que le corps. */
@@ -620,9 +595,8 @@ import PeptidesBanner from './PeptidesBanner.astro';
          gouttière et devient une vignette au lieu d'un bandeau. -->
     <section class="pep-hero">
         <div class="pep-hero-body">
-            <p class="pep-eyebrow">Max Guerois · <b>Newsletter peptides</b></p>
-            <h1>On explore les peptides <em>ensemble</em>.</h1>
-            <p class="pep-sub">Ce qui est prouvé, ce qui ne l'est pas, et ce que le marché raconte à côté.</p>
+            <h1>Les avancées dans la médecine, <em>décryptées</em>.</h1>
+            <p class="pep-sub">GLP-1, peptides, nouvelles molécules : ce qui est prouvé, ce qui ne l'est pas, et ce que ça change pour vous.</p>
 
             <div class="pep-inline" style="margin-top: var(--sp-8); padding-top: 0; border-top: 0;">
                 {submitted ? (
@@ -709,8 +683,8 @@ import PeptidesBanner from './PeptidesBanner.astro';
         <section class="pep-section">
             <p class="pep-label">La newsletter</p>
             <PeptidesBanner />
-            <p class="pep-text">Un seul sujet par email, quand il y a vraiment quelque chose qui compte :</p>
-            <!-- Un seul de ces 4 formats par lundi, jamais les 4 : la liste
+            <p class="pep-text">Je plonge dans la science, puis je décrypte et j'interprète pour vous des sujets complexes, avec des mots simples.</p>
+            <!-- Un seul de ces 3 formats par lundi, jamais les 3 : la liste
                  numerotee promettait un sommaire, ces lignes proposent un menu.
                  Une promesse intenable se paie au premier numero. -->
             <div class="pep-rows pep-rows--menu">
@@ -719,16 +693,12 @@ import PeptidesBanner from './PeptidesBanner.astro';
                     <span class="pep-row-d">Ce qu'elle prouve, ce qu'elle ne prouve pas, en français normal.</span>
                 </div>
                 <div class="pep-row">
-                    <span class="pep-row-t">Un peptide décrypté</span>
-                    <span class="pep-row-d">Ce qu'il fait, pour qui, ce qu'il coûte.</span>
-                </div>
-                <div class="pep-row">
-                    <span class="pep-row-t">Un guide pour l'utiliser safely</span>
-                    <span class="pep-row-d">Les doses, la durée, ce qu'il faut surveiller.</span>
+                    <span class="pep-row-t">L'actu IA et santé</span>
+                    <span class="pep-row-d">Les dernières avancées, et ce qui est publié avec un vrai impact. Zéro bullshit.</span>
                 </div>
                 <div class="pep-row">
                     <span class="pep-row-t">Les prochains événements</span>
-                    <span class="pep-row-d">Où et quand on se voit, et comment s'inscrire.</span>
+                    <span class="pep-row-d">Bain froid, dîner, séance de sport : on se réunit parfois pour partager notre passion commune.</span>
                 </div>
             </div>
 
@@ -757,16 +727,6 @@ import PeptidesBanner from './PeptidesBanner.astro';
                     <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
                 </form>
             </div>
-
-            <!-- Le disclaimer atterrit APRES la demande d'email, pas avant.
-                 Place dans « Pourquoi moi » il arrivait alors que personne
-                 n'avait encore rien a decider ; ici il repond a la question que
-                 le visiteur se pose au moment exact ou il hesite a s'inscrire :
-                 qu'est-ce que ce type a a y gagner. -->
-            <div class="pep-callout">
-                <p class="pep-label">À savoir</p>
-                <p>Je ne vends aucun peptide. Aucun partenariat vendeur, aucun code promo, aucune commission.</p>
-            </div>
         </section>
 
         <!-- 4 · MA MISSION. Aucun selecteur d'element nu dans sa feuille :
@@ -774,7 +734,7 @@ import PeptidesBanner from './PeptidesBanner.astro';
              label de CETTE section en 16px quasi noir, d'ou la rupture typo. -->
         <section class="pep-section pep-mission">
             <p class="pep-label">Ma mission</p>
-            <h2>Permettre à n'importe qui de comprendre ce que sont les peptides.</h2>
+            <h2>Permettre à n'importe qui de comprendre les avancées de la médecine.</h2>
 
             <img
                 class="pep-mission-img"
@@ -787,10 +747,10 @@ import PeptidesBanner from './PeptidesBanner.astro';
             />
 
             <p class="pep-line">
-                Les peptides sont <span class="mark">une évolution majeure pour la biologie humaine</span>.
+                La médecine vit <span class="mark">sa plus grande accélération depuis des décennies</span>.
             </p>
             <p class="pep-dim">
-                Mais ils doivent s'utiliser dans un nouveau modèle de médecine :
+                Mais ces avancées doivent s'utiliser dans un nouveau modèle de médecine :
                 préventif, personnalisé, et piloté par l'individu.
             </p>
 
