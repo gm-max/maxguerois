@@ -1,0 +1,104 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+
+const locale = 'fr';
+const articleStyles = `
+    .article-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body .endmatter { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .article-body .endmatter-label { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--text-tertiary); margin: 0 0 14px; }
+    .article-body .endmatter ol { margin: 0; padding-left: 22px; }
+    .article-body .endmatter li { font-size: 13.5px; line-height: 1.6; color: var(--text-tertiary); margin-bottom: 12px; padding-left: 4px; }
+    .article-body .endmatter li::marker { color: var(--accent); font-weight: 600; }
+    .article-body .citation { font-size: .72em; vertical-align: super; margin-left: 2px; white-space: nowrap; }
+    .article-body .citation a { text-decoration: none; font-weight: 600; }
+    .article-body ul { margin: 0 0 20px; padding-left: 20px; }
+    .article-body li { font-size: 16px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 10px; }
+    .article-body li strong { color: var(--text); font-weight: 600; }
+    .article-body li::marker { color: var(--accent); }
+    .article-body .disclaimer { margin-top: 24px; padding: 16px 18px; background: var(--bg-subtle); border-radius: var(--radius-md); font-size: 13px; line-height: 1.65; color: var(--text-tertiary); }
+`;
+---
+<ArticleLayout
+    title="Pourquoi l'industrie alimentaire se met aux protéines"
+    description="McDonald's, Nestlé, Starbucks, Danone : ce que les GLP-1 changent dans les rayons, chiffres à l'appui."
+    ogUrl="https://maxguerois.com/fr/newsletter/glp1-proteines"
+    ogImage="https://maxguerois.com/health-journey/blog/glp1-proteines-banniere.jpg"
+    locale={locale}
+    articleStyles={articleStyles}
+>
+<div class="container">
+    <a href="/fr/newsletter" class="back">← Retour à la newsletter</a>
+    <div class="article-meta">24 septembre 2026</div>
+    <h1 class="article-title">Pourquoi l'industrie alimentaire se met aux protéines</h1>
+    <p class="article-subtitle">McDonald's, Nestlé, Starbucks, Danone : ce que les GLP-1 changent dans les rayons.</p>
+    <img class="article-img" src="/health-journey/blog/glp1-proteines-banniere.jpg" alt="Un stylo injecteur de GLP-1 tenu devant un restaurant McDonald's" fetchpriority="high">
+
+    <div class="article-body">
+        <p><strong>Les GLP-1 changent l'économie. Et ça commence dans les rayons.</strong></p>
+        <p>Aux États-Unis, <strong>1 adulte sur 8</strong> prend un GLP-1, soit environ <strong>30 millions de personnes</strong>.<sup class="citation"><a href="#source-1">[1]</a></sup> Quand autant de gens ont moins faim en même temps, ça finit par se voir dans les comptes des industriels.</p>
+
+        <h2 class="section-heading">Ce qui disparaît du panier</h2>
+        <p>Des chercheurs de Cornell ont suivi les achats de <strong>150 000 foyers</strong> américains. Dans les 6 mois qui suivent le début d'un traitement, un foyer dépense <strong>5,3 %</strong> de moins en nourriture.<sup class="citation"><a href="#source-2">[2]</a></sup></p>
+        <p>Et la baisse est très inégale selon les catégories :</p>
+        <ul>
+            <li>Chips et snacks salés : <strong>-11,5 %</strong></li>
+            <li>Viennoiseries et gâteaux : <strong>-8,5 %</strong></li>
+            <li>Fast-food et cafés : <strong>-8 %</strong></li>
+            <li>Sodas : <strong>-6,8 %</strong></li>
+        </ul>
+        <p>Ce sont exactement les catégories que l'industrie agroalimentaire a passé 40 ans à optimiser pour qu'on en mange plus que prévu.</p>
+
+        <h2 class="section-heading">Ce qui monte à la place</h2>
+        <p>On achète moins, mais pas moins de tout. Les yaourts, les fruits frais, les barres protéinées et les snacks de viande progressent.<sup class="citation"><a href="#source-2">[2]</a></sup></p>
+        <p>Il y a une raison médicale derrière. Quand on perd du poids sous GLP-1, on ne perd pas que de la graisse. Dans l'essai STEP 1 sur le sémaglutide, la masse maigre représentait environ <strong>40 %</strong> du poids perdu.<sup class="citation"><a href="#source-3">[3]</a></sup> La masse maigre, c'est le muscle, l'eau, les organes.</p>
+        <p>D'où la consigne qui revient chez les médecins : manger moins, mais viser plus de protéines à chaque repas. Quand l'appétit se réduit, chaque portion doit apporter davantage.</p>
+
+        <h2 class="section-heading">McDonald's affiche ses grammages</h2>
+        <p>En février 2026, le PDG de McDonald's, Chris Kempczinski, annonce en conférence de résultats que la chaîne teste des produits pour les clients sous GLP-1, qui commandent des portions plus petites, grignotent moins et boivent moins de sodas.<sup class="citation"><a href="#source-4">[4]</a></sup></p>
+        <p>La réponse arrive le <strong>21 avril</strong> : un badge « protéines » apparaît sur <strong>17 produits</strong>, sur les bornes de commande et dans l'application, aux États-Unis.<sup class="citation"><a href="#source-5">[5]</a></sup></p>
+        <ul>
+            <li>McCrispy Strips : <strong>30 g</strong></li>
+            <li>10 Chicken McNuggets : <strong>23 g</strong></li>
+            <li>McDouble : <strong>22 g</strong></li>
+            <li>Snack Wrap et Egg McMuffin : <strong>17 g</strong></li>
+        </ul>
+        <p>Au total, plus de <strong>30 produits</strong> du menu dépassent les 15 g de protéines.<sup class="citation"><a href="#source-5">[5]</a></sup></p>
+        <p>Le détail qui compte : les recettes ne changent pas. C'est l'argument de vente qui change.</p>
+
+        <h2 class="section-heading">Nestlé, Starbucks, Danone</h2>
+        <p>McDonald's est loin d'être seul.</p>
+        <p><strong>Nestlé</strong> a créé une marque entière pour ces clients. Vital Pursuit, ce sont <strong>14 plats surgelés</strong> avec au moins <strong>20 g de protéines</strong>, à moins de <strong>5 $</strong>, présentés comme un accompagnement des traitements GLP-1.<sup class="citation"><a href="#source-6">[6]</a></sup></p>
+        <p><strong>Starbucks</strong> a lancé une mousse de lait protéinée qui ajoute environ <strong>15 g de protéines</strong> à n'importe quelle boisson froide. Neuf mois plus tard, un dirigeant de la chaîne explique qu'elle se vend presque autant que le flat white.<sup class="citation"><a href="#source-7">[7]</a></sup></p>
+        <p><strong>Danone</strong> a finalisé le <strong>4 septembre 2026</strong> le rachat de Huel, la marque britannique de repas complets en poudre et en boissons.<sup class="citation"><a href="#source-8">[8]</a></sup> Le groupe range l'opération sous l'étiquette « nutrition fonctionnelle ».</p>
+        <figure style="margin: 8px 0 28px;">
+            <img src="/health-journey/blog/glp1-proteines-marques.jpg" alt="Un plat Nestlé Vital Pursuit, un gobelet Starbucks et un sachet Huel" style="width:100%; height:auto; display:block; border-radius: var(--radius-md);" loading="lazy">
+            <figcaption style="margin-top:10px; font-size:13px; line-height:1.6; color:var(--text-tertiary);">Trois réponses au même signal : Nestlé, Starbucks, Danone.</figcaption>
+        </figure>
+
+        <h2 class="section-heading">Ce que ça dit du marché</h2>
+        <p>Pendant des décennies, un produit alimentaire se vendait sur trois arguments : le goût, le prix, la quantité.</p>
+        <p>Un quatrième vient de s'imposer : ce que la portion apporte. Protéines, fibres, vitamines. C'est ce que les industriels appellent la densité nutritionnelle, et c'est devenu un argument de vente central.</p>
+        <p>Il y a une limite à poser, quand même. Un plat surgelé reste un plat surgelé, et un nugget affichant 23 g de protéines reste un nugget. La densité nutritionnelle est un progrès réel sur le papier, elle ne transforme pas un produit transformé en aliment brut.</p>
+        <p><strong>Mais le signal est là : pour la 1ère fois depuis longtemps, les grandes marques ont intérêt à mettre plus de nutriments dans de plus petites portions.</strong></p>
+
+        <div style="margin: var(--sp-12) 0;"><NewsletterEmbed locale={locale} /></div>
+
+        <div class="endmatter">
+            <p class="endmatter-label">Sources</p>
+            <ol>
+                <li id="source-1"><a href="https://www.kff.org/public-opinion/poll-1-in-8-adults-say-they-are-currently-taking-a-glp-1-drug-for-weight-loss-diabetes-or-another-condition-even-as-half-say-the-drugs-are-difficult-to-afford/" target="_blank" rel="noopener">KFF, sondage sur l'usage des GLP-1 aux États-Unis</a>.</li>
+                <li id="source-2"><a href="https://news.cornell.edu/stories/2025/12/ozempic-changing-foods-americans-buy" target="_blank" rel="noopener">Cornell Chronicle, <em>Ozempic is changing the foods Americans buy</em> (Hristakeva et al., <em>Journal of Marketing Research</em>)</a>.</li>
+                <li id="source-3"><a href="https://dom-pubs.onlinelibrary.wiley.com/doi/10.1111/dom.15728" target="_blank" rel="noopener">Neeland et al., <em>Changes in lean body mass with GLP-1-based therapies</em>, <em>Diabetes, Obesity and Metabolism</em> (2024)</a>.</li>
+                <li id="source-4"><a href="https://www.benzinga.com/news/restaurants/26/02/50569273/mcdonalds-tests-high-protein-menu-as-glp-1-weight-loss-drug-users-surge" target="_blank" rel="noopener">Benzinga, McDonald's teste un menu riche en protéines pour les utilisateurs de GLP-1 (février 2026)</a>.</li>
+                <li id="source-5"><a href="https://corporate.mcdonalds.com/corpmcd/our-stories/article/mcdonalds-foods-with-15g-or-more-protein.html" target="_blank" rel="noopener">McDonald's, <em>Makes It Easier to Find Protein-Forward Menu Favorites</em></a>.</li>
+                <li id="source-6"><a href="https://www.nestleusa.com/media/pressreleases/vital-pursuit-nationwide-glp-1" target="_blank" rel="noopener">Nestlé USA, lancement national de Vital Pursuit</a>.</li>
+                <li id="source-7"><a href="https://www.cnbc.com/2026/06/28/protein-coffee-cbd-soda-starbucks-functional-beverage-boom.html" target="_blank" rel="noopener">CNBC, <em>Protein coffee? Brands cash in on functional beverage boom</em> (juin 2026)</a>.</li>
+                <li id="source-8"><a href="https://www.globenewswire.com/news-release/2026/09/04/3356691/0/fr/danone-finalise-l-acquisition-de-huel-et-%C3%A9tend-son-portefeuille-dans-la-nutrition-fonctionnelle.html" target="_blank" rel="noopener">Danone, communiqué du 4 septembre 2026 sur la finalisation du rachat de Huel</a>.</li>
+            </ol>
+            <p class="disclaimer">Information générale, pas un conseil médical.</p>
+        </div>
+    </div>
+</div>
+</ArticleLayout>
