@@ -9,8 +9,8 @@ const archive = allExperiments.filter(e => !e.data.locale || e.data.locale === '
 archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 ---
 <Layout
-    title="The peptide newsletter, by Max Guerois"
-    description="Peptides, explained without jargon. What the literature supports, what social media exaggerates, and what my own experiments can and cannot tell me."
+    title="The medicine that is coming, by Max Guerois"
+    description="GLP-1s, peptides and new molecules, explained without jargon. What the literature supports, what social media exaggerates, and what my own experiments can and cannot tell me."
     ogUrl="https://maxguerois.com/newsletter"
     ogImage="https://maxguerois.com/health-journey/banner-staying-young.jpg"
     extraStyles={["/styles/article.css"]}
@@ -159,8 +159,8 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 <div class="container">
     <section class="hero">
         <div class="nl-meta">The newsletter</div>
-        <h1 class="nl-title">The newsletter <em>on peptides</em></h1>
-        <p class="nl-lead">I write about peptides with one rule: start from the evidence, then look at what social media turned them into.</p>
+        <h1 class="nl-title">The medicine <em>that is coming</em></h1>
+        <p class="nl-lead">I write about GLP-1s, peptides and new molecules with one rule: start from the evidence, then look at what social media turned them into.</p>
         <p class="nl-lead">Some molecules have a real place. Others live mostly on anecdotes, shortcuts, and promises.<br>Join 1,000+ readers.</p>
 
         <div class="nl-form">
@@ -172,7 +172,7 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
 
     <div class="nl-section-label">Archive</div>
     <h2 class="nl-section-title">The articles</h2>
-    <p class="nl-section-intro">Mechanisms, use cases, limits, weak signals: the articles published so far on peptides and the topics around them.</p>
+    <p class="nl-section-intro">Mechanisms, use cases, limits, weak signals: GLP-1s, peptides, genome, sleep. Everything published so far, newest first.</p>
 
     <div class="experiments-list">
         {archive.map((exp) => (

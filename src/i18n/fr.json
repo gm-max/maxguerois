@@ -36,14 +36,14 @@
   },
   "modal": {
     "title": "Avant de partir",
-    "desc": "Je trie l'actu des peptides, j'explique ce qu'on comprend vraiment, et je documente mes essais quand ils apportent quelque chose. Un email quand il y a vraiment quelque chose à envoyer.",
+    "desc": "Je trie l'actu des GLP-1, des peptides et des nouvelles molécules, j'explique ce qu'on comprend vraiment, et je documente mes essais quand ils apportent quelque chose. Un email quand il y a vraiment quelque chose à envoyer.",
     "close": "Fermer",
     "note": "Pas de spam. Désabonnement à tout moment."
   },
   "home": {
     "title": "Max Guerois, santé et longévité au grand jour",
-    "description": "Moi, c'est Max, un builder obsédé par la santé et la longévité. Mon âge biologique est de 19 ans. Je documente ce que je teste vraiment, avec une place centrale pour les peptides.",
-    "ogDescription": "Builder, santé, longévité, peptides. Âge biologique : 19 ans. Je publie ce que je teste et ce que j'apprends, au grand jour.",
+    "description": "Moi, c'est Max, un builder obsédé par la santé et la longévité. Mon âge biologique est de 19 ans. Je décrypte les GLP-1, les peptides et les avancées de la médecine, et je documente ce que je teste vraiment.",
+    "ogDescription": "Builder, santé, longévité. Âge biologique : 19 ans. Je décrypte les GLP-1, les peptides et les avancées de la médecine.",
     "name": "Max (Maxime) Guerois",
     "headline": "Un builder <em>obsédé par la santé et la longévité.</em>",
     "intro": "Moi, c'est Max. 29 ans. Mon âge biologique : 19 ans.<br>J'ai cofondé <strong>Lucis</strong>, une plateforme de santé préventive en Europe. Aujourd'hui, je documente ce que je teste vraiment sur mon corps. Ce site, c'est le protocole.",
