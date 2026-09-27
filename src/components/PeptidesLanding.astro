@@ -97,7 +97,7 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
 ---
 <Layout
     title="La médecine derrière les GLP-1 — Max Guerois"
-    description="Ensemble, nous cassons les mythes derrière ces nouveaux médicaments. Nous décortiquons la science, sans jargon, avec des mots simples. Par Max Guerois, entrepreneur."
+    description="Ensemble, nous cassons les mythes derrière ces nouveaux médicaments. Nous décortiquons la science, sans jargon, avec des mots simples, chaque semaine. Par Max Guerois, entrepreneur."
     ogUrl={`https://maxguerois.com${canonicalPath}`}
     ogImage={`https://maxguerois.com${HERO}`}
     ogImageAlt="Max Guerois"
@@ -440,6 +440,22 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
         background: var(--bg-subtle);
     }
     .pep-guide-body { min-width: 0; }
+    /* Sous 600px, la vignette laissait 149px au texte : le titre passait sur
+       deux lignes et la description sur trois, dans une carte de 198px de
+       haut. Mesure du 27/09. En colonne, la couverture est lisible et le
+       texte respire, pour a peine 50px de plus. */
+    @media (max-width: 600px) {
+        .pep-guide { display: block; }
+        .pep-guide-img {
+            width: 100%;
+            flex: none;
+            /* 16/9, le rapport NATIF du fichier : en 21/9 la couverture
+               etait rognee en haut et le titre du guide perdait sa premiere
+               ligne. Pleine largeur, rien n'est coupe. */
+            aspect-ratio: 16 / 9;
+            margin-bottom: var(--sp-4);
+        }
+    }
     .pep-guide-cat {
         margin: 0 0 var(--sp-1);
         font-size: var(--t-label);
@@ -857,6 +873,11 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
     }
     .pg-close:hover { background: rgba(15, 14, 12, 0.7); }
     .pg-card h2 { margin-bottom: var(--sp-3); padding-right: var(--sp-8); }
+    /* Centree, et seulement dans la fenetre : la carte est etroite et son
+       bouton pleine largeur, donc une ligne en fer a gauche pendait sous un
+       bloc centre. Sur la page, les memes lignes restent alignees a gauche
+       avec le reste de la colonne. */
+    .pg-micro { text-align: center; }
 
     @media (prefers-reduced-motion: reduce) {
         .pg-card { animation: none; }
@@ -871,7 +892,7 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
     <section class="pep-hero">
         <div class="pep-hero-body">
             <h1>La médecine derrière les GLP-1</h1>
-            <p class="pep-sub">Ensemble, nous cassons les mythes derrière ces nouveaux médicaments. Nous décortiquons la science, sans jargon, avec des mots simples.</p>
+            <p class="pep-sub">Ensemble, nous cassons les mythes derrière ces nouveaux médicaments. Nous décortiquons la science, sans jargon, avec des mots simples, chaque semaine.</p>
 
             <div class="pep-inline" style="margin-top: var(--sp-8); padding-top: 0; border-top: 0;">
                 {submitted ? (
@@ -944,8 +965,8 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                 <p class="pep-guide-cat">Gratuit</p>
                 <p class="pep-guide-t">Le guide complet des GLP-1</p>
                 <p class="pep-guide-d">
-                    +100 h de recherches. Le 1<sup>er</sup> octobre, dans la boîte
-                    mail des inscrits.
+                    +100 h de recherches. Le 1<sup>er</sup> octobre, dans votre
+                    boîte mail.
                 </p>
                 <p class="pep-guide-cta">Le recevoir <span aria-hidden="true">&rarr;</span></p>
             </div>
@@ -987,9 +1008,9 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                     <svg class="pep-card-ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h5M9 17h3"/></svg>
                     <p class="pep-card-t">Je me fie uniquement aux études scientifiques</p>
                     <p class="pep-card-d">
-                        La science des réseaux sociaux n'est pas ma façon de travailler.
-                        J'épluche les études et les revues de littérature, et je vous les
-                        rends simples. Et je vous dis toujours ce qu'une étude ne prouve pas.
+                        Pas la science des réseaux sociaux : j'épluche les études et les
+                        revues de littérature, je vous les rends simples, et je dis
+                        toujours ce qu'elles ne prouvent pas.
                     </p>
                 </div>
             </div>
@@ -1169,7 +1190,7 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                     <button type="submit">Être notifié quand le guide est prêt</button>
                 </div>
                 <p class="pf-err" role="alert" id="pf-modal-err" hidden></p>
-                <p class="pf-micro">Gratuit.</p>
+                <p class="pf-micro pg-micro">Gratuit. Désinscription en 1 clic.</p>
             </form>
         </div>
     </dialog>

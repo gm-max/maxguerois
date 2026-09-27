@@ -34,7 +34,7 @@ Key tokens:
 ## Stack
 - Framework: Astro (static output)
 - Content: `.astro` pages for complex HTML, `.mdx` for future markdown experiments
-- Styles: `src/styles/global.css` + `src/styles/article.css` + `src/styles/nav.css`
+- Styles: **`public/styles/`** — `global.css`, `article.css`, `nav.css`. Ce sont les fichiers SERVIS (`<link href="/styles/...">`). Les copies sous `src/styles/` ont été supprimées le 27/09 : elles n'étaient chargées par aucune page, et une règle y vivait sans jamais s'appliquer.
 - Deploy: Vercel, `astro build`, output → `dist/`
 
 ## File Structure
