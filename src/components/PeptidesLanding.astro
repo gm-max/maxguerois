@@ -107,7 +107,9 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
        Aucune taille en dur ailleurs dans cette feuille. */
     .pep {
         --t-h1: 38px;
-        --t-h2: 24px;
+        --t-h2: 30px;   /* 24 avant le 27/09 : un titre de section pesait
+                           exactement autant qu'un titre d'article, donc la
+                           page n'avait plus de plan a la lecture rapide. */
         --t-item: 16px;
         --t-body: 16px;   /* jamais < 16px : Safari iOS zoome sur tout input en dessous */
         --t-cal: 14px;
@@ -262,7 +264,10 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
        deja charge par Layout.astro, aucune requete de fonte en plus. */
     .pep h2 {
         font-family: var(--font-display);
-        font-weight: 500;
+        /* 400, la valeur de DESIGN.md. La page etait passee en 500 sans
+           raison ecrite, et une page qui a ses propres regles est une page
+           qui sortira du systeme au prochain changement. */
+        font-weight: 400;
         font-size: var(--t-h2);
         line-height: 1.2;
         margin: 0 0 var(--sp-4);
@@ -335,7 +340,7 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
     /* ── Les articles, avec leur banniere ──
        La liste etait en texte seul. La banniere est ce que le lecteur
        reconnait d'un reel a l'autre, et c'est elle qui fait cliquer. */
-    .pep-posts { margin-top: var(--sp-8); }
+    .pep-posts { margin-top: var(--sp-6); }
     .pep-post {
         display: block;
         padding: var(--sp-8) 0;
@@ -384,8 +389,12 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
         .pep-post-scrim { transition: none; }
     }
     .pep-post-meta { display: block; margin-bottom: var(--sp-2); }
+    /* 24px, donc un cran SOUS le titre de section (30px) : c'est ce qui
+       distingue un contenu d'un repere. Marges remises a zero, un h3 en
+       porte par defaut. */
     .pep-post-t {
         display: block;
+        margin: 0;
         font-family: var(--font-display);
         font-weight: 400;
         font-size: 24px;
@@ -393,6 +402,49 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
         color: var(--text);
     }
     .pep-post:hover .pep-post-t { text-decoration: underline; }
+
+    /* ── Les articles suivants, en ligne ──
+       Vignette carree a gauche, texte a droite : trois lignes tiennent dans
+       l'espace qu'une seule banniere occupait. */
+    .pep-mini {
+        display: flex;
+        gap: var(--sp-4);
+        align-items: flex-start;
+        padding: var(--sp-6) 0;
+        border-top: 1px solid var(--border);
+        text-decoration: none;
+        color: inherit;
+    }
+    .pep-mini-img {
+        flex: 0 0 76px;
+        width: 76px;
+        height: 76px;
+        object-fit: cover;
+        border-radius: var(--radius-sm);
+        background: var(--bg-subtle);
+    }
+    .pep-mini-body { display: block; min-width: 0; }
+    .pep-mini-cat {
+        display: block;
+        font-size: var(--t-label);
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin-bottom: var(--sp-2);
+    }
+    /* Police de CORPS et non de titre : a 16px, Cormorant rendrait plus petit
+       que la date qui le suit (hauteur d'x de 0,386 contre 0,504). */
+    .pep-mini-t {
+        margin: 0 0 var(--sp-2);
+        font-family: var(--font-body);
+        font-weight: 500;
+        font-size: var(--t-item);
+        line-height: 1.4;
+        color: var(--text);
+    }
+    .pep-mini:hover .pep-mini-t { text-decoration: underline; }
+    .pep-mini .pep-row-date { margin-left: 0; display: block; }
     .pep-post-d {
         display: block;
         margin-top: var(--sp-2);
@@ -770,33 +822,35 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                     <svg class="pep-card-ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5S6.5 9 6.5 13.5a5.5 5.5 0 0 0 11 0C17.5 9 12 2.5 12 2.5z"/></svg>
                     <p class="pep-card-t">Entrepreneur, dans la santé depuis 2021</p>
                     <p class="pep-card-d">
-                        J'ai cofondé le leader européen du test sanguin. Des milliers de
-                        personnes y ont enfin compris leurs analyses, avec des médecins
-                        et de la tech.
+                        J'ai cofondé le leader européen du test sanguin. 2 ans à chercher
+                        comment transformer des résultats d'analyses en décisions simples
+                        et actionnables pour une meilleure santé.
                     </p>
                 </div>
                 <div class="pep-card">
                     <svg class="pep-card-ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h4l2.5-6 3.5 12 2.5-6H21"/></svg>
                     <p class="pep-card-t">Je teste sur ma propre santé</p>
                     <p class="pep-card-d">
-                        Deux ans que je publie mes analyses et mes résultats en public.
+                        2 ans que je publie mes analyses et mes résultats en public.
                         Y compris ceux qui n'ont rien donné.
                     </p>
                 </div>
                 <div class="pep-card">
                     <svg class="pep-card-ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h5M9 17h3"/></svg>
-                    <p class="pep-card-t">Je remonte toujours à l'étude d'origine</p>
+                    <p class="pep-card-t">Je me fie uniquement aux études scientifiques</p>
                     <p class="pep-card-d">
-                        Pas au résumé qui circule sur les réseaux. Et je vous dis aussi
-                        ce que l'étude ne prouve pas.
+                        La science des réseaux sociaux n'est pas ma façon de travailler.
+                        J'épluche les études et les revues de littérature, et je vous les
+                        rends simples. Et je vous dis toujours ce qu'une étude ne prouve pas.
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- 3 · LA NEWSLETTER, PROUVEE PAR SES ARTICLES. Le bandeau et le menu
-             des formats ont ete retires : une promesse de contenu vaut moins
-             que le contenu lui-meme, banniere comprise. -->
+        <!-- 3 · LA NEWSLETTER. Le bandeau et le menu des formats ont ete
+             retires : une promesse de contenu vaut moins que le contenu
+             lui-meme, banniere comprise. Un seul metier ici, l'inscription ;
+             les articles ont leur propre section juste apres. -->
         <section class="pep-section">
             <p class="pep-label">Newsletter</p>
             <h2>La médecine qui arrive</h2>
@@ -831,9 +885,22 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                 </form>
             </div>
 
-            {articles.length > 0 && (
+        </section>
+
+        <!-- 4 · À LIRE. Section a part entiere depuis le 27/09 : la section
+             newsletter vendait l'inscription ET listait les articles, donc
+             son titre n'annoncait que la moitie de son contenu. -->
+        {articles.length > 0 && (
+        <section class="pep-section">
+            <p class="pep-label">À lire</p>
+            <h2>Les derniers décryptages</h2>
+            {/* UN article en grand, les suivants en ligne compacte. Trois
+                grandes bannieres d'affilee, c'est un ecran et demi de mobile
+                pour trois liens : la liste mangeait la page au lieu de la
+                servir. Le premier garde son image pleine largeur parce qu'il
+                est le plus recent ; les autres se lisent en une ligne. */}
             <div class="pep-posts">
-                {articles.map((exp) => (
+                {articles.map((exp, i) => i === 0 ? (
                     <a class="pep-post" href={`/fr/newsletter/${exp.data.slug}`}>
                         {exp.data.cover && (
                             <span class="pep-post-media">
@@ -853,14 +920,37 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                             <span class={`pep-chip pep-chip--${chipTone(exp.data.category)}`}>{exp.data.category}</span>
                             <span class="pep-row-date">{fmtDate(exp.data.date)}</span>
                         </span>
-                        <span class="pep-post-t">{exp.data.shortTitle ?? exp.data.title}</span>
+                        {/* h3 et non span : sans lui la page n'a aucun niveau
+                            3, et le plan qu'entend un lecteur d'ecran s'arrete
+                            aux deux sections. Un titre dans un lien est
+                            valide. */}
+                        <h3 class="pep-post-t">{exp.data.shortTitle ?? exp.data.title}</h3>
                         <span class="pep-post-d">{exp.data.takeaway ?? exp.data.tagline}</span>
+                    </a>
+                ) : (
+                    <a class="pep-mini" href={`/fr/newsletter/${exp.data.slug}`}>
+                        {exp.data.cover && (
+                            <img
+                                class="pep-mini-img"
+                                src={exp.data.cover}
+                                alt=""
+                                width="1200"
+                                height="630"
+                                loading="lazy"
+                                decoding="async"
+                            />
+                        )}
+                        <span class="pep-mini-body">
+                            <span class="pep-mini-cat">{exp.data.category}</span>
+                            <h3 class="pep-mini-t">{exp.data.shortTitle ?? exp.data.title}</h3>
+                            <span class="pep-row-date">{fmtDate(exp.data.date)}</span>
+                        </span>
                     </a>
                 ))}
             </div>
-            )}
             <a class="pep-all" href="/fr/newsletter">Tout ce que j'ai publié <span aria-hidden="true">&rarr;</span></a>
         </section>
+        )}
 
     </div>
 
