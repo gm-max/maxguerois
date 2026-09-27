@@ -17,7 +17,7 @@ interface Props {
 }
 const { canonicalPath = '/peptides' } = Astro.props;
 /**
- * La landing du funnel Instagram peptides.
+ * La landing du funnel Instagram, recentree sur les GLP-1 le 27/09.
  *
  * Plan : docs/designs/2026-08-26-fr-peptides-landing.md
  * Maquette : ~/.gstack/projects/gm-max-maxguerois/designs/
@@ -82,7 +82,7 @@ import PeptidesBanner from './PeptidesBanner.astro';
 ---
 <Layout
     title="Les avancées dans la médecine, décryptées — Max Guerois"
-    description="Chaque lundi : GLP-1, peptides, nouvelles molécules. Ce qui est prouvé, ce qui ne l'est pas, et ce que ça change pour vous. Par Max Guerois, entrepreneur, qui teste sur sa propre santé."
+    description="Ozempic, Wegovy, Mounjaro, et ce qui arrive après. Ce qui est prouvé, ce qui ne l'est pas, et ce que ça change pour vous. Par Max Guerois, entrepreneur."
     ogUrl={`https://maxguerois.com${canonicalPath}`}
     ogImage={`https://maxguerois.com${HERO}`}
     ogImageAlt="Max Guerois"
@@ -596,7 +596,7 @@ import PeptidesBanner from './PeptidesBanner.astro';
     <section class="pep-hero">
         <div class="pep-hero-body">
             <h1>Les avancées dans la médecine, <em>décryptées</em>.</h1>
-            <p class="pep-sub">GLP-1, peptides, nouvelles molécules : ce qui est prouvé, ce qui ne l'est pas, et ce que ça change pour vous.</p>
+            <p class="pep-sub">Ozempic, Wegovy, Mounjaro, et ce qui arrive après : ce qui est prouvé, ce qui ne l'est pas, et ce que ça change pour vous.</p>
 
             <div class="pep-inline" style="margin-top: var(--sp-8); padding-top: 0; border-top: 0;">
                 {submitted ? (
@@ -662,7 +662,7 @@ import PeptidesBanner from './PeptidesBanner.astro';
 
             <p class="pep-line">Je teste sur ma santé, first</p>
             <p class="pep-dim">
-                2 ans que je publie mes analyses, mes protocoles et mes résultats en public.
+                2 ans que je publie mes analyses et mes résultats en public.
                 Y compris ceux qui n'ont rien donné.
             </p>
         </section>
@@ -670,7 +670,7 @@ import PeptidesBanner from './PeptidesBanner.astro';
         <!-- 3 · LA NEWSLETTER. Avant la mission : l'offre atterrit avant la
              vision, sur du trafic froid (passe Codex du 26/08).
              Le h2 de section a ete RETIRE : le bandeau porte le meme titre, en
-             plus fort. Le garder aurait repete « La newsletter peptides » deux
+             plus fort. Le garder aurait repete le nom de la newsletter deux
              fois de suite. « chaque lundi » a ete recupere dans la phrase
              d'introduction, c'est la seule information que le bandeau ne porte
              pas.
@@ -750,8 +750,8 @@ import PeptidesBanner from './PeptidesBanner.astro';
                 La médecine vit <span class="mark">sa plus grande accélération depuis des décennies</span>.
             </p>
             <p class="pep-dim">
-                Mais ces avancées doivent s'utiliser dans un nouveau modèle de médecine :
-                préventif, personnalisé, et piloté par l'individu.
+                Mais cette accélération demande une autre façon de soigner :
+                préventive, personnalisée, et comprise par celui qui la suit.
             </p>
 
             <div class="pep-cards">
@@ -759,8 +759,8 @@ import PeptidesBanner from './PeptidesBanner.astro';
                     <p class="pep-label">Préventif</p>
                     <p class="pep-card-t">Agir proactivement</p>
                     <p class="pep-card-d">
-                        Le système médical actuel n'a aucun intérêt à financer la
-                        longévité et des bénéfices qui ne se voient qu'à long terme.
+                        Le système de santé soigne quand la maladie est là. Il finance
+                        mal ce qui l'évite.
                     </p>
                 </div>
                 <div class="pep-card">
@@ -772,10 +772,11 @@ import PeptidesBanner from './PeptidesBanner.astro';
                     </p>
                 </div>
                 <div class="pep-card">
-                    <p class="pep-label">Piloté par l'individu</p>
-                    <p class="pep-card-t">Let them cook</p>
+                    <p class="pep-label">Compris</p>
+                    <p class="pep-card-t">Vous décidez</p>
                     <p class="pep-card-d">
-                        Chacun devrait avoir le contrôle de son propre corps.
+                        Personne ne devrait suivre un traitement sans comprendre ce
+                        qu'il fait, ni ce qu'il ne fait pas.
                     </p>
                 </div>
             </div>
@@ -799,10 +800,10 @@ import PeptidesBanner from './PeptidesBanner.astro';
         <!-- 5 · LE GUIDE, EN CLÔTURE. Le lien entre les deux offres n'est dit
              qu'ici, une seule fois (passe Codex). -->
         <section class="pep-section pep-close">
-            <h2>Recevez le guide des peptides, gratuitement.</h2>
+            <h2>Recevez le guide des GLP-1, gratuitement.</h2>
             <p class="pep-text">
-                12 peptides passés en revue. 6 signaux qui trahissent un vendeur douteux.
-                Il arrive dans le premier email.
+                Ce qu'il faut savoir avant de commencer : les molécules, les effets,
+                les prix, et les pièges. Il arrive dans le premier email.
             </p>
             <form class="pf" data-subscribe method="POST" action="/api/subscribe?lang=fr-peptides">
                 <label class="pf-label" for="pf-end">Votre email</label>
@@ -845,27 +846,10 @@ import PeptidesBanner from './PeptidesBanner.astro';
                     <div class="photo-viewport js-viewport">
                         <div class="photo-track js-track">
                             <figure class="photo-slide js-slide">
-                                <img src="/health-journey/pep-cheveux.webp"
-                                     alt="Un homme examine sa calvitie naissante dans le miroir d'une salle de bain."
-                                     width="347" height="520" loading="lazy" decoding="async" />
-                            </figure>
-                            <figure class="photo-slide js-slide">
                                 <img src="/health-journey/pep-insuline-production.webp"
                                      alt="Atelier de production d'insuline des annees 1920 : cuves en bois et chaine de conditionnement."
                                      width="889" height="520" loading="lazy" decoding="async" />
                             </figure>
-                            <figure class="photo-slide js-slide">
-                                <img src="/health-journey/pep-collage-peptides.webp"
-                                     alt="Collage : dos d'un homme tenant une seringue, entoure de flacons de peptides etiquetes."
-                                     width="520" height="520" loading="lazy" decoding="async" />
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="photo-bar">
-                        <div class="photo-segs js-segs">
-                            <button type="button" class="is-active" aria-label="Image 1"></button>
-                            <button type="button" aria-label="Image 2"></button>
-                            <button type="button" aria-label="Image 3"></button>
                         </div>
                     </div>
                 </div>
@@ -887,9 +871,10 @@ import PeptidesBanner from './PeptidesBanner.astro';
     <dialog class="pg" id="pep-guide" aria-labelledby="pg-title">
         <div class="pg-card">
             <button class="pg-close" type="button" data-pg-close aria-label="Fermer">&times;</button>
-            <h2 id="pg-title">Le guide des peptides, offert.</h2>
+            <h2 id="pg-title">Le guide des GLP-1, offert.</h2>
             <p class="pep-text" style="font-size: var(--t-cal); margin-bottom: var(--sp-6);">
-                12 peptides passés en revue. 6 signaux qui trahissent un vendeur douteux.
+                Ce qu'il faut savoir avant de commencer : les molécules, les effets,
+                les prix, et les pièges.
             </p>
             <form class="pf" data-subscribe method="POST" action="/api/subscribe?lang=fr-peptides">
                 <label class="pf-label" for="pf-modal">Votre email</label>

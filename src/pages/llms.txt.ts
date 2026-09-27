@@ -51,7 +51,7 @@ ${articleLines}
 
 ## Advances in medicine, in French
 
-- [La médecine qui arrive](${SITE}/peptides): A French newsletter decoding advances in medicine: GLP-1s, peptides, new molecules. What a study proves and does not prove, the AI and health news with real impact, and occasional meetups. Written by Max, who tests on himself.
+- [La médecine qui arrive](${SITE}/peptides): A French newsletter about GLP-1 drugs (Ozempic, Wegovy, Mounjaro) and what comes after them. What a study proves and does not prove, the AI and health news with real impact, and occasional meetups. Written by Max, who tests on himself.
 
 ## Francais
 
