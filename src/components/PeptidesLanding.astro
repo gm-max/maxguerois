@@ -78,11 +78,21 @@ const fmtDate = (iso: string) =>
     new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 
 const HERO = '/health-journey/max-peptides-hero.jpg';
-import PeptidesBanner from './PeptidesBanner.astro';
+
+/**
+ * Le ton d'une pastille vient de la CATEGORIE et non du hasard. Les trois tons
+ * partagent aujourd'hui le lavis d'ambre du site (direction A, 27/09) : la
+ * distinction existe dans le code, pas encore a l'ecran. Elle se rallume en
+ * redonnant sa couleur a `.pep-chip--clay` et `--olive`, sans toucher au HTML.
+ * Une categorie inconnue retombe sur l'ambre, donc publier une nouvelle
+ * categorie ne casse rien.
+ */
+const CHIP_TONE: Record<string, string> = { 'GLP-1': 'clay', Sommeil: 'olive' };
+const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
 ---
 <Layout
-    title="Les avancées dans la médecine, décryptées — Max Guerois"
-    description="Ozempic, Wegovy, Mounjaro, et ce qui arrive après. Ce qui est prouvé, ce qui ne l'est pas, et ce que ça change pour vous. Par Max Guerois, entrepreneur."
+    title="La médecine derrière les GLP-1 — Max Guerois"
+    description="Ensemble, nous cassons les mythes derrière ces nouveaux médicaments. Nous décortiquons la science, sans jargon, avec des mots simples. Par Max Guerois, entrepreneur."
     ogUrl={`https://maxguerois.com${canonicalPath}`}
     ogImage={`https://maxguerois.com${HERO}`}
     ogImageAlt="Max Guerois"
@@ -107,7 +117,13 @@ import PeptidesBanner from './PeptidesBanner.astro';
            position:fixed et body n'a aucun padding-top, donc une image collee
            a y=0 passe sous la barre. Ici elle y perdait la tete du sujet. */
         --pep-nav-h: 56px;
+
+        /* Un seul lavis d'accent, celui du site. Direction A, choisie le
+           27/09 : la structure s'allege, la palette ne bouge pas. */
+        --pep-accent-wash: rgba(196, 147, 74, 0.14);
+        --pep-accent-ink: #8a6327;
     }
+    :global([data-theme='dark']) .pep { --pep-accent-ink: #dcae69; }
     @media (min-width: 601px) { .pep { --t-h1: 52px; } }
 
     /* ── HÉROS ──
@@ -261,6 +277,130 @@ import PeptidesBanner from './PeptidesBanner.astro';
 
     /* ── Lignes : preuves ET articles partagent UN composant (Writing Item,
        DESIGN.md), sans l'encapsulation en carte. ── */
+    /* ── Pastille de categorie. La couleur vient de la categorie de
+       l'article, donc elle apprend quelque chose au lecteur des la deuxieme
+       ligne : terre cuite, c'est un GLP-1. ── */
+    .pep-chip {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        padding: 3px 9px;
+        border-radius: var(--radius-full);
+    }
+    /* Noir sur fond sourd. Le dore ne touche plus un seul texte de la page
+       (regle du 27/09) : il ne reste que sur le bouton, qui est une action. */
+    .pep-chip--clay,
+    .pep-chip--olive,
+    .pep-chip--amber { background: var(--bg-subtle); color: var(--text); }
+    .pep-row-date { font-size: var(--t-label); color: var(--text-tertiary); margin-left: var(--sp-2); }
+
+    /* Bouton secondaire : contour seul, jamais de remplissage. Le bouton
+       plein est reserve a l'inscription, qui est l'action de la page ; deux
+       boutons pleins se disputeraient le meme regard.
+       48px de haut, donc au-dessus des 44px de cible tactile. */
+    .pep-all {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--sp-2);
+        min-height: 48px;
+        margin-top: var(--sp-6);
+        padding: 0 var(--sp-6);
+        font-size: var(--t-body);
+        font-weight: 500;
+        color: var(--text);
+        text-decoration: none;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        transition: background var(--duration-short) var(--ease-out),
+                    border-color var(--duration-short) var(--ease-out);
+    }
+    .pep-all:hover { background: var(--bg-subtle); border-color: var(--text-tertiary); }
+
+    /* ── Qui je suis ── */
+    .pep-me h2 { margin-bottom: var(--sp-6); }
+    .pep-me-img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        object-position: 38% 40%;
+        border-radius: var(--radius-md);
+        margin-bottom: var(--sp-6);
+        background: var(--bg-subtle);
+    }
+    /* ── Les articles, avec leur banniere ──
+       La liste etait en texte seul. La banniere est ce que le lecteur
+       reconnait d'un reel a l'autre, et c'est elle qui fait cliquer. */
+    .pep-posts { margin-top: var(--sp-8); }
+    .pep-post {
+        display: block;
+        padding: var(--sp-8) 0;
+        border-top: 1px solid var(--border);
+        text-decoration: none;
+        color: inherit;
+    }
+    .pep-post:first-child { border-top: 0; padding-top: 0; }
+    /* ── L'overlay des bannieres ──
+       Les couvertures viennent de sources tres differentes : une facade de
+       McDonald's en plein jour, un tarmac au coucher du soleil, une chambre de
+       nuit. Cote a cote, elles ne font pas une liste, elles font un patchwork.
+       Un voile degrade sombre, pose en bas et transparent en haut, leur donne
+       un pied commun sans rien masquer du sujet. Il s'eclaircit au survol :
+       l'image repond au pointeur, ce qui dit qu'elle est cliquable. */
+    .pep-post-media {
+        display: block;
+        position: relative;
+        margin-bottom: var(--sp-4);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        /* Sans ca, l'image debordait des coins arrondis sur Safari. */
+        isolation: isolate;
+    }
+    .pep-post-img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        background: var(--bg-subtle);
+    }
+    .pep-post-scrim {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            to top,
+            rgba(15, 14, 12, 0.55) 0%,
+            rgba(15, 14, 12, 0.18) 38%,
+            rgba(15, 14, 12, 0) 68%
+        );
+        transition: opacity var(--duration-base) var(--ease-out);
+    }
+    .pep-post:hover .pep-post-scrim { opacity: 0.55; }
+    @media (prefers-reduced-motion: reduce) {
+        .pep-post-scrim { transition: none; }
+    }
+    .pep-post-meta { display: block; margin-bottom: var(--sp-2); }
+    .pep-post-t {
+        display: block;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 1.2;
+        color: var(--text);
+    }
+    .pep-post:hover .pep-post-t { text-decoration: underline; }
+    .pep-post-d {
+        display: block;
+        margin-top: var(--sp-2);
+        font-size: var(--t-cal);
+        line-height: 1.6;
+        color: var(--text-secondary);
+    }
+
     .pep-rows { border-top: 1px solid var(--border); }
     .pep-row {
         display: block;
@@ -314,59 +454,33 @@ import PeptidesBanner from './PeptidesBanner.astro';
         color: var(--text-tertiary);
     }
 
-    /* ── Mission ──
-       Aucun selecteur d'element nu ici. `.pep-mission p` (specificite 0,1,1)
-       battait `.pep-label` (0,1,0) : le label de CETTE section se rendait en
-       16px quasi noir avec 48px de marge basse, au lieu de 12px tertiaire,
-       alors que les deux sections voisines etaient correctes. C'est ce que
-       l'auteur voyait comme « pas la meme police ». Tout passe desormais par
-       une classe explicite. */
-
-    /* Source 736x920, portrait 4:5. Bornee par la LARGEUR et jamais par la
-       hauteur : en width:100% sur un ecran de 375 (327px de colonne) elle
-       ferait 409px de haut et pousserait les trois cartes hors de l'ecran.
-       Le plafond la tient a 300px de haut en mobile, 375px en desktop.
-       `height: auto` n'est pas decoratif : les attributs width/height de la
-       balise sont des hauteurs presentationnelles, donc avec une largeur CSS
-       la boite aurait DEUX dimensions definies, `aspect-ratio` serait ignore
-       et l'image se rendrait a 920px de haut. Meme piege que .pep-hero-img.
-       Alignee a gauche : la colonne est en fer a gauche, une image centree y
-       flotte. */
-    .pep-mission-img {
-        display: block;
-        width: 100%;
-        max-width: 240px;
-        height: auto;
-        aspect-ratio: 4 / 5;
-        object-fit: cover;
-        object-position: 50% 30%;
-        border-radius: var(--radius-md);
-        background: var(--bg-subtle);
-        margin: 0 0 var(--sp-8);
-    }
-    @media (min-width: 601px) { .pep-mission-img { max-width: 300px; } }
 
 
-    /* ── Cartes du modele de medecine ──
-       CLASSE NOUVELLE, assumee : aucun composant existant ne tient trois blocs
-       cote a cote. Elle n'invente rien visuellement, elle reprend la Callout
-       Box de DESIGN.md (bordure, radius-lg, aucun remplissage) et le couple
-       titre display / corps micro secondaire des lignes `.pep-row`.
-       Une seule colonne en mobile : trois cartes de 100px de large seraient
-       illisibles avant 601px. */
+    /* ── Les trois cartes de « Qui suis-je » ──
+       UNE colonne a toute largeur, demande du 27/09 : empilees, elles se
+       lisent dans l'ordre, et le meme rythme tient du telephone au grand
+       ecran. Elles reprennent la Callout Box de DESIGN.md : bordure,
+       radius-lg, aucun remplissage.
+       `background: var(--bg)` est explicite et non herite : sans lui, une
+       carte posee plus tard sur un fond sourd deviendrait transparente et se
+       fondrait dedans. */
     .pep-cards {
         display: grid;
         grid-template-columns: 1fr;
-        gap: var(--sp-3);
-        margin: 0 0 var(--sp-16);
+        gap: var(--sp-4);
     }
-    @media (min-width: 601px) {
-        .pep-cards { grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
-    }
+    /* L'icone au TRAIT, sans cercle ni carre autour (choix du 27/09).
+       L'icone dans une pastille coloree est la signature des pages generees a
+       la chaine ; au trait fin et en encre tertiaire, elle distingue les trois
+       points sans se voir avant eux. Purement decorative, donc `aria-hidden` :
+       le titre de la carte dit deja tout a un lecteur d'ecran. */
+    .pep-card-ico { color: var(--text-tertiary); margin-bottom: var(--sp-3); }
+
     .pep-card {
+        background: var(--bg);
         border: 1px solid var(--border);
         border-radius: var(--radius-lg);
-        padding: var(--sp-4);
+        padding: var(--sp-6);
     }
     /* La categorie reutilise .pep-label : meme role de micro-label, donc meme
        traitement. Seule la marge se resserre dans une carte. */
@@ -413,7 +527,8 @@ import PeptidesBanner from './PeptidesBanner.astro';
         border-radius: 2px;
     }
 
-    .pep-close { border-top: 1px solid var(--border); padding-top: var(--sp-12); }
+    /* ── Cloture sur fond encre. Pleine largeur : une bande sombre qui
+       s'arrete a 24px du bord serait une carte, pas une fin de page. ── */
     /* Le formulaire du pic d'intention, isolé de la liste 1-2-3. Sans ce filet
        les deux blocs se collent et la section a l'air de se répéter. */
     .pep-inline { margin-top: var(--sp-12); padding-top: var(--sp-8); border-top: 1px solid var(--border); }
@@ -595,8 +710,8 @@ import PeptidesBanner from './PeptidesBanner.astro';
          gouttière et devient une vignette au lieu d'un bandeau. -->
     <section class="pep-hero">
         <div class="pep-hero-body">
-            <h1>Les avancées dans la médecine, <em>décryptées</em>.</h1>
-            <p class="pep-sub">Ozempic, Wegovy, Mounjaro, et ce qui arrive après : ce qui est prouvé, ce qui ne l'est pas, et ce que ça change pour vous.</p>
+            <h1>La médecine derrière les GLP-1.</h1>
+            <p class="pep-sub">Ensemble, nous cassons les mythes derrière ces nouveaux médicaments. Nous décortiquons la science, sans jargon, avec des mots simples.</p>
 
             <div class="pep-inline" style="margin-top: var(--sp-8); padding-top: 0; border-top: 0;">
                 {submitted ? (
@@ -633,74 +748,62 @@ import PeptidesBanner from './PeptidesBanner.astro';
                 )}
             </div>
         </div>
-        <img
-            class="pep-hero-img"
-            src={HERO}
-            alt="Max Guerois, en conversation"
-            width="1100"
-            height="733"
-            fetchpriority="high"
-            decoding="async"
-        />
     </section>
 
     <div class="container" style="padding-top: 0;">
-        <!-- 2 · POURQUOI MOI -->
-        <section class="pep-section">
-            <p class="pep-label">Pourquoi moi</p>
-            <h2>Entrepreneur, et je teste sur ma santé first.</h2>
-            <!-- Meme systeme que « Ma mission » : affirmation en noir plein,
-                 justification en secondaire juste dessous, et le VIDE comme
-                 seul separateur. Les filets faisaient lire deux entrees de
-                 tableau la ou il y a deux idees. -->
-            <p class="pep-line">Entrepreneur depuis 2021</p>
-            <p class="pep-dim">
-                La dernière, dans la santé : j'ai cofondé le leader européen du test sanguin.
-                Des milliers de personnes y ont enfin compris leurs analyses, avec des médecins
-                et de la tech.
-            </p>
-
-            <p class="pep-line">Je teste sur ma santé, first</p>
-            <p class="pep-dim">
-                2 ans que je publie mes analyses et mes résultats en public.
-                Y compris ceux qui n'ont rien donné.
-            </p>
-        </section>
-
-        <!-- 3 · LA NEWSLETTER. Avant la mission : l'offre atterrit avant la
-             vision, sur du trafic froid (passe Codex du 26/08).
-             Le h2 de section a ete RETIRE : le bandeau porte le meme titre, en
-             plus fort. Le garder aurait repete le nom de la newsletter deux
-             fois de suite. « chaque lundi » a ete recupere dans la phrase
-             d'introduction, c'est la seule information que le bandeau ne porte
-             pas.
-             Le bandeau vit DANS la colonne, comme tout le reste. Il en est
-             sorti un temps parce que son brief le calibrait en `vw` pour du
-             plein ecran ; c'etait dimensionner pour le brief et non pour la
-             page, dont toute l'identite est une colonne de 620px. Une bande de
-             1500px y etait un corps etranger. Le titre se calibre desormais sur
-             le CONTENEUR, pas sur la fenetre. -->
-        <section class="pep-section">
-            <p class="pep-label">La newsletter</p>
-            <PeptidesBanner />
-            <p class="pep-text">Je plonge dans la science, puis je décrypte et j'interprète pour vous des sujets complexes, avec des mots simples.</p>
-            <!-- Un seul de ces 3 formats par lundi, jamais les 3 : la liste
-                 numerotee promettait un sommaire, ces lignes proposent un menu.
-                 Une promesse intenable se paie au premier numero. -->
-            <div class="pep-rows pep-rows--menu">
-                <div class="pep-row">
-                    <span class="pep-row-t">Une étude décryptée</span>
-                    <span class="pep-row-d">Ce qu'elle prouve, ce qu'elle ne prouve pas, en français normal.</span>
+        <!-- 2 · QUI SUIS-JE, JUSTE SOUS LE HÉROS. Le visiteur vient d'un
+             reel : il sait de quoi on parle, il ne sait pas qui parle. -->
+        <section class="pep-section pep-me">
+            <p class="pep-label">Qui suis-je</p>
+            <h2>Des années d'expérience dans la santé.</h2>
+            <img
+                class="pep-me-img"
+                src={HERO}
+                alt="Max Guerois, en conversation"
+                width="1100"
+                height="733"
+                loading="lazy"
+                decoding="async"
+            />
+            <div class="pep-cards">
+                <div class="pep-card">
+                    <svg class="pep-card-ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5S6.5 9 6.5 13.5a5.5 5.5 0 0 0 11 0C17.5 9 12 2.5 12 2.5z"/></svg>
+                    <p class="pep-card-t">Entrepreneur, dans la santé depuis 2021</p>
+                    <p class="pep-card-d">
+                        J'ai cofondé le leader européen du test sanguin. Des milliers de
+                        personnes y ont enfin compris leurs analyses, avec des médecins
+                        et de la tech.
+                    </p>
                 </div>
-                <div class="pep-row">
-                    <span class="pep-row-t">L'actu IA et santé</span>
-                    <span class="pep-row-d">Les dernières avancées, et ce qui est publié avec un vrai impact. Zéro bullshit.</span>
+                <div class="pep-card">
+                    <svg class="pep-card-ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h4l2.5-6 3.5 12 2.5-6H21"/></svg>
+                    <p class="pep-card-t">Je teste sur ma propre santé</p>
+                    <p class="pep-card-d">
+                        Deux ans que je publie mes analyses et mes résultats en public.
+                        Y compris ceux qui n'ont rien donné.
+                    </p>
                 </div>
-                <div class="pep-row">
-                    <span class="pep-row-t">Les prochains événements</span>
-                    <span class="pep-row-d">Bain froid, dîner, séance de sport : on se réunit parfois pour partager notre passion commune.</span>
+                <div class="pep-card">
+                    <svg class="pep-card-ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h5M9 17h3"/></svg>
+                    <p class="pep-card-t">Je remonte toujours à l'étude d'origine</p>
+                    <p class="pep-card-d">
+                        Pas au résumé qui circule sur les réseaux. Et je vous dis aussi
+                        ce que l'étude ne prouve pas.
+                    </p>
                 </div>
             </div>
+        </section>
+
+        <!-- 3 · LA NEWSLETTER, PROUVEE PAR SES ARTICLES. Le bandeau et le menu
+             des formats ont ete retires : une promesse de contenu vaut moins
+             que le contenu lui-meme, banniere comprise. -->
+        <section class="pep-section">
+            <p class="pep-label">Newsletter</p>
+            <h2>La médecine qui arrive.</h2>
+            <p class="pep-text">
+                Une newsletter simple à lire, qui vous permet de suivre l'actualité
+                et ce qui est vrai derrière la médecine des GLP-1.
+            </p>
 
             <div class="pep-inline">
                 <form class="pf" data-subscribe method="POST" action="/api/subscribe?lang=fr-peptides">
@@ -727,144 +830,38 @@ import PeptidesBanner from './PeptidesBanner.astro';
                     <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
                 </form>
             </div>
-        </section>
 
-        <!-- 4 · MA MISSION. Aucun selecteur d'element nu dans sa feuille :
-             `.pep-mission p` battait `.pep-label` en specificite et rendait le
-             label de CETTE section en 16px quasi noir, d'ou la rupture typo. -->
-        <section class="pep-section pep-mission">
-            <p class="pep-label">Ma mission</p>
-            <h2>Permettre à n'importe qui de comprendre les avancées de la médecine.</h2>
-
-            <img
-                class="pep-mission-img"
-                src="/health-journey/mission-peptides.jpg"
-                alt="Des mains en blouse de laboratoire pesant une poudre au-dessus d'une balance de précision, entourées de béchers et d'une feuille de pesées."
-                width="736"
-                height="920"
-                loading="lazy"
-                decoding="async"
-            />
-
-            <p class="pep-line">
-                La médecine vit <span class="mark">sa plus grande accélération depuis des décennies</span>.
-            </p>
-            <p class="pep-dim">
-                Mais cette accélération demande une autre façon de soigner :
-                préventive, personnalisée, et comprise par celui qui la suit.
-            </p>
-
-            <div class="pep-cards">
-                <div class="pep-card">
-                    <p class="pep-label">Préventif</p>
-                    <p class="pep-card-t">Agir proactivement</p>
-                    <p class="pep-card-d">
-                        Le système de santé soigne quand la maladie est là. Il finance
-                        mal ce qui l'évite.
-                    </p>
-                </div>
-                <div class="pep-card">
-                    <p class="pep-label">Personnalisé</p>
-                    <p class="pep-card-t">Traiter l'individu</p>
-                    <p class="pep-card-d">
-                        Chacun a un mode de vie, des objectifs et une biologie
-                        différents. Ça dépasse une personne ou un protocole.
-                    </p>
-                </div>
-                <div class="pep-card">
-                    <p class="pep-label">Compris</p>
-                    <p class="pep-card-t">Vous décidez</p>
-                    <p class="pep-card-d">
-                        Personne ne devrait suivre un traitement sans comprendre ce
-                        qu'il fait, ni ce qu'il ne fait pas.
-                    </p>
-                </div>
+            {articles.length > 0 && (
+            <div class="pep-posts">
+                {articles.map((exp) => (
+                    <a class="pep-post" href={`/fr/newsletter/${exp.data.slug}`}>
+                        {exp.data.cover && (
+                            <span class="pep-post-media">
+                                <img
+                                    class="pep-post-img"
+                                    src={exp.data.cover}
+                                    alt=""
+                                    width="1200"
+                                    height="630"
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                                <span class="pep-post-scrim" aria-hidden="true"></span>
+                            </span>
+                        )}
+                        <span class="pep-post-meta">
+                            <span class={`pep-chip pep-chip--${chipTone(exp.data.category)}`}>{exp.data.category}</span>
+                            <span class="pep-row-date">{fmtDate(exp.data.date)}</span>
+                        </span>
+                        <span class="pep-post-t">{exp.data.shortTitle ?? exp.data.title}</span>
+                        <span class="pep-post-d">{exp.data.takeaway ?? exp.data.tagline}</span>
+                    </a>
+                ))}
             </div>
-
-            <p class="pep-line">
-                Je remets <span class="mark">la vérité sur ce qui est du bullshit</span> et ce qui ne l'est pas.
-            </p>
-            <p class="pep-dim">En me basant sur la science et les revues de littérature.</p>
-
-            <p class="pep-line">
-                J'utilise <span class="mark">des mots simples</span> pour expliquer des concepts poussés.
-            </p>
-            <p class="pep-dim">Compréhensibles par n'importe qui, sans aucun bagage scientifique.</p>
-
-            <p class="pep-line">Et je partage tout à ma communauté, librement.</p>
-            <p class="pep-dim">Pour qu'elle prenne des décisions éclairées sur sa santé.</p>
-
-            <p class="pep-line">On est déjà plus de 1 000, et le mouvement ne fait que grandir.</p>
+            )}
+            <a class="pep-all" href="/fr/newsletter">Tout ce que j'ai publié <span aria-hidden="true">&rarr;</span></a>
         </section>
 
-        <!-- 5 · LE GUIDE, EN CLÔTURE. Le lien entre les deux offres n'est dit
-             qu'ici, une seule fois (passe Codex). -->
-        <section class="pep-section pep-close">
-            <h2>Recevez le guide des GLP-1, gratuitement.</h2>
-            <p class="pep-text">
-                Ce qu'il faut savoir avant de commencer : les molécules, les effets,
-                les prix, et les pièges. Il arrive dans le premier email.
-            </p>
-            <form class="pf" data-subscribe method="POST" action="/api/subscribe?lang=fr-peptides">
-                <label class="pf-label" for="pf-end">Votre email</label>
-                <input type="hidden" name="source" value="fr-peptides-guide" />
-                <input type="hidden" name="utm_source" value="instagram" />
-                <input class="pf-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
-                <div class="pf-row">
-                    <input
-                        id="pf-end"
-                        name="email"
-                        type="email"
-                        required
-                        inputmode="email"
-                        autocomplete="email"
-                        autocapitalize="off"
-                        spellcheck="false"
-                        placeholder="votre@email.com"
-                        aria-describedby="pf-end-err"
-                    />
-                    <button type="submit">S'inscrire à la newsletter</button>
-                </div>
-                <p class="pf-err" role="alert" id="pf-end-err" hidden></p>
-                <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
-            </form>
-        </section>
-
-        <!-- 6 · DÉJÀ PUBLIÉ ICI. Après le formulaire : ce sont des liens
-             sortants, chaque clic est un visiteur qui part sans son email. -->
-        {articles.length > 0 && (
-            <section class="pep-section">
-                <p class="pep-label">Déjà publié ici</p>
-
-                <!-- Meme UI que le carrousel de l'accueil : memes classes
-                     `photo-*`, donc le CSS vient de global.css sans une ligne
-                     en plus, et `js-slider` est repris tel quel plus bas.
-                     Pour en ajouter une : un `<figure>` de plus ici, et un
-                     bouton de plus dans `.js-segs`. Le script compte les
-                     diapositives lui-meme. -->
-                <div class="photo-slider js-slider">
-                    <div class="photo-viewport js-viewport">
-                        <div class="photo-track js-track">
-                            <figure class="photo-slide js-slide">
-                                <img src="/health-journey/pep-insuline-production.webp"
-                                     alt="Atelier de production d'insuline des annees 1920 : cuves en bois et chaine de conditionnement."
-                                     width="889" height="520" loading="lazy" decoding="async" />
-                            </figure>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="pep-rows">
-                    {articles.map((exp) => (
-                        <a class="pep-row" href={`/fr/newsletter/${exp.data.slug}`}>
-                            <span class="pep-row-t">{exp.data.shortTitle ?? exp.data.title}</span>
-                            <span class="pep-row-d">{exp.data.takeaway ?? exp.data.tagline}</span>
-                            <span class="pep-row-meta">{exp.data.category} · {fmtDate(exp.data.date)}</span>
-                        </a>
-                    ))}
-                </div>
-            </section>
-        )}
     </div>
 
     <!-- POP-UP GUIDE. Sans image : la modale doit s'ouvrir instantanément. -->
@@ -902,13 +899,6 @@ import PeptidesBanner from './PeptidesBanner.astro';
         </div>
     </dialog>
 </div>
-
-<script>
-    // Meme module que les deux accueils : Astro le hisse et le deduplique, donc
-    // il n'est telecharge qu'une fois quel que soit le nombre de pages.
-    import { initPhotoSliders } from '../scripts/photo-slider';
-    initPhotoSliders();
-</script>
 
 <script is:inline>
     (function () {

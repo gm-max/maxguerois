@@ -84,5 +84,8 @@
     "supplementsTitle": "Je prends 11 compléments par jour",
     "supplementsTagline": "11 compléments reliés à mes analyses de sang. Trois systèmes étaient déréglés : hormones, thyroïde, inflammation. La liste complète, avec doses, horaires et produits.",
     "supplementsCategory": "Protocole Compléments"
+  },
+  "footer": {
+    "disclaimer": "Je ne vends aucun traitement et je ne prescris rien. Aucun partenariat vendeur, aucun code promo, aucune commission. Les décisions de traitement restent entre vous et votre médecin."
   }
 }
