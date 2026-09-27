@@ -51,7 +51,12 @@ const submitErrorCode = params.get('error');
 const submitError = submitErrorCode
     ? (ERROR_MESSAGES[submitErrorCode] ?? ERROR_MESSAGES._)
     : null;
-const DONE_TEXT = "Le guide arrive, pensez aux spams.";
+// Le guide n'est pas encore ecrit (27/09). Tant qu'il ne part pas, la page
+// promet d'AVERTIR, pas de livrer : une premiere impression qui s'ouvre sur une
+// promesse non tenue coute plus cher que la conversion qu'elle achete. A la
+// sortie du guide, cette phrase et celle de la modale redeviennent « il arrive
+// dans le premier email », et DONE_HTML plus bas doit suivre.
+const DONE_TEXT = "Vous serez prévenu dès que le guide sort. Pensez aux spams.";
 
 // Les 3 DERNIERS articles, tries par date. La liste etait choisie a la main :
 // elle demandait donc une modification du code a chaque publication, et elle
@@ -403,6 +408,68 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
     }
     .pep-post:hover .pep-post-t { text-decoration: underline; }
 
+    /* ── L'annonce du guide, dans la section newsletter ──
+       Meme composition que les articles en ligne : vignette a gauche, texte a
+       droite. Contour et fond de page, comme les cartes de « Qui suis-je » :
+       aucun composant nouveau, donc rien de plus a tenir a jour. */
+    /* Un BOUTON et non une boite decorative : le bloc annoncait le guide
+       sans dire comment l'obtenir, et le seul champ email etait au-dessus,
+       sans lien avec lui. Il ouvre desormais la fenetre, qui porte deja le
+       formulaire. Un seul endroit ou le guide se demande. */
+    .pep-guide {
+        width: 100%;
+        text-align: left;
+        font: inherit;
+        cursor: pointer;
+        display: flex;
+        gap: var(--sp-4);
+        align-items: center;
+        margin-top: var(--sp-12);
+        padding: var(--sp-4);
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+    }
+    .pep-guide-img {
+        flex: 0 0 128px;
+        width: 128px;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        border-radius: var(--radius-sm);
+        background: var(--bg-subtle);
+    }
+    .pep-guide-body { min-width: 0; }
+    .pep-guide-cat {
+        margin: 0 0 var(--sp-1);
+        font-size: var(--t-label);
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+    }
+    .pep-guide-t {
+        margin: 0 0 var(--sp-1);
+        font-size: var(--t-item);
+        font-weight: 500;
+        line-height: 1.3;
+        color: var(--text);
+    }
+    .pep-guide-d {
+        margin: 0;
+        font-size: var(--t-micro);
+        line-height: 1.5;
+        color: var(--text-secondary);
+    }
+    .pep-guide-cta {
+        margin: var(--sp-2) 0 0;
+        font-size: var(--t-cal);
+        font-weight: 500;
+        color: var(--text);
+    }
+    .pep-guide:hover { background: var(--bg-subtle); }
+    .pep-guide:hover .pep-guide-cta { text-decoration: underline; }
+
     /* ── Les articles suivants, en ligne ──
        Vignette carree a gauche, texte a droite : trois lignes tiennent dans
        l'espace qu'une seule banniere occupait. */
@@ -711,6 +778,43 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
        :global() est necessaire, l'attribut data-theme vit sur <html>, hors de
        la portee du style scope de ce composant. */
     :global([data-theme='dark']) .pg::backdrop { background: rgba(0, 0, 0, 0.62); }
+    .pg-free {
+        position: absolute;
+        top: var(--sp-4);
+        left: var(--sp-4);
+        z-index: 1;
+        padding: 5px 12px;
+        border-radius: var(--radius-full);
+        background: var(--bg);
+        font-family: var(--font-body);
+        font-size: var(--t-label);
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text);
+        box-shadow: 0 2px 10px rgba(15, 14, 12, 0.22);
+    }
+
+    /* L'image sort du padding de la carte pour toucher ses bords : une image
+       avec 24px de blanc autour serait une vignette posee dans une boite, pas
+       la tete de la carte. Les coins hauts suivent ceux de la carte. */
+    .pg-img {
+        display: block;
+        width: calc(100% + var(--sp-6) * 2);
+        margin: calc(var(--sp-6) * -1) calc(var(--sp-6) * -1) var(--sp-6);
+        height: auto;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        border-radius: var(--radius-md) var(--radius-md) 0 0;
+        background: var(--bg-subtle);
+    }
+    /* Sur un ecran court (iPhone SE, paysage), la carte depassait et le
+       formulaire tombait sous le pli : l'image s'aplatit au lieu de pousser
+       l'action hors de vue. */
+    @media (max-height: 700px) {
+        .pg-img { aspect-ratio: 21 / 9; }
+    }
+
     .pg-card {
         position: relative;
         max-height: calc(100dvh - var(--sp-8));
@@ -733,8 +837,13 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
     @keyframes pg-rise { from { opacity: 0; transform: translateY(12px); } }
     .pg-close {
         position: absolute;
-        top: 2px;
-        right: 2px;
+        /* Posee sur la photo depuis le 27/09 : pastille sombre et croix
+           claire, sinon l'encre tertiaire se perdait dans l'image. */
+        top: var(--sp-2);
+        right: var(--sp-2);
+        border-radius: var(--radius-full);
+        background: rgba(15, 14, 12, 0.45);
+        backdrop-filter: blur(4px);
         width: 44px;
         height: 44px;
         display: flex;
@@ -742,12 +851,11 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
         justify-content: center;
         font-size: var(--t-h2);
         line-height: 1;
-        color: var(--text-tertiary);
-        background: none;
+        color: #f3efe6;
         border: 0;
         cursor: pointer;
     }
-    .pg-close:hover { color: var(--text); }
+    .pg-close:hover { background: rgba(15, 14, 12, 0.7); }
     .pg-card h2 { margin-bottom: var(--sp-3); padding-right: var(--sp-8); }
 
     @media (prefers-reduced-motion: reduce) {
@@ -803,6 +911,46 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
     </section>
 
     <div class="container" style="padding-top: 0;">
+        {/* Le guide, juste sous le formulaire du heros : c'est ce qu'on
+            recoit en s'inscrivant, donc il se lit AVANT la raison de faire
+            confiance, pas trois ecrans plus bas. La modale ne s'affiche
+            qu'UNE fois par visiteur (mg_peptides_guide_v1), donc sans ce
+            bloc, qui l'a fermee ne reverrait jamais l'offre. */}
+        <button class="pep-guide" type="button" data-pg-open>
+            <picture>
+                <source
+                    type="image/avif"
+                    srcset="/health-journey/pg-guide-glp1-420.avif 420w,
+                            /health-journey/pg-guide-glp1-840.avif 840w"
+                    sizes="128px"
+                />
+                <source
+                    type="image/webp"
+                    srcset="/health-journey/pg-guide-glp1-420.webp 420w,
+                            /health-journey/pg-guide-glp1-840.webp 840w"
+                    sizes="128px"
+                />
+                <img
+                    class="pep-guide-img"
+                    src="/health-journey/pg-guide-glp1-840.jpg"
+                    alt="Le guide GLP-1 complet, par Max Guerois."
+                    width="1152"
+                    height="648"
+                    loading="lazy"
+                    decoding="async"
+                />
+            </picture>
+            <div class="pep-guide-body">
+                <p class="pep-guide-cat">Gratuit</p>
+                <p class="pep-guide-t">Le guide complet des GLP-1</p>
+                <p class="pep-guide-d">
+                    +100 h de recherches. Le 1<sup>er</sup> octobre, dans la boîte
+                    mail des inscrits.
+                </p>
+                <p class="pep-guide-cta">Le recevoir <span aria-hidden="true">&rarr;</span></p>
+            </div>
+        </button>
+
         <!-- 2 · QUI SUIS-JE, JUSTE SOUS LE HÉROS. Le visiteur vient d'un
              reel : il sait de quoi on parle, il ne sait pas qui parle. -->
         <section class="pep-section pep-me">
@@ -954,14 +1102,51 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
 
     </div>
 
-    <!-- POP-UP GUIDE. Sans image : la modale doit s'ouvrir instantanément. -->
+    <!-- POP-UP GUIDE.
+         L'IMAGE est servie en AVIF/WebP pre-generes (13 Ko a 420px) et en
+         `eager` : la modale doit s'ouvrir instantanement, et une image
+         paresseuse se serait chargee APRES l'ouverture, donc sur un trou gris.
+         width/height portes par la balise, sinon la carte grandit sous les
+         yeux du visiteur au moment ou elle s'affiche. -->
     <dialog class="pg" id="pep-guide" aria-labelledby="pg-title">
         <div class="pg-card">
             <button class="pg-close" type="button" data-pg-close aria-label="Fermer">&times;</button>
-            <h2 id="pg-title">Le guide des GLP-1, offert</h2>
+            {/* La pastille dit le prix AVANT le texte : « gratuit » sous le
+                bouton arrive apres la decision, pas avant. Posee sur l'image,
+                comme un bandeau d'editeur sur une couverture. */}
+            <span class="pg-free">Gratuit</span>
+            <picture>
+                <source
+                    type="image/avif"
+                    srcset="/health-journey/pg-guide-glp1-420.avif 420w,
+                            /health-journey/pg-guide-glp1-840.avif 840w,
+                            /health-journey/pg-guide-glp1-1260.avif 1260w"
+                    sizes="min(420px, calc(100vw - 32px))"
+                />
+                <source
+                    type="image/webp"
+                    srcset="/health-journey/pg-guide-glp1-420.webp 420w,
+                            /health-journey/pg-guide-glp1-840.webp 840w,
+                            /health-journey/pg-guide-glp1-1260.webp 1260w"
+                    sizes="min(420px, calc(100vw - 32px))"
+                />
+                <img
+                    class="pg-img"
+                    src="/health-journey/pg-guide-glp1-840.jpg"
+                    alt="Le guide GLP-1 complet, par Max Guerois, posé sur une table basse."
+                    width="1152"
+                    height="648"
+                    fetchpriority="high"
+                    decoding="async"
+                />
+            </picture>
+            <h2 id="pg-title">Le guide complet des GLP-1</h2>
             <p class="pep-text" style="font-size: var(--t-cal); margin-bottom: var(--sp-6);">
-                Ce qu'il faut savoir avant de commencer : les molécules, les effets,
-                les prix, et les pièges.
+                Ce qu'il faut savoir avant de commencer : comment être accompagné
+                pendant le traitement, les effets, les prix, et les pièges.
+                <br /><br />
+                +100 h de préparation et de recherches, dans votre boîte mail,
+                le 1<sup>er</sup> octobre.
             </p>
             <form class="pf" data-subscribe method="POST" action="/api/subscribe?lang=fr-peptides">
                 <label class="pf-label" for="pf-modal">Votre email</label>
@@ -981,10 +1166,10 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                         placeholder="votre@email.com"
                         aria-describedby="pf-modal-err"
                     />
-                    <button type="submit">S'inscrire à la newsletter</button>
+                    <button type="submit">Être notifié quand le guide est prêt</button>
                 </div>
                 <p class="pf-err" role="alert" id="pf-modal-err" hidden></p>
-                <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
+                <p class="pf-micro">Gratuit.</p>
             </form>
         </div>
     </dialog>
@@ -995,7 +1180,7 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
         // Une seule definition du message de succes. Il etait ecrit en dur a deux
         // endroits plus bas, avec cette constante declaree et jamais lue : trois
         // copies d'une phrase, dont deux qui derivent au premier changement.
-        var DONE_HTML = "<b>C'est fait.</b> Le guide arrive, pensez aux spams.";
+        var DONE_HTML = "<b>C'est fait.</b> Vous serez prévenu dès que le guide sort. Pensez aux spams.";
         var ERRORS = {
             invalid_email: "Cet email n'a pas l'air valide.",
             rate_limited: "Ça n'a pas marché de notre côté. Réessayez, ou écrivez-moi à hi@maxguerois.com.",
@@ -1198,6 +1383,24 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
             });
             var closeBtn = dlg.querySelector('[data-pg-close]');
             if (closeBtn) closeBtn.addEventListener('click', function () { guideRefuse(); dlg.close(); });
+        }
+
+        // OUVERTURE A LA DEMANDE. Branchee hors du `if` ci-dessus : le bloc de
+        // la page doit fonctionner meme quand la fenetre automatique a deja ete
+        // vue, ce qui est precisement le cas qu'il rattrape. On annule le
+        // minuteur au passage, sinon la fenetre se rouvrirait toute seule huit
+        // secondes apres une ouverture manuelle.
+        if (dlg && typeof dlg.showModal === 'function') {
+            var openers = document.querySelectorAll('[data-pg-open]');
+            for (var oi = 0; oi < openers.length; oi++) {
+                openers[oi].addEventListener('click', function () {
+                    if (modalTimer) { clearTimeout(modalTimer); modalTimer = null; }
+                    try { localStorage.setItem(KEY, '1'); } catch (e7) {}
+                    if (dlg.open) return;
+                    try { dlg.showModal(); } catch (e8) { return; }
+                    if (dlg.open) track('peptides_guide_opened');
+                });
+            }
         }
     })();
 </script>
