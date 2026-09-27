@@ -46,6 +46,34 @@ const ERROR_MESSAGES: Record<string, string> = {
     _: "Ça n'a pas marché de notre côté. Réessayez, ou écrivez-moi à hi@maxguerois.com.",
 };
 const params = Astro.url.searchParams;
+
+/**
+ * D'ou vient le visiteur, pour de vrai.
+ *
+ * La valeur etait `instagram` en dur dans les trois formulaires : tout le
+ * trafic se ressemblait donc dans Supabase, une story et un reel compris. Le
+ * parametre `utm_source` de l'URL la remplace quand il est present, ce qui
+ * rend chaque lien mesurable sans rien changer au code.
+ *
+ * Liste blanche volontaire. La valeur part en base et se retrouve dans les
+ * exports, donc elle ne doit pas etre ce qu'un inconnu decide : on garde les
+ * lettres, les chiffres, le tiret et le point, on coupe a 40, et tout le reste
+ * retombe sur `instagram`.
+ */
+const utmSource = (() => {
+    const raw = (params.get('utm_source') ?? '').trim();
+    const clean = raw.replace(/[^a-zA-Z0-9._-]/g, '').slice(0, 40);
+    return clean || 'instagram';
+})();
+
+/**
+ * `?guide=1` ouvre la fenetre du guide des l'arrivee.
+ *
+ * Sans lui, un visiteur venu d'une story qui parle DU GUIDE atterrit sur la
+ * page entiere et doit retrouver l'offre tout seul. Le parametre est lu ici et
+ * pose sur le `<body>` de la page, le script s'en sert plus bas.
+ */
+const ouvrirGuide = params.get('guide') === '1';
 const submitted = params.get('ok') === '1';
 const submitErrorCode = params.get('error');
 const submitError = submitErrorCode
@@ -885,7 +913,7 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
     }
 </style>
 
-<div class="pep">
+<div class="pep" data-open-guide={ouvrirGuide ? '1' : undefined}>
 
     <!-- 1 · HÉROS. L'image est HORS .container, sinon elle hérite de 24px de
          gouttière et devient une vignette au lieu d'un bandeau. -->
@@ -903,7 +931,7 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                 <form class="pf" data-subscribe method="POST" action="/api/subscribe?lang=fr-peptides">
                     <label class="pf-label" for="pf-hero">Votre email</label>
                     <input type="hidden" name="source" value="fr-peptides" />
-                    <input type="hidden" name="utm_source" value="instagram" />
+                    <input type="hidden" name="utm_source" value={utmSource} />
                     <input class="pf-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
                     <div class="pf-row">
                         <input
@@ -1032,7 +1060,7 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                 <form class="pf" data-subscribe method="POST" action="/api/subscribe?lang=fr-peptides">
                     <label class="pf-label" for="pf-mid">Votre email</label>
                     <input type="hidden" name="source" value="fr-peptides-newsletter" />
-                    <input type="hidden" name="utm_source" value="instagram" />
+                    <input type="hidden" name="utm_source" value={utmSource} />
                     <input class="pf-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
                     <div class="pf-row">
                         <input
@@ -1172,7 +1200,7 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
             <form class="pf" data-subscribe method="POST" action="/api/subscribe?lang=fr-peptides">
                 <label class="pf-label" for="pf-modal">Votre email</label>
                 <input type="hidden" name="source" value="fr-peptides-modal" />
-                <input type="hidden" name="utm_source" value="instagram" />
+                <input type="hidden" name="utm_source" value={utmSource} />
                 <input class="pf-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
                 <div class="pf-row">
                     <input
@@ -1404,6 +1432,21 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
             });
             var closeBtn = dlg.querySelector('[data-pg-close]');
             if (closeBtn) closeBtn.addEventListener('click', function () { guideRefuse(); dlg.close(); });
+        }
+
+        // OUVERTURE PAR L'URL. `?guide=1` vient d'une story ou d'un lien qui
+        // parle du guide : la fenetre s'ouvre tout de suite, sans les 8
+        // secondes d'attente, et sans regarder si elle a deja ete vue. Le
+        // minuteur est annule, sinon elle se rouvrirait apres une fermeture.
+        var pepRoot = document.querySelector('.pep');
+        if (dlg && pepRoot && pepRoot.getAttribute('data-open-guide') === '1'
+            && typeof dlg.showModal === 'function' && !params.get('ok')) {
+            if (modalTimer) { clearTimeout(modalTimer); modalTimer = null; }
+            try { localStorage.setItem(KEY, '1'); } catch (e9) {}
+            try {
+                dlg.showModal();
+                if (dlg.open) track('peptides_guide_shown', { via: 'url' });
+            } catch (e10) {}
         }
 
         // OUVERTURE A LA DEMANDE. Branchee hors du `if` ci-dessus : le bloc de
