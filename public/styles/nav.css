@@ -127,6 +127,16 @@
     display: block;
 }
 
+.footer-mail {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    transition: color var(--duration-short) ease;
+}
+
+.footer-mail:hover { color: var(--text); }
+
 .footer-lang {
     font-family: var(--font-body);
     font-size: 12px;
@@ -146,6 +156,16 @@
     min-height: 0;
     padding: 4px;
     font-size: 14px;
+}
+
+.footer-disclaimer {
+    max-width: 560px;
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 11px;
+    line-height: 1.6;
+    text-align: center;
+    color: var(--text-tertiary);
 }
 
 .footer-copy {

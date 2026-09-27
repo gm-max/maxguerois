@@ -34,7 +34,11 @@ Key tokens:
 ## Stack
 - Framework: Astro (static output)
 - Content: `.astro` pages for complex HTML, `.mdx` for future markdown experiments
-- Styles: `src/styles/global.css` + `src/styles/article.css` + `src/styles/nav.css`
+- Styles: **`public/styles/`** — `global.css`, `article.css`, `nav.css`. Ce sont les
+  fichiers SERVIS, référencés en `<link href="/styles/...">` par `Layout.astro` et
+  `ArticleLayout.astro`. Les copies sous `src/styles/` ne sont plus chargées par aucune
+  page : une règle écrite là-bas ne s'applique nulle part (vérifié le 27/09, `.footer-mail`
+  rendue en bleu de navigateur tant qu'elle vivait dans `src/`).
 - Deploy: Vercel, `astro build`, output → `dist/`
 
 ## File Structure
