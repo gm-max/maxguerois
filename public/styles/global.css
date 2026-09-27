@@ -354,6 +354,9 @@ body {
 }
 .ai-link:hover { border-color: var(--text-secondary); color: var(--text); }
 .ai-icon { width: 18px; height: 18px; border-radius: 50%; }
+/* Le logo Grok est carre : le rond lui rognait les coins. La regle n'existait
+   que dans la copie morte de src/styles/, donc elle ne s'appliquait nulle part. */
+.ai-icon--square { border-radius: 0; }
 
 /* ── Health journey photos ── */
 .health-photos {
