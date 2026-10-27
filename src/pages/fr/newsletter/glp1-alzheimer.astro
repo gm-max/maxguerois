@@ -13,6 +13,9 @@ const articleStyles = `
     .article-body .endmatter li { font-size: 14px; overflow-wrap: anywhere; }
     .article-body .disclaimer { font-size: 14px; }
     .article-body [id] { scroll-margin-top: 80px; }
+    .article-body .research-figure { margin: 32px 0; }
+    .article-body .research-figure img { display: block; width: 100%; height: auto; border-radius: var(--radius-md); }
+    .article-body .research-figure figcaption { margin-top: 12px; font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
 `;
 ---
 <ArticleLayout
@@ -44,6 +47,10 @@ const articleStyles = `
         <p>Novo Nordisk n'avait d'ailleurs pas attendu cette publication. Dès <strong>2021</strong>, le labo avait lancé EVOKE et EVOKE+ pour vérifier si le sémaglutide pouvait ralentir Alzheimer.</p>
         <p><strong>3 808 personnes, dans 40 pays.</strong> Toutes avec un Alzheimer débutant. Elles prenaient du sémaglutide en comprimé ou un placebo, un comprimé sans médicament actif.</p>
         <p>Mais après <strong>2 ans</strong>, aucun ralentissement de la maladie n'a été démontré. Les résultats ont été publiés dans <em>The Lancet</em> en 2026.<sup class="citation"><a href="#source-2" aria-label="Source 2">[2]</a></sup></p>
+        <figure class="research-figure">
+            <img src="/health-journey/blog/glp1-alzheimer/evoke-resultats.png" width="1800" height="1700" loading="lazy" decoding="async" alt="Après 2 ans, le score CDR-SB augmente de 2,3 points dans les 2 groupes d'EVOKE, et de 2,2 points sous sémaglutide contre 2,1 sous placebo dans EVOKE+.">
+            <figcaption>Plus le score augmente, plus les difficultés de mémoire et d'autonomie augmentent. Moyennes publiées arrondies à 1 décimale. Les écarts ne démontrent pas de ralentissement. Graphique redessiné d'après <a href="#source-2">EVOKE et EVOKE+ [2]</a>.</figcaption>
+        </figure>
         <p>Alors pourquoi cette piste continue-t-elle d'intéresser les chercheurs ?</p>
 
         <h2 class="section-heading">Le cerveau dépend aussi de la santé du corps</h2>
@@ -56,6 +63,10 @@ const articleStyles = `
             <li><strong>Inflammation : un marqueur sanguin 44 % plus bas qu'avec le placebo</strong>, après 16 mois dans STEP1. Il s'agit de la CRP, pas d'une mesure de toute l'inflammation du corps.<sup class="citation"><a href="#source-6" aria-label="Source 6">[6]</a></sup></li>
         </ul>
         <p>Ces chiffres viennent d'essais différents, avec des personnes et des doses différentes. Ils ne mesurent pas le risque d'Alzheimer.</p>
+        <figure class="research-figure">
+            <img src="/health-journey/blog/glp1-alzheimer/step1-poids.png" width="1800" height="1280" loading="lazy" decoding="async" alt="Perte de poids moyenne à 68 semaines dans STEP1 : 14,9 % sous sémaglutide contre 2,4 % sous placebo.">
+            <figcaption>Adultes en surpoids ou obèses, sans diabète. Les 2 groupes recevaient aussi des conseils d'alimentation et d'activité physique. Ce résultat porte sur le poids. Graphique redessiné d'après <a href="#source-4">STEP1 [4]</a>.</figcaption>
+        </figure>
 
         <h2 class="section-heading">Prévenir avant les premiers symptômes ?</h2>
         <p>Et c'est là que la question de la prévention devient intéressante. Les essais EVOKE portaient sur des personnes déjà malades. <strong>En améliorant ces facteurs plus tôt, pourrait-on aussi protéger le cerveau avant l'apparition d'Alzheimer ?</strong></p>

@@ -13,6 +13,9 @@ const articleStyles = `
     .article-body .endmatter li { font-size: 14px; overflow-wrap: anywhere; }
     .article-body .disclaimer { font-size: 14px; }
     .article-body [id] { scroll-margin-top: 80px; }
+    .article-body .research-figure { margin: 32px 0; }
+    .article-body .research-figure img { display: block; width: 100%; height: auto; border-radius: var(--radius-md); }
+    .article-body .research-figure figcaption { margin-top: 12px; font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
 `;
 ---
 <ArticleLayout
@@ -44,6 +47,10 @@ const articleStyles = `
         <p>Novo Nordisk hadn't waited for that publication. In <strong>2021</strong>, it launched EVOKE and EVOKE+ to test whether semaglutide could slow Alzheimer's.</p>
         <p><strong>3,808 people across 40 countries.</strong> All had early-stage Alzheimer's. They received semaglutide tablets or a placebo, a tablet without an active drug.</p>
         <p>After <strong>2 years</strong>, the trials showed no slowing of the disease. The results were published in <em>The Lancet</em> in 2026.<sup class="citation"><a href="#source-2" aria-label="Source 2">[2]</a></sup></p>
+        <figure class="research-figure">
+            <img src="/health-journey/blog/glp1-alzheimer/evoke-resultats-en.png" width="1800" height="1700" loading="lazy" decoding="async" alt="At 2 years, CDR-SB scores rose by 2.3 points in both EVOKE groups, and by 2.2 on semaglutide versus 2.1 on placebo in EVOKE+.">
+            <figcaption>A higher score means greater difficulties with memory and independence. Published means are rounded to 1 decimal place. The differences do not demonstrate slower progression. Redrawn from <a href="#source-2">EVOKE and EVOKE+ [2]</a>.</figcaption>
+        </figure>
         <p>So why are researchers still interested?</p>
 
         <h2 class="section-heading">The brain also depends on the body's health</h2>
@@ -56,6 +63,10 @@ const articleStyles = `
             <li><strong>Inflammation: a blood marker was 44% lower than on placebo</strong> after 16 months in STEP1. That marker is CRP, not a measure of all inflammation in the body.<sup class="citation"><a href="#source-6" aria-label="Source 6">[6]</a></sup></li>
         </ul>
         <p>These figures come from different trials, with different participants and doses. They don't measure Alzheimer's risk.</p>
+        <figure class="research-figure">
+            <img src="/health-journey/blog/glp1-alzheimer/step1-poids-en.png" width="1800" height="1280" loading="lazy" decoding="async" alt="Average weight loss at 68 weeks in STEP1: 14.9% on semaglutide versus 2.4% on placebo.">
+            <figcaption>Adults with overweight or obesity, without diabetes. Both groups also received diet and physical activity guidance. This result measures weight loss. Redrawn from <a href="#source-4">STEP1 [4]</a>.</figcaption>
+        </figure>
 
         <h2 class="section-heading">Could prevention start before symptoms?</h2>
         <p>This is where prevention gets interesting. EVOKE enrolled people who already had Alzheimer's. <strong>Could improving these factors earlier also help protect the brain before the disease appears?</strong></p>
