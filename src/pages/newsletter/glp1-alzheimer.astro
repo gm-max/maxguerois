@@ -1,0 +1,98 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+
+const articleStyles = `
+    .article-body a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body ul { margin: 0 0 20px; padding-left: 22px; }
+    .article-body li { font-size: 16px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 12px; }
+    .article-body .citation { font-size: .8em; vertical-align: super; margin-left: 3px; white-space: nowrap; }
+    .article-body .endmatter { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .article-body .endmatter ol { padding-left: 22px; }
+    .article-body .endmatter li { font-size: 14px; overflow-wrap: anywhere; }
+    .article-body .disclaimer { font-size: 14px; }
+    .article-body [id] { scroll-margin-top: 80px; }
+    .article-body .research-figure { margin: 32px 0; }
+    .article-body .research-figure img { display: block; width: 100%; height: auto; border-radius: var(--radius-md); }
+    .article-body .research-figure figcaption { margin-top: 12px; font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
+`;
+---
+<ArticleLayout
+    title="GLP-1s and Alzheimer's: Novo Nordisk's bet"
+    description="3,808 people, 2 years of follow-up, no slowing of Alzheimer's. Why semaglutide's metabolic effects still raise a question about prevention."
+    ogUrl="https://maxguerois.com/newsletter/glp1-alzheimer"
+    locale="en"
+    articleStyles={articleStyles}
+>
+<div class="container">
+    <a href="/newsletter" class="back">← Back to the newsletter</a>
+    <div class="article-meta"><time datetime="2026-10-27">27 October 2026</time> · Max Guerois</div>
+    <h1 class="article-title">GLP-1s and Alzheimer's: Novo Nordisk's bet</h1>
+    <p class="article-subtitle">Negative trials in 3,808 people, and an unanswered question about prevention.</p>
+
+    <div class="article-body">
+        <p>GLP-1 drugs have become a major part of weight-loss treatment. Now another possibility is attracting attention: could they also help reduce the risk of Alzheimer's?</p>
+        <p>That's a big claim. I wanted to see what the science actually says.</p>
+
+        <h2 class="section-heading">The finding that raised hopes</h2>
+        <p>In 2024, a study drawing on the medical records of <strong>more than 1 million people with type 2 diabetes</strong> found a striking signal.</p>
+        <p>Semaglutide, the molecule in Ozempic and Wegovy, was associated with a <strong>40 to 70% lower relative risk of a first Alzheimer's diagnosis</strong> compared with other diabetes treatments. The figure varied with the comparison drug.<sup class="citation"><a href="#source-1" aria-label="Source 1">[1]</a></sup></p>
+        <p>That would be huge.</p>
+        <p>Imagine the trajectory: a drug developed for diabetes becomes a treatment for obesity, then finds a role against Alzheimer's.</p>
+        <p>For companies such as Eli Lilly and Novo Nordisk, the scientific and commercial stakes are enormous.</p>
+        <p>But this was an analysis of medical records. It provides a clue, not proof that semaglutide prevents Alzheimer's. And the 40 to 70% describes a relative difference between groups, not 40 to 70 people protected out of 100.</p>
+
+        <h2 class="section-heading">3,808 people to test the idea</h2>
+        <p>Novo Nordisk hadn't waited for that publication. In <strong>2021</strong>, it launched EVOKE and EVOKE+ to test whether semaglutide could slow Alzheimer's.</p>
+        <p><strong>3,808 people across 40 countries.</strong> All had early-stage Alzheimer's. They received semaglutide tablets or a placebo, a tablet without an active drug.</p>
+        <p>After <strong>2 years</strong>, the trials showed no slowing of the disease. The results were published in <em>The Lancet</em> in 2026.<sup class="citation"><a href="#source-2" aria-label="Source 2">[2]</a></sup></p>
+        <figure class="research-figure">
+            <img src="/health-journey/blog/glp1-alzheimer/evoke-resultats-en.png" width="1800" height="1700" loading="lazy" decoding="async" alt="At 2 years, CDR-SB scores rose by 2.3 points in both EVOKE groups, and by 2.2 on semaglutide versus 2.1 on placebo in EVOKE+.">
+            <figcaption>A higher score means greater difficulties with memory and independence. Published means are rounded to 1 decimal place. The differences do not demonstrate slower progression. Redrawn from <a href="#source-2">EVOKE and EVOKE+ [2]</a>.</figcaption>
+        </figure>
+        <p>So why are researchers still interested?</p>
+
+        <h2 class="section-heading">The brain also depends on the body's health</h2>
+        <p>Diabetes, high blood pressure and obesity in midlife are among the risk factors for dementia.<sup class="citation"><a href="#source-3" aria-label="Source 3">[3]</a></sup></p>
+        <p>Semaglutide affects body weight, blood sugar and some markers of inflammation.</p>
+        <p>Trials in obesity or diabetes, using therapeutic doses, have measured concrete changes:</p>
+        <ul>
+            <li><strong>Weight: about 15% lost on average over 16 months</strong>, compared with 2.4% on placebo. STEP1 enrolled adults with overweight or obesity, without diabetes.<sup class="citation"><a href="#source-4" aria-label="Source 4">[4]</a></sup></li>
+            <li><strong>Blood sugar: about 3 in 4 people reached the study's diabetes-control target</strong>, compared with 1 in 4 on placebo, over 7 months. SUSTAIN1 measured average blood sugar.<sup class="citation"><a href="#source-5" aria-label="Source 5">[5]</a></sup></li>
+            <li><strong>Inflammation: a blood marker was 44% lower than on placebo</strong> after 16 months in STEP1. That marker is CRP, not a measure of all inflammation in the body.<sup class="citation"><a href="#source-6" aria-label="Source 6">[6]</a></sup></li>
+        </ul>
+        <p>These figures come from different trials, with different participants and doses. They don't measure Alzheimer's risk.</p>
+        <figure class="research-figure">
+            <img src="/health-journey/blog/glp1-alzheimer/step1-poids-en.png" width="1800" height="1280" loading="lazy" decoding="async" alt="Average weight loss at 68 weeks in STEP1: 14.9% on semaglutide versus 2.4% on placebo.">
+            <figcaption>Adults with overweight or obesity, without diabetes. Both groups also received diet and physical activity guidance. This result measures weight loss. Redrawn from <a href="#source-4">STEP1 [4]</a>.</figcaption>
+        </figure>
+
+        <h2 class="section-heading">Could prevention start before symptoms?</h2>
+        <p>This is where prevention gets interesting. EVOKE enrolled people who already had Alzheimer's. <strong>Could improving these factors earlier also help protect the brain before the disease appears?</strong></p>
+        <p>That's the question I find fascinating. The same hope of acting early also appears among some people exploring GLP-1 microdosing for longevity.<sup class="citation"><a href="#source-7" aria-label="Source 7">[7]</a></sup></p>
+        <p>But the trials cited here didn't test microdosing. That practice has not demonstrated any preventive effect against Alzheimer's.</p>
+        <p>Researchers still need to establish whether a preventive benefit exists and how it would work: directly in the brain, through metabolic effects, or both.</p>
+        <p>For now, semaglutide did not slow Alzheimer's in EVOKE. Prevention remains a hypothesis to test.</p>
+
+        <h2 class="section-heading">Continue the conversation</h2>
+        <p>We discuss this research and daily life on GLP-1 treatment in the Ouros community. To join by invitation, <strong><a href="mailto:hi@maxguerois.com?subject=Ouros%20community%20invitation">email me to request an invitation</a></strong>.</p>
+
+        <div style="margin: var(--sp-12) 0;"><NewsletterEmbed locale="en" /></div>
+
+        <section class="endmatter" aria-labelledby="sources-title">
+            <h2 id="sources-title" class="section-heading">Sources</h2>
+            <ol>
+                <li id="source-1"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11667504/" target="_blank" rel="noopener">Wang et al. (2024), semaglutide and first Alzheimer's diagnoses in people with diabetes</a>.</li>
+                <li id="source-2"><a href="https://pubmed.ncbi.nlm.nih.gov/41865758/" target="_blank" rel="noopener">EVOKE and EVOKE+, <em>The Lancet</em> (2026), trials in early-stage Alzheimer's</a>.</li>
+                <li id="source-3"><a href="https://www.who.int/news-room/fact-sheets/detail/dementia" target="_blank" rel="noopener">WHO, dementia and risk factors</a>.</li>
+                <li id="source-4"><a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2032183" target="_blank" rel="noopener">STEP1 (2021), weight loss in adults with overweight or obesity, without diabetes</a>.</li>
+                <li id="source-5"><a href="https://pubmed.ncbi.nlm.nih.gov/28110911/" target="_blank" rel="noopener">SUSTAIN1 (2017)</a> and <a href="https://www.medicines.org.uk/emc/product/9749/smpc" target="_blank" rel="noopener">detailed results in the official product information</a>. Target: HbA1c, a measure of average blood sugar, below 7%.</li>
+                <li id="source-6"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9713290/" target="_blank" rel="noopener">Verma et al. (2022), semaglutide and CRP, analyses of STEP1 to STEP3</a>.</li>
+                <li id="source-7"><a href="https://www.ipsos.com/sites/default/files/ct/publication/documents/2025-11/Ipsos%20Health%20Service%20Report%202025%20final_0.pdf" target="_blank" rel="noopener">Ipsos Health Service Report (2025), discussions of microdosing and longevity</a>. This describes a trend, not evidence of efficacy.</li>
+            </ol>
+        </section>
+        <p class="disclaimer">General information, not medical advice. Discuss any treatment decision with your doctor.</p>
+    </div>
+</div>
+</ArticleLayout>

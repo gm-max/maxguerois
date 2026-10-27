@@ -1,0 +1,98 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+
+const articleStyles = `
+    .article-body a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+    .article-body strong { color: var(--text); font-weight: 600; }
+    .article-body ul { margin: 0 0 20px; padding-left: 22px; }
+    .article-body li { font-size: 16px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 12px; }
+    .article-body .citation { font-size: .8em; vertical-align: super; margin-left: 3px; white-space: nowrap; }
+    .article-body .endmatter { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .article-body .endmatter ol { padding-left: 22px; }
+    .article-body .endmatter li { font-size: 14px; overflow-wrap: anywhere; }
+    .article-body .disclaimer { font-size: 14px; }
+    .article-body [id] { scroll-margin-top: 80px; }
+    .article-body .research-figure { margin: 32px 0; }
+    .article-body .research-figure img { display: block; width: 100%; height: auto; border-radius: var(--radius-md); }
+    .article-body .research-figure figcaption { margin-top: 12px; font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
+`;
+---
+<ArticleLayout
+    title="GLP-1 et Alzheimer : le pari de Novo Nordisk"
+    description="3 808 personnes, 2 ans de suivi, aucun ralentissement d'Alzheimer. Pourquoi les effets du sémaglutide sur le métabolisme restent une piste de recherche."
+    ogUrl="https://maxguerois.com/fr/newsletter/glp1-alzheimer"
+    locale="fr"
+    articleStyles={articleStyles}
+>
+<div class="container">
+    <a href="/fr/newsletter" class="back">← Retour à la newsletter</a>
+    <div class="article-meta"><time datetime="2026-10-27">27 octobre 2026</time> · Max Guerois</div>
+    <h1 class="article-title">GLP-1 et Alzheimer : le pari de Novo Nordisk</h1>
+    <p class="article-subtitle">Des essais négatifs chez 3 808 personnes, et une question de prévention encore ouverte.</p>
+
+    <div class="article-body">
+        <p>Ces dernières années, les GLP-1 ont pris une place majeure dans la perte de poids. Mais une autre piste attire désormais l'attention : ils pourraient aussi aider à réduire le risque d'Alzheimer.</p>
+        <p>Une promesse pareille, j'ai voulu regarder ce que la science disait vraiment.</p>
+
+        <h2 class="section-heading">Le signal qui donne envie d'y croire</h2>
+        <p>En 2024, une étude portant sur <strong>plus d'1 million de personnes atteintes de diabète de type 2</strong> relève un signal frappant.</p>
+        <p>Le sémaglutide, la molécule d'Ozempic et de Wegovy, y est associé à un risque relatif de premier diagnostic d'Alzheimer <strong>40 à 70 % plus faible</strong> qu'avec d'autres traitements du diabète. Le chiffre varie selon le médicament de comparaison.<sup class="citation"><a href="#source-1" aria-label="Source 1">[1]</a></sup></p>
+        <p>Ce serait énorme.</p>
+        <p>Imaginez : on crée un médicament contre le diabète, qui s'impose ensuite contre l'obésité, puis trouve une place contre Alzheimer.</p>
+        <p>Pour les labos comme Eli Lilly ou Novo Nordisk, l'enjeu scientifique, commercial et financier est immense.</p>
+        <p>Mais cette étude observe des dossiers médicaux. Elle donne un indice, pas la preuve que le sémaglutide prévient Alzheimer. Et les 40 à 70 % décrivent une différence relative entre groupes, pas autant de personnes protégées sur 100.</p>
+
+        <h2 class="section-heading">3 808 personnes pour tester la piste</h2>
+        <p>Novo Nordisk n'avait d'ailleurs pas attendu cette publication. Dès <strong>2021</strong>, le labo avait lancé EVOKE et EVOKE+ pour vérifier si le sémaglutide pouvait ralentir Alzheimer.</p>
+        <p><strong>3 808 personnes, dans 40 pays.</strong> Toutes avec un Alzheimer débutant. Elles prenaient du sémaglutide en comprimé ou un placebo, un comprimé sans médicament actif.</p>
+        <p>Mais après <strong>2 ans</strong>, aucun ralentissement de la maladie n'a été démontré. Les résultats ont été publiés dans <em>The Lancet</em> en 2026.<sup class="citation"><a href="#source-2" aria-label="Source 2">[2]</a></sup></p>
+        <figure class="research-figure">
+            <img src="/health-journey/blog/glp1-alzheimer/evoke-resultats.png" width="1800" height="1700" loading="lazy" decoding="async" alt="Après 2 ans, le score CDR-SB augmente de 2,3 points dans les 2 groupes d'EVOKE, et de 2,2 points sous sémaglutide contre 2,1 sous placebo dans EVOKE+.">
+            <figcaption>Plus le score augmente, plus les difficultés de mémoire et d'autonomie augmentent. Moyennes publiées arrondies à 1 décimale. Les écarts ne démontrent pas de ralentissement. Graphique redessiné d'après <a href="#source-2">EVOKE et EVOKE+ [2]</a>.</figcaption>
+        </figure>
+        <p>Alors pourquoi cette piste continue-t-elle d'intéresser les chercheurs ?</p>
+
+        <h2 class="section-heading">Le cerveau dépend aussi de la santé du corps</h2>
+        <p>Le diabète, l'hypertension et l'obésité au milieu de la vie font partie des facteurs de risque de démence.<sup class="citation"><a href="#source-3" aria-label="Source 3">[3]</a></sup></p>
+        <p>Et figurez-vous que le sémaglutide agit justement sur le poids, le sucre dans le sang et certains marqueurs de l'inflammation.</p>
+        <p>Dans des essais sur le poids ou le diabète, à des doses thérapeutiques, les changements sont concrets :</p>
+        <ul>
+            <li><strong>Poids : environ 15 % de poids perdu en moyenne en 16 mois</strong>, contre 2,4 % sous placebo. STEP1 concernait des adultes en surpoids ou obèses, sans diabète.<sup class="citation"><a href="#source-4" aria-label="Source 4">[4]</a></sup></li>
+            <li><strong>Sucre : environ 3 personnes sur 4 atteignent l'objectif de contrôle du diabète</strong>, contre 1 sur 4 sous placebo, en 7 mois. Dans SUSTAIN1, l'objectif portait sur le sucre moyen dans le sang.<sup class="citation"><a href="#source-5" aria-label="Source 5">[5]</a></sup></li>
+            <li><strong>Inflammation : un marqueur sanguin 44 % plus bas qu'avec le placebo</strong>, après 16 mois dans STEP1. Il s'agit de la CRP, pas d'une mesure de toute l'inflammation du corps.<sup class="citation"><a href="#source-6" aria-label="Source 6">[6]</a></sup></li>
+        </ul>
+        <p>Ces chiffres viennent d'essais différents, avec des personnes et des doses différentes. Ils ne mesurent pas le risque d'Alzheimer.</p>
+        <figure class="research-figure">
+            <img src="/health-journey/blog/glp1-alzheimer/step1-poids.png" width="1800" height="1280" loading="lazy" decoding="async" alt="Perte de poids moyenne à 68 semaines dans STEP1 : 14,9 % sous sémaglutide contre 2,4 % sous placebo.">
+            <figcaption>Adultes en surpoids ou obèses, sans diabète. Les 2 groupes recevaient aussi des conseils d'alimentation et d'activité physique. Ce résultat porte sur le poids. Graphique redessiné d'après <a href="#source-4">STEP1 [4]</a>.</figcaption>
+        </figure>
+
+        <h2 class="section-heading">Prévenir avant les premiers symptômes ?</h2>
+        <p>Et c'est là que la question de la prévention devient intéressante. Les essais EVOKE portaient sur des personnes déjà malades. <strong>En améliorant ces facteurs plus tôt, pourrait-on aussi protéger le cerveau avant l'apparition d'Alzheimer ?</strong></p>
+        <p>C'est cette question que je trouve passionnante. On retrouve aussi cet espoir d'agir en amont chez certaines personnes qui explorent le microdosage des GLP-1 dans une optique de longévité.<sup class="citation"><a href="#source-7" aria-label="Source 7">[7]</a></sup></p>
+        <p>Mais les essais cités ici ne portaient pas sur du microdosage. Cette pratique n'a pas démontré d'effet préventif contre Alzheimer.</p>
+        <p>Il reste à démontrer ce bénéfice et à comprendre par quels mécanismes il passerait : une action directe sur le cerveau, les effets sur le métabolisme, ou les 2.</p>
+        <p>Aujourd'hui, le sémaglutide n'a pas ralenti Alzheimer dans les essais EVOKE. La prévention reste une hypothèse à tester.</p>
+
+        <h2 class="section-heading">Poursuivre la discussion</h2>
+        <p>Nous échangeons sur ces recherches et sur le quotidien sous GLP-1 dans la communauté Ouros. Pour nous rejoindre sur invitation, <strong><a href="mailto:hi@maxguerois.com?subject=Invitation%20%C3%A0%20la%20communaut%C3%A9%20Ouros">écrivez-moi pour demander une invitation</a></strong>.</p>
+
+        <div style="margin: var(--sp-12) 0;"><NewsletterEmbed locale="fr" /></div>
+
+        <section class="endmatter" aria-labelledby="sources-title">
+            <h2 id="sources-title" class="section-heading">Sources</h2>
+            <ol>
+                <li id="source-1"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11667504/" target="_blank" rel="noopener">Wang et al. (2024), sémaglutide et premiers diagnostics d'Alzheimer chez des personnes diabétiques</a>.</li>
+                <li id="source-2"><a href="https://pubmed.ncbi.nlm.nih.gov/41865758/" target="_blank" rel="noopener">EVOKE et EVOKE+, <em>The Lancet</em> (2026), essais dans l'Alzheimer débutant</a>.</li>
+                <li id="source-3"><a href="https://www.who.int/news-room/fact-sheets/detail/dementia" target="_blank" rel="noopener">OMS, démence et facteurs de risque</a>.</li>
+                <li id="source-4"><a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2032183" target="_blank" rel="noopener">STEP1 (2021), perte de poids chez des adultes en surpoids ou obèses, sans diabète</a>.</li>
+                <li id="source-5"><a href="https://pubmed.ncbi.nlm.nih.gov/28110911/" target="_blank" rel="noopener">SUSTAIN1 (2017)</a> et <a href="https://www.medicines.org.uk/emc/product/9749/smpc" target="_blank" rel="noopener">résultats détaillés dans le résumé officiel du produit</a>. Objectif : une HbA1c inférieure à 7 %. Cet indicateur reflète le sucre moyen dans le sang.</li>
+                <li id="source-6"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9713290/" target="_blank" rel="noopener">Verma et al. (2022), effets du sémaglutide sur la CRP, analyses STEP1 à STEP3</a>.</li>
+                <li id="source-7"><a href="https://www.ipsos.com/sites/default/files/ct/publication/documents/2025-11/Ipsos%20Health%20Service%20Report%202025%20final_0.pdf" target="_blank" rel="noopener">Ipsos Health Service Report (2025), discussions autour du microdosage et de la longévité</a>. Cette source décrit une tendance, pas une preuve d'efficacité.</li>
+            </ol>
+        </section>
+        <p class="disclaimer">Information générale, pas un conseil médical. Toute décision sur un traitement se prend avec votre médecin.</p>
+    </div>
+</div>
+</ArticleLayout>
