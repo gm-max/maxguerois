@@ -178,7 +178,7 @@ archive.sort((a, b) => b.data.date.localeCompare(a.data.date));
         {archive.map((exp) => (
             <a href={`/newsletter/${exp.data.slug}`} class="experiment-item">
                 {exp.data.cover && (
-                    <img class="experiment-cover" src={exp.data.cover} alt={exp.data.title} loading="lazy" />
+                    <img class="experiment-cover" src={exp.data.cover} alt={exp.data.title} loading="lazy" style={exp.data.slug === 'glp1-alzheimer' ? 'object-fit: contain; background: #0f0e0c;' : undefined} />
                 )}
                 <div class="experiment-body">
                     <div class="experiment-tag-row">
