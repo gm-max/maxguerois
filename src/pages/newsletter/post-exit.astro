@@ -1,0 +1,99 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+
+const contactHref = `mailto:hi@maxguerois.com?subject=${encodeURIComponent('Your article on life after leaving a startup')}&body=${encodeURIComponent("Hi Max,\r\n\r\nI loved your article about life after leaving a startup.\r\n\r\nHere's my experience:\r\n\r\n")}`;
+---
+<ArticleLayout
+    title="Life after leaving my startup: Max Guerois"
+    description="What leaving Lucis felt like, and the struggles that kept coming up in conversations with 50+ founders."
+    ogUrl="https://maxguerois.com/newsletter/post-exit"
+    ogImage="https://maxguerois.com/health-journey/post-exit.webp"
+    ogImageAlt="Max lying in the grass beside an outdoor sauna"
+    ogImageWidth={1600}
+    ogImageHeight={1200}
+>
+    <div class="container">
+        <a href="/newsletter" class="back">← All articles</a>
+
+        <div class="article-meta">October 30, 2026</div>
+        <h1 class="article-title">Life after leaving my startup</h1>
+
+        <img
+            class="article-img"
+            src="/health-journey/post-exit.webp"
+            alt="Max lying in the grass beside an outdoor sauna"
+            width="1600"
+            height="1200"
+            fetchpriority="high"
+            decoding="async"
+        >
+
+        <div class="article-body">
+            <p>Nobody talks about post-exit life. So here's my story.</p>
+
+            <p>I've spoken with 50+ founders who sold their businesses or left their companies, sometimes by choice, sometimes pushed out.</p>
+
+            <p>The same struggles kept coming up.</p>
+
+            <p>For me, the weirdest period of my life came after I left Lucis, my first startup.</p>
+
+            <p>I'll be honest: it hit me hard.</p>
+
+            <ul class="post-exit-points">
+                <li>Losing your identity and motivation.</li>
+                <li>Feeling worthless without the company.</li>
+                <li>Pressure to build something new.</li>
+                <li>A strong tension between ego-driven and instinct-driven decisions (this one is really, really hard)</li>
+            </ul>
+
+            <p>Many founders fall into this.</p>
+
+            <p>They won't say it publicly, for fear of complaining about champagne problems or looking shameless.</p>
+
+            <p>And almost nothing you do solves it on its own.</p>
+
+            <p>You can travel. It's great for a while, then you feel useless and guilty.</p>
+
+            <p>You can do all the saunas (I do one sauna a week though), therapies and wellness stuff you want.</p>
+
+            <p>Nothing changes your thinking.</p>
+
+            <p>Or Introspection can start, and it helps.  But you can spend so long analysing yourself that you stop doing anything.</p>
+
+            <p>Many founders stay quiet because talking about this feels shameful.</p>
+
+            <p>I'll never forget that period.</p>
+
+            <p>I'm curious how other founders felt after getting acquired, selling their business, or exiting.</p>
+
+            <p>Tell me your story at <a class="post-exit-contact" href={contactHref}>hi@maxguerois.com</a>.</p>
+        </div>
+
+        <div class="article-footer">
+            <span class="author-line">By <a href="/">Max Guerois</a></span>
+        </div>
+
+        <div class="post-exit-subscribe">
+            <NewsletterEmbed />
+        </div>
+    </div>
+</ArticleLayout>
+
+<style>
+    .article-img { height: auto; }
+    .post-exit-points {
+        padding-left: var(--sp-6);
+        margin: 0 0 var(--sp-6);
+        color: var(--text-secondary);
+        line-height: 1.75;
+    }
+    .post-exit-points li + li { margin-top: var(--sp-2); }
+    .post-exit-contact {
+        color: var(--text);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+    .post-exit-contact:hover { color: var(--accent); }
+    .post-exit-subscribe { margin-top: var(--sp-12); }
+</style>

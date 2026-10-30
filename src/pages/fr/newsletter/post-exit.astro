@@ -1,0 +1,104 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
+
+const locale = 'fr';
+const contactHref = 'mailto:hi@maxguerois.com?subject=Ton%20article%20sur%20l%27apr%C3%A8s-startup&body=Salut%20Max%2C%0D%0A%0D%0AJ%27ai%20aim%C3%A9%20ton%20article%20sur%20l%27apr%C3%A8s%2C%20quand%20on%20quitte%20sa%20startup.%0D%0A%0D%0AVoil%C3%A0%20mon%20exp%C3%A9rience%20%3A%0D%0A%0D%0A';
+---
+<ArticleLayout
+    title="Ma vie après avoir quitté ma startup : Max Guerois"
+    description="Ce que j'ai vécu après mon départ de Lucis, et les difficultés qui revenaient dans mes échanges avec plus de 50 fondateurs."
+    ogUrl="https://maxguerois.com/fr/newsletter/post-exit"
+    ogImage="https://maxguerois.com/health-journey/post-exit.webp"
+    ogImageAlt="Max allongé dans l'herbe à côté d'un sauna en plein air"
+    ogImageWidth={1600}
+    ogImageHeight={1200}
+    locale={locale}
+>
+    <div class="container">
+        <a href="/fr/newsletter" class="back">← Tous les articles</a>
+
+        <div class="article-meta">30 octobre 2026</div>
+        <h1 class="article-title">Ma vie après avoir quitté ma startup</h1>
+
+        <img
+            class="article-img"
+            src="/health-journey/post-exit.webp"
+            alt="Max allongé dans l'herbe à côté d'un sauna en plein air"
+            width="1600"
+            height="1200"
+            fetchpriority="high"
+            decoding="async"
+        >
+
+        <div class="article-body">
+            <p>Personne ne parle de l'après, quand tu quittes ta boîte. Alors voici mon histoire.</p>
+
+            <p>J'ai échangé avec plus de 50 fondateurs qui ont vendu leur boîte ou quitté leur entreprise, parfois par choix, parfois poussés dehors.</p>
+
+            <p>Les mêmes difficultés revenaient à chaque fois.</p>
+
+            <p>Pour moi, la période la plus étrange de ma vie a suivi mon départ de Lucis, ma première startup.</p>
+
+            <p>Je vais être honnête : ça n'a pas été simple.</p>
+
+            <ul class="post-exit-points">
+                <li>Perdre son identité et sa motivation.</li>
+                <li>Avoir l'impression de ne plus rien valoir sans la boîte.</li>
+                <li>La pression de lancer quelque chose de nouveau.</li>
+                <li>Une forte tension entre les décisions guidées par l'ego et celles guidées par l'instinct (ce point est vraiment, vraiment dur)</li>
+            </ul>
+
+            <p>Beaucoup de fondateurs tombent là-dedans.</p>
+
+            <p>Ils n'en parlent pas en public, de peur de se plaindre de « problèmes de riches » ou d'avoir l'air indécents.</p>
+
+            <p>Et presque rien ne peut régler ces problèmes.</p>
+
+            <ul class="post-exit-points">
+                <li>Tu peux voyager. C'est bien un temps, puis tu te sens inutile et coupable.</li>
+                <li>Tu peux faire tous les saunas (j'en fais 1 / semaine quand même), toutes les thérapies et tous les trucs de bien-être que tu veux.</li>
+            </ul>
+
+            <p>Rien ne change ta façon de penser.</p>
+
+            <p>Ou alors l'introspection peut commencer, et ça aide oui.</p>
+
+            <p>Mais tu peux passer tellement de temps à t'analyser que tu finis par ne plus rien faire.</p>
+
+            <p>Beaucoup de fondateurs restent silencieux parce que parler de ça leur fait honte.</p>
+
+            <p>Dans mon cas, je n'oublierai jamais cette période.</p>
+
+            <p>Je suis curieux de savoir comment d'autres fondateurs se sont sentis après un rachat, une vente ou leur départ.</p>
+
+            <p>N'hésitez pas à me raconter votre expérience à <a class="post-exit-contact" href={contactHref}>hi@maxguerois.com</a>.</p>
+        </div>
+
+        <div class="article-footer">
+            <span class="author-line">Par <a href="/fr">Max Guerois</a></span>
+        </div>
+
+        <div class="post-exit-subscribe">
+            <NewsletterEmbed locale={locale} />
+        </div>
+    </div>
+</ArticleLayout>
+
+<style>
+    .article-img { height: auto; }
+    .post-exit-points {
+        padding-left: var(--sp-6);
+        margin: 0 0 var(--sp-6);
+        color: var(--text-secondary);
+        line-height: 1.75;
+    }
+    .post-exit-points li + li { margin-top: var(--sp-2); }
+    .post-exit-contact {
+        color: var(--text);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+    .post-exit-contact:hover { color: var(--accent); }
+    .post-exit-subscribe { margin-top: var(--sp-12); }
+</style>
