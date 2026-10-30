@@ -11,6 +11,9 @@ interface Props {
     description?: string;
     ogUrl?: string;
     ogImage?: string;
+    ogImageAlt?: string;
+    ogImageWidth?: number;
+    ogImageHeight?: number;
     articleStyles?: string;
     locale?: Locale;
     // REQ-1 fallbacks for articles not in the content collection (e.g. lucis-chapter)
@@ -21,7 +24,7 @@ interface Props {
 }
 
 const {
-    title, description, ogUrl, ogImage, articleStyles, locale = 'en',
+    title, description, ogUrl, ogImage, ogImageAlt, ogImageWidth, ogImageHeight, articleStyles, locale = 'en',
     datePublished, headline, structuredExtra,
 } = Astro.props;
 
@@ -81,6 +84,9 @@ const structuredData = [articleSchema, ...(breadcrumbSchema ? [breadcrumbSchema]
     ogTitle={title}
     ogDescription={description}
     ogImage={ogImage}
+    ogImageAlt={ogImageAlt}
+    ogImageWidth={ogImageWidth}
+    ogImageHeight={ogImageHeight}
     extraStyles={["/styles/article.css"]}
     locale={locale}
     structuredData={structuredData}
