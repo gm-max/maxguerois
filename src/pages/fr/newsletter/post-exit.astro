@@ -3,10 +3,10 @@ import ArticleLayout from '../../../layouts/ArticleLayout.astro';
 import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
 
 const locale = 'fr';
-const contactHref = `mailto:hi@maxguerois.com?subject=${encodeURIComponent("Ton article sur l'après-startup")}&body=${encodeURIComponent("Salut Max,\r\n\r\nJ'ai aimé ton article sur l'après, quand on quitte sa startup.\r\n\r\nVoilà mon expérience :\r\n\r\n")}`;
+const contactHref = 'mailto:hi@maxguerois.com?subject=Ton%20article%20sur%20l%27apr%C3%A8s-startup&body=Salut%20Max%2C%0D%0A%0D%0AJ%27ai%20aim%C3%A9%20ton%20article%20sur%20l%27apr%C3%A8s%2C%20quand%20on%20quitte%20sa%20startup.%0D%0A%0D%0AVoil%C3%A0%20mon%20exp%C3%A9rience%20%3A%0D%0A%0D%0A';
 ---
 <ArticleLayout
-    title="Après avoir quitté ma startup : Max Guerois"
+    title="Ma vie après avoir quitté ma startup : Max Guerois"
     description="Ce que j'ai vécu après mon départ de Lucis, et les difficultés qui revenaient dans mes échanges avec plus de 50 fondateurs."
     ogUrl="https://maxguerois.com/fr/newsletter/post-exit"
     ogImage="https://maxguerois.com/health-journey/post-exit.webp"
@@ -19,7 +19,7 @@ const contactHref = `mailto:hi@maxguerois.com?subject=${encodeURIComponent("Ton 
         <a href="/fr/newsletter" class="back">← Tous les articles</a>
 
         <div class="article-meta">30 octobre 2026</div>
-        <h1 class="article-title">Après avoir quitté ma startup</h1>
+        <h1 class="article-title">Ma vie après avoir quitté ma startup</h1>
 
         <img
             class="article-img"
@@ -32,15 +32,15 @@ const contactHref = `mailto:hi@maxguerois.com?subject=${encodeURIComponent("Ton 
         >
 
         <div class="article-body">
-            <p>Personne ne parle de l'après, quand tu quittes ta boîte. Alors je vais raconter ce que j'ai vécu.</p>
+            <p>Personne ne parle de l'après, quand tu quittes ta boîte. Alors voici mon histoire.</p>
 
-            <p>J'ai échangé avec plus de 50 fondateurs qui ont vendu leur boîte ou l'ont quittée, parfois par choix, parfois parce qu'on les avait poussés dehors.</p>
+            <p>J'ai échangé avec plus de 50 fondateurs qui ont vendu leur boîte ou quitté leur entreprise, parfois par choix, parfois poussés dehors.</p>
 
-            <p>Les mêmes difficultés revenaient.</p>
+            <p>Les mêmes difficultés revenaient à chaque fois.</p>
 
-            <p>La période la plus bizarre de ma vie, c'était après mon départ de Lucis, ma première startup.</p>
+            <p>Pour moi, la période la plus étrange de ma vie a suivi mon départ de Lucis, ma première startup.</p>
 
-            <p>Je vais être honnête : ça m'a mis un coup.</p>
+            <p>Je vais être honnête : ça n'a pas été simple.</p>
 
             <ul class="post-exit-points">
                 <li>Perdre son identité et sa motivation.</li>
@@ -51,25 +51,28 @@ const contactHref = `mailto:hi@maxguerois.com?subject=${encodeURIComponent("Ton 
 
             <p>Beaucoup de fondateurs tombent là-dedans.</p>
 
-            <p>Ils n'en parlent pas publiquement, de peur de se plaindre de problèmes de privilégiés ou de paraître sans gêne.</p>
+            <p>Ils n'en parlent pas en public, de peur de se plaindre de « problèmes de riches » ou d'avoir l'air indécents.</p>
 
-            <p>Et presque rien de ce que tu fais ne règle ça à lui seul.</p>
+            <p>Et presque rien ne peut régler ces problèmes.</p>
 
-            <p>Tu peux voyager. C'est bien un temps, puis tu te sens inutile et coupable.</p>
-
-            <p>Tu peux faire tous les saunas (j'en fais 1 par semaine quand même), toutes les thérapies et tous les trucs de bien-être que tu veux.</p>
+            <ul class="post-exit-points">
+                <li>Tu peux voyager. C'est bien un temps, puis tu te sens inutile et coupable.</li>
+                <li>Tu peux faire tous les saunas (j'en fais 1 / semaine quand même), toutes les thérapies et tous les trucs de bien-être que tu veux.</li>
+            </ul>
 
             <p>Rien ne change ta façon de penser.</p>
 
-            <p>Ou alors l'introspection peut commencer, et ça aide. Mais tu peux passer tellement de temps à t'analyser que tu finis par ne plus rien faire.</p>
+            <p>Ou alors l'introspection peut commencer, et ça aide oui.</p>
+
+            <p>Mais tu peux passer tellement de temps à t'analyser que tu finis par ne plus rien faire.</p>
 
             <p>Beaucoup de fondateurs restent silencieux parce que parler de ça leur fait honte.</p>
 
-            <p>J'oublierai jamais cette période.</p>
+            <p>Dans mon cas, je n'oublierai jamais cette période.</p>
 
             <p>Je suis curieux de savoir comment d'autres fondateurs se sont sentis après un rachat, une vente ou leur départ.</p>
 
-            <p>Raconte-moi ton expérience à <a class="post-exit-contact" href={contactHref}>hi@maxguerois.com</a>.</p>
+            <p>N'hésitez pas à me raconter votre expérience à <a class="post-exit-contact" href={contactHref}>hi@maxguerois.com</a>.</p>
         </div>
 
         <div class="article-footer">
