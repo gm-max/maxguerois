@@ -9,7 +9,7 @@ const locale = 'fr';
 const allExperiments = await getCollection('experiments');
 const experiments = allExperiments.filter(e => (e.data as any).locale === 'fr');
 experiments.sort((a, b) => b.data.date.localeCompare(a.data.date));
-const featuredExperimentSlugs = ['retatrutide', 'health-os', 'my-genome', 'supplements'];
+const featuredExperimentSlugs = ['health-os', 'my-genome', 'supplements'];
 const featuredExperiments = featuredExperimentSlugs
   .map((slug) => experiments.find((exp) => exp.data.slug === slug))
   .filter(Boolean);
@@ -113,7 +113,6 @@ const structuredData = {
     <!-- Newsletter -->
     <div class="section fade-in">
         <div class="section-label">{t(locale, 'home.sectionHealth')}</div>
-        <a href="/fr/newsletter"><img src="/health-journey/banner-weight-loss-2x.jpg" alt="La médecine qui arrive" width="1200" height="630" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:var(--radius-sm);margin-bottom:20px;"></a>
         <p class="ai-prompt-label">J'y publie mes trouvailles sur les GLP-1, les peptides et les avancées de la médecine, ce qui compte vraiment, et ce que mes propres essais permettent ou non de comprendre. Un email quand il y a vraiment quelque chose à dire.</p>
         <div class="writing-list">
             {featuredExperiments.map((exp) => (
