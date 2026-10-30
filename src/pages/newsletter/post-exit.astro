@@ -1,6 +1,8 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
+
+const contactHref = `mailto:hi@maxguerois.com?subject=${encodeURIComponent('Your article on life after leaving a startup')}&body=${encodeURIComponent("Hi Max,\r\n\r\nI loved your article about life after leaving a startup.\r\n\r\nHere's my experience:\r\n\r\n")}`;
 ---
 <ArticleLayout
     title="Life after leaving my startup: Max Guerois"
@@ -60,6 +62,8 @@ import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
             <p>I'll never forget that period.</p>
 
             <p>I'm curious how other founders felt after getting acquired, selling their business, or leaving their company.</p>
+
+            <p>Tell me your story at <a class="post-exit-contact" href={contactHref}>hi@maxguerois.com</a>.</p>
         </div>
 
         <div class="article-footer">
@@ -81,5 +85,11 @@ import NewsletterEmbed from '../../components/NewsletterEmbed.astro';
         line-height: 1.75;
     }
     .post-exit-points li + li { margin-top: var(--sp-2); }
+    .post-exit-contact {
+        color: var(--text);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+    .post-exit-contact:hover { color: var(--accent); }
     .post-exit-subscribe { margin-top: var(--sp-12); }
 </style>

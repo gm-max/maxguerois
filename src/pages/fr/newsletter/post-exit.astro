@@ -3,6 +3,7 @@ import ArticleLayout from '../../../layouts/ArticleLayout.astro';
 import NewsletterEmbed from '../../../components/NewsletterEmbed.astro';
 
 const locale = 'fr';
+const contactHref = `mailto:hi@maxguerois.com?subject=${encodeURIComponent("Ton article sur l'après-startup")}&body=${encodeURIComponent("Salut Max,\r\n\r\nJ'ai aimé ton article sur l'après, quand on quitte sa startup.\r\n\r\nVoilà mon expérience :\r\n\r\n")}`;
 ---
 <ArticleLayout
     title="Après avoir quitté ma startup : Max Guerois"
@@ -63,6 +64,8 @@ const locale = 'fr';
             <p>J'oublierai jamais cette période.</p>
 
             <p>Si tu as vendu ta boîte, vécu un rachat ou quitté ta startup, comment tu as vécu l'après ?</p>
+
+            <p>Raconte-moi ton expérience à <a class="post-exit-contact" href={contactHref}>hi@maxguerois.com</a>.</p>
         </div>
 
         <div class="article-footer">
@@ -84,5 +87,11 @@ const locale = 'fr';
         line-height: 1.75;
     }
     .post-exit-points li + li { margin-top: var(--sp-2); }
+    .post-exit-contact {
+        color: var(--text);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+    .post-exit-contact:hover { color: var(--accent); }
     .post-exit-subscribe { margin-top: var(--sp-12); }
 </style>
