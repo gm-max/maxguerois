@@ -93,7 +93,17 @@ Own stack since 2026-08-26. beehiiv is gone: no embed, no iframe, no beehiiv hos
   whether the channel actually works, and the VPS health check reads it every 3 hours
   with its OWN Telegram credentials. Never move that watcher into this repo: its value
   is that it does not share the failure.
-- **Tests:** `test/api/`, `npm test`.
+- **Anti-bot:** Cloudflare Turnstile, in front of the route, since November 2026.
+  Three layers now, in this order: honeypot, 5-per-hour rate limit per IP hash, then
+  the token. Server half in `src/lib/turnstile.ts`, client half in
+  `TurnstileGate.astro` (rendered once from Layout, used by BOTH NewsletterEmbed and
+  PeptidesLanding — /peptides posts to the same route and would break if it were
+  left out). Needs `PUBLIC_TURNSTILE_SITE_KEY` **and** `TURNSTILE_SECRET_KEY`: one
+  without the other is a 'partial' state that does NOT enforce, logs loudly, and is
+  reported by `/api/health`. The site key is read at BUILD time, so changing it needs
+  a deploy. Verification FAILS CLOSED, unlike the rate limiter next door: a Cloudflare
+  outage stops signups until it ends, or until both variables are removed.
+- **Tests:** `test/api/`, `test/components/`, `npm test`.
 
 ## Adding a new article
 1. Create `src/content/experiments/new-slug.json` with schema fields (title, tagline, category, date, slug, ogImage). `slug` is the bare name (e.g. `sleep`), no folder prefix.
@@ -138,8 +148,13 @@ même longueur. Ce qui suit est obligatoire, à appliquer sans qu'on ait à le r
 - HTTP headers: `vercel.json` sets CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
 - CSP `img-src` includes `https://*.gstatic.com` for Google favicon redirects used by the homepage “Ask AI” icons.
 - **External images:** `npm run build` runs `scripts/check-csp-img-src.mjs`, which fails if any `<img src="https://...">` in `src/**/*.astro` uses a host not listed in `img-src`. Prefer assets under `public/` to avoid widening CSP. GitHub Actions runs the same `npm run build` on PRs and `main`.
-- No third-party frames: the newsletter form is same-origin, so the CSP carries
-  `frame-src 'none'` and `form-action 'self'`. Do not widen either to re-admit an embed.
+- Third-party frames: `frame-src` allows `https://challenges.cloudflare.com` and
+  NOTHING ELSE. It was `'none'` until Turnstile arrived (see Newsletter below), and
+  Cloudflare requires both that and `script-src` for the widget — without `frame-src`
+  only the INTERACTIVE challenge breaks, which is invisible until someone cannot
+  subscribe. `npm run build` fails if either is missing. Do not widen it further, and
+  do not touch `form-action 'self'`: the newsletter form is same-origin and no embed
+  comes back.
 - Security contact: `public/.well-known/security.txt`
 
 ## Prompt/LLM changes

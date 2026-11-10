@@ -4,6 +4,12 @@ import { createHash } from 'node:crypto';
 import { buildUnsubscribeUrl } from './unsubscribe';
 import { sendTelegram } from '../../lib/telegram';
 import { WELCOME_SUBJECT } from '../../lib/welcome-email';
+import {
+  TOKEN_FIELD,
+  logPartialConfig,
+  turnstileState,
+  verifyTurnstile,
+} from '../../lib/turnstile';
 
 // The one on-demand route on this site. Everything else prerenders.
 export const prerender = false;
@@ -388,6 +394,34 @@ export const POST: APIRoute = async ({ request, url }) => {
     .insert({ ip_hash: ipHash });
   if (rlWriteErr) {
     console.error('rate-limit ledger write failed — limiter is blind until fixed', rlWriteErr);
+  }
+
+  // Turnstile, and the LAST gate before anything is written or sent.
+  //
+  // Placed here, after the honeypot and the rate limiter, on purpose. Those two cost
+  // us nothing and still catch what they catch; this one costs an outbound call to
+  // Cloudflare, so letting the 5-per-hour limiter run first means a flood from one
+  // address cannot use our siteverify budget as an amplifier. It does mean a refused
+  // challenge consumes one of that IP's five attempts, which is correct: it was an
+  // attempt. The front end resets the widget after every use, so a retry arrives with
+  // a fresh token rather than the one that just failed.
+  //
+  // Everything that follows is a WRITE or a SEND — the mg_subscribers upsert, the
+  // Resend push, the Telegram line. None of them may happen for a request that did
+  // not clear this.
+  const gate = turnstileState();
+  if (gate === 'partial') {
+    // Logged on every affected request rather than once: this is a deployment
+    // mistake, and the endpoint is quietly less protected until it is fixed.
+    logPartialConfig();
+  } else if (gate === 'active') {
+    const verdict = await verifyTurnstile(field(raw[TOKEN_FIELD], 2048), clientIp(request));
+    if (!verdict.ok) {
+      // 403, not 400: the request is well formed, it just has not proved it came
+      // from a browser. The body carries the reason so the form can say something
+      // true in the visitor's language, and nothing has been written.
+      return reply(request, url, 403, { ok: false, error: verdict.code });
+    }
   }
 
   const utm = {

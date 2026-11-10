@@ -1,0 +1,321 @@
+---
+/**
+ * The client half of the Turnstile gate. Rendered ONCE per page, from Layout.astro.
+ *
+ * It paints nothing. All it does is put `window.mgTurnstile` on the page, so that the
+ * two components holding a signup form — NewsletterEmbed and PeptidesLanding — can
+ * ask for a token without either of them owning the Cloudflare script. That matters
+ * because a page can carry several forms at once (an article footer plus the
+ * one-per-visitor modal; /peptides renders three), and `api.js` must be fetched
+ * exactly once no matter how many.
+ *
+ * WHY A COMPONENT AND NOT A LIBRARY FUNCTION: both form components ship their logic
+ * as `is:inline` scripts, which Astro does not bundle and which therefore cannot
+ * `import`. A shared global defined earlier in the document is the mechanism they can
+ * both reach.
+ *
+ * WHEN THE SITE KEY IS ABSENT this still renders, and `mgTurnstile.active` is false.
+ * Both callers then skip straight to their fetch, exactly as they did before Turnstile
+ * existed. That is the state of every local `npm run dev` and of production until the
+ * two Vercel variables are set — see src/lib/turnstile.ts for why the pair has to
+ * arrive together.
+ */
+
+/**
+ * Read at BUILD time, not at request time. Every page carrying a signup form is
+ * prerendered, so this value is frozen into the HTML by `astro build`: changing it in
+ * Vercel takes effect on the next deploy, never on the next request. The server half
+ * reads its secret per request. That asymmetry is the one documented in
+ * src/lib/turnstile.ts, and the reason both variables are set before the merge.
+ */
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
+---
+
+<script is:inline define:vars={{ siteKey }}>
+    (function () {
+        // Layout renders this once, but a defensive check costs one line and a second
+        // definition would reset the shared load promise mid-flight.
+        if (window.mgTurnstile) return;
+
+        var API = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+
+        // How long we wait for api.js itself. A corporate proxy or a content blocker
+        // does not always fail the request — sometimes it just never answers, and
+        // without this the submit button would stay disabled forever with no message.
+        var LOAD_TIMEOUT_MS = 10000;
+
+        // How long we wait for a challenge to produce a token once started. Generous
+        // on purpose: a MANAGED widget can decide to show a puzzle, and a human
+        // solving one takes however long it takes. This is a seatbelt against a
+        // callback that never fires, not a limit on the visitor.
+        var EXECUTE_TIMEOUT_MS = 120000;
+
+        var active = Boolean(siteKey);
+        var loadPromise = null;
+        var seq = 0;
+        // Per-form widget state. A plain array of pairs rather than a Map: this file
+        // ships verbatim to every visitor and the page holds at most a handful of
+        // forms, so a lookup over four entries is not worth a polyfill question.
+        var widgets = [];
+
+        function entryFor(form) {
+            for (var i = 0; i < widgets.length; i++) {
+                if (widgets[i].form === form) return widgets[i];
+            }
+            return null;
+        }
+
+        function fail(code) {
+            return new Error(code);
+        }
+
+        /** Fetch api.js once, whoever asks first. Later callers share the promise. */
+        function loadApi() {
+            if (loadPromise) return loadPromise;
+            loadPromise = new Promise(function (resolve, reject) {
+                var settled = false;
+                var timer = setTimeout(function () {
+                    if (settled) return;
+                    settled = true;
+                    // Deliberately NOT clearing loadPromise. If Cloudflare is
+                    // unreachable, retrying on every submit adds latency to every
+                    // attempt and changes nothing: the visitor is told to try again,
+                    // and a reload is what re-attempts the fetch.
+                    reject(fail('captcha_unavailable'));
+                }, LOAD_TIMEOUT_MS);
+
+                /**
+                 * The script finished downloading. That is NOT the same as the API
+                 * being usable, and the gap bit twice when this was driven against a
+                 * real browser rather than a fake:
+                 *
+                 * 1. The `load` event fired while `window.turnstile` was still
+                 *    undefined. Resolving on the event alone went straight on to
+                 *    render a widget against nothing; warm() swallowed the throw, no
+                 *    widget was ever created, and the first submit failed with the
+                 *    generic error on a page that looked perfectly loaded.
+                 *
+                 * 2. `turnstile.ready()` THROWS on a script tag carrying `defer` or
+                 *    `async`: "[Cloudflare Turnstile] Remove async/defer from the
+                 *    Turnstile api.js script tag before using turnstile.ready()".
+                 *    Their docs present `defer` and `ready()` each as the thing to
+                 *    do and never say they are mutually exclusive. The throw escaped
+                 *    from inside this callback, so the load promise settled neither
+                 *    way and every submit hung with the button disabled — the worst
+                 *    shape available, because it reads as a site that is thinking.
+                 *
+                 * So, no `ready()` and no `defer` (see the injection below). What is
+                 * waited for instead is the only thing that actually matters: the
+                 * function we are about to call. The outer timer still bounds the
+                 * polling, so a script that loads and never defines anything ends in
+                 * captcha_unavailable like any other dead load.
+                 */
+                function done() {
+                    if (settled) return;
+                    if (!window.turnstile || typeof window.turnstile.render !== 'function') {
+                        setTimeout(done, 50);
+                        return;
+                    }
+                    settled = true;
+                    clearTimeout(timer);
+                    resolve();
+                }
+
+                var s = document.createElement('script');
+                // The exact documented URL. Cloudflare's own caution: proxying or
+                // caching this file breaks the widget on their next release.
+                s.src = API;
+                // NO `defer`, deliberately, though every example in Cloudflare's
+                // docs carries it. Those examples are parser-inserted tags, where
+                // defer means something; a script created with createElement is
+                // already fetched off the parser and loads async whatever this
+                // attribute says, so setting it buys nothing here. What it does buy
+                // is the error above, because api.js reads the attribute off its own
+                // tag and refuses to work with `ready()`.
+                s.addEventListener('load', done);
+                s.addEventListener('error', function () {
+                    if (settled) return;
+                    settled = true;
+                    clearTimeout(timer);
+                    reject(fail('captcha_unavailable'));
+                });
+                document.head.appendChild(s);
+            });
+            return loadPromise;
+        }
+
+        /**
+         * The widget for one form, created on first need.
+         *
+         * `execution: 'execute'` plus `appearance: 'interaction-only'` is what keeps
+         * this invisible until it has something to ask. Nothing is drawn for the
+         * overwhelming majority of visitors; a challenge appears in place, inside the
+         * form, only when Cloudflare decides it needs one.
+         *
+         * `response-field: false` because the token never travels as a hidden input
+         * here: both callers build their JSON payload themselves and add the token
+         * explicitly. A hidden field would also survive a failed attempt and risk
+         * being re-sent after it had been spent.
+         */
+        function widgetFor(form) {
+            var entry = entryFor(form);
+            if (entry) return entry;
+
+            var host = document.createElement('div');
+            host.className = 'mg-turnstile';
+            // An id, because turnstile.render is documented with a selector.
+            host.id = 'mg-ts-' + (++seq);
+            // Before the error line, so a visible challenge sits above the message
+            // that may describe it, and inside the form so it travels with the modal.
+            var anchor = form.querySelector('.nl-err, .pf-err');
+            if (anchor) form.insertBefore(host, anchor);
+            else form.appendChild(host);
+
+            entry = { form: form, host: host, id: null, pending: null };
+            widgets.push(entry);
+
+            function settle(ok, value) {
+                var p = entry.pending;
+                if (!p) return;
+                entry.pending = null;
+                clearTimeout(p.timer);
+                if (ok) p.resolve(value);
+                else p.reject(fail(value));
+            }
+
+            var theme = document.documentElement.getAttribute('data-theme');
+            var lang = document.documentElement.getAttribute('lang');
+
+            entry.id = window.turnstile.render('#' + host.id, {
+                sitekey: siteKey,
+                execution: 'execute',
+                appearance: 'interaction-only',
+                'response-field': false,
+                size: 'flexible',
+                theme: theme === 'dark' ? 'dark' : 'light',
+                language: lang === 'fr' ? 'fr' : 'en',
+                // 32 chars max, alphanumerics plus _ and -. Shows up in Cloudflare's
+                // widget analytics, which is how a flood gets attributed to a form.
+                action: 'newsletter-signup',
+                callback: function (token) { settle(true, token); },
+                // A real token that has gone stale before we spent it. Treated as a
+                // failure of THIS attempt: the caller resets and the next submit
+                // mints a new one.
+                'expired-callback': function () { settle(false, 'captcha_failed'); },
+                'timeout-callback': function () { settle(false, 'captcha_failed'); },
+                'error-callback': function () {
+                    settle(false, 'captcha_unavailable');
+                    // Returning true tells Turnstile we handled it and stops it
+                    // painting its own error state inside our form.
+                    return true;
+                },
+                'unsupported-callback': function () {
+                    settle(false, 'captcha_unavailable');
+                    return true;
+                },
+            });
+            return entry;
+        }
+
+        window.mgTurnstile = {
+            /** False when PUBLIC_TURNSTILE_SITE_KEY was absent at build time. */
+            active: active,
+
+            /**
+             * Start the work early, without blocking anything.
+             *
+             * Cloudflare recommends loading api.js as early as possible. This site
+             * does not: the script would then be fetched on every page view for the
+             * sake of a form most readers never touch. Calling this on the first sign
+             * of intent — a focus, a pointer going down, an autofill landing in the
+             * field — buys back nearly all of the head start, and a visitor who
+             * submits before it finishes simply waits for `token()` to resolve rather
+             * than failing. Never throws; a rejection here is picked up again, with a
+             * message, at submit time.
+             */
+            warm: function (form) {
+                if (!active) return;
+                loadApi().then(function () {
+                    try { widgetFor(form); } catch (e) {}
+                }, function () {});
+            },
+
+            /**
+             * A token for this form, or null when the protection is not active.
+             *
+             * Rejects with 'captcha_unavailable' or 'captcha_failed' — the same codes
+             * the server answers with, so a caller maps one copy table to both sides.
+             */
+            token: function (form) {
+                if (!active) return Promise.resolve(null);
+                return loadApi().then(function () {
+                    var entry;
+                    try {
+                        entry = widgetFor(form);
+                    } catch (e) {
+                        // Creating the widget is the one step here that can fail for
+                        // a reason we did not anticipate. Reporting it as anything
+                        // other than one of the two codes the copy tables know would
+                        // show the visitor the generic "signup failed" for what is
+                        // squarely a captcha problem.
+                        throw fail('captcha_unavailable');
+                    }
+                    if (entry.pending) return entry.pending.promise;
+
+                    var p = {};
+                    p.promise = new Promise(function (resolve, reject) {
+                        p.resolve = resolve;
+                        p.reject = reject;
+                        p.timer = setTimeout(function () {
+                            if (entry.pending !== p) return;
+                            entry.pending = null;
+                            reject(fail('captcha_unavailable'));
+                        }, EXECUTE_TIMEOUT_MS);
+                    });
+                    entry.pending = p;
+
+                    // A token already sitting in the widget is reused rather than
+                    // re-executed: it is single-use, but it has not been spent yet.
+                    var held = window.turnstile.getResponse(entry.id);
+                    if (held) {
+                        entry.pending = null;
+                        clearTimeout(p.timer);
+                        return held;
+                    }
+
+                    try {
+                        window.turnstile.execute('#' + entry.host.id);
+                    } catch (e) {
+                        entry.pending = null;
+                        clearTimeout(p.timer);
+                        throw fail('captcha_unavailable');
+                    }
+                    return p.promise;
+                });
+            },
+
+            /**
+             * Throw away whatever the widget is holding.
+             *
+             * Called after EVERY use, success or failure. A Turnstile token is good
+             * for one redemption and five minutes; keeping it would mean a second
+             * submit spends a token the server has already seen, which comes back as
+             * `timeout-or-duplicate` and reads to the visitor like a broken form.
+             */
+            reset: function (form) {
+                var entry = entryFor(form);
+                if (!entry || !entry.id || !window.turnstile) return;
+                try { window.turnstile.reset(entry.id); } catch (e) {}
+            },
+        };
+    })();
+</script>
+
+<style is:global>
+    /* The widget is invisible until Cloudflare decides to ask something, so this
+       collapses to nothing for almost every visitor. `:not(:empty)` keeps the margin
+       from appearing above a form that was never challenged. */
+    .mg-turnstile:not(:empty) {
+        margin: var(--sp-3) 0 0;
+    }
+</style>

@@ -2,6 +2,7 @@
 // Layout.astro — base layout for all pages
 // maxguerois.com
 import SubscribeModal from '../components/SubscribeModal.astro';
+import TurnstileGate from '../components/TurnstileGate.astro';
 import type { Locale } from '../i18n/utils';
 import { getLocalizedPath, getAbsoluteUrl, t } from '../i18n/utils';
 
@@ -234,6 +235,12 @@ const showEmailModal = emailModal;
     <link rel="stylesheet" href="/styles/nav.css">
     <link rel="stylesheet" href="/styles/global.css">
     {extraStyles.map(href => <link rel="stylesheet" href={href} />)}
+
+    <!-- Anti-bot gate for the signup forms. Paints nothing; defines
+         window.mgTurnstile for NewsletterEmbed and PeptidesLanding. Here in the head
+         so it is defined before either of their inline scripts runs, and once per
+         page however many forms the page carries. -->
+    <TurnstileGate />
 </head>
 <body>
     <slot name="nav">

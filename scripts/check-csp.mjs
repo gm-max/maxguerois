@@ -139,6 +139,25 @@ const INTEGRATIONS = [
     requires: [{ directive: 'connect-src', host: 'region1.google-analytics.com' }],
     fix: "add https://*.google-analytics.com and https://*.analytics.google.com to connect-src",
   },
+  {
+    name: 'Cloudflare Turnstile (newsletter anti-bot)',
+    // The loader in src/components/TurnstileGate.astro, which is the only place
+    // this URL appears. Matched on the path rather than the host so the entry does
+    // not also fire on a comment that merely mentions Cloudflare.
+    detect: /challenges\.cloudflare\.com\/turnstile\/v0\/api\.js/,
+    // Both, and they fail differently. Without script-src the widget never loads at
+    // all, which is loud. Without frame-src it loads and then cannot draw its
+    // iframe, so an INTERACTIVE challenge is the only thing that breaks: the
+    // invisible path keeps working, the site looks fine, and the small fraction of
+    // visitors Cloudflare decides to question can never subscribe. That is the
+    // failure this entry exists to make impossible, and `frame-src 'none'` was the
+    // site's value until Turnstile arrived.
+    requires: [
+      { directive: 'script-src', host: 'challenges.cloudflare.com' },
+      { directive: 'frame-src', host: 'challenges.cloudflare.com' },
+    ],
+    fix: 'add https://challenges.cloudflare.com to script-src AND frame-src in vercel.json',
+  },
 ];
 
 function checkIntegrations(csp, files) {

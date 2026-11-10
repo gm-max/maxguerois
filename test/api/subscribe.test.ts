@@ -117,7 +117,50 @@ function post(
 // add-to-segment, update-contact-topics, send-welcome. Reactivation (409 on create)
 // inserts a 5th, update-contact, right after create.
 const okFetch = () =>
-  vi.fn(async () => new Response(JSON.stringify({ data: {} }), { status: 201 }));
+  vi.fn(async (url: unknown) => {
+    if (String(url) === SITEVERIFY) return siteverify();
+    return new Response(JSON.stringify({ data: {} }), { status: 201 });
+  });
+
+/**
+ * The Turnstile arm of the same stub.
+ *
+ * One stub for both third parties rather than two, because the route calls them in
+ * one pass and a test that swaps `fetch` wholesale for the captcha loses its grip on
+ * the Resend assertions. `siteverify` is what each test rewrites; everything else
+ * keeps answering 201 as before.
+ *
+ * The default is a PASS on the production hostname, so the only tests that have to
+ * think about Cloudflare are the ones about Cloudflare.
+ */
+const SITEVERIFY = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+const PASS = { success: true, hostname: 'maxguerois.com', 'error-codes': [] as string[] };
+
+let siteverify: () => Promise<Response>;
+const answers = (body: unknown, status = 200) => async () =>
+  new Response(JSON.stringify(body), { status });
+
+/** Arm the gate the way a correctly configured production deploy is armed. */
+function armGate() {
+  process.env.PUBLIC_TURNSTILE_SITE_KEY = 'site-key-public';
+  process.env.TURNSTILE_SECRET_KEY = 'secret-key-never-logged';
+}
+
+const siteverifyCalls = () =>
+  fetchCalls().filter(([u]) => String(u) === SITEVERIFY);
+
+/** What the route actually sent to Cloudflare, decoded. */
+function siteverifyBody(): URLSearchParams | undefined {
+  const call = siteverifyCalls()[0];
+  return call ? new URLSearchParams(String((call[1] as any).body)) : undefined;
+}
+
+/** Everything the route is forbidden to do for a request it refused. */
+function expectNoSideEffects() {
+  expect(db.calls.some((c) => c.table === 'mg_subscribers')).toBe(false);
+  expect(fetchCalls().some(([u]) => String(u).startsWith('https://api.resend.com'))).toBe(false);
+  expect(fetchCalls().some(([u]) => String(u).includes('api.telegram.org'))).toBe(false);
+}
 
 beforeEach(() => {
   db.reset();
@@ -129,6 +172,14 @@ beforeEach(() => {
   process.env.RESEND_SEGMENT_ID = 'segment-test';
   process.env.UNSUBSCRIBE_SECRET = 'unsub-secret';
   process.env.IP_HASH_SALT = 'salt';
+  // The gate is OFF by default, which is both the state of a local `npm run dev`
+  // and the state of production until the two Vercel variables are set. Every
+  // pre-existing test in this file therefore keeps describing the route it has
+  // always described, and only the block at the bottom arms it.
+  delete process.env.PUBLIC_TURNSTILE_SITE_KEY;
+  delete process.env.TURNSTILE_SECRET_KEY;
+  delete process.env.TURNSTILE_ALLOWED_HOSTNAMES;
+  siteverify = answers(PASS);
   vi.stubGlobal('fetch', okFetch());
   vi.spyOn(console, 'error').mockImplementation(() => {});
 });
@@ -820,5 +871,287 @@ describe('welcome email', () => {
   it('carries no em dash, in either part', () => {
     expect(welcomeHtml('u')).not.toContain('\u2014');
     expect(welcomeText('u')).not.toContain('\u2014');
+  });
+});
+
+/**
+ * The Turnstile gate.
+ *
+ * Two things are being pinned here, and the second matters more than the first.
+ *
+ * 1. Every way a token can be bad is a refusal: absent, malformed, expired, already
+ *    spent, solved on another site, or unverifiable because Cloudflare did not
+ *    answer. The last one is the fail-CLOSED case, and it is the deliberate opposite
+ *    of the rate limiter above, which fails OPEN. A gate that opens when Cloudflare
+ *    is slow is a gate an attacker opens by making Cloudflare slow.
+ *
+ * 2. A refusal writes NOTHING. No mg_subscribers row, no Resend contact, no welcome
+ *    email, no Telegram line. `expectNoSideEffects()` asserts all four at once and
+ *    runs in every refusal test, because the ordering inside the route is the whole
+ *    protection: move the verification three lines down, past the upsert, and every
+ *    test about status codes still passes while bots land in the database again.
+ */
+describe('turnstile gate', () => {
+  describe('when it is not configured', () => {
+    it('subscribes without a token and never calls Cloudflare', async () => {
+      const res = await post({ email: 'a@b.co' });
+      expect(res.status).toBe(200);
+      expect(siteverifyCalls()).toHaveLength(0);
+      expect(upsertOf()).toBeDefined();
+    });
+  });
+
+  describe('when it is half configured', () => {
+    // Both halves of the same deployment mistake. Neither enforces, because
+    // enforcing with one key missing refuses EVERY visitor — a one-variable slip
+    // would take the newsletter down rather than leave it as protected as it was
+    // yesterday. Both are logged on every request, and /api/health reports
+    // "partial" so the VPS watcher sees it within three hours.
+    it.each([
+      ['only the site key', { PUBLIC_TURNSTILE_SITE_KEY: 'site-key-public' }],
+      ['only the secret', { TURNSTILE_SECRET_KEY: 'secret-key-never-logged' }],
+    ])('lets the signup through with %s, and says so loudly', async (_label, vars) => {
+      Object.assign(process.env, vars);
+      const res = await post({ email: 'a@b.co' });
+      expect(res.status).toBe(200);
+      expect(siteverifyCalls()).toHaveLength(0);
+      expect(console.error).toHaveBeenCalledWith(
+        expect.stringContaining('HALF CONFIGURED'),
+      );
+    });
+
+    it('names the variable that is missing, so the log is actionable', async () => {
+      process.env.PUBLIC_TURNSTILE_SITE_KEY = 'site-key-public';
+      await post({ email: 'a@b.co' });
+      expect(console.error).toHaveBeenCalledWith(
+        expect.stringContaining('TURNSTILE_SECRET_KEY is missing'),
+      );
+    });
+  });
+
+  describe('when it is active', () => {
+    beforeEach(armGate);
+
+    it('verifies the token, then stores and sends', async () => {
+      const res = await post({ email: 'a@b.co', 'cf-turnstile-response': 'good-token' });
+      expect(res.status).toBe(200);
+      expect(siteverifyCalls()).toHaveLength(1);
+      const body = siteverifyBody()!;
+      expect(body.get('response')).toBe('good-token');
+      expect(body.get('secret')).toBe('secret-key-never-logged');
+      expect(upsertOf()).toBeDefined();
+      expect(welcomeCall()).toBeDefined();
+    });
+
+    it('verifies BEFORE touching the database, not after', async () => {
+      // The ordering assertion, written as an ordering assertion rather than
+      // inferred from a status code. If the upsert ever moves above the gate, the
+      // refusal tests below still pass and only this one fails.
+      await post({ email: 'a@b.co', 'cf-turnstile-response': 'good-token' });
+      expect(db.calls.findIndex((c) => c.table === 'mg_subscribers')).toBeGreaterThan(-1);
+      expect(siteverifyCalls()).toHaveLength(1);
+      // Cloudflare answered before the first Resend call of the push.
+      const firstResend = fetchCalls().findIndex(([u]) =>
+        String(u).startsWith('https://api.resend.com'),
+      );
+      const verify = fetchCalls().findIndex(([u]) => String(u) === SITEVERIFY);
+      expect(verify).toBeLessThan(firstResend);
+    });
+
+    it('forwards the visitor IP so Cloudflare can weigh it', async () => {
+      await post({ email: 'a@b.co', 'cf-turnstile-response': 'good-token' });
+      expect(siteverifyBody()!.get('remoteip')).toBe('203.0.113.9');
+    });
+
+    it('sends no remoteip when no trusted header gave one', async () => {
+      // clientIp() answers the literal string 'unknown' in that case, and handing
+      // Cloudflare a non-address to judge is worse than handing it nothing.
+      const request = new Request(ENDPOINT, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', accept: 'application/json' },
+        body: JSON.stringify({ email: 'a@b.co', 'cf-turnstile-response': 'good-token' }),
+      });
+      await POST({ request, url: new URL(ENDPOINT) } as never);
+      expect(siteverifyBody()!.has('remoteip')).toBe(false);
+    });
+
+    it.each([
+      ['no token at all', {}, 'captcha_required'],
+      ['an empty token', { 'cf-turnstile-response': '' }, 'captcha_required'],
+      ['a non-string token', { 'cf-turnstile-response': 12345 }, 'captcha_required'],
+    ])('refuses %s with %s, and writes nothing', async (_label, extra, code) => {
+      const res = await post({ email: 'a@b.co', ...extra });
+      expect(res.status).toBe(403);
+      expect(await res.json()).toEqual({ ok: false, error: code });
+      // Not even asked: there is nothing to verify.
+      expect(siteverifyCalls()).toHaveLength(0);
+      expectNoSideEffects();
+    });
+
+    it.each([
+      ['malformed or expired', ['invalid-input-response']],
+      ['already spent', ['timeout-or-duplicate']],
+      ['not sent to Cloudflare', ['missing-input-response']],
+      ['unrecognised', ['some-code-cloudflare-adds-later']],
+      ['unexplained', []],
+    ])('refuses a token Cloudflare calls %s, and writes nothing', async (_label, codes) => {
+      siteverify = answers({ success: false, 'error-codes': codes });
+      const res = await post({ email: 'a@b.co', 'cf-turnstile-response': 'bad-token' });
+      expect(res.status).toBe(403);
+      expect(await res.json()).toEqual({ ok: false, error: 'captcha_failed' });
+      expectNoSideEffects();
+    });
+
+    it('refuses a token solved on someone else’s site', async () => {
+      // The attack the widget's own hostname allowlist cannot cover: a token minted
+      // on a site an attacker controls, then spent here. Cloudflare reports the
+      // hostname it saw and its docs say to check it.
+      siteverify = answers({ success: true, hostname: 'evil.example', 'error-codes': [] });
+      const res = await post({ email: 'a@b.co', 'cf-turnstile-response': 'foreign-token' });
+      expect(res.status).toBe(403);
+      expect(await res.json()).toEqual({ ok: false, error: 'captcha_failed' });
+      expectNoSideEffects();
+      expect(console.error).toHaveBeenCalledWith(
+        expect.stringContaining('unexpected hostname'),
+      );
+    });
+
+    it('accepts www, which is a real host for this site', async () => {
+      siteverify = answers({ success: true, hostname: 'WWW.MaxGuerois.com', 'error-codes': [] });
+      expect((await post({ email: 'a@b.co', 'cf-turnstile-response': 't' })).status).toBe(200);
+    });
+
+    it('accepts a hostname the deployment explicitly allows', async () => {
+      // How a Vercel preview, or a run against Cloudflare's test secrets (which
+      // always answer example.com), is made to work without touching the code.
+      process.env.TURNSTILE_ALLOWED_HOSTNAMES = 'example.com, preview.vercel.app';
+      siteverify = answers({ success: true, hostname: 'example.com', 'error-codes': [] });
+      expect((await post({ email: 'a@b.co', 'cf-turnstile-response': 't' })).status).toBe(200);
+    });
+
+    it('accepts an answer that names no hostname', async () => {
+      // Cloudflare's wording is "validate the hostname when specified". Refusing an
+      // answer that omits it would reject real traffic on a field we were told is
+      // optional.
+      siteverify = answers({ success: true, 'error-codes': [] });
+      expect((await post({ email: 'a@b.co', 'cf-turnstile-response': 't' })).status).toBe(200);
+    });
+
+    describe('fail closed', () => {
+      // Each of these is Cloudflare, not the visitor. Every one is still a refusal,
+      // and the message tells the visitor to try again rather than to retry the
+      // challenge. The cost is named in src/lib/turnstile.ts: an outage at
+      // Cloudflare stops signups until it ends.
+      it.each([
+        [
+          'a timeout',
+          () => {
+            siteverify = async () => {
+              throw Object.assign(new Error('The operation was aborted'), {
+                name: 'TimeoutError',
+              });
+            };
+          },
+        ],
+        [
+          'a network failure',
+          () => {
+            siteverify = async () => {
+              throw new TypeError('fetch failed');
+            };
+          },
+        ],
+        ['an HTTP 500', () => { siteverify = answers({}, 500); }],
+        ['an HTTP 429', () => { siteverify = answers({}, 429); }],
+        [
+          'an unparseable body',
+          () => {
+            siteverify = async () => new Response('<html>502</html>', { status: 200 });
+          },
+        ],
+        ['its own internal error', () => { siteverify = answers({ success: false, 'error-codes': ['internal-error'] }); }],
+        ['a malformed request from us', () => { siteverify = answers({ success: false, 'error-codes': ['bad-request'] }); }],
+        ['a rejected secret', () => { siteverify = answers({ success: false, 'error-codes': ['invalid-input-secret'] }); }],
+      ])('refuses on %s and writes nothing', async (_label, arrange) => {
+        arrange();
+        const res = await post({ email: 'a@b.co', 'cf-turnstile-response': 'good-token' });
+        expect(res.status).toBe(403);
+        expect(await res.json()).toEqual({ ok: false, error: 'captcha_unavailable' });
+        expectNoSideEffects();
+      });
+    });
+
+    describe('the guards it did not replace', () => {
+      it('still short-circuits the honeypot before spending a Cloudflare call', async () => {
+        const res = await post({ email: 'bot@spam.co', website: 'http://spam' });
+        expect(res.status).toBe(200);
+        expect(siteverifyCalls()).toHaveLength(0);
+        expect(db.calls).toEqual([]);
+      });
+
+      it('still rejects an invalid address before spending a Cloudflare call', async () => {
+        const res = await post({ email: 'nope', 'cf-turnstile-response': 'good-token' });
+        expect(res.status).toBe(400);
+        expect(siteverifyCalls()).toHaveLength(0);
+      });
+
+      it('still rate limits, and does so before spending a Cloudflare call', async () => {
+        // The ordering here is the one that protects our own siteverify budget: a
+        // flood from one address is cut off by the 5-per-hour ledger rather than
+        // turned into 5-per-hour outbound calls plus unlimited refusals.
+        db.rateLimitCount = 5;
+        const res = await post({ email: 'a@b.co', 'cf-turnstile-response': 'good-token' });
+        expect(res.status).toBe(429);
+        expect(siteverifyCalls()).toHaveLength(0);
+      });
+    });
+
+    describe('what reaches the logs', () => {
+      it('never logs the secret or the token', async () => {
+        // Both are credentials. The token is short-lived, the secret is not, and a
+        // log line is the wrong home for either. `error-codes` and the hostname are
+        // what a diagnosis actually needs.
+        siteverify = answers({ success: false, 'error-codes': ['invalid-input-response'] });
+        await post({ email: 'a@b.co', 'cf-turnstile-response': 'a-very-secret-token' });
+        const logged = (console.error as any).mock.calls.flat().map(String).join(' | ');
+        expect(logged).not.toContain('a-very-secret-token');
+        expect(logged).not.toContain('secret-key-never-logged');
+        expect(logged).toContain('invalid-input-response');
+      });
+
+      it('never logs the address of a refused signup', async () => {
+        siteverify = answers({ success: false, 'error-codes': ['invalid-input-response'] });
+        await post({ email: 'private@person.co', 'cf-turnstile-response': 't' });
+        const logged = (console.error as any).mock.calls.flat().map(String).join(' | ');
+        expect(logged).not.toContain('private@person.co');
+      });
+    });
+
+    describe('a signup without JavaScript', () => {
+      it('is redirected to the thank-you page carrying the reason', async () => {
+        // A native form post cannot carry a token: the widget only exists where a
+        // script runs. The visitor lands on /fr/merci, which has copy for this exact
+        // code, instead of on a bare failure with no cause. The <noscript> block in
+        // both form components warns before they ever press the button.
+        const res = await post({ email: 'a@b.co' }, { json: false, accept: 'text/html' });
+        expect(res.status).toBe(303);
+        expect(res.headers.get('location')).toBe(
+          'https://maxguerois.com/fr/merci?error=captcha_required',
+        );
+        expectNoSideEffects();
+      });
+
+      it('works when the form post DOES carry a token', async () => {
+        // Not the path this site takes (both components build JSON), but the route
+        // reads the field the same way from either body, so a native post with a
+        // token must not be a special case.
+        const res = await post(
+          { email: 'a@b.co', 'cf-turnstile-response': 'good-token' },
+          { json: false, accept: 'text/html' },
+        );
+        expect(res.status).toBe(303);
+        expect(res.headers.get('location')).toBe('https://maxguerois.com/fr/merci?ok=1');
+      });
+    });
   });
 });

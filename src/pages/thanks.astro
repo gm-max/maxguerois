@@ -15,6 +15,12 @@ const ERRORS: Record<string, string> = {
     invalid_email: "That address doesn't look right.",
     rate_limited: 'Too many attempts. Try again in a moment.',
     store_failed: 'Signup failed. Try again in a moment.',
+    // Where a no-JS signup lands when the gate is armed: the token can only come
+    // from a script, so a native form post carries none. Said plainly rather than
+    // as a generic failure with no cause.
+    captcha_required: "The anti-bot check couldn't run, most likely because JavaScript is off. Turn it on and try again, or email me at hi@maxguerois.com and I'll add you by hand.",
+    captcha_failed: 'The anti-bot check failed. Reload the page and try again.',
+    captcha_unavailable: "The anti-bot check is unavailable. Try again in a moment, or email me at hi@maxguerois.com.",
     bad_request: 'Signup failed. Try again in a moment.',
 };
 const error = code ? (ERRORS[code] ?? ERRORS.store_failed) : null;
