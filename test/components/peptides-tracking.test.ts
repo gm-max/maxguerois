@@ -3,11 +3,6 @@
 // Le script de mesure de /peptides est `is:inline` : il ne peut pas etre
 // importe. On l'EXTRAIT du .astro et on l'execute, donc ce test exerce le code
 // reellement livre, pas une copie qui derivera.
-//
-// Le defaut qui a motive ce fichier : l'evenement `close` d'un <dialog> ne se
-// declenche pas dans tous les moteurs. Verifie au navigateur le 2026-08-27, il
-// n'arrivait meme pas a un ecouteur pose dans le monde principal. Les tests
-// « moteur conforme » et « moteur muet » ci-dessous couvrent les deux mondes.
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -24,12 +19,7 @@ const SCRIPT = (() => {
     return wanted.split('</script>')[0];
 })();
 
-const SOURCES = [
-    'fr-peptides',
-    'fr-peptides-newsletter',
-    'fr-peptides-guide',
-    'fr-peptides-modal',
-];
+const SOURCES = ['fr-peptides', 'fr-peptides-newsletter'];
 
 let events: Array<{ name: string; props: Record<string, unknown> | undefined }>;
 let observers: Array<{ el: Element; fire: () => void }>;
@@ -44,37 +34,11 @@ function formHtml(source: string | null) {
 }
 
 function mount({ omitSourceOn = -1 } = {}) {
-    document.body.innerHTML = `
-        ${SOURCES.slice(0, 3).map((s, i) => formHtml(i === omitSourceOn ? null : s)).join('')}
-        <dialog id="pep-guide">
-            <button data-pg-close aria-label="Fermer">x</button>
-            ${formHtml(SOURCES[3])}
-        </dialog>`;
+    document.body.innerHTML = SOURCES.map((s, i) =>
+        formHtml(i === omitSourceOn ? null : s)
+    ).join('');
     return {
         forms: Array.from(document.querySelectorAll<HTMLFormElement>('form[data-subscribe]')),
-        dlg: document.getElementById('pep-guide') as HTMLDialogElement,
-    };
-}
-
-/** Modelise <dialog> selon la SPEC : close() emet bien l'evenement `close`. */
-function dialogSpecCompliant(dlg: HTMLDialogElement) {
-    (dlg as unknown as { showModal: () => void }).showModal = () => {
-        dlg.setAttribute('open', '');
-    };
-    (dlg as unknown as { close: () => void }).close = () => {
-        if (!dlg.hasAttribute('open')) return;
-        dlg.removeAttribute('open');
-        dlg.dispatchEvent(new Event('close'));
-    };
-}
-
-/** Modelise le moteur rencontre le 2026-08-27 : `close` n'est JAMAIS emis. */
-function dialogSilentOnClose(dlg: HTMLDialogElement) {
-    (dlg as unknown as { showModal: () => void }).showModal = () => {
-        dlg.setAttribute('open', '');
-    };
-    (dlg as unknown as { close: () => void }).close = () => {
-        dlg.removeAttribute('open');
     };
 }
 
@@ -194,78 +158,5 @@ describe('envoi', () => {
         run();
         await submit(forms[0], 'a@example.com', Promise.reject(new Error('Failed to fetch')));
         expect(named('peptides_form_failed')[0].props!.reason).toBe('network');
-    });
-});
-
-describe('pop-up guide', () => {
-    it('compte un affichage quand elle s ouvre vraiment', () => {
-        const { dlg } = mount();
-        dialogSpecCompliant(dlg);
-        run();
-        vi.advanceTimersByTime(8000);
-        expect(named('peptides_guide_shown')).toHaveLength(1);
-    });
-
-    it('ne compte AUCUN affichage si showModal n existe pas', () => {
-        // Le defaut trouve par une revue exterieure : on comptait un affichage
-        // fantome, qui gonflait le denominateur du taux de refus.
-        const { dlg } = mount();
-        // `delete` ne suffit PAS : happy-dom porte showModal sur le PROTOTYPE,
-        // donc la propriete d'instance disparait et celle du prototype reprend.
-        // On masque avec undefined pour modeliser un moteur qui ne l'a pas.
-        (dlg as unknown as { showModal?: unknown }).showModal = undefined;
-        run();
-        vi.advanceTimersByTime(8000);
-        expect(named('peptides_guide_shown')).toHaveLength(0);
-    });
-
-    it('moteur conforme : la croix compte UN refus', () => {
-        const { dlg } = mount();
-        dialogSpecCompliant(dlg);
-        run();
-        vi.advanceTimersByTime(8000);
-        (dlg.querySelector('[data-pg-close]') as HTMLElement).click();
-        expect(named('peptides_guide_dismissed')).toHaveLength(1);
-    });
-
-    it('moteur MUET sur `close` : la croix compte quand meme UN refus', () => {
-        // C'est exactement le moteur rencontre au navigateur le 2026-08-27.
-        const { dlg } = mount();
-        dialogSilentOnClose(dlg);
-        run();
-        vi.advanceTimersByTime(8000);
-        (dlg.querySelector('[data-pg-close]') as HTMLElement).click();
-        expect(named('peptides_guide_dismissed')).toHaveLength(1);
-    });
-
-    it('voile puis croix : toujours UN SEUL refus', () => {
-        const { dlg } = mount();
-        dialogSpecCompliant(dlg);
-        run();
-        vi.advanceTimersByTime(8000);
-        dlg.dispatchEvent(new Event('click'));
-        (dlg.querySelector('[data-pg-close]') as HTMLElement).click();
-        expect(named('peptides_guide_dismissed')).toHaveLength(1);
-    });
-
-    it('inscrit DEPUIS la pop-up puis ferme : ZERO refus', async () => {
-        const { dlg, forms } = mount();
-        dialogSpecCompliant(dlg);
-        run();
-        vi.advanceTimersByTime(8000);
-
-        const modalForm = forms[3];
-        (modalForm.querySelector('input[name="email"]') as HTMLInputElement).value =
-            'a@example.com';
-        vi.stubGlobal(
-            'fetch',
-            vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({ ok: true }) })
-        );
-        modalForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-        await vi.runAllTimersAsync();
-
-        (dlg.querySelector('[data-pg-close]') as HTMLElement).click();
-        expect(named('peptides_subscribed')).toHaveLength(1);
-        expect(named('peptides_guide_dismissed')).toHaveLength(0);
     });
 });

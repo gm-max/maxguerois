@@ -82,13 +82,11 @@ const utmSource = (() => {
 })();
 
 /**
- * `?guide=1` ouvre la fenetre du guide des l'arrivee.
  *
  * Sans lui, un visiteur venu d'une story qui parle DU GUIDE atterrit sur la
  * page entiere et doit retrouver l'offre tout seul. Le parametre est lu ici et
  * pose sur le `<body>` de la page, le script s'en sert plus bas.
  */
-const ouvrirGuide = params.get('guide') === '1';
 const submitted = params.get('ok') === '1';
 const submitErrorCode = params.get('error');
 const submitError = submitErrorCode
@@ -451,84 +449,6 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
     }
     .pep-post:hover .pep-post-t { text-decoration: underline; }
 
-    /* ── L'annonce du guide, dans la section newsletter ──
-       Meme composition que les articles en ligne : vignette a gauche, texte a
-       droite. Contour et fond de page, comme les cartes de « Qui suis-je » :
-       aucun composant nouveau, donc rien de plus a tenir a jour. */
-    /* Un BOUTON et non une boite decorative : le bloc annoncait le guide
-       sans dire comment l'obtenir, et le seul champ email etait au-dessus,
-       sans lien avec lui. Il ouvre desormais la fenetre, qui porte deja le
-       formulaire. Un seul endroit ou le guide se demande. */
-    .pep-guide {
-        width: 100%;
-        text-align: left;
-        font: inherit;
-        cursor: pointer;
-        display: flex;
-        gap: var(--sp-4);
-        align-items: center;
-        margin-top: var(--sp-12);
-        padding: var(--sp-4);
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
-    }
-    .pep-guide-img {
-        flex: 0 0 128px;
-        width: 128px;
-        height: auto;
-        aspect-ratio: 16 / 9;
-        object-fit: cover;
-        border-radius: var(--radius-sm);
-        background: var(--bg-subtle);
-    }
-    .pep-guide-body { min-width: 0; }
-    /* Sous 600px, la vignette laissait 149px au texte : le titre passait sur
-       deux lignes et la description sur trois, dans une carte de 198px de
-       haut. Mesure du 27/09. En colonne, la couverture est lisible et le
-       texte respire, pour a peine 50px de plus. */
-    @media (max-width: 600px) {
-        .pep-guide { display: block; }
-        .pep-guide-img {
-            width: 100%;
-            flex: none;
-            /* 16/9, le rapport NATIF du fichier : en 21/9 la couverture
-               etait rognee en haut et le titre du guide perdait sa premiere
-               ligne. Pleine largeur, rien n'est coupe. */
-            aspect-ratio: 16 / 9;
-            margin-bottom: var(--sp-4);
-        }
-    }
-    .pep-guide-cat {
-        margin: 0 0 var(--sp-1);
-        font-size: var(--t-label);
-        font-weight: 500;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--text-tertiary);
-    }
-    .pep-guide-t {
-        margin: 0 0 var(--sp-1);
-        font-size: var(--t-item);
-        font-weight: 500;
-        line-height: 1.3;
-        color: var(--text);
-    }
-    .pep-guide-d {
-        margin: 0;
-        font-size: var(--t-micro);
-        line-height: 1.5;
-        color: var(--text-secondary);
-    }
-    .pep-guide-cta {
-        margin: var(--sp-2) 0 0;
-        font-size: var(--t-cal);
-        font-weight: 500;
-        color: var(--text);
-    }
-    .pep-guide:hover { background: var(--bg-subtle); }
-    .pep-guide:hover .pep-guide-cta { text-decoration: underline; }
-
     /* ── Les articles suivants, en ligne ──
        Vignette carree a gauche, texte a droite : trois lignes tiennent dans
        l'espace qu'une seule banniere occupait. */
@@ -811,138 +731,12 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
     }
     .pf-done b { font-weight: 500; }
 
-    /* ── Pop-up guide ──
-       Le <dialog> EST la carte. Le voile est ::backdrop, que le navigateur
-       dimensionne au viewport entier, gratuitement.
-
-       Ce que faisait la version precedente, et pourquoi elle etait cassee en
-       production, mesure sur maxguerois.com en 1280x820 :
-
-       1. `.pg[open] { display: block }` etait ecrit AVANT `.pg { display: flex }`.
-          `[open]` a une specificite plus forte, donc `block` gagnait et le
-          centrage n'a jamais rien fait : carte collee a top:28px.
-       2. Le voile etait peint sur le <dialog> lui-meme, avec `::backdrop` mis a
-          `transparent`. Or `inset: 0` n'etire une dimension que si elle vaut
-          `auto` : `width` etait fixe, `height` restait auto, donc le voile
-          s'arretait a la hauteur du contenu. Mesure : 302px sur 820.
-       3. Consequence : 518px de page qui paraissaient normaux, couverts par le
-          ::backdrop invisible du navigateur, donc inertes. On clique, rien ne
-          repond, ni la modale ni la page. Indiscernable de "je ne peux pas la
-          fermer".
-
-       Le centrage se fait maintenant par `inset: 0` + `margin: auto`, qui ne
-       depend d'aucun display et marche donc quoi que fasse l'UA. */
-    .pg {
-        position: fixed;
-        inset: 0;
-        margin: auto;
-        width: min(420px, calc(100% - var(--sp-8)));
-        max-width: none;
-        height: fit-content;
-        max-height: calc(100dvh - var(--sp-8));
-        padding: 0;
-        border: 0;
-        background: transparent;
-        overflow: visible;
-    }
-    .pg::backdrop { background: rgba(26, 26, 26, 0.45); }
-    /* En sombre, le fond du site est #0f0e0c, plus sombre que le rgb(26,26,26)
-       du voile : celui-ci ECLAIRCISSAIT la page au lieu de l'assombrir. Le
-       :global() est necessaire, l'attribut data-theme vit sur <html>, hors de
-       la portee du style scope de ce composant. */
-    :global([data-theme='dark']) .pg::backdrop { background: rgba(0, 0, 0, 0.62); }
-    .pg-free {
-        position: absolute;
-        top: var(--sp-4);
-        left: var(--sp-4);
-        z-index: 1;
-        padding: 5px 12px;
-        border-radius: var(--radius-full);
-        background: var(--bg);
-        font-family: var(--font-body);
-        font-size: var(--t-label);
-        font-weight: 500;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--text);
-        box-shadow: 0 2px 10px rgba(15, 14, 12, 0.22);
-    }
-
-    /* L'image sort du padding de la carte pour toucher ses bords : une image
-       avec 24px de blanc autour serait une vignette posee dans une boite, pas
-       la tete de la carte. Les coins hauts suivent ceux de la carte. */
-    .pg-img {
-        display: block;
-        width: calc(100% + var(--sp-6) * 2);
-        margin: calc(var(--sp-6) * -1) calc(var(--sp-6) * -1) var(--sp-6);
-        height: auto;
-        aspect-ratio: 16 / 9;
-        object-fit: cover;
-        border-radius: var(--radius-md) var(--radius-md) 0 0;
-        background: var(--bg-subtle);
-    }
-    /* Sur un ecran court (iPhone SE, paysage), la carte depassait et le
-       formulaire tombait sous le pli : l'image s'aplatit au lieu de pousser
-       l'action hors de vue. */
-    @media (max-height: 700px) {
-        .pg-img { aspect-ratio: 21 / 9; }
-    }
-
-    .pg-card {
-        position: relative;
-        max-height: calc(100dvh - var(--sp-8));
-        overflow-y: auto;
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-md);
-        padding: var(--sp-6);
-        animation: pg-rise var(--duration-base) var(--ease-out);
-    }
-    /* Dans une carte de 420px, la rangee en ligne laissait 71px a l'input parce
-       que le bouton est en `nowrap` et prenait 291px. Mesure en production. */
-    .pg .pf-row { flex-direction: column; max-width: none; }
-    .pg .pf-row button { width: 100%; }
-    /* En colonne, la main axis est la HAUTEUR. La regle desktop `flex: 1 1 auto`
-       s'applique encore ici et donne au champ une base de 0 : mesure, 23px de
-       haut contre 48 pour le bouton. `flex: 0 0 48px` le rend non flexible sur
-       cet axe, quelle que soit la regle heritee. */
-    .pg .pf-row input { flex: 0 0 48px; }
-    @keyframes pg-rise { from { opacity: 0; transform: translateY(12px); } }
-    .pg-close {
-        position: absolute;
-        /* Posee sur la photo depuis le 27/09 : pastille sombre et croix
-           claire, sinon l'encre tertiaire se perdait dans l'image. */
-        top: var(--sp-2);
-        right: var(--sp-2);
-        border-radius: var(--radius-full);
-        background: rgba(15, 14, 12, 0.45);
-        backdrop-filter: blur(4px);
-        width: 44px;
-        height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: var(--t-h2);
-        line-height: 1;
-        color: #f3efe6;
-        border: 0;
-        cursor: pointer;
-    }
-    .pg-close:hover { background: rgba(15, 14, 12, 0.7); }
-    .pg-card h2 { margin-bottom: var(--sp-3); padding-right: var(--sp-8); }
-    /* Centree, et seulement dans la fenetre : la carte est etroite et son
-       bouton pleine largeur, donc une ligne en fer a gauche pendait sous un
-       bloc centre. Sur la page, les memes lignes restent alignees a gauche
-       avec le reste de la colonne. */
-    .pg-micro { text-align: center; }
-
     @media (prefers-reduced-motion: reduce) {
-        .pg-card { animation: none; }
         .pep-row-t, .pf-row input, .pf-row button { transition: none; }
     }
 </style>
 
-<div class="pep" data-open-guide={ouvrirGuide ? '1' : undefined}>
+<div class="pep">
 
     <!-- 1 · HÉROS. L'image est HORS .container, sinon elle hérite de 24px de
          gouttière et devient une vignette au lieu d'un bandeau. -->
@@ -994,46 +788,6 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
     </section>
 
     <div class="container" style="padding-top: 0;">
-        {/* Le guide, juste sous le formulaire du heros : c'est ce qu'on
-            recoit en s'inscrivant, donc il se lit AVANT la raison de faire
-            confiance, pas trois ecrans plus bas. La modale ne s'affiche
-            qu'UNE fois par visiteur (mg_peptides_guide_v1), donc sans ce
-            bloc, qui l'a fermee ne reverrait jamais l'offre. */}
-        <button class="pep-guide" type="button" data-pg-open>
-            <picture>
-                <source
-                    type="image/avif"
-                    srcset="/health-journey/pg-guide-glp1-420.avif 420w,
-                            /health-journey/pg-guide-glp1-840.avif 840w"
-                    sizes="128px"
-                />
-                <source
-                    type="image/webp"
-                    srcset="/health-journey/pg-guide-glp1-420.webp 420w,
-                            /health-journey/pg-guide-glp1-840.webp 840w"
-                    sizes="128px"
-                />
-                <img
-                    class="pep-guide-img"
-                    src="/health-journey/pg-guide-glp1-840.jpg"
-                    alt="Le guide GLP-1 complet, par Max Guerois."
-                    width="1152"
-                    height="648"
-                    loading="lazy"
-                    decoding="async"
-                />
-            </picture>
-            <div class="pep-guide-body">
-                <p class="pep-guide-cat">Gratuit</p>
-                <p class="pep-guide-t">Le guide complet des GLP-1</p>
-                <p class="pep-guide-d">
-                    +100 h de recherches. Le 1<sup>er</sup> octobre, dans votre
-                    boîte mail.
-                </p>
-                <p class="pep-guide-cta">Le recevoir <span aria-hidden="true">&rarr;</span></p>
-            </div>
-        </button>
-
         <!-- 2 · QUI SUIS-JE, JUSTE SOUS LE HÉROS. Le visiteur vient d'un
              reel : il sait de quoi on parle, il ne sait pas qui parle. -->
         <section class="pep-section pep-me">
@@ -1190,82 +944,6 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
 
     </div>
 
-    <!-- POP-UP GUIDE.
-         L'IMAGE est servie en AVIF/WebP pre-generes (13 Ko a 420px) et en
-         `eager` : la modale doit s'ouvrir instantanement, et une image
-         paresseuse se serait chargee APRES l'ouverture, donc sur un trou gris.
-         width/height portes par la balise, sinon la carte grandit sous les
-         yeux du visiteur au moment ou elle s'affiche. -->
-    <dialog class="pg" id="pep-guide" aria-labelledby="pg-title">
-        <div class="pg-card">
-            <button class="pg-close" type="button" data-pg-close aria-label="Fermer">&times;</button>
-            {/* La pastille dit le prix AVANT le texte : « gratuit » sous le
-                bouton arrive apres la decision, pas avant. Posee sur l'image,
-                comme un bandeau d'editeur sur une couverture. */}
-            <span class="pg-free">Gratuit</span>
-            <picture>
-                <source
-                    type="image/avif"
-                    srcset="/health-journey/pg-guide-glp1-420.avif 420w,
-                            /health-journey/pg-guide-glp1-840.avif 840w,
-                            /health-journey/pg-guide-glp1-1260.avif 1260w"
-                    sizes="min(420px, calc(100vw - 32px))"
-                />
-                <source
-                    type="image/webp"
-                    srcset="/health-journey/pg-guide-glp1-420.webp 420w,
-                            /health-journey/pg-guide-glp1-840.webp 840w,
-                            /health-journey/pg-guide-glp1-1260.webp 1260w"
-                    sizes="min(420px, calc(100vw - 32px))"
-                />
-                <img
-                    class="pg-img"
-                    src="/health-journey/pg-guide-glp1-840.jpg"
-                    alt="Le guide GLP-1 complet, par Max Guerois, posé sur une table basse."
-                    width="1152"
-                    height="648"
-                    fetchpriority="high"
-                    decoding="async"
-                />
-            </picture>
-            <h2 id="pg-title">Le guide complet des GLP-1</h2>
-            <p class="pep-text" style="font-size: var(--t-cal); margin-bottom: var(--sp-6);">
-                Ce qu'il faut savoir avant de commencer : comment être accompagné
-                pendant le traitement, les effets, les prix, et les pièges.
-                <br /><br />
-                +100 h de préparation et de recherches, dans votre boîte mail,
-                le 1<sup>er</sup> octobre.
-            </p>
-            <form class="pf" data-subscribe method="POST" action="/api/subscribe?lang=fr-peptides">
-                <label class="pf-label" for="pf-modal">Votre email</label>
-                <input type="hidden" name="source" value="fr-peptides-modal" />
-                <input type="hidden" name="utm_source" value={utmSource} />
-                <input class="pf-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
-                <div class="pf-row">
-                    <input
-                        id="pf-modal"
-                        name="email"
-                        type="email"
-                        required
-                        inputmode="email"
-                        autocomplete="email"
-                        autocapitalize="off"
-                        spellcheck="false"
-                        placeholder="votre@email.com"
-                        aria-describedby="pf-modal-err"
-                    />
-                    <button type="submit">Être notifié quand le guide est prêt</button>
-                </div>
-                <p class="pf-err" role="alert" id="pf-modal-err" hidden></p>
-                <p class="pf-micro pg-micro">Gratuit. Désinscription en 1 clic.</p>
-                {captchaActive && (
-                    <noscript>
-                        <p class="pf-nojs">JavaScript est désactivé, donc la vérification anti-robot ne peut pas s'exécuter et ce formulaire n'aboutira pas. Activez-le, ou écrivez à hi@maxguerois.com et je vous inscris à la main.</p>
-                    </noscript>
-                )}
-            </form>
-        </div>
-    </dialog>
 </div>
 
 <script is:inline>
@@ -1290,28 +968,6 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
             _: "Ça n'a pas marché de notre côté. Réessayez, ou écrivez-moi à hi@maxguerois.com."
         };
 
-        // La pop-up est planifiee au chargement. Sans ce verrou, quelqu'un qui
-        // s'inscrit a t=3s voyait la modale s'ouvrir a t=8s pour lui redemander
-        // exactement ce qu'il venait de faire. Trouve par une revue exterieure.
-        var KEY = 'mg_peptides_guide_v1';
-        var modalTimer = null;
-        // DESARME la pop-up, ne la ferme PAS.
-        //
-        // Elle fermait, et c'etait faux exactement la ou ca comptait : une
-        // inscription DEPUIS la modale affichait le message de succes puis
-        // refermait la modale dans la foulee. Le visiteur voyait la fenetre
-        // disparaitre sans confirmation, et un lecteur d'ecran recevait le focus
-        // sur un contenu masque dans la seconde.
-        //
-        // Fermer n'a d'ailleurs jamais servi ailleurs : quand la modale est
-        // ouverte, `showModal()` rend la page inerte, donc aucun formulaire en
-        // ligne ne peut etre soumis derriere. Le seul cas ou `close()` se
-        // declenchait etait le seul ou il ne fallait pas.
-        function disarmModal() {
-            if (modalTimer) { clearTimeout(modalTimer); modalTimer = null; }
-            try { localStorage.setItem(KEY, '1'); } catch (e0) {}
-        }
-
         // Un SEUL comportement pour les quatre formulaires (3 en ligne + la
         // modale). Quatre copies divergeraient, et la première à diverger
         // serait celle de la modale, qu'on ouvre le moins souvent.
@@ -1319,17 +975,6 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
         // fait que l'alimenter, sans jamais supposer qu'elle existe.
         function track(name, props) {
             if (window.mgTrack) window.mgTrack(name, props);
-        }
-
-        // Quelqu'un qui s'inscrit DEPUIS la pop-up puis la ferme ne l'a pas
-        // refusee : sans ce drapeau il compterait dans les deux colonnes, et le
-        // taux de refus de la pop-up serait faux vers le haut.
-        var guideConverti = false;
-        var guideCompte = false;
-        function guideRefuse() {
-            if (guideCompte || guideConverti) return;
-            guideCompte = true;
-            track('peptides_guide_dismissed');
         }
 
         function bind(form) {
@@ -1451,8 +1096,6 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                         form.parentNode.replaceChild(done, form);
                         done.focus();
                         track('peptides_subscribed', { source: source });
-                        if (source === 'fr-peptides-modal') guideConverti = true;
-                        disarmModal();
                     })
                     .catch(function (e2) {
                         // Le champ n'est JAMAIS vidé sur erreur.
@@ -1483,84 +1126,8 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
         var forms = document.querySelectorAll('form[data-subscribe]');
         for (var i = 0; i < forms.length; i++) bind(forms[i]);
 
-        // Le retour du chemin SANS JavaScript est rendu par le SERVEUR maintenant
-        // (D52) : ce bloc dupliquait le travail et, surtout, il ne pouvait rien faire
-        // pour quelqu'un qui n'execute pas de JavaScript, ce qui etait tout le
-        // probleme. Il reste juste a ne pas ouvrir la pop-up apres une inscription.
-        var params = new URLSearchParams(location.search);
-        if (params.get('ok') === '1') disarmModal();
 
-        // Pop-up : 8 s, une seule fois par visiteur. La clé est écrite à
-        // l'affichage et non à la fermeture, sinon quelqu'un qui recharge avant
-        // de fermer la revoit à chaque visite.
-        var dlg = document.getElementById('pep-guide');
-        if (dlg && !params.get('ok')) {
-            var seen = false;
-            try { seen = localStorage.getItem(KEY) === '1'; } catch (e3) { seen = true; }
-            if (!seen) {
-                modalTimer = setTimeout(function () {
-                    modalTimer = null;
-                    if (!document.body.contains(dlg)) return;
-                    try { localStorage.setItem(KEY, '1'); } catch (e4) {}
-                    if (typeof dlg.showModal !== 'function') return;
-                    try {
-                        dlg.showModal();
-                    } catch (e6) {
-                        // showModal() leve si le dialogue est deja ouvert.
-                        // Rien affiche, donc rien a compter.
-                        return;
-                    }
-                    // `dlg.open` est la SEULE preuve qu'il est reellement
-                    // ouvert. Compter juste apres l'appel comptait des
-                    // affichages fantomes sur les navigateurs sans showModal,
-                    // qui gonflaient le denominateur du taux de refus. Trouve
-                    // par une revue exterieure.
-                    if (dlg.open) track('peptides_guide_shown');
-                }, 8000);
-            }
-            // `close` couvre les TROIS sorties — le clic sur le voile, le
-            // bouton, et la touche Echap que <dialog> gere lui-meme. Ecouter les
-            // deux premiers seulement aurait rate le troisieme en silence.
-            dlg.addEventListener('close', guideRefuse);
-            dlg.addEventListener('click', function (e5) {
-                if (e5.target === dlg) { guideRefuse(); dlg.close(); }
-            });
-            var closeBtn = dlg.querySelector('[data-pg-close]');
-            if (closeBtn) closeBtn.addEventListener('click', function () { guideRefuse(); dlg.close(); });
-        }
 
-        // OUVERTURE PAR L'URL. `?guide=1` vient d'une story ou d'un lien qui
-        // parle du guide : la fenetre s'ouvre tout de suite, sans les 8
-        // secondes d'attente, et sans regarder si elle a deja ete vue. Le
-        // minuteur est annule, sinon elle se rouvrirait apres une fermeture.
-        var pepRoot = document.querySelector('.pep');
-        if (dlg && pepRoot && pepRoot.getAttribute('data-open-guide') === '1'
-            && typeof dlg.showModal === 'function' && !params.get('ok')) {
-            if (modalTimer) { clearTimeout(modalTimer); modalTimer = null; }
-            try { localStorage.setItem(KEY, '1'); } catch (e9) {}
-            try {
-                dlg.showModal();
-                if (dlg.open) track('peptides_guide_shown', { via: 'url' });
-            } catch (e10) {}
-        }
-
-        // OUVERTURE A LA DEMANDE. Branchee hors du `if` ci-dessus : le bloc de
-        // la page doit fonctionner meme quand la fenetre automatique a deja ete
-        // vue, ce qui est precisement le cas qu'il rattrape. On annule le
-        // minuteur au passage, sinon la fenetre se rouvrirait toute seule huit
-        // secondes apres une ouverture manuelle.
-        if (dlg && typeof dlg.showModal === 'function') {
-            var openers = document.querySelectorAll('[data-pg-open]');
-            for (var oi = 0; oi < openers.length; oi++) {
-                openers[oi].addEventListener('click', function () {
-                    if (modalTimer) { clearTimeout(modalTimer); modalTimer = null; }
-                    try { localStorage.setItem(KEY, '1'); } catch (e7) {}
-                    if (dlg.open) return;
-                    try { dlg.showModal(); } catch (e8) { return; }
-                    if (dlg.open) track('peptides_guide_opened');
-                });
-            }
-        }
     })();
 </script>
 </Layout>
