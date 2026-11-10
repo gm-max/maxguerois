@@ -188,10 +188,28 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 
             entry.id = window.turnstile.render('#' + host.id, {
                 sitekey: siteKey,
-                execution: 'execute',
-                appearance: 'interaction-only',
+                // STANDARD RENDERING. The first version of this file used
+                // `execution: 'execute'` plus `appearance: 'interaction-only'` to keep
+                // the widget invisible and only run the challenge on submit. It was
+                // deployed on 2026-11-10 and rolled back the same hour: on real
+                // clients the challenge was issued (Cloudflare's dashboard counted
+                // them) and never completed, with no iframe and, in one browser, no
+                // error callback at all. Nothing in the code said why, because both
+                // options move work into Cloudflare's internals where a failure has
+                // nowhere to surface.
+                //
+                // So: the documented default path. The widget renders as soon as it
+                // is created and solves itself in the background, so the token is
+                // usually already waiting when someone presses the button. It costs a
+                // visible Cloudflare badge in the form. That is a real cost and it is
+                // the right trade for something that has to work.
                 'response-field': false,
-                size: 'flexible',
+                // `normal` (300x65 fixed), not `flexible`. Flexible fills its
+                // container but needs at least 300px, and the failures on 2026-11-10
+                // came from a narrow screen where the form column is close to that
+                // floor. The default is the one documented everywhere and has no
+                // width precondition to get wrong.
+                size: 'normal',
                 theme: theme === 'dark' ? 'dark' : 'light',
                 language: lang === 'fr' ? 'fr' : 'en',
                 // 32 chars max, alphanumerics plus _ and -. Shows up in Cloudflare's
@@ -203,7 +221,15 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
                 // mints a new one.
                 'expired-callback': function () { settle(false, 'captcha_failed'); },
                 'timeout-callback': function () { settle(false, 'captcha_failed'); },
-                'error-callback': function () {
+                'error-callback': function (code) {
+                    // Cloudflare's numeric code, kept rather than swallowed. Without
+                    // it a failure reads as "unavailable" and nothing says whether
+                    // the domain is unlisted (110200), the sitekey is wrong (110100)
+                    // or the network died. That cost an evening.
+                    entry.lastError = String(code || '');
+                    try {
+                        console.error('turnstile: error-callback ' + entry.lastError);
+                    } catch (e) {}
                     settle(false, 'captcha_unavailable');
                     // Returning true tells Turnstile we handled it and stops it
                     // painting its own error state inside our form.
@@ -246,6 +272,12 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
              * Rejects with 'captcha_unavailable' or 'captcha_failed' — the same codes
              * the server answers with, so a caller maps one copy table to both sides.
              */
+            /** Cloudflare's last numeric error code for this form, or ''. */
+            lastError: function (form) {
+                var entry = entryFor(form);
+                return (entry && entry.lastError) || '';
+            },
+
             token: function (form) {
                 if (!active) return Promise.resolve(null);
                 return loadApi().then(function () {
@@ -274,22 +306,19 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
                     });
                     entry.pending = p;
 
-                    // A token already sitting in the widget is reused rather than
-                    // re-executed: it is single-use, but it has not been spent yet.
+                    // Usually already there: the widget starts solving as soon as it
+                    // is rendered, and rendering happens on the first sign of intent.
+                    // A token is single-use but is only spent at the SERVER, so one
+                    // sitting in the widget is good to send.
                     var held = window.turnstile.getResponse(entry.id);
                     if (held) {
                         entry.pending = null;
                         clearTimeout(p.timer);
                         return held;
                     }
-
-                    try {
-                        window.turnstile.execute('#' + entry.host.id);
-                    } catch (e) {
-                        entry.pending = null;
-                        clearTimeout(p.timer);
-                        throw fail('captcha_unavailable');
-                    }
+                    // Not there yet: the callback registered at render time settles
+                    // this promise when it arrives. Nothing to trigger, which is the
+                    // point of dropping execute().
                     return p.promise;
                 });
             },
