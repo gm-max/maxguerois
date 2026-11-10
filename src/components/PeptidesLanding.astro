@@ -1339,12 +1339,13 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
 
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
+                if (form.hasAttribute('aria-busy')) return;
                 if (!input.checkValidity()) { showError(ERRORS.invalid_email); input.focus(); return; }
+                form.setAttribute('aria-busy', 'true');
                 clearError();
                 track('peptides_form_submitted', { source: source });
                 button.disabled = true;
                 button.textContent = 'Une seconde…';
-                form.setAttribute('aria-busy', 'true');
 
                 var payload = {};
                 new FormData(form).forEach(function (v, k) { payload[k] = v; });

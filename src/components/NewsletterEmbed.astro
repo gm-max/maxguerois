@@ -78,12 +78,6 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
 
 <script is:inline define:vars={{ locale }}>
     (function () {
-        // Bind once per page even though the component renders several times: a second
-        // copy of this script would attach a second submit handler to every form and
-        // send each signup twice.
-        if (window.__nlFormBound) return;
-        window.__nlFormBound = true;
-
         var COPY = {
             fr: {
                 busy: 'Une seconde…',
@@ -111,6 +105,10 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
         };
 
         function bind(form) {
+            // Later embeds add forms to the page as the browser parses it.
+            if (form.hasAttribute('data-nl-bound')) return;
+            form.setAttribute('data-nl-bound', '');
+
             var input = form.querySelector('input[name="email"]');
             var button = form.querySelector('button[type="submit"]');
             var err = form.querySelector('.nl-err');
@@ -178,16 +176,17 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
 
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
+                if (form.hasAttribute('aria-busy')) return;
                 if (!input.checkValidity()) {
                     showError(copy.err.invalid_email);
                     input.focus();
                     return;
                 }
+                form.setAttribute('aria-busy', 'true');
                 clearError();
                 track('newsletter_form_submitted', { source: source });
                 button.disabled = true;
                 button.textContent = copy.busy;
-                form.setAttribute('aria-busy', 'true');
 
                 var payload = {};
                 new FormData(form).forEach(function (v, k) { payload[k] = v; });
