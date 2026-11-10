@@ -23,11 +23,13 @@ const db = {
   // send failure is the first of an outage. One shared counter would have made the
   // alert read the rate-limiter's number, so counts are per table.
   syncErrorCount: 0,
+  subscriberExists: false,
   errors: {} as Record<string, unknown>,
   reset() {
     this.calls = [];
     this.rateLimitCount = 0;
     this.syncErrorCount = 0;
+    this.subscriberExists = false;
     this.errors = {};
   },
 };
@@ -64,6 +66,15 @@ vi.mock('@supabase/supabase-js', () => ({
         then(resolve: (v: unknown) => unknown) {
           const last = db.calls[db.calls.length - 1];
           const error = db.errors[`${last.table}.${last.op}`] ?? null;
+          if (last.op === 'select' && last.table === 'mg_subscribers') {
+            const previous = db.calls.at(-2);
+            if (previous?.op === 'upsert') {
+              const error = db.errors['mg_subscribers.upsert'] ?? null;
+              const data = error || db.subscriberExists ? [] : [{ id: 'new-subscriber' }];
+              if (!error) db.subscriberExists = true;
+              return Promise.resolve({ data, error }).then(resolve);
+            }
+          }
           if (last.op !== 'select') return Promise.resolve({ error }).then(resolve);
           const count =
             last.table === 'mg_rate_limit_hits' ? db.rateLimitCount : db.syncErrorCount;
@@ -279,14 +290,11 @@ describe('rate limit', () => {
 
 describe('storing the subscriber', () => {
   it('updates on conflict and clears unsubscribed_at, so a return visit works', async () => {
-    // The regression this guards: with ignoreDuplicates a returning unsubscriber kept
-    // their unsubscribed_at, Resend was never told to reactivate, and they still saw
-    // a thank-you while never hearing from us again.
+    db.subscriberExists = true;
     await post({ email: 'back@again.co' });
-    const call = upsertOf()!;
-    expect(call.options).toEqual({ onConflict: 'email' });
-    expect(call.options).not.toMatchObject({ ignoreDuplicates: true });
-    expect(call.payload).toMatchObject({ unsubscribed_at: null });
+    expect(upsertOf()!.options).toEqual({ onConflict: 'email', ignoreDuplicates: true });
+    const refresh = db.calls.find((c) => c.table === 'mg_subscribers' && c.op === 'update');
+    expect(refresh?.payload).toMatchObject({ unsubscribed_at: null });
     // The Resend-side reactivation: a fresh signup always clears the contact's
     // unsubscribed flag, whether it's a brand-new contact (via the /contacts create
     // body) or an existing one (via the 409 -> PATCH path tested below).
@@ -513,6 +521,12 @@ describe('alert on an unsent signup', () => {
     expect(body).toBeDefined();
     expect(body.chat_id).toBe('4242');
     expect(body.text).toBe("1 new subscriber to Max's newsletter: a@b.co");
+  });
+
+  it('sends only one new-subscriber alert when the same address submits twice', async () => {
+    expect((await post({ email: 'a@b.co' })).status).toBe(200);
+    expect((await post({ email: 'a@b.co' })).status).toBe(200);
+    expect(telegramTexts().filter((body) => body.text.includes('new subscriber'))).toHaveLength(1);
   });
 
   // The uniformity is the decision, not an oversight. Max chose on 2026-08-29 to read

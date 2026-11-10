@@ -135,13 +135,7 @@ async function alertFirstSendFailure(
  * alertFirstSendFailure; failures 2..N live in mg_subscribers.sync_error and nowhere
  * else. Max accepted that on 2026-08-29 in exchange for a line he can read at a glance.
  *
- * It fires on every stored signup, including one whose Resend push failed, because the
- * row is in Supabase either way and the person is therefore subscribed either way.
- *
- * It says "new subscriber" even for someone resubscribing: the upsert updates on
- * conflict, so a returning subscriber lands here too. Telling them apart costs a query
- * whose count collides with the outage alert's in the test harness, and the daily card
- * already carries the real total.
+ * It fires when a subscriber row is first created, even if Resend fails.
  *
  * The destination needs no configuring. TELEGRAM_BOT_TOKEN here is byte-identical to
  * max-ai's `ouros-lab` agent bot, and TELEGRAM_ADMIN_CHAT_ID to its chat: verified by
@@ -402,40 +396,33 @@ export const POST: APIRoute = async ({ request, url }) => {
     utm_campaign: field(raw.utm_campaign) || null,
   };
 
-  // Supabase is the source of truth and this write is blocking: if it fails, the
-  // visitor is told, rather than being silently dropped after seeing a thank-you.
-  //
-  // This UPDATES on conflict rather than ignoring it. With ignoreDuplicates the row
-  // of someone who had unsubscribed was left untouched, so unsubscribed_at stayed
-  // set, Resend was never told to reactivate, and they still got a thank-you and
-  // never heard from us again — the one visitor profile the system lost completely,
-  // and the most motivated one. Submitting the form is fresh consent, so clearing
-  // unsubscribed_at is the correct reading of what they just did.
-  // created_at is absent from the payload on purpose: it keeps its original value.
-  const { error: insErr } = await supabase
+  const subscriber = {
+    email,
+    ip_hash: ipHash,
+    source: field(raw.source) || 'site',
+    unsubscribed_at: null,
+    synced_at: null,
+    sync_error: null,
+    ...utm,
+  };
+
+  // Only the request that inserts the row can announce a new subscriber.
+  // The unique email constraint also handles simultaneous submissions.
+  const { data: inserted, error: insertError } = await supabase
     .from('mg_subscribers')
-    .upsert(
-      {
-        email,
-        ip_hash: ipHash,
-        source: field(raw.source) || 'site',
-        unsubscribed_at: null,
-        // Reset the sync state on EVERY fresh signup, not just on insert.
-        //
-        // Without these two, a returning subscriber whose row was already synced
-        // kept its old `synced_at` when the new send failed. The alert's backlog
-        // predicate is `sync_error IS NOT NULL AND synced_at IS NULL`, so that row
-        // was invisible to it — and to any replay job built on the same predicate.
-        // The person got a 200, received nothing, and nothing ever paged. Found by
-        // an outside review; it silently disarmed the alert added the same day.
-        synced_at: null,
-        sync_error: null,
-        ...utm,
-      },
-      { onConflict: 'email' },
-    );
-  if (insErr) {
-    console.error('mg_subscribers upsert failed', insErr);
+    .upsert(subscriber, { onConflict: 'email', ignoreDuplicates: true })
+    .select('id');
+
+  let storeError = insertError;
+  const isNewSubscriber = Boolean(inserted?.length);
+  if (!storeError && !isNewSubscriber) {
+    // Refresh consent and sync state for returning subscribers.
+    const { error } = await supabase.from('mg_subscribers').update(subscriber).eq('email', email);
+    storeError = error;
+  }
+
+  if (storeError) {
+    console.error('mg_subscribers write failed', storeError);
     return reply(request, url, 500, { ok: false, error: 'store_failed' });
   }
 
@@ -467,7 +454,7 @@ export const POST: APIRoute = async ({ request, url }) => {
   // After the sync rather than before, so a Telegram outage can never delay the
   // welcome email. Awaited, like every third-party call in this file, and unable to
   // throw, so it can never cost a signup either.
-  await notifySignup(email);
+  if (isNewSubscriber) await notifySignup(email);
 
   return reply(request, url, 200, { ok: true });
 };
