@@ -46,6 +46,7 @@ function install(siteKey = SITE_KEY) {
         warm: (f: Element) => void;
         token: (f: Element) => Promise<string | null>;
         reset: (f: Element) => void;
+        lastError: (f: Element) => string;
     };
 }
 
@@ -316,7 +317,14 @@ describe('the widget', () => {
         expect((window as any).turnstile.render).toHaveBeenCalledTimes(1);
     });
 
-    it('is configured invisible, with no hidden input of its own', async () => {
+    it('renders on the documented default path, with no clever options', async () => {
+        // The regression this pins is an incident, not a preference. The first
+        // version used `execution: 'execute'` and `appearance: 'interaction-only'`
+        // to stay invisible. Deployed 2026-11-10, rolled back the same hour: the
+        // challenge was issued and never completed, with no iframe and no error on
+        // one browser. Both options move work into Cloudflare's internals, where a
+        // failure has nowhere to surface. Neither comes back without a reason
+        // better than "the badge is ugly".
         stubScriptInjection();
         const gate = install();
         void gate.token(makeForm());
@@ -325,9 +333,11 @@ describe('the widget', () => {
 
         const params = (window as any).turnstile.render.mock.calls[0][1];
         expect(params.sitekey).toBe(SITE_KEY);
-        // Invisible until Cloudflare decides it has something to ask.
-        expect(params.execution).toBe('execute');
-        expect(params.appearance).toBe('interaction-only');
+        expect(params.execution).toBeUndefined();
+        expect(params.appearance).toBeUndefined();
+        // `normal` is 300x65 fixed. `flexible` fills its container but needs at
+        // least 300px, and the forms that failed were on a narrow screen.
+        expect(params.size).toBe('normal');
         // The token travels in the JSON payload the form builds. A hidden input
         // would also survive a failed attempt and risk being re-sent once spent.
         expect(params['response-field']).toBe(false);
@@ -372,9 +382,21 @@ describe('getting a token', () => {
 
     it('resolves with what the success callback is handed', async () => {
         const { pending, params, api } = await armed();
-        expect(api.execute).toHaveBeenCalled();
+        // Nothing is triggered: the widget starts solving when it is rendered, and
+        // the callback registered there settles this promise.
+        expect(api.execute).not.toHaveBeenCalled();
         params.callback('the-token');
         await expect(pending).resolves.toBe('the-token');
+    });
+
+    it('keeps the Cloudflare error code instead of swallowing it', async () => {
+        // 110200 is "unknown domain", 110100 is "invalid sitekey". Mapping both to
+        // a bare "unavailable" is what made this take four deploy cycles to locate.
+        const { pending, params, gate, form } = await armed();
+        const assertion = expect(pending).rejects.toThrow('captcha_unavailable');
+        params['error-callback']('110200');
+        await assertion;
+        expect(gate.lastError(form)).toBe('110200');
     });
 
     it.each([
@@ -409,7 +431,8 @@ describe('getting a token', () => {
         const second = gate.token(form);
         await tick();
         const api = (window as any).turnstile;
-        expect(api.execute).toHaveBeenCalledTimes(1);
+        // One widget, therefore one challenge, however many times it is asked.
+        expect(api.render).toHaveBeenCalledTimes(1);
         api.render.mock.calls[0][1].callback('shared');
         await expect(first).resolves.toBe('shared');
         await expect(second).resolves.toBe('shared');

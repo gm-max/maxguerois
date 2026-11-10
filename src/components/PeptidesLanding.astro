@@ -1468,7 +1468,14 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                             source: source,
                             reason: window.mgReason ? window.mgReason(e2.message) : 'network'
                         });
-                        showError(ERRORS[e2.message] || ERRORS._);
+                        var msg = ERRORS[e2.message] || ERRORS._;
+                        // Le code numerique de Cloudflare, quand il y en a un. Sans
+                        // lui, « indisponible » ne distingue pas un domaine non
+                        // autorise (110200) d'une cle invalide (110100) ou d'une
+                        // panne reseau, et chaque diagnostic coute un deploiement.
+                        var tsCode = gate && gate.active && gate.lastError ? gate.lastError(form) : '';
+                        if (tsCode) msg += ' [' + tsCode + ']';
+                        showError(msg);
                     });
             });
         }
