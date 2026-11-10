@@ -38,6 +38,18 @@ const action = `/api/subscribe?lang=${locale}`;
 // Unique per instance: several embeds share a page (index + article footer), and
 // duplicate ids would make every <label for> point at the first input on the page.
 const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
+
+/**
+ * Is the anti-bot gate armed in THIS build?
+ *
+ * Read here only to decide whether the <noscript> warning below tells the truth.
+ * Without Turnstile a no-JS signup works: the form posts natively and the route
+ * redirects to a thank-you page. With Turnstile it cannot, because the token can only
+ * come from a script. Saying so is the honest version; letting someone submit into a
+ * refusal is not. The client script makes the same call at runtime via
+ * `window.mgTurnstile.active`.
+ */
+const captchaActive = Boolean(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY);
 ---
 <div class:list={["newsletter-block", { "newsletter-block--minimal": minimal }]}>
     {!minimal && (
@@ -73,6 +85,11 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
         </div>
         <p class="nl-err" role="alert" id={`${uid}-err`} hidden></p>
         <p class="nl-micro">{t(locale, 'newsletter.form.micro')}</p>
+        {captchaActive && (
+            <noscript>
+                <p class="nl-nojs">{t(locale, 'newsletter.form.nojs')}</p>
+            </noscript>
+        )}
     </form>
 </div>
 
@@ -89,6 +106,15 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
         // cadence. La landing peptides collapse deja les deux.
         rate_limited: "L'inscription a échoué. Réessayez dans un instant.",
                     store_failed: "L'inscription a échoué. Réessayez dans un instant.",
+                    // La verification anti-robot. Trois cas, trois messages : le
+                    // visiteur doit savoir s'il doit recommencer (son jeton a
+                    // expire) ou patienter (Cloudflare ne repond pas), sinon il
+                    // reessaie dans le vide. Jamais le mot « captcha » : rien de
+                    // tel n'apparait a l'ecran, le widget restant invisible tant
+                    // qu'il n'a rien a demander.
+                    captcha_required: "La vérification anti-robot n'a pas pu s'exécuter. Rechargez la page et réessayez.",
+                    captcha_failed: 'La vérification anti-robot a échoué. Réessayez.',
+                    captcha_unavailable: "La vérification anti-robot est indisponible. Réessayez dans un instant, ou écrivez-moi à hi@maxguerois.com.",
                     _: "L'inscription a échoué. Réessayez dans un instant.",
                 },
             },
@@ -99,6 +125,9 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
                     invalid_email: "That address doesn't look right.",
                     rate_limited: 'Too many attempts. Try again in a moment.',
                     store_failed: 'Signup failed. Try again in a moment.',
+                    captcha_required: "The anti-bot check couldn't run. Reload the page and try again.",
+                    captcha_failed: 'The anti-bot check failed. Please try again.',
+                    captcha_unavailable: "The anti-bot check is unavailable. Try again in a moment, or email me at hi@maxguerois.com.",
                     _: 'Signup failed. Try again in a moment.',
                 },
             },
@@ -156,6 +185,23 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
                 track('newsletter_form_started', { source: source });
             });
 
+            // Fetch Cloudflare's script at the first sign of intent rather than on
+            // page load, so a reader who never touches the form never pays for it.
+            // Three events, because each misses a real case the others catch:
+            // `focusin` covers keyboard and screen-reader entry, `pointerdown` fires
+            // before focus on a tap and buys those milliseconds back, and `change`
+            // is what a browser autofill emits when it drops an address in without
+            // either of the others. Idempotent, so firing all three costs nothing.
+            //
+            // A submit that beats the download does not fail: token() waits on the
+            // same shared promise.
+            function warmGate() {
+                if (window.mgTurnstile) window.mgTurnstile.warm(form);
+            }
+            form.addEventListener('focusin', warmGate, { once: true });
+            form.addEventListener('pointerdown', warmGate, { once: true });
+            input.addEventListener('change', warmGate, { once: true });
+
             function showError(msg) {
                 err.textContent = msg;
                 err.hidden = false;
@@ -188,14 +234,27 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
                 button.disabled = true;
                 button.textContent = copy.busy;
 
-                var payload = {};
-                new FormData(form).forEach(function (v, k) { payload[k] = v; });
+                // The token comes FIRST, and the request is not sent without one.
+                // When the gate is off, `token()` resolves null and the payload is
+                // byte-identical to what this form sent before Turnstile existed.
+                var gate = window.mgTurnstile;
+                var wait = gate && gate.active ? gate.token(form) : Promise.resolve(null);
 
-                fetch(form.getAttribute('action'), {
-                    method: 'POST',
-                    headers: { 'content-type': 'application/json', accept: 'application/json' },
-                    body: JSON.stringify(payload),
-                })
+                wait
+                    .then(function (token) {
+                        var payload = {};
+                        new FormData(form).forEach(function (v, k) { payload[k] = v; });
+                        // Cloudflare's own field name, which is also what the route
+                        // reads. The widget runs with response-field:false, so this
+                        // is the only copy of the token in the request.
+                        if (token) payload['cf-turnstile-response'] = token;
+
+                        return fetch(form.getAttribute('action'), {
+                            method: 'POST',
+                            headers: { 'content-type': 'application/json', accept: 'application/json' },
+                            body: JSON.stringify(payload),
+                        });
+                    })
                     .then(function (r) {
                         return r.json().then(function (b) { return { ok: r.ok, body: b }; });
                     })
@@ -222,6 +281,12 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
                         button.disabled = false;
                         button.textContent = label;
                         form.removeAttribute('aria-busy');
+                        // A Turnstile token is single-use and dies after five
+                        // minutes. Clearing it here is what makes the retry work:
+                        // without it the second attempt re-sends a token the server
+                        // has already seen or that has aged out, and the visitor
+                        // reads the same failure however many times they press.
+                        if (gate && gate.active) gate.reset(form);
                         track('newsletter_form_failed', {
                             source: source,
                             reason: window.mgReason ? window.mgReason(e2.message) : 'network'
@@ -322,6 +387,20 @@ const uid = `nl-${Math.random().toString(36).slice(2, 9)}`;
         margin: var(--sp-2) 0 0;
         font-size: 13px;
         color: var(--text-tertiary);
+    }
+
+    /* Rendered only when the gate is armed, and only for a visitor without
+       JavaScript, for whom this form cannot work. Amber rather than the error red:
+       nothing has failed yet. */
+    .nl-nojs {
+        margin: var(--sp-3) 0 0;
+        padding: var(--sp-3);
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--text-secondary);
+        background: var(--accent-light);
+        border: 1px solid var(--accent-mid);
+        border-radius: 8px;
     }
 
     .nl-done {

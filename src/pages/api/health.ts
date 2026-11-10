@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { telegramReachable } from '../../lib/telegram';
+import { turnstileState } from '../../lib/turnstile';
 
 /**
  * Is this deployment's outbound Telegram channel actually working?
@@ -35,7 +36,15 @@ export const prerender = false;
 
 export const GET: APIRoute = async () => {
     const telegram = await telegramReachable();
-    return new Response(JSON.stringify({ ok: telegram === 'ok', telegram }), {
+    // The newsletter's anti-bot gate, reported for the same reason as the channel
+    // above: it can stop protecting without anything breaking. 'partial' means one
+    // of the two Turnstile variables is missing, so signups are flowing on the
+    // honeypot and the rate limiter alone — a state no visitor and no log line a
+    // human reads would ever reveal. 'off' is the honest answer before activation,
+    // and NOT an error: the route must never claim a protection it does not have.
+    // Only the state travels, never a key.
+    const turnstile = turnstileState();
+    return new Response(JSON.stringify({ ok: telegram === 'ok', telegram, turnstile }), {
         status: 200,
         headers: {
             'content-type': 'application/json',

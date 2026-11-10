@@ -26,6 +26,7 @@
       "busy": "Une seconde…",
       "micro": "Gratuit. Désabonnement en un clic.",
       "done": "Merci, vous êtes inscrit. Je vous enverrai la prochaine édition quand elle vaudra le détour.",
+      "nojs": "JavaScript est désactivé, donc la vérification anti-robot ne peut pas s'exécuter et ce formulaire n'aboutira pas. Activez-le, ou écrivez à hi@maxguerois.com et je vous inscris à la main.",
       "err": {
         "invalid_email": "Cette adresse ne semble pas valide.",
         "rate_limited": "Trop de tentatives. Réessayez dans un moment.",

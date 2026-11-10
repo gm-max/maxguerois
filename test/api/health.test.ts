@@ -42,24 +42,35 @@ function telegram(status: number) {
 const body = async (res: Response) => JSON.parse(await res.text());
 const call = () => GET({} as any) as Promise<Response>;
 
+/**
+ * The route now also reports the newsletter's anti-bot gate, for the same reason it
+ * reports the channel: it can stop protecting without anything breaking. These tests
+ * set neither Turnstile variable, so the honest answer is 'off'.
+ *
+ * Kept as exact-object assertions rather than toMatchObject. The looser form is what
+ * would let a future field carrying the bot token slip into an unauthenticated body
+ * unnoticed, and that is one of the two things this file exists to prevent.
+ */
+const GATE_OFF = { turnstile: 'off' };
+
 describe('/api/health', () => {
     it('reports ok when the chat answers', async () => {
         telegram(200);
-        expect(await body(await call())).toEqual({ ok: true, telegram: 'ok' });
+        expect(await body(await call())).toEqual({ ok: true, telegram: 'ok', ...GATE_OFF });
     });
 
     // 404 is what production actually returned on 2026-08-29: Telegram answers it when
     // the TOKEN is wrong, because /bot<token>/ never resolves.
     it('reports invalid on a bad token', async () => {
         telegram(404);
-        expect(await body(await call())).toEqual({ ok: false, telegram: 'invalid' });
+        expect(await body(await call())).toEqual({ ok: false, telegram: 'invalid', ...GATE_OFF });
     });
 
     // A valid token with a wrong chat id fails differently, and getMe would have
     // called this healthy. That is why the probe uses getChat.
     it('reports invalid on a good token pointed at a chat that does not exist', async () => {
         telegram(400);
-        expect(await body(await call())).toEqual({ ok: false, telegram: 'invalid' });
+        expect(await body(await call())).toEqual({ ok: false, telegram: 'invalid', ...GATE_OFF });
     });
 
     it('probes the chat, not just the bot', async () => {
@@ -74,7 +85,7 @@ describe('/api/health', () => {
     // anyone at 3am over a blip.
     it('separates a network failure from a configuration failure', async () => {
         vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('ECONNRESET'); }));
-        expect(await body(await call())).toEqual({ ok: false, telegram: 'unreachable' });
+        expect(await body(await call())).toEqual({ ok: false, telegram: 'unreachable', ...GATE_OFF });
     });
 
     it('says unconfigured, rather than ok, when a credential is missing', async () => {
@@ -82,7 +93,7 @@ describe('/api/health', () => {
         delete process.env.TELEGRAM_BOT_TOKEN;
         ({ GET } = await import('../../src/pages/api/health.ts'));
         const spy = telegram(200);
-        expect(await body(await call())).toEqual({ ok: false, telegram: 'unconfigured' });
+        expect(await body(await call())).toEqual({ ok: false, telegram: 'unconfigured', ...GATE_OFF });
         // And it must not call Telegram at all with half a credential pair.
         expect(spy).not.toHaveBeenCalled();
     });
@@ -105,5 +116,41 @@ describe('/api/health', () => {
     it('answers 200 even when the channel is broken', async () => {
         telegram(404);
         expect((await call()).status).toBe(200);
+    });
+});
+
+describe('/api/health reporting the anti-bot gate', () => {
+    // Why this is on an unauthenticated route at all: a half-configured gate is
+    // invisible everywhere else. The site serves normally, signups keep arriving, and
+    // the only trace is a console line nobody reads. The VPS watcher already polls
+    // this route every three hours with its own credentials, so putting the state
+    // here is how a silent gap becomes a message within three hours.
+    //
+    // Only the STATE travels. Neither key is in the body, and 'off' is a truthful
+    // answer rather than an error: the route must never claim a protection that is
+    // not there.
+    afterEach(() => {
+        delete process.env.PUBLIC_TURNSTILE_SITE_KEY;
+        delete process.env.TURNSTILE_SECRET_KEY;
+    });
+
+    it.each([
+        ['off', {}],
+        ['active', { PUBLIC_TURNSTILE_SITE_KEY: 'pk', TURNSTILE_SECRET_KEY: 'sk' }],
+        ['partial', { PUBLIC_TURNSTILE_SITE_KEY: 'pk' }],
+        ['partial', { TURNSTILE_SECRET_KEY: 'sk' }],
+    ])('reports %s', async (state, vars) => {
+        Object.assign(process.env, vars);
+        telegram(200);
+        expect((await body(await call())).turnstile).toBe(state);
+    });
+
+    it('never puts either key in the body', async () => {
+        process.env.PUBLIC_TURNSTILE_SITE_KEY = 'pk-leak-canary';
+        process.env.TURNSTILE_SECRET_KEY = 'sk-leak-canary';
+        telegram(200);
+        const text = await (await call()).text();
+        expect(text).not.toContain('pk-leak-canary');
+        expect(text).not.toContain('sk-leak-canary');
     });
 });

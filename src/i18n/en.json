@@ -26,6 +26,7 @@
       "busy": "One moment...",
       "micro": "Free. One-click unsubscribe.",
       "done": "Thanks, you're subscribed. I'll send the next issue when it's worth your attention.",
+      "nojs": "JavaScript is off, so the anti-spam check cannot run and this form will not go through. Turn it on, or email hi@maxguerois.com and I'll add you by hand.",
       "err": {
         "invalid_email": "That address doesn't look right.",
         "rate_limited": "Too many attempts. Try again in a moment.",

@@ -24,6 +24,13 @@ const ERRORS: Record<string, string> = {
     invalid_email: 'Cette adresse ne semble pas valide.',
     rate_limited: 'Trop de tentatives. Réessayez dans un moment.',
     store_failed: "L'inscription a échoué. Réessayez dans un instant.",
+    // Une inscription SANS JavaScript atterrit ici avec ce code quand le garde
+    // anti-robot est arme : le jeton ne peut venir que d'un script, donc le
+    // formulaire natif n'en porte aucun. Le dire franchement, plutot que de
+    // renvoyer « l'inscription a echoue » sans cause.
+    captcha_required: "La vérification anti-robot n'a pas pu s'exécuter, probablement parce que JavaScript est désactivé. Activez-le et réessayez, ou écrivez-moi à hi@maxguerois.com et je vous inscris à la main.",
+    captcha_failed: 'La vérification anti-robot a échoué. Rechargez la page et réessayez.',
+    captcha_unavailable: "La vérification anti-robot est indisponible. Réessayez dans un instant, ou écrivez-moi à hi@maxguerois.com.",
     bad_request: "L'inscription a échoué. Réessayez dans un instant.",
 };
 const error = code ? (ERRORS[code] ?? ERRORS.store_failed) : null;

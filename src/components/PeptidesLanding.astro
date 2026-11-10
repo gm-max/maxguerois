@@ -43,8 +43,23 @@ const locale = 'fr';
 // is server-only and this page must render without importing it.
 const ERROR_MESSAGES: Record<string, string> = {
     invalid_email: "Cet email n'a pas l'air valide.",
+    captcha_required: "La vérification anti-robot n'a pas pu s'exécuter. Rechargez la page et réessayez.",
+    captcha_failed: 'La vérification anti-robot a échoué. Réessayez.',
+    captcha_unavailable: "La vérification anti-robot est indisponible. Réessayez dans un instant, ou écrivez-moi à hi@maxguerois.com.",
     _: "Ça n'a pas marché de notre côté. Réessayez, ou écrivez-moi à hi@maxguerois.com.",
 };
+
+/**
+ * Le garde anti-robot est-il arme dans CE build ?
+ *
+ * Sert uniquement a decider si l'avertissement <noscript> dit la verite. Sans
+ * Turnstile, une inscription sans JavaScript marche : le formulaire poste
+ * nativement et la route redirige. Avec Turnstile elle ne peut pas, le jeton ne
+ * pouvant venir que d'un script. Le dire est honnete ; laisser quelqu'un poster
+ * dans un refus ne l'est pas. Le script client fait le meme test a l'execution
+ * via `window.mgTurnstile.active`. Voir src/lib/turnstile.ts.
+ */
+const captchaActive = Boolean(import.meta.env.PUBLIC_TURNSTILE_SITE_KEY);
 const params = Astro.url.searchParams;
 
 /**
@@ -752,6 +767,20 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
     }
     @media (max-width: 600px) { .pf-row button { width: 100%; } }
     .pf-row button[disabled] { opacity: 0.6; cursor: default; }
+    /* Rendu seulement quand le garde est arme, et seulement pour un visiteur sans
+       JavaScript, pour qui ce formulaire ne peut pas marcher. En ambre et non en
+       rouge d'erreur : rien n'a encore echoue. */
+    .pf-nojs {
+        margin: var(--sp-3) 0 0;
+        padding: var(--sp-3);
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--text-secondary);
+        background: var(--accent-light);
+        border: 1px solid var(--accent-mid);
+        border-radius: 8px;
+    }
+
     .pf-err {
         margin: var(--sp-2) 0 0;
         font-size: var(--t-micro);
@@ -953,6 +982,11 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                          le héros : sous le bouton, au moment de l'hésitation,
                          sans rien ajouter au-dessus de l'action. -->
                     <p class="pf-micro">Rejoignez 1 000 lecteurs. Désinscription à tout moment.</p>
+                    {captchaActive && (
+                        <noscript>
+                            <p class="pf-nojs">JavaScript est désactivé, donc la vérification anti-robot ne peut pas s'exécuter et ce formulaire n'aboutira pas. Activez-le, ou écrivez à hi@maxguerois.com et je vous inscris à la main.</p>
+                        </noscript>
+                    )}
                 </form>
                 )}
             </div>
@@ -1079,6 +1113,11 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                     </div>
                     <p class="pf-err" role="alert" id="pf-mid-err" hidden></p>
                     <p class="pf-micro">Gratuit. Désinscription en un clic.</p>
+                    {captchaActive && (
+                        <noscript>
+                            <p class="pf-nojs">JavaScript est désactivé, donc la vérification anti-robot ne peut pas s'exécuter et ce formulaire n'aboutira pas. Activez-le, ou écrivez à hi@maxguerois.com et je vous inscris à la main.</p>
+                        </noscript>
+                    )}
                 </form>
             </div>
 
@@ -1219,6 +1258,11 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                 </div>
                 <p class="pf-err" role="alert" id="pf-modal-err" hidden></p>
                 <p class="pf-micro pg-micro">Gratuit. Désinscription en 1 clic.</p>
+                {captchaActive && (
+                    <noscript>
+                        <p class="pf-nojs">JavaScript est désactivé, donc la vérification anti-robot ne peut pas s'exécuter et ce formulaire n'aboutira pas. Activez-le, ou écrivez à hi@maxguerois.com et je vous inscris à la main.</p>
+                    </noscript>
+                )}
             </form>
         </div>
     </dialog>
@@ -1235,6 +1279,14 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
             rate_limited: "Ça n'a pas marché de notre côté. Réessayez, ou écrivez-moi à hi@maxguerois.com.",
             store_failed: "Ça n'a pas marché de notre côté. Réessayez, ou écrivez-moi à hi@maxguerois.com.",
             bad_request: "Ça n'a pas marché de notre côté. Réessayez, ou écrivez-moi à hi@maxguerois.com.",
+            // Trois messages distincts, parce que le visiteur doit savoir s'il
+            // doit recommencer (son jeton a expire) ou patienter (Cloudflare ne
+            // repond pas). Les memes chaines que dans NewsletterEmbed, au ton de
+            // cette page pres : les deux formulaires parlent au meme serveur et
+            // recoivent les memes codes.
+            captcha_required: "La vérification anti-robot n'a pas pu s'exécuter. Rechargez la page et réessayez.",
+            captcha_failed: 'La vérification anti-robot a échoué. Réessayez.',
+            captcha_unavailable: "La vérification anti-robot est indisponible. Réessayez dans un instant, ou écrivez-moi à hi@maxguerois.com.",
             _: "Ça n'a pas marché de notre côté. Réessayez, ou écrivez-moi à hi@maxguerois.com."
         };
 
@@ -1337,6 +1389,23 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                 track('peptides_form_started', { source: source });
             });
 
+            // Le script Cloudflare est charge au premier signe d'intention, pas
+            // au chargement de la page : un lecteur qui ne touche a aucun des
+            // trois formulaires ne le paie jamais. Trois evenements, chacun
+            // rattrapant un cas que les autres manquent : `focusin` pour le
+            // clavier et les lecteurs d'ecran, `pointerdown` qui precede le focus
+            // au doigt, `change` pour un remplissage automatique du navigateur.
+            // Idempotent, donc les trois ensemble ne coutent rien.
+            //
+            // Une soumission plus rapide que le telechargement n'echoue pas :
+            // token() attend la meme promesse partagee.
+            function warmGate() {
+                if (window.mgTurnstile) window.mgTurnstile.warm(form);
+            }
+            form.addEventListener('focusin', warmGate, { once: true });
+            form.addEventListener('pointerdown', warmGate, { once: true });
+            input.addEventListener('change', warmGate, { once: true });
+
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
                 if (form.hasAttribute('aria-busy')) return;
@@ -1347,14 +1416,27 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                 button.disabled = true;
                 button.textContent = 'Une seconde…';
 
-                var payload = {};
-                new FormData(form).forEach(function (v, k) { payload[k] = v; });
+                // Le jeton D'ABORD, et la requete ne part pas sans. Garde eteint,
+                // `token()` resout null et la charge utile est identique a celle
+                // que ce formulaire envoyait avant Turnstile.
+                var gate = window.mgTurnstile;
+                var wait = gate && gate.active ? gate.token(form) : Promise.resolve(null);
 
-                fetch(form.getAttribute('action'), {
-                    method: 'POST',
-                    headers: { 'content-type': 'application/json', accept: 'application/json' },
-                    body: JSON.stringify(payload)
-                })
+                wait
+                    .then(function (token) {
+                        var payload = {};
+                        new FormData(form).forEach(function (v, k) { payload[k] = v; });
+                        // Le nom de champ de Cloudflare, qui est aussi celui que lit
+                        // la route. Le widget tourne en response-field:false, donc
+                        // c'est la seule copie du jeton dans la requete.
+                        if (token) payload['cf-turnstile-response'] = token;
+
+                        return fetch(form.getAttribute('action'), {
+                            method: 'POST',
+                            headers: { 'content-type': 'application/json', accept: 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                    })
                     .then(function (r) { return r.json().then(function (b) { return { ok: r.ok, body: b }; }); })
                     .then(function (res) {
                         if (!res.ok || !res.body.ok) throw new Error(res.body.error || '_');
@@ -1377,6 +1459,11 @@ const chipTone = (c: string) => CHIP_TONE[c] ?? 'amber';
                         button.disabled = false;
                         button.textContent = label;
                         form.removeAttribute('aria-busy');
+                        // Un jeton Turnstile sert une fois et meurt au bout de cinq
+                        // minutes. C'est ce reset qui rend la seconde tentative
+                        // possible : sans lui elle renvoie un jeton deja vu du
+                        // serveur, et le visiteur relit le meme echec indefiniment.
+                        if (gate && gate.active) gate.reset(form);
                         track('peptides_form_failed', {
                             source: source,
                             reason: window.mgReason ? window.mgReason(e2.message) : 'network'
